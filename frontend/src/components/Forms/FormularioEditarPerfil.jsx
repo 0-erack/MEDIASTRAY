@@ -97,7 +97,6 @@ function FormularioEditarPerfil(props) {
         e.preventDefault();
         if (quiereEliminar && validarBorrado()) {
             const resultado = await borrarUsuario(objetoPatch.contrasegnaEliminar);
-            console.log(resultado)
             if (resultado.ok) {
                 lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "borrarUsuario"), 3);
                 navegar("/");
