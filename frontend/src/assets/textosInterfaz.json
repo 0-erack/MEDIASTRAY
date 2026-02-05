@@ -301,7 +301,7 @@
                 "loginMal": "Couldn't log in",
                 "registerBien": "User created successfully!",
                 "registrarMal": "Couldn't register",
-                "editarUsuarioBien": "User editted successfully!",
+                "editarUsuarioBien": "User edited successfully!",
                 "editarUsuarioMal": "Couldn't edit user",
                 "borrarUsuario": "User deleted...",
                 "seguirUsuario": "User followed",
