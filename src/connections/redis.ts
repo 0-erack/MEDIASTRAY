@@ -3,7 +3,7 @@ import { createClient } from 'redis';
 let cliente:any = null; //Conexión reusable a Redis
 
 //Establecer la conexión a Redis
-const getConexion = async () => {
+const getConexion = async ():Promise<any> => {
     if (!cliente) {
         try {
             const client = createClient({ url: `redis://${process.env.REDIS_HOST}` });
