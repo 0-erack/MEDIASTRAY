@@ -1,4 +1,4 @@
-import React from 'react';
+
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
 function Settings() {

@@ -1,7 +1,7 @@
-import React from 'react';
+
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
-import FormularioRegister from '../components/Forms/FormularioRegister.jsx';
-import Texto from '../components/Texto.jsx';
+import FormularioRegister from '../components/Forms/FormularioRegister';
+import Texto from '../components/Texto';
 
 function Register() {
 

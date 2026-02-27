@@ -1,7 +1,7 @@
-import React from 'react';
+
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
 import { useParams } from 'react-router-dom';
-import VerUsuarioCompleto from '../components/Usuario/VerUsuarioCompleto.jsx';
+import VerUsuarioCompleto from '../components/Usuario/VerUsuarioCompleto';
 
 function ViewUser() {
 

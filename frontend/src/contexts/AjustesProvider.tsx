@@ -1,13 +1,38 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { React, createContext, useState, useEffect } from 'react';
-import { validarDatosUsuarioLS } from '../libraries/validacionesBackend.js';
+import { createContext, useState, useEffect, ReactNode } from 'react';
+import { validarDatosUsuarioLS } from '../libraries/validacionesBackend';
 import { textos } from '../assets/textosInterfaz.json';
-import useLocalStorage from '../hooks/useLocalStorage.js';
-import { peticionBasica } from '../libraries/peticiones.js';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { peticionBasica } from '../libraries/peticiones';
 
-const AjustesContexto = createContext();
+interface AjustesContextType {
+  fallo: any;
+  tokenSesionActual: string;
+  usuarioActual: any;
+  tokenJuegoActual: string;
+  idiomaActual: string;
+  idiomasAdmitidos: string[];
+  API_URL: string;
+  API_KEY: string;
+  PUBLIC_URL: string;
+  GAMES_URL: string;
+  textosInterfaz: any;
+  textosInterfazEnlacesCabecera: any;
+  cambiarUsuarioActual: (usuario: any) => Promise<void>;
+  cambiarTokenJuegoActual: (token: string) => Promise<void>;
+  cambiarIdiomaActual: (nuevo: string) => Promise<void>;
+  cambiarTokenSesionActual: (token: string) => Promise<void>;
+  logout: () => Promise<void>;
+}
 
-const AjustesProvider = (props) => {
+export const AjustesContexto = createContext<AjustesContextType | null>(null);
+
+interface Props {
+  children: ReactNode;
+}
+
+
+const AjustesProvider = ({ children }: Props) => {
 
   const API_URL = import.meta.env.VITE_API_URL ?? (process.env.REACT_APP_API_URL ?? "/api");
   const PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL ?? (process.env.REACT_APP_PUBLIC_URL ?? "/public");
@@ -119,10 +144,9 @@ const AjustesProvider = (props) => {
 
   return (
     <AjustesContexto value={exportaciones}>
-      {(usuarioActual.ninguno || usuarioActual.uuid) && idiomaActual && props.children}
+      {(usuarioActual.ninguno || usuarioActual.uuid) && idiomaActual && children}
     </AjustesContexto>
   )
 }
 
 export default AjustesProvider;
-export { AjustesContexto }

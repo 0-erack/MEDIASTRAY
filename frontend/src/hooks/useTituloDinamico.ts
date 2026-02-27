@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { cambiarTitulo } from "../libraries/accionesIndex.js";
-import { TextoTraducido } from "../libraries/traducir.js";
-import useAjustes from "./useAjustes.js";
+import { useEffect } from "react";
+import { cambiarTitulo } from "../libraries/accionesIndex";
+import { TextoTraducido } from "../libraries/traducir";
+import useAjustes from "./useAjustes";
 
-const useTituloDinamico = (dondeIdioma, extra) => {
+const useTituloDinamico = (dondeIdioma:string, extra:string) => {
 
     const { idiomaActual } = useAjustes();
     useEffect(()=>{
       cambiarTitulo((extra ?? '') + TextoTraducido("titulosHtml", idiomaActual, dondeIdioma ?? 'nada') + " - MEDIASTRAY");
-    }, [idiomaActual]);
+    }, [idiomaActual, extra, dondeIdioma]);
     
   return { };
 };

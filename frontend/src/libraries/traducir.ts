@@ -1,6 +1,8 @@
-import { textos } from '../assets/textosInterfaz.json';
+import { textos as rawTextos } from '../assets/textosInterfaz.json';
 
-const TextoTraducido = (tipo, idiomaActual, nombre) => {
+const textos = rawTextos as any;
+
+const TextoTraducido = (tipo:string, idiomaActual:string, nombre:string):string => {
     return textos[tipo][idiomaActual][nombre] ?? "";
 }
 

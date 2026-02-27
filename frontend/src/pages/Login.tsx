@@ -1,7 +1,7 @@
-import React from 'react';
+
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
-import FormularioLogin from '../components/Forms/FormularioLogin.jsx';
-import Texto from '../components/Texto.jsx';
+import FormularioLogin from '../components/Forms/FormularioLogin';
+import Texto from '../components/Texto';
 
 function Login() {
 

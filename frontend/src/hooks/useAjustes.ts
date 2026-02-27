@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { AjustesContexto } from "../contexts/AjustesProvider.jsx";
+import { useContext } from "react";
+import { AjustesContexto } from "../contexts/AjustesProvider";
 
 const useAjustes = () => {
 

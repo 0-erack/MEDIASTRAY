@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CajaError from '../Principal/CajaError.jsx';
+import CajaError from '../Principal/CajaError';
 import './InputBasico.css';
 
 function InputBasico(props) {

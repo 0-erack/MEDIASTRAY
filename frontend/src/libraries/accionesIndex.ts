@@ -1,17 +1,30 @@
-let etiquetaTitulo = null;
-const cambiarTitulo = (nuevoTitulo) => {
-    if (!etiquetaTitulo) etiquetaTitulo = document.getElementById("head-titulo");
-    etiquetaTitulo.innerHTML = nuevoTitulo;
+// 1. We type the elements as specific HTML types or null
+let etiquetaTitulo: HTMLElement | null = null;
+let etiquetaIcono: HTMLLinkElement | null = null;
+
+const cambiarTitulo = (nuevoTitulo: string): void => {
+    if (!etiquetaTitulo) {
+        etiquetaTitulo = document.getElementById("head-titulo");
+    }
+    if (etiquetaTitulo) {
+        etiquetaTitulo.innerHTML = nuevoTitulo;
+    }
 }
 
-let etiquetaIcono = null;
-const cambiarIcono = (nuevoIcono) => {
-    if (!etiquetaTitulo) etiquetaTitulo = document.getElementById("head-icono");
-    etiquetaIcono.href = nuevoIcono;
+const cambiarIcono = (nuevoIcono: string): void => {
+    if (!etiquetaIcono) {
+        etiquetaIcono = document.getElementById("head-icono") as HTMLLinkElement;
+    }
+    if (etiquetaIcono) {
+        etiquetaIcono.href = nuevoIcono;
+    }
 }
 
-const cambiarIdiomaHtml = (nuevoIdioma) => {
-    document.querySelector("html").lang = nuevoIdioma;
+const cambiarIdiomaHtml = (nuevoIdioma: string): void => {
+    const htmlElement = document.querySelector("html");
+    if (htmlElement) {
+        htmlElement.lang = nuevoIdioma;
+    }
 }
 
-export { cambiarIdiomaHtml, cambiarTitulo, cambiarIcono }
+export { cambiarIdiomaHtml, cambiarTitulo, cambiarIcono };

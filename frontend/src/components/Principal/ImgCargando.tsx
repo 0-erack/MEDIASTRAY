@@ -1,5 +1,5 @@
-import React from 'react';
-import Texto from '../Texto.jsx';
+
+import Texto from '../Texto';
 import gifCagrando from '../../assets/images/cargando.gif';
 
 function ImgCargando() {

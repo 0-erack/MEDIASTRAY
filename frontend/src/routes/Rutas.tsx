@@ -1,20 +1,20 @@
-import React from 'react';
+
 import { Routes, Route } from 'react-router-dom';
-import Inicio from '../pages/Inicio.jsx';
-import ErrorNotFound from '../pages/ErrorNotFound.jsx';
-import Info from '../pages/Info.jsx';
-import Login from '../pages/Login.jsx';
-import Register from '../pages/Register.jsx';
-import ViewUser from '../pages/ViewUser.jsx';
-import Settings from '../pages/Settings.jsx';
-import Premium from '../pages/Premium.jsx';
-import Logout from '../pages/Logout.jsx';
-import FeaturedGames from '../pages/FeaturedGames.jsx';
-import BrowseGames from '../pages/BrowseGames.jsx';
-import FeaturedForums from '../pages/FeaturedForums.jsx';
-import BrowseForums from '../pages/BrowseForums.jsx';
-import BrowseUsers from '../pages/BrowseUsers.jsx';
-import InicioDocumentacion from '../pages/InicioDocumentacion.jsx';
+import Inicio from '../pages/Inicio';
+import ErrorNotFound from '../pages/ErrorNotFound';
+import Info from '../pages/Info';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import ViewUser from '../pages/ViewUser';
+import Settings from '../pages/Settings';
+import Premium from '../pages/Premium';
+import Logout from '../pages/Logout';
+import FeaturedGames from '../pages/FeaturedGames';
+import BrowseGames from '../pages/BrowseGames';
+import FeaturedForums from '../pages/FeaturedForums';
+import BrowseForums from '../pages/BrowseForums';
+import BrowseUsers from '../pages/BrowseUsers';
+import InicioDocumentacion from '../pages/InicioDocumentacion';
 
 
 function Rutas() {

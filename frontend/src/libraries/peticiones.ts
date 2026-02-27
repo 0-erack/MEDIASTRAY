@@ -1,5 +1,5 @@
 
-const peticionBasica = async (url, headers, verbo, body) => {
+const peticionBasica = async (url:string, headers:object, verbo:string, body:object) => {
     try {
         const peticion = new Request(url, {method: verbo, body: verbo === "GET" ? undefined : JSON.stringify(body ?? {}), headers: {...headers, "Content-Type": "application/json"}});
         const resultado = await fetch(peticion);

@@ -1,4 +1,3 @@
-import React from 'react';
 import useAjustes from '../hooks/useAjustes.js';
 
 function Cabecera(props) {

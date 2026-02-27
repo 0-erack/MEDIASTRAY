@@ -1,5 +1,5 @@
-import React from 'react';
-import Rutas from './Rutas.jsx';
+
+import Rutas from './Rutas';
 
 const Contenido = () => {
 

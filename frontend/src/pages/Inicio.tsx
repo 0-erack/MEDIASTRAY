@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import img from '../assets/react.svg';
-import { cambiarTitulo } from '../libraries/accionesIndex';
+import { cambiarTitulo } from '../libraries/accionesIndex.js';
 import useAjustes from '../hooks/useAjustes.js';
 import useMensajes from '../hooks/useMensajes.js';
 
@@ -34,7 +34,7 @@ function Inicio() {
                     count is {count}
                 </button>
                 <p>
-                    Edit <code>src/App.jsx</code> and save to test HMR
+                    Edit <code>src/App</code> and save to test HMR
                 </p>
             </div>
             <p className="read-the-docs">

@@ -1,5 +1,5 @@
-import React from 'react';
-import Texto from '../Texto.jsx';
+
+import Texto from '../Texto';
 
 function CajaError(props) {
 

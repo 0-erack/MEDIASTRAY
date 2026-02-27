@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { MensajesContexto } from "../contexts/MensajesProvider.jsx";
+import { MensajesContexto } from "../contexts/MensajesProvider";
 
 const useMensajes = () => {
 

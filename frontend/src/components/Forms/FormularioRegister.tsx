@@ -1,14 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Texto from '../Texto.jsx';
-import InputBasico from '../Elements/InputBasico.jsx';
-import BotonFuncion from '../Elements/BotonFuncion.jsx';
+import Texto from '../Texto';
+import InputBasico from '../Elements/InputBasico';
+import BotonFuncion from '../Elements/BotonFuncion';
 import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as validarNickname, nombre as validarNombre, cumpleagnos as validarCumpleagnos } from '../../libraries/validacionesBackend.js';
 import { TextoTraducido } from '../../libraries/traducir.js';
 import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos.js';
 import useAjustes from '../../hooks/useAjustes.js';
 import useApi from '../../hooks/useApi.js';
-import ImgCargando from '../Principal/ImgCargando.jsx';
+import ImgCargando from '../Principal/ImgCargando';
 import useMensajes from '../../hooks/useMensajes.js';
 
 function FormularioRegister(props) {

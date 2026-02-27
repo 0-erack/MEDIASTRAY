@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { TextoTraducido } from '../../libraries/traducir.js';
 import useAjustes from '../../hooks/useAjustes.js';
-import BotonFuncion from '../Elements/BotonFuncion.jsx';
+import BotonFuncion from '../Elements/BotonFuncion';
 import useApi from '../../hooks/useApi.js';
-import FormularioEditarPerfil from '../Forms/FormularioEditarPerfil.jsx';
+import FormularioEditarPerfil from '../Forms/FormularioEditarPerfil';
 import { timestampAFecha } from '../../libraries/extraFechas.js';
-import BotonNavegacion from '../Elements/BotonNavegacion.jsx';
+import BotonNavegacion from '../Elements/BotonNavegacion';
 import useMensajes from '../../hooks/useMensajes.js';
 
 function TarjetaUsuarioGrande(props) {

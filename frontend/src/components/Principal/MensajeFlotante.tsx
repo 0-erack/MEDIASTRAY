@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './MensajeFlotante.css';
 
 function MensajeFlotante(props) {

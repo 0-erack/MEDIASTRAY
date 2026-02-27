@@ -1,10 +1,9 @@
-import React from 'react';
 import './App.css';
-import Contenido from './routes/Contenido.jsx';
-import Cabecera from './components/Principal/Cabecera.jsx';
-import Pie from './components/Principal/Pie.jsx';
-import AjustesProvider from './contexts/AjustesProvider.jsx';
-import MensajesProviders from './contexts/MensajesProvider.jsx';
+import Contenido from './routes/Contenido';
+import Cabecera from './components/Principal/Cabecera';
+import Pie from './components/Principal/Pie';
+import AjustesProvider from './contexts/AjustesProvider';
+import MensajesProviders from './contexts/MensajesProvider';
 
 function App() {
   

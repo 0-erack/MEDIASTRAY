@@ -1,9 +1,9 @@
-import React from 'react';
-import BotonNavegacion from '../Elements/BotonNavegacion.jsx';
+
+import BotonNavegacion from '../Elements/BotonNavegacion';
 import imgLogo from '../../assets/images/logoA.png';
 import { useNavigate } from 'react-router-dom';
 import './Cabecera.css';
-import EnlaceFuncion from '../Elements/EnlaceFuncion.jsx';
+import EnlaceFuncion from '../Elements/EnlaceFuncion';
 import { cambiarIdiomaHtml } from '../../libraries/accionesIndex.js';
 import useAjustes from '../../hooks/useAjustes.js';
 

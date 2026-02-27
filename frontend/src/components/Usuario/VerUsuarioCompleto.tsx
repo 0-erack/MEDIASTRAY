@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from 'react';
-import TarjetaUsuarioGrande from './TarjetaUsuarioGrande.jsx';
+import TarjetaUsuarioGrande from './TarjetaUsuarioGrande';
 import useAjustes from '../../hooks/useAjustes.js';
 import useApi from '../../hooks/useApi.js';
-import ImgCargando from '../Principal/ImgCargando.jsx';
-import CajaError from '../Principal/CajaError.jsx';
+import ImgCargando from '../Principal/ImgCargando';
+import CajaError from '../Principal/CajaError';
 
 function VerUsuarioCompleto(props) {
 

@@ -1,6 +1,6 @@
-import React from 'react';
-import BotonNavegacion from '../components/Elements/BotonNavegacion.jsx';
-import Texto from '../components/Texto.jsx';
+
+import BotonNavegacion from '../components/Elements/BotonNavegacion';
+import Texto from '../components/Texto';
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
 function ErrorNotFound() {
