@@ -10,7 +10,7 @@ const enteroPositivo = (data) => {
 
 //Valida un uuid
 const uuid = (data) => {
-    return esString(data) && /^[0-9a-fA-F\-]{36}$/.test(data);
+    return esString(data) && /^[0-9a-fA-F-]{36}$/.test(data);
 }
 
 //Valida un nickname de usuario, de 4 a 15 caracteres que sean letras, numeros o simbolos concretos

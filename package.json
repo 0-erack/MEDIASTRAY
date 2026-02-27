@@ -1,11 +1,15 @@
 {
+  "type": "module",
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.mjs",
-    "dev": "nodemon server.mjs",
+    "start-old": "node server.mjs",
+    "dev-old": "nodemon server.mjs",
+    "start": "npm run build && node dist/server.js",
+    "dev-old2": "nodemon --recursive --watch 'src/**/*.ts' --exec tsx server.ts",
+    "dev": "tsx watch server.ts",
     "dockerprod": "sh prod.sh",
     "dockerdev": "sh dev.sh"
   },
@@ -34,6 +38,13 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "@types/cors": "^2.8.19",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.2",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noImplicitAny": false
+  },
+  "include": ["server.ts", "src/**/*.ts"] 
+}
