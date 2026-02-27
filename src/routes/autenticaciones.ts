@@ -36,7 +36,7 @@ const autenticarTokenSesion = async (req, res, next) => {
     }
 }
 
-const autenticarContrasegnaUsuario = async (entrante, encriptada) => {
+const autenticarContrasegnaUsuario = async (entrante:string, encriptada:string):Promise<Boolean> => {
     const contrasegnaCoincide = await bcrypt.compare(entrante, encriptada ?? '');
     return contrasegnaCoincide;
 }

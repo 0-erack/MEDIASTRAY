@@ -5,12 +5,15 @@ import apiRoutes from "./src/routes/apiRoutes.js";
 import apiRoutesPriv from "./src/routes/apiRoutesPriv.js";
 import path from 'path';
 import { iniciarServicioLogs } from './src/connections/logs.js';
-
+import { fileURLToPath } from 'url'
 import cors from 'cors';
 import { hacerTestsConexiones } from './src/tests/tests.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 //dotenv.config();
-dotenv.config({path: new URL("./.env", import.meta.url).pathname});
+//dotenv.config({path: new URL("./.env", import.meta.url).pathname});
+dotenv.config({ path: path.join(process.cwd(), '.env') });
 const APP_PORT = process.env.BACKEND_PORT ?? 8510;
 const app = express();
 app.use(express.json());
@@ -40,14 +43,13 @@ if (process.env.NODE_ENV === "DEVELOPMENT") { //Código solo para development
 }));*/
 
 //Rutas con contenido estático
-if (process.env.SERVE_STATIC === "true") app.use("/public", express.static(process.env.PUBLIC_FILES_PATH));
-if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(process.env.GAMES_FILES_PATH));
+if (process.env.SERVE_STATIC === "true") app.use("/public", express.static(process.env.PUBLIC_FILES_PATH ?? './public'));
+if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(process.env.GAMES_FILES_PATH ?? './games'));
 //Peticiones a la API (se gestionan manualmente por el servidor)
 app.use("/api", apiRoutes);
 app.use("/api", apiRoutesPriv);
 //Las peticiones en / se dirigen al dist del frontend
-if (process.env.SERVE_FRONTEND === "true") app.use(express.static(path.join(process.cwd(), process.env.FRONTEND_DIST_PATH)));
-
+if (process.env.SERVE_FRONTEND === "true") app.use(express.static(path.join(process.cwd(), process.env.FRONTEND_DIST_PATH ?? './frontend/dist')));
 //Errores 404
 app.use((req, res) => {
     if (req.path.startsWith("/public")) {
@@ -69,7 +71,7 @@ app.use((req, res) => {
             res.status(404).json({message: "404 Not found", code: 404});
             return;
         }
-        res.sendFile(path.join(process.cwd(), process.env.FRONTEND_DIST_PATH, "index.html")); //El error 404 en / lo maneja el frontend
+        res.sendFile(path.join(process.cwd(), process.env.FRONTEND_DIST_PATH ?? './frontend/dist', "index.html")); //El error 404 en / lo maneja el frontend
     }
 });
 

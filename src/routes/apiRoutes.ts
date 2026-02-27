@@ -18,7 +18,7 @@ router.get("/userFollow/:uuid_a/:uuid_b", async (req, res) => {
         } else {
             return res.json({ ok:true, message: `Does not follow`, code: 200, data: false });
         }
-    } catch (error) {
+    } catch (error:any) {
         try {
             console.log(error);
             return res.status(error.code).json({ok: false, message: error.message, code: error.code ?? 400});
@@ -36,7 +36,7 @@ router.get("/user/:id", async (req, res) => {
         const usuario = await verUsuario(req.params.id) ?? false;
         if (!usuario.uuid) return res.status(404).json({ok: false, message: "User not found", code: 404});
         return res.json({ok:true, code: 200, data: usuario });
-    } catch (error) {
+    } catch (error:any) {
         try {
             console.log(error);
             return res.status(error.code).json({ok: false,message: error.message, code: error.code ?? 400});

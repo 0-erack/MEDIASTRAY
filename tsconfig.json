@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
   },
   "include": ["server.ts", "src/**/*.ts"] 
 }

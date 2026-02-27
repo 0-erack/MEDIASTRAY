@@ -1,13 +1,13 @@
 import { Client } from 'pg';
 import { leerArchivo } from './archivos.js';
 
-let cliente = null; //Conexión reusable a Postgresql (para su correcto funcionamiento requiere haberse usado un par de veces antes, se hace en los tests)
+let cliente:any = null; //Conexión reusable a Postgresql (para su correcto funcionamiento requiere haberse usado un par de veces antes, se hace en los tests)
 
 //Recibir la conexión de Postgresql
-const getConexion = async () => {
+const getConexion = async ():Promise<any> => {
     if (!cliente) {
         try {
-            cliente = new Client({ connectionString: process.env.DATABASE_URL, clientVersion: '8.16.3' });
+            cliente = new Client({ connectionString: process.env.DATABASE_URL/*, clientVersion: '8.16.3'*/ });
             await cliente.connect();
             //Ejecutar las consultas iniciales para crear las tablas
             const consultasIniciales = await leerArchivo(process.env.SQL_INIT_PATH ?? "", true);
@@ -34,7 +34,7 @@ const getConexion = async () => {
 }
 
 //Ejecuta una consulta sql sanitizándola y devuelve el posible resultado (parametros para el prepare y evitar inyección sql)
-const consulta = async (consulta, parametros = []) => {
+const consulta = async (consulta:string, parametros:Array<any> = []):Promise<Array<any>> => {
     if (!cliente || !sigueConectado()) await getConexion();
     try {
         const resultado = await cliente.query(consulta, parametros);
@@ -42,12 +42,13 @@ const consulta = async (consulta, parametros = []) => {
         return await resultado.rows ?? true;
     } catch (error) {
         console.log(error);
-        return null;
+        //return null;
+        return [];
     }
 }
 
 //Devuelve la conexión para hacer operaciones personalizadas
-const getCliente = async () => {
+const getCliente = async ():Promise<any> => {
     if (!cliente) await getConexion();
     try {
         return cliente;
@@ -58,7 +59,7 @@ const getCliente = async () => {
 }
 
 //Devuelve false si falla hacer el ping a la base de datos.
-const sigueConectado = async () => {
+const sigueConectado = async ():Promise<boolean> => {
     if (!cliente) await getConexion();
     try {
         await cliente.query("SELECT 1 FROM USUARIOS LIMIT 1;");

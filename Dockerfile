@@ -12,4 +12,5 @@ COPY . .
 
 EXPOSE 8510
 
-CMD ["node", "server.mjs"]
+#CMD ["node", "server.mjs"]
+CMD ["npm", "run", "start"]

@@ -1,4 +1,5 @@
 #!/bin/bash
+sh down.sh
 clear
 touch logs/backend.log
 touch logs/db.log
@@ -7,12 +8,14 @@ cat frontend.env.example > frontend/.env
 #cat .docker/postgresql-extra.conf > .docker/database/postgresql/postgresql.conf
 #rm -rf .docker/database/postgresql
 #rm -rf .docker/database/mongodb
-cat src/libraries/validaciones.js > frontend/src/libraries/validacionesBackend.js
-cat frontend/src/libraries/peticiones.js > src/libraries/peticiones.js
+cat src/libraries/validaciones.ts > frontend/src/libraries/validacionesBackend.ts
+cat frontend/src/libraries/peticiones.ts > src/libraries/peticiones.ts
 npm install
+npm audit
 cd frontend
 #cat .env.example > .env
 npm install
+npm audit
 npm run build
 npm run dev -- --port 8520 &
 cd ..

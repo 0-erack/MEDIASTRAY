@@ -1,6 +1,6 @@
 import { createClient } from 'redis';
 
-let cliente = null; //Conexión reusable a Redis
+let cliente:any = null; //Conexión reusable a Redis
 
 //Establecer la conexión a Redis
 const getConexion = async () => {
@@ -23,7 +23,7 @@ const getConexion = async () => {
 }
 
 //Establecer un valor en Redis
-const redisSet = async (clave, valor, ttl) => {
+const redisSet = async (clave:string, valor:string, ttl?:number):Promise<boolean> => {
     if (!cliente) await getConexion();
     try {
         await cliente.set(clave, valor, {EX: ttl});
@@ -35,7 +35,7 @@ const redisSet = async (clave, valor, ttl) => {
 }
 
 //Leer un valor de Redis
-const redisGet = async (clave) => {
+const redisGet = async (clave:string):Promise<string|null> => {
     if (!cliente) await getConexion();
     try {
         return await cliente.get(clave);
@@ -46,7 +46,7 @@ const redisGet = async (clave) => {
 }
 
 //Borrar un registro en redis manualmente
-const redisDelete = async (clave) => {
+const redisDelete = async (clave:string):Promise<boolean> => {
     if (!cliente) await getConexion();
     try {
         await cliente.del(clave);
@@ -60,7 +60,7 @@ const redisDelete = async (clave) => {
 //getConexion();
 
 //Devuelve la conexión para hacer operaciones personalizadas
-const getCliente = async () => {
+const getCliente = async ():Promise<any> => {
     if (!cliente) await getConexion();
     try {
         return cliente;

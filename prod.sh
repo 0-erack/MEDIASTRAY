@@ -1,4 +1,5 @@
 #!/bin/bash
+sh down.sh
 touch logs/backend.log
 touch logs/db.log
 cat .env.example > .env
@@ -7,8 +8,8 @@ mkdir .docker/database/postgresql
 #cat .docker/postgresql-extra.conf > .docker/database/postgresql/postgresql.conf
 #rm -rf .docker/database/postgresql
 #rm -rf .docker/database/mongodb
-#cat src/libraries/validaciones.js > frontend/src/libraries/validacionesBackend.js
-#cat frontend/src/libraries/peticiones.js > src/libraries/peticiones.js
+#cat src/libraries/validaciones.ts > frontend/src/libraries/validacionesBackend.ts
+#cat frontend/src/libraries/peticiones.ts > src/libraries/peticiones.ts
 npm install
 cd frontend
 npm install

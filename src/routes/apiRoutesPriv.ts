@@ -26,7 +26,7 @@ routerPriv.post("/userCreate", autenticarTokenApi, async (req, res) => {
         usuario.contrasegna = "";
         res.setHeader('X-auth-session', token);
         return res.json({ok:true, message: `User created successfully`, code: 200, sessionToken: token, user: usuario });
-    } catch (error) {
+    } catch (error:any) {
         try {
             console.log(error);
             return res.status(error.code).json({ok:false, message: error.message, code: error.code, data: error.data ?? {}});
@@ -44,7 +44,7 @@ routerPriv.post("/userLogin", autenticarTokenApi, async (req, res) => {
         usuario.contrasegna = "";
         res.setHeader('X-auth-session', token);
         return res.json({ok:true, message: `User logged in successfully`, code: 200, sessionToken: token, user: usuario });
-    } catch (error) {
+    } catch (error:any) {
         try {
             console.log(error);
             return res.status(error.code).json({ok:false, message: error.message, code: error.code, data: error.data ?? {}});
@@ -65,7 +65,7 @@ routerPriv.patch("/userEdit", autenticarTokenApi, autenticarTokenSesion, async (
         const { usuarioRenovado, tokenNuevo } = await editarUsuario(req.body.newData, uuid);
         res.setHeader('X-auth-session', tokenNuevo);
         return res.json({ok:true, message: `Data editted successfully`, code: 200, user: usuarioRenovado, sessionToken: tokenNuevo });
-    } catch (error) {
+    } catch (error:any) {
         try {
             console.log(error);
             return res.status(error.code).json({ok:false, message: error.message, code: error.code ?? 400, data: error.data ?? {}});
@@ -88,7 +88,7 @@ routerPriv.delete("/userDelete", autenticarTokenApi, autenticarTokenSesion, asyn
         } else {
             throw {message: "Invalid credentials", code: 401};
         }
-    } catch (error) {
+    } catch (error:any) {
         try {
             console.log(error);
             return res.status(error.code).json({ok:false, message: error.message, code: error.code, data: error.data ?? {}});
@@ -112,7 +112,7 @@ routerPriv.post("/userFollow", autenticarTokenApi, autenticarTokenSesion, async 
         } else {
             throw {message: "Couldn't perform action (follow)", code: 401};
         }
-    } catch (error) {
+    } catch (error:any) {
         try {
             console.log(error);
             return res.status(error.code).json({ok:false, message: error.message, code: error.code ?? 400, data: error.data ?? {}});

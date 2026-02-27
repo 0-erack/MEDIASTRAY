@@ -8,15 +8,15 @@ import { agnadirLog } from '../connections/logs.js';
 import { mongoDelete, mongoGet, mongoSet } from '../connections/mongodb.js';
 import { autenticarContrasegnaUsuario } from '../routes/autenticaciones.js';
 
-const validarJsonCreacionUsuario = (usuario) => {
+const validarJsonCreacionUsuario = (usuario:Record<string,any>):boolean => {
     return validarNombre(usuario.nombre) && validarNickname(usuario.nickname) && validarCorreo(usuario.correo) && validarContrasegna(usuario.contrasegna) && validarCumpleagnos(usuario.cumpleagnos);
 }
 
-const validarJsonLoginUsuario = (credenciales) => {
+const validarJsonLoginUsuario = (credenciales:Record<string,any>):boolean => {
     return (validarCorreo(credenciales.identification) || validarNickname(credenciales.identification)) && validarContrasegna(credenciales.contrasegna);
 }
 
-const validarJsonEdicionUsuario = (usuario) => {
+const validarJsonEdicionUsuario = (usuario:Record<string,any>) => {
     if (usuario.nombre && !validarNombre(usuario.nombre)) throw { message: "Invalid credentials (name)", code: 401 };
     if (usuario.url_foto && !validarUrl(usuario.url_foto)) throw { message: "Invalid credentials (pfp url)", code: 401 };
     if (usuario.descripcion && !validarDescripcion(usuario.descripcion)) throw { message: "Invalid credentials (description)", code: 401 };
@@ -27,7 +27,7 @@ const validarJsonEdicionUsuario = (usuario) => {
 }
 
 //Registrarse, requiere en el body (usuario): nombre, nickname, correo, contrasegna, cumpleagnos. Devuelve un token de sesion
-const crearUsuario = async (datosUsuario) => {
+const crearUsuario = async (datosUsuario:Record<string,any>):Promise<Record<string, any>> => {
     try {
         if (!validarJsonCreacionUsuario(datosUsuario)) throw { message: "Invalid user data", code: 400 };
         const nicknameExiste = await consulta("select uuid from USUARIOS where nickname = $1;", [datosUsuario.nickname]);
@@ -46,7 +46,7 @@ const crearUsuario = async (datosUsuario) => {
         const creacion = await consulta("INSERT INTO USUARIOS (uuid, nickname, nombre, contrasegna, correo, cumpleagnos, fechacreacion) VALUES ($1, $2, $3, $4, $5, $6, $7);",
             [uuid, datosUsuario.nickname, datosUsuario.nombre, contrasegnaEncriptada, datosUsuario.correo, datosUsuario.cumpleagnos, fechaCreacion]);
         if (creacion) {
-            const usuario = await consulta("SELECT * FROM USUARIOS WHERE uuid = $1;", [uuid]);
+            const usuario = await consulta("SELECT * FROM USUARIOS WHERE uuid = $1;", [uuid]) ?? [];
             agnadirLog("backend.log", "New user created " + uuid);
             agnadirLog("db.log", "New user created USUARIOS " + uuid);
             return { token, usuario: usuario[0] };
@@ -59,7 +59,7 @@ const crearUsuario = async (datosUsuario) => {
 }
 
 //Hacer login con el usuario, requiere en el body (credentials): contrasegna, identificacion (su correo o nickname). Devuelve un token de sesion valido por 4 horas y los datos del usuario
-const loginUsuario = async (datosLogin) => {
+const loginUsuario = async (datosLogin:Record<string,any>):Promise<Record<string, any>> => {
     try {
         if (!validarJsonLoginUsuario(datosLogin)) throw { message: "Invalid user data", code: 400 };
         const elUsuario = await consulta("SELECT * FROM USUARIOS WHERE nickname = $1 OR correo = $1;", [datosLogin.identification]);
@@ -82,7 +82,7 @@ const loginUsuario = async (datosLogin) => {
 
 //Editar un usuario actualizando sus datos, requiere en el body (newData) todos los posibles nuevos datos. Devuelve true si va todo bien
 //Concretamente se pueden editar: nickname, nombre, contrasegna, correo, descripcion, url_foto, cumpleagnos. Para nickname, correo o contrasegna se requiere tambien la contrasegna antigua (contrasegnaAntigua)
-const editarUsuario = async (nuevos, uuid) => {
+const editarUsuario = async (nuevos:Record<string, any>, uuid:string):Promise<Record<string, any>> => {
     try {
         if (!nuevos || !uuid) throw { message: "Invalid credentials", code: 401 };
         const usuarioPrevio = await consulta("SELECT * FROM USUARIOS WHERE uuid = $1;", [uuid]);
@@ -141,7 +141,7 @@ const editarUsuario = async (nuevos, uuid) => {
 }
 
 //Borra el usuario, requiere de su contrasegna en el body asi como el token de sesion
-const borrarUsuario = async (contrasegna, uuid) => {
+const borrarUsuario = async (contrasegna:string, uuid:string):Promise<boolean> => {
     try {
         const usuario = await consulta("SELECT * FROM USUARIOS WHERE uuid = $1;", [uuid]);
         if (!usuario[0]) throw { message: "Invalid credentials", code: 401 };
@@ -195,22 +195,22 @@ const borrarUsuario = async (contrasegna, uuid) => {
 }
 
 //Devuelve datos básicos y públicos de un usuario a partir de su uuid o su nickname
-const verUsuario = async (id) => {
+const verUsuario = async (id:string):Promise<Record<string, any>> => {
     try {
         const usuario = await consulta("SELECT * FROM USUARIOS WHERE uuid = $1 OR nickname = $2;", [id, id]);
         if (!usuario[0] || usuario[0].nivel_publico === 2) throw { message: "User not found", code: 401 }
         //usuario[0].contrasegna = undefined;
         if (usuario[0].nivel_publico === 1) {
-            return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "", cantidad_seguidores: 0, premium: "",  } ?? null;
+            return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "", cantidad_seguidores: 0, premium: "",  };
         }
-        return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "" } ?? null;
+        return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "" };
     } catch (error) {
         throw error;
     }
 }
 
 //Altera la disponibilidad de un usuario (no para api), 0 disponible, 1 desabilitada de subir juegos, 2 desabilitada de interactuar, 3 desabilitada de login...
-const alterarDisponibilidadUsuario = async (nuevoValor, uuid) => {
+const alterarDisponibilidadUsuario = async (nuevoValor:number, uuid:string):Promise<boolean> => {
     try {
         const resultado = await consulta("UPDATE USUARIOS SET disponibilidad = $1 WHERE uuid = $2;", [nuevoValor, uuid]);
         agnadirLog("backend.log", `User ${uuid} altered its disponibility to ${nuevoValor}`);
@@ -222,7 +222,7 @@ const alterarDisponibilidadUsuario = async (nuevoValor, uuid) => {
 }
 
 //Altera la visibilidad del usuario, 0 normal, 1 pueden saber que existe pero no ver datos, 2 totalmente anonimo...
-const alterarVisibilidadUsuario = async (nuevoValor, uuid) => {
+const alterarVisibilidadUsuario = async (nuevoValor:number, uuid:string):Promise<boolean> => {
     try {
         const resultado = await consulta("UPDATE USUARIOS SET nivel_publico = $1 WHERE uuid = $2;", [nuevoValor, uuid]);
 
@@ -237,7 +237,7 @@ const alterarVisibilidadUsuario = async (nuevoValor, uuid) => {
 }
 
 //Renueva el premium de un usuario estableciendo la fecha de caducidad
-const alterarPremiumUsuario = async (uuid, fechaCaducidad) => {
+const alterarPremiumUsuario = async (uuid:string, fechaCaducidad:string):Promise<boolean> => {
     try {
         const resultado = await consulta("UPDATE USUARIOS SET premium = $1 WHERE uuid = $2;", [fechaCaducidad, uuid]);
         agnadirLog("backend.log", "User got premium " + uuid);
@@ -249,7 +249,7 @@ const alterarPremiumUsuario = async (uuid, fechaCaducidad) => {
 }
 
 //Altera la cantidad de seguidores de un usuario (en su registro sql), si la cantidad es 0 devuelve si el usuario a sigue al b
-const alterarSeguidores = async (uuidA, uuidB, cantidad) => {
+const alterarSeguidores = async (uuidA:string, uuidB:string, cantidad:number):Promise<boolean> => {
     try {
         const yaLeSigue = await mongoGet("intermediario", { sujeto: uuidA, verbo: "sigue", predicado: uuidB }) ?? {};
         if (cantidad === 0) return yaLeSigue.uuid;
@@ -257,7 +257,7 @@ const alterarSeguidores = async (uuidA, uuidB, cantidad) => {
         if (!seguidoresPrevios[0] || seguidoresPrevios[0].nivel_publico >= 1 || seguidoresPrevios[0].disponibilidad >= 2) throw { message: "Invalid credentials", code: 401 };
         const usuarioSeguidor = await consulta("SELECT disponibilidad FROM USUARIOS WHERE uuid = $1;", [uuidA]);
         if (!usuarioSeguidor[0] || usuarioSeguidor[0].disponibilidad >= 2) throw { message: "Invalid credentials", code: 401 };
-        let resultado = false;
+        let resultado:boolean|Array<any> = false;
         if (yaLeSigue.uuid && cantidad < 0) {
             await mongoDelete("intermediario", { sujeto: uuidA, verbo: "sigue", predicado: uuidB }, true);
             resultado = await consulta("UPDATE USUARIOS SET cantidad_seguidores = $1 WHERE uuid = $2;", [seguidoresPrevios[0].cantidad_seguidores + cantidad, uuidB]);

@@ -11,7 +11,8 @@
     "dev-old2": "nodemon --recursive --watch 'src/**/*.ts' --exec tsx server.ts",
     "dev": "tsx watch server.ts",
     "dockerprod": "sh prod.sh",
-    "dockerdev": "sh dev.sh"
+    "dockerdev": "sh dev.sh",
+    "build": "tsc && (cp -r src dist/ 2>/dev/null || true) && cp .env dist/ 2>/dev/null || true"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,13 @@
   "description": "",
   "dependencies": {
     "@apollo/server": "^5.2.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/mongodb": "^4.0.6",
+    "@types/mongoose": "^5.11.96",
+    "@types/multer": "^2.0.0",
+    "@types/pg": "^8.16.0",
+    "@types/redis": "^4.0.10",
+    "@types/uuid": "^10.0.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

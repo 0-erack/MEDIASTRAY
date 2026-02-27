@@ -1,13 +1,13 @@
 import { MongoClient } from 'mongodb';
 import { inicializarMongo } from './base/init.js';
 
-let cliente = null; //Conexión reusable a Mongodb
+let cliente:any = null; //Conexión reusable a Mongodb
 
 //Recibe la conexión de Mongodb
-const getConexion = async () => {
+const getConexion = async ():Promise<any> => {
     if (!cliente) {
         try {
-            cliente = new MongoClient(process.env.MONGODB_URI);
+            cliente = new MongoClient(process.env.MONGODB_URI ?? '');
             await cliente.connect();
             inicializarMongo(cliente);
             cliente.on("close", () => {
@@ -25,7 +25,7 @@ const getConexion = async () => {
 }
 
 //Inserta un json en Mongodb en una colección
-const mongoSet = async (collectionNombre, data) => {
+const mongoSet = async (collectionNombre:string, data:Record<string,any>):Promise<boolean|object> => {
     if (!cliente) await getConexion();
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base');
@@ -40,7 +40,7 @@ const mongoSet = async (collectionNombre, data) => {
 }
 
 //Devuelve los elementos que coincidan con el json en la coleccion
-const mongoGet = async (collectionNombre, consulta) => {
+const mongoGet = async (collectionNombre:string, consulta:Record<string,any>):Promise<object|Record<string,any>|any> => {
     if (!cliente) await getConexion();
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base')//.toArray();
@@ -55,7 +55,7 @@ const mongoGet = async (collectionNombre, consulta) => {
 }
 
 //Borra el elemento que coincida con el json en la coleccion
-const mongoDelete = async (collectionNombre, consulta, multiple) => {
+const mongoDelete = async (collectionNombre:string, consulta:Record<string,any>, multiple:boolean = false):Promise<any> => {
     if (!cliente) await getConexion();
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base')//.toArray();
@@ -70,7 +70,7 @@ const mongoDelete = async (collectionNombre, consulta, multiple) => {
 }
 
 //Devuelve la conexión para hacer operaciones personalizadas
-const getCliente = async () => {
+const getCliente = async ():Promise<any> => {
     if (!cliente) await getConexion();
     try {
         return cliente.db(process.env.MONGODB_DATABASE ?? 'base');
