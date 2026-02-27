@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Texto from '../Texto';
 import InputBasico from '../Elements/InputBasico';
 import BotonFuncion from '../Elements/BotonFuncion';
-import { identificacion as validarIdentificacion, contrasegna as validarContrasegna } from '../../libraries/validacionesBackend.js';
-import { TextoTraducido } from '../../libraries/traducir.js';
-import useAjustes from '../../hooks/useAjustes.js';
-import useApi from '../../hooks/useApi.js';
+import { identificacion as validarIdentificacion, contrasegna as validarContrasegna } from '../../libraries/validacionesBackend';
+import { TextoTraducido } from '../../libraries/traducir';
+import useAjustes from '../../hooks/useAjustes';
+import useApi from '../../hooks/useApi';
 import ImgCargando from '../Principal/ImgCargando';
-import useMensajes from '../../hooks/useMensajes.js';
+import useMensajes from '../../hooks/useMensajes';
 
-function FormularioLogin(props) {
+interface FormularioLoginProps {
+  enviarPersonalizado?: (data: any) => void; 
+}
+
+function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
 
   const { login, cargando } = useApi();
   const objetoLoginBasico = { identificacion: "", contrasegna: "", verContrasegna: false }
@@ -20,13 +24,14 @@ function FormularioLogin(props) {
   const navegar = useNavigate();
   const { lanzarMensaje } = useMensajes();
 
-  const cambio = (e) => {
-    if (e.target.nodeName === "INPUT") {
-      if (e.target.type === "checkbox") {
-        setObjetoLogin({ ...objetoLogin, [e.target.name]: e.target.checked });
+  const cambio = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (target.nodeName === "INPUT") {
+      if (target.type === "checkbox") {
+        setObjetoLogin({ ...objetoLogin, [target.name]: target.checked });
       } else {
         e.preventDefault();
-        setObjetoLogin({ ...objetoLogin, [e.target.name]: e.target.value });
+        setObjetoLogin({ ...objetoLogin, [target.name]: target.value });
       }
     }
   }
@@ -39,12 +44,12 @@ function FormularioLogin(props) {
     return validarIdentificacion(objetoLogin.identificacion) && validarContrasegna(objetoLogin.contrasegna);
   }
 
-  const enviar = async (e) => {
+  const enviar = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (validar()) {
       setErrorFormulario("");
-      if (typeof props.enviarPersonalizado === "function") {
-        props.enviarPersonalizado(objetoLogin);
+      if (typeof enviarPersonalizado === "function") {
+        enviarPersonalizado(objetoLogin);
       } else {
         const resultado = await login(objetoLogin);
         if (resultado.code === 200 && !resultado.fallo) {

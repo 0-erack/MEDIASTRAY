@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import img from '../assets/react.svg';
-import { cambiarTitulo } from '../libraries/accionesIndex.js';
-import useAjustes from '../hooks/useAjustes.js';
-import useMensajes from '../hooks/useMensajes.js';
+import { cambiarTitulo } from '../libraries/accionesIndex';
+import useAjustes from '../hooks/useAjustes';
+import useMensajes from '../hooks/useMensajes';
 
 function Inicio() {
 
     const { lanzarMensaje } = useMensajes();
     const [count, setCount] = useState(0);
-    const { API_URL, PUBLIC_URL, API_KEY } = useAjustes();
+    const { API_URL, PUBLIC_URL/*, API_KEY*/ } = useAjustes();
 
     useEffect(() => {
         cambiarTitulo("MEDIASTRAY");

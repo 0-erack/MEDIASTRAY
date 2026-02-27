@@ -1,14 +1,19 @@
-import useAjustes from '../hooks/useAjustes.js';
+import useAjustes from '../hooks/useAjustes';
 
-function Cabecera(props) {
+interface TextoProps {
+  tipo: string;
+  nombre: string;
+}
+
+function Texto({ tipo, nombre }: TextoProps) {
   
   const { idiomaActual, textosInterfaz } = useAjustes();
 
   return (
     <>
-        {textosInterfaz[props.tipo][idiomaActual][props.nombre] ?? ""}
+        {textosInterfaz[tipo][idiomaActual][nombre] ?? ""}
     </>
   )
 }
 
-export default Cabecera;
+export default Texto;

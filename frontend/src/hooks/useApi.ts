@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import useAjustes from "./useAjustes.js";
-import { peticionBasica } from "../libraries/peticiones.js";
+import { useState } from "react";
+import useAjustes from "./useAjustes";
+import { peticionBasica } from "../libraries/peticiones";
 
 const useApi = () => {
     const [cargando, setCargando] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState<boolean|object>(false);
     const { tokenSesionActual, usuarioActual, tokenJuegoActual, API_URL, API_KEY, cambiarTokenSesionActual, cambiarUsuarioActual, logout } = useAjustes();
 
-    const peticionGenerica = async (url, verbo = "GET", body, headersExtra = {}) => {
+    const peticionGenerica = async (url:string, verbo = "GET", body?:Record<string, any>, headersExtra:Record<string, any> = {}):Promise<any> => {
         await setCargando(true);
         await setError(false);
         try {
@@ -22,7 +22,7 @@ const useApi = () => {
         }
     }
 
-    const login = async (objetoLogin) => {
+    const login = async (objetoLogin:Record<string, any>):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/userLogin", "POST", {credentials: { contrasegna: objetoLogin.contrasegna, identification: objetoLogin.identificacion}});
             cambiarTokenSesionActual(resultado.sessionToken);
@@ -33,7 +33,7 @@ const useApi = () => {
         }
     }
 
-    const register = async (objetoRegister) => {
+    const register = async (objetoRegister:Record<string, any>):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/userCreate", "POST", { usuario: { ...objetoRegister, cumpleagnos: Date.parse(objetoRegister?.cumpleagnos) + "" } });
             cambiarTokenSesionActual(resultado.sessionToken);
@@ -44,7 +44,7 @@ const useApi = () => {
         }
     }
 
-    const verUsuario = async (id) => {
+    const verUsuario = async (id:string):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/user/" + (id ?? ''), "GET");
             return resultado.data;
@@ -53,7 +53,7 @@ const useApi = () => {
         }
     }
 
-    const verSeguir = async (uuid1, uuid2) => {
+    const verSeguir = async (uuid1:string, uuid2:string):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + `/userFollow/${uuid1}/${uuid2}`, "GET");
             return resultado.data ?? false;
@@ -62,7 +62,7 @@ const useApi = () => {
         }
     }
 
-    const seguir = async (uuid, cantidad) => {
+    const seguir = async (uuid:string, cantidad:number):Promise<any> => {
         try {
             let cantidadCorrecta = cantidad;
             if (cantidadCorrecta > 1) cantidadCorrecta = 1;
@@ -74,7 +74,7 @@ const useApi = () => {
         }
     }
 
-    const editarUsuario = async (datosNuevos) => {
+    const editarUsuario = async (datosNuevos:Record<string, any>):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/userEdit", "PATCH", { newData: {...datosNuevos, cumpleagnos: Date.parse(datosNuevos?.cumpleagnos) + "", correoEliminar: undefined, contrasegnaEliminar: undefined} });
             cambiarTokenSesionActual(resultado.sessionToken);
@@ -85,7 +85,7 @@ const useApi = () => {
         }
     }
 
-    const borrarUsuario = async (contrasegna) => {
+    const borrarUsuario = async (contrasegna:string):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/userDelete", "DELETE", {contrasegna});
             await logout();

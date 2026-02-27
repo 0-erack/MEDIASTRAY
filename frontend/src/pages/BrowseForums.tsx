@@ -1,5 +1,5 @@
 
-import useTituloDinamico from '../hooks/useTituloDinamico.js';
+import useTituloDinamico from '../hooks/useTituloDinamico';
 
 function BrowseForums() {
 

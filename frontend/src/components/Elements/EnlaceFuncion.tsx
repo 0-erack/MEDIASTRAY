@@ -1,13 +1,17 @@
+interface EnlaceFuncionProps {
+  cabecera?: boolean|string|null;
+  titulo: string|null;
+  funcion: (data?: any) => void | null; 
+}
 
-
-function EnlaceFuncion(props) {
+function EnlaceFuncion({cabecera, titulo, funcion}: EnlaceFuncionProps) {
   
   return (
-        <span className={(props.cabecera ? "enlace-cabecera" : "") + "enlace-funcion"}>
+        <span className={(cabecera ? "enlace-cabecera" : "") + "enlace-funcion"}>
             <a href="" onClick={(e) => {
               e.preventDefault();
-              try {props.funcion()} catch (e) {e}
-            }}>{props.titulo ?? ""}</a>
+              try {funcion()} catch (e) {e}
+            }}>{titulo ?? ""}</a>
         </span>
   )
 }

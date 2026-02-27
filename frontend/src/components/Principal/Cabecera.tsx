@@ -4,8 +4,8 @@ import imgLogo from '../../assets/images/logoA.png';
 import { useNavigate } from 'react-router-dom';
 import './Cabecera.css';
 import EnlaceFuncion from '../Elements/EnlaceFuncion';
-import { cambiarIdiomaHtml } from '../../libraries/accionesIndex.js';
-import useAjustes from '../../hooks/useAjustes.js';
+import { cambiarIdiomaHtml } from '../../libraries/accionesIndex';
+import useAjustes from '../../hooks/useAjustes';
 
 function Cabecera() {
   
@@ -17,10 +17,10 @@ function Cabecera() {
         <header id="cabecera">
           {usuarioActual.uuid}
             <img id="logo-cabecera" src={imgLogo ?? PUBLIC_URL + "/logoA.png"} alt="MEDIASTRAY" onClick={()=>{navegar("/")}} />
-            {textosInterfazEnlacesCabecera[(usuarioActual.uuid ? "si" : "no") + "Usuario"][idiomaActual]?.map((e, i) => {
+            {textosInterfazEnlacesCabecera[(usuarioActual.uuid ? "si" : "no") + "Usuario"][idiomaActual]?.map((e:any, i:number) => {
               return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} />)
             })}
-            {textosInterfazEnlacesCabecera[idiomaActual]?.map((e, i) => {
+            {textosInterfazEnlacesCabecera[idiomaActual]?.map((e:any, i:number) => {
               return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} />)
             })}
             {usuarioActual.uuid ? (

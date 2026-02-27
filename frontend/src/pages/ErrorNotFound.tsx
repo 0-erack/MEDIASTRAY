@@ -1,7 +1,7 @@
 
 import BotonNavegacion from '../components/Elements/BotonNavegacion';
 import Texto from '../components/Texto';
-import useTituloDinamico from '../hooks/useTituloDinamico.js';
+import useTituloDinamico from '../hooks/useTituloDinamico';
 
 function ErrorNotFound() {
 

@@ -1,38 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { TextoTraducido } from '../../libraries/traducir.js';
-import useAjustes from '../../hooks/useAjustes.js';
+import { useState, useEffect } from 'react';
+import { TextoTraducido } from '../../libraries/traducir';
+import useAjustes from '../../hooks/useAjustes';
 import BotonFuncion from '../Elements/BotonFuncion';
-import useApi from '../../hooks/useApi.js';
+import useApi from '../../hooks/useApi';
 import FormularioEditarPerfil from '../Forms/FormularioEditarPerfil';
-import { timestampAFecha } from '../../libraries/extraFechas.js';
+import { timestampAFecha } from '../../libraries/extraFechas';
 import BotonNavegacion from '../Elements/BotonNavegacion';
-import useMensajes from '../../hooks/useMensajes.js';
+import useMensajes from '../../hooks/useMensajes';
 
-function TarjetaUsuarioGrande(props) {
+interface TarjetaUsuarioGrandeProps {
+  usuario: Record<string, any>;
+  soyYo: boolean|null
+}
+
+function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
 
   const { idiomaActual, usuarioActual } = useAjustes();
-  const esPremium = props.usuario.premium ? (props.usuario.premium > Date.now()) : false;
-  const fechaCumpleagnos = timestampAFecha(props.usuario.cumpleagnos);
-  const fechaCreacion = timestampAFecha(props.usuario.fechacreacion);
-  const fechaPremium = timestampAFecha(props.usuario.premium);
+  const esPremium = usuario.premium ? (usuario.premium > Date.now()) : false;
+  const fechaCumpleagnos = timestampAFecha(usuario.cumpleagnos);
+  const fechaCreacion = timestampAFecha(usuario.fechacreacion);
+  const fechaPremium = timestampAFecha(usuario.premium);
   const [siguiendo, setSiguiendo] = useState(false);
   const [teSigue, setTeSigue] = useState(false);
   const { verSeguir, seguir } = useApi();
-  const [seguidoresSimulados, setSeguidoresSimulados] = useState(props.usuario.cantidad_seguidores);
+  const [seguidoresSimulados, setSeguidoresSimulados] = useState(usuario.cantidad_seguidores);
   const [editandoPerfil, setEditandoPerfil] = useState(false);
   const { lanzarMensaje } = useMensajes();
 
   const alternarSeguir = async () => {
-    if (props.soyYo || !usuarioActual.uuid) return false;
+    if (soyYo || !usuarioActual.uuid) return false;
     if (siguiendo) {
-      const resultado = await seguir(props.usuario.uuid, -1);
+      const resultado = await seguir(usuario.uuid, -1);
       if (resultado && !resultado.error) {
         lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "noSeguirUsuario"), 4);
         setSiguiendo(!siguiendo);
         setSeguidoresSimulados(seguidoresSimulados - 1);
       }
     } else {
-      const resultado = await seguir(props.usuario.uuid, 1);
+      const resultado = await seguir(usuario.uuid, 1);
       if (resultado && !resultado.error) {
         lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "seguirUsuario"), 4);
         setSiguiendo(!siguiendo); 
@@ -41,19 +46,19 @@ function TarjetaUsuarioGrande(props) {
     }
   }
 
-  const verSiguiendo = async (deVuelta) => {
-    if (props.soyYo || !usuarioActual.uuid) return false;
+  const verSiguiendo = async (deVuelta?:boolean):Promise<boolean> => {
+    if (soyYo || !usuarioActual.uuid) return false;
     if (deVuelta) {
-      const siguiendo = await verSeguir(props.usuario.uuid, usuarioActual.uuid);
+      const siguiendo = await verSeguir(usuario.uuid, usuarioActual.uuid);
       return siguiendo;
     } else {
-      const siguiendo = await verSeguir(usuarioActual.uuid, props.usuario.uuid);
+      const siguiendo = await verSeguir(usuarioActual.uuid, usuario.uuid);
       return siguiendo;
     }
   }
 
   const cargaInicial = async () => {
-    if (usuarioActual.uuid && !props.soyYo) {
+    if (usuarioActual.uuid && !soyYo) {
       setSiguiendo(await verSiguiendo());
       setTeSigue(await verSiguiendo(true));
     }
@@ -64,26 +69,26 @@ function TarjetaUsuarioGrande(props) {
 
   return (
     <div className="tarjeta-usuario-grande">
-      {JSON.stringify(props.usuario)}
-        <h2>{props.usuario.nombre}</h2>
-        <img src={props.usuario.url_foto ?? "#"} alt={TextoTraducido("errores", idiomaActual, "nopfp")} />
-        <p>{"("}{props.usuario.nickname}{")"}</p>
-        {props.soyYo && (<p>{props.usuario.correo}</p>)}
-        <p>{props.usuario.descripcion.length ? props.usuario.descripcion : TextoTraducido("errores", idiomaActual, "noDescripcion")}</p>
-        {props.soyYo && (<p>{TextoTraducido("formularios", idiomaActual, "cumpleagnos")} {fechaCumpleagnos}</p>)}
+      {JSON.stringify(usuario)}
+        <h2>{usuario.nombre}</h2>
+        <img src={usuario.url_foto ?? "#"} alt={TextoTraducido("errores", idiomaActual, "nopfp")} />
+        <p>{"("}{usuario.nickname}{")"}</p>
+        {soyYo && (<p>{usuario.correo}</p>)}
+        <p>{usuario.descripcion.length ? usuario.descripcion : TextoTraducido("errores", idiomaActual, "noDescripcion")}</p>
+        {soyYo && (<p>{TextoTraducido("formularios", idiomaActual, "cumpleagnos")} {fechaCumpleagnos}</p>)}
         <p>{TextoTraducido("formularios", idiomaActual, "fechaCreacion")} {fechaCreacion}</p>
         <p>{TextoTraducido("formularios", idiomaActual, "premium")} {esPremium ? TextoTraducido("palabras", idiomaActual, "si") : TextoTraducido("palabras", idiomaActual, "no")}</p>
         {esPremium && (<p>{TextoTraducido("formularios", idiomaActual, "premiumCaducidad")} {fechaPremium}</p>)}
-        <p>{TextoTraducido("formularios", idiomaActual, "seguidores")} {seguidoresSimulados} {(!props.soyYo && usuarioActual.uuid) && (<span>
+        <p>{TextoTraducido("formularios", idiomaActual, "seguidores")} {seguidoresSimulados} {(!soyYo && usuarioActual.uuid) && (<span>
           <BotonFuncion funcion={alternarSeguir} titulo={TextoTraducido("botones", idiomaActual, siguiendo ? "noSeguir" : "seguir")} />
-          <span>{props.usuario.nombre} {TextoTraducido("formularios", idiomaActual, teSigue ? "teSigue" : "noTeSigue")}</span>
+          <span>{usuario.nombre} {TextoTraducido("formularios", idiomaActual, teSigue ? "teSigue" : "noTeSigue")}</span>
         </span>)}</p>
-        {(props.soyYo) ? (<div>
+        {(soyYo) ? (<div>
           {!editandoPerfil && (<BotonFuncion funcion={() => {setEditandoPerfil(true)}} titulo={TextoTraducido("botones", idiomaActual, "editarPerfil")} />)}
           <br />
           <BotonNavegacion direccion="/logout" titulo={TextoTraducido("botones", idiomaActual, "logout")} />
         </div>) : (<p>REPORTAR USUARIO</p>)}
-        {editandoPerfil && props.soyYo && (<FormularioEditarPerfil usuario={props.usuario} />)}
+        {editandoPerfil && soyYo && (<FormularioEditarPerfil usuario={usuario} />)}
     </div>
   )
 }

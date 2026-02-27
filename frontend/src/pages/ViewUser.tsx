@@ -5,7 +5,8 @@ import VerUsuarioCompleto from '../components/Usuario/VerUsuarioCompleto';
 
 function ViewUser() {
 
-  const {id} = useParams();
+  let {id} = useParams();
+  id = id ?? "";
   useTituloDinamico("viewUser", (id ?? '') + " ");
 
   return (

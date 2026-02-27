@@ -1,21 +1,35 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { React, createContext, useState } from 'react';
+import { createContext, useState, ReactNode } from 'react';
 import MensajeFlotante from '../components/Principal/MensajeFlotante';
+interface Mensaje {
+  mensaje: string;
+  tipo: null | number;
+  id: string;
+}
+interface MensajesContextType {
+  lanzarMensaje: (mensaje: string, tipo: number) => void;
+  mensajesPendientes: Mensaje[];
+  borrarMensajes: () => void;
+}
 
-const MensajesContexto = createContext();
+export const MensajesContexto = createContext<MensajesContextType | null>(null);
 
-const MensajesProviders = (props) => {
-  const [mensajesPendientes, setMensajesPendientes] = useState([]);
+interface Props {
+  children: ReactNode;
+}
+
+const MensajesProviders = ({ children }: Props) => {
+
+  const [mensajesPendientes, setMensajesPendientes] = useState<Mensaje[]>([]);
   const duracionGeneral = 2000;
 
-  // ["generico", "exito", "error", "alerta", "informacion"]
-  const lanzarMensaje = (mensaje, tipo) => {
+  const lanzarMensaje = (mensaje: string, tipo: number) => {
     const id = self.crypto.randomUUID();
     setMensajesPendientes((prev) => [...prev, { mensaje, tipo: tipo ?? 0, id }]);
     mandarQuitar(id);
   };
 
-  const mandarQuitar = (id) => {
+  const mandarQuitar = (id: string) => {
     setTimeout(() => {
       setMensajesPendientes((prev) => prev.filter((e) => e.id !== id));
     }, duracionGeneral);
@@ -25,7 +39,11 @@ const MensajesProviders = (props) => {
     setMensajesPendientes([]);
   };
 
-  const exportaciones = { lanzarMensaje, mensajesPendientes, borrarMensajes };
+  const exportaciones: MensajesContextType = { 
+    lanzarMensaje, 
+    mensajesPendientes, 
+    borrarMensajes 
+  };
 
   return (
     <MensajesContexto.Provider value={exportaciones}>
@@ -34,10 +52,9 @@ const MensajesProviders = (props) => {
           <MensajeFlotante key={e.id} mensaje={e.mensaje} tipo={e.tipo} />
         ))}
       </div>
-      {props.children}
+      {children}
     </MensajesContexto.Provider>
   );
 };
 
 export default MensajesProviders;
-export { MensajesContexto };

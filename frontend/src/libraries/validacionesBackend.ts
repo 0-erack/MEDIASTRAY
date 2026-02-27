@@ -45,7 +45,7 @@ const descripcionUsuario = (data:string):boolean => {
 
 //Valida una url
 const url = (data:string):boolean => {
-    return esString(data) && (/^(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(?::\d{1,5})?\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*))/.test(data) || data === "/public/nopfp.png" || data === "");
+    return esString(data) && (/^(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(?::\d{1,5})?\b(?:[-a-zA-Z0-9()@:%_+.~#?&\/=]*))/.test(data) || data === "/public/nopfp.png" || data === "");
 }
 
 //Valida un timestamp (fecha)

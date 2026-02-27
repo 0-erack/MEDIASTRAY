@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAjustes from '../hooks/useAjustes.js';
-import { TextoTraducido } from '../libraries/traducir.js';
-import useMensajes from '../hooks/useMensajes.js';
+import useAjustes from '../hooks/useAjustes';
+import { TextoTraducido } from '../libraries/traducir';
+import useMensajes from '../hooks/useMensajes';
 
 function Logout() {
 

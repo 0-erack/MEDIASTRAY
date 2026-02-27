@@ -1,14 +1,20 @@
 
 import './MensajeFlotante.css';
 
-function MensajeFlotante(props) {
+interface MensajeFlotanteProps {
+  mensaje: string;
+  tipo: number|null;
+}
+
+
+function MensajeFlotante({ mensaje, tipo }: MensajeFlotanteProps) {
 
     const tipos = ["generico", "exito", "error", "alerta", "informacion"];
   
   return (
     <>
-        <div className={"mensaje-flotante " + (tipos[props.tipo ?? 0])}>
-            <p>{props.mensaje}</p>
+        <div className={"mensaje-flotante " + (tipos[tipo ?? 0])}>
+            <p>{mensaje}</p>
         </div>
     </>
   )

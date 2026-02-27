@@ -1,36 +1,40 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import TarjetaUsuarioGrande from './TarjetaUsuarioGrande';
-import useAjustes from '../../hooks/useAjustes.js';
-import useApi from '../../hooks/useApi.js';
+import useAjustes from '../../hooks/useAjustes';
+import useApi from '../../hooks/useApi';
 import ImgCargando from '../Principal/ImgCargando';
 import CajaError from '../Principal/CajaError';
 
-function VerUsuarioCompleto(props) {
+interface VerUsuarioCompletoProps {
+  id: string;
+}
+
+function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
 
   const { usuarioActual } = useAjustes();
-  const [usuarioCargado, setUsuarioCargado] = useState({});
-  const uuidBuscar = props.id ?? usuarioActual.uuid;
+  const [usuarioCargado, setUsuarioCargado] = useState({uuid: null});
+  const uuidBuscar = id ?? usuarioActual.uuid;
   const [soyYo, setSoyYo] = useState(false);
   const { verUsuario, cargando, error } = useApi();
   const [fallo, setFallo] = useState(false);
 
   const cargaInicial = async () => {
-    if (!props.id && !usuarioActual.uuid) {
+    if (!id && !usuarioActual.uuid) {
       setFallo(true);
     } else {
-      if (usuarioActual.uuid === props.id || usuarioActual.nickname === props.id || (!props.id && usuarioActual.uuid)) {
+      if (usuarioActual.uuid === id || usuarioActual.nickname === id || (!id && usuarioActual.uuid)) {
         setSoyYo(true);
         setUsuarioCargado(usuarioActual);
       } else {
-        const usuarioAjeno = await verUsuario(props.id);
+        const usuarioAjeno = await verUsuario(id);
         setUsuarioCargado({...usuarioAjeno, correo: "", contrasegna: "", cumpleagnos: "", disponibilidad: ""});
       }
     }
   }
   useEffect(() => {
     cargaInicial();
-  }, [props.id]);
+  }, [id]);
 
   return (
     <>

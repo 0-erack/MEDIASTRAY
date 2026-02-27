@@ -1,16 +1,23 @@
 
 import Texto from '../Texto';
 
-function CajaError(props) {
+interface CajaErrorProps {
+  nivel?: string|null;
+  enLinea?: boolean|null;
+  nombre?: string|null;
+  texto?: string|null|React.ReactNode;
+}
+
+function CajaError({ nivel, enLinea, nombre, texto }: CajaErrorProps) {
 
   return (
     <>
-        {props.enLinea ? 
-        (<span className={props.nivel ? ("error error-" + props.nivel) : "error"}>
-            {props.texto ? props.texto : (<Texto tipo="errores" nombre={props.nombre ?? "error"} />)}
+        {enLinea ? 
+        (<span className={nivel ? ("error error-" + nivel) : "error"}>
+            {texto ? texto : (<Texto tipo="errores" nombre={nombre ?? "error"} />)}
         </span>) : 
-        (<p className={props.nivel ? ("error-" + props.nivel) : "error"}>
-            {props.texto ? props.texto : (<Texto tipo="errores" nombre={props.nombre ?? "error"} />)}
+        (<p className={nivel ? ("error-" + nivel) : "error"}>
+            {texto ? texto : (<Texto tipo="errores" nombre={nombre ?? "error"} />)}
         </p>)}
     </>
   )

@@ -3,7 +3,7 @@ import { cambiarTitulo } from "../libraries/accionesIndex";
 import { TextoTraducido } from "../libraries/traducir";
 import useAjustes from "./useAjustes";
 
-const useTituloDinamico = (dondeIdioma:string, extra:string) => {
+const useTituloDinamico = (dondeIdioma:string, extra?:string) => {
 
     const { idiomaActual } = useAjustes();
     useEffect(()=>{

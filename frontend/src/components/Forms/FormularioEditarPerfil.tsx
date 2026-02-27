@@ -1,20 +1,20 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Texto from '../Texto';
-import useApi from '../../hooks/useApi.js';
+import useApi from '../../hooks/useApi';
 import InputBasico from '../Elements/InputBasico';
 import BotonFuncion from '../Elements/BotonFuncion';
-import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as validarNickname, nombre as validarNombre, cumpleagnos as validarCumpleagnos, url as validarUrl, descripcionUsuario as validarDescripcion } from '../../libraries/validacionesBackend.js';
-import { TextoTraducido } from '../../libraries/traducir.js';
-import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos.js';
-import useAjustes from '../../hooks/useAjustes.js';
+import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as validarNickname, nombre as validarNombre, cumpleagnos as validarCumpleagnos, url as validarUrl, descripcionUsuario as validarDescripcion } from '../../libraries/validacionesBackend';
+import { TextoTraducido } from '../../libraries/traducir';
+import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos';
+import useAjustes from '../../hooks/useAjustes';
 import ImgCargando from '../Principal/ImgCargando';
-import { timestampAInputDate } from '../../libraries/extraFechas.js';
+import { timestampAInputDate } from '../../libraries/extraFechas';
 import { useNavigate } from 'react-router-dom';
-import useMensajes from '../../hooks/useMensajes.js';
+import useMensajes from '../../hooks/useMensajes';
 
-function FormularioEditarPerfil(props) {
+function FormularioEditarPerfil({usuario}: {usuario: any}) {
 
-    const previo = props.usuario;
+    const previo = usuario;
     const { editarUsuario, borrarUsuario, cargando, error, resetEstados } = useApi();
     //const objetoPatchBasico = useMemo(() => {return {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", url_foto: previo.url_foto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }}, [previo]);
     const objetoPatchBasico = {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", url_foto: previo.url_foto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }
@@ -28,13 +28,14 @@ function FormularioEditarPerfil(props) {
     const navegar = useNavigate();
     const { lanzarMensaje } = useMensajes();
 
-    const cambio = (e) => {
-        if (e.target.nodeName === "INPUT" || e.target.nodeName === "TEXTAREA") {
-            if (e.target.type === "checkbox") {
-                setObjetoPatch({ ...objetoPatch, [e.target.name]: e.target.checked });
+    const cambio = (e: React.SyntheticEvent) => {
+        const target = e.target as HTMLInputElement;
+        if (target.nodeName === "INPUT" || target.nodeName === "TEXTAREA") {
+            if (target.type === "checkbox") {
+                setObjetoPatch({ ...objetoPatch, [target.name]: target.checked });
             } else {
                 e.preventDefault();
-                setObjetoPatch({ ...objetoPatch, [e.target.name]: e.target.value });
+                setObjetoPatch({ ...objetoPatch, [target.name]: target.value });
             }
         }
     }
@@ -61,7 +62,7 @@ function FormularioEditarPerfil(props) {
         && validarContrasegna(objetoPatch.contrasegnaEliminar);
     }
 
-    const enviar = async (e) => {
+    const enviar = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         //validar correctamente, mirar que no haya uniques en uso (a no ser que sean propios), enviar al servidor, si es correcto setear datos nuevos, si no mostrar error
         if (validarEdicion()) {
@@ -93,7 +94,7 @@ function FormularioEditarPerfil(props) {
         if (objetoPatch.contrasegna2 !== objetoPatch.contrasegna) setErrorFormulario(TextoTraducido("errores", idiomaActual, "dobleContrasegna"));
     }
 
-    const enviarEliminarCuenta = async (e) => {
+    const enviarEliminarCuenta = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         if (quiereEliminar && validarBorrado()) {
             const resultado = await borrarUsuario(objetoPatch.contrasegnaEliminar);

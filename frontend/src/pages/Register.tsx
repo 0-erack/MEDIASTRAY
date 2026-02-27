@@ -1,5 +1,5 @@
 
-import useTituloDinamico from '../hooks/useTituloDinamico.js';
+import useTituloDinamico from '../hooks/useTituloDinamico';
 import FormularioRegister from '../components/Forms/FormularioRegister';
 import Texto from '../components/Texto';
 

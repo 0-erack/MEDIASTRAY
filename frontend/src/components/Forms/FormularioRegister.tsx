@@ -1,17 +1,21 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Texto from '../Texto';
 import InputBasico from '../Elements/InputBasico';
 import BotonFuncion from '../Elements/BotonFuncion';
-import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as validarNickname, nombre as validarNombre, cumpleagnos as validarCumpleagnos } from '../../libraries/validacionesBackend.js';
-import { TextoTraducido } from '../../libraries/traducir.js';
-import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos.js';
-import useAjustes from '../../hooks/useAjustes.js';
-import useApi from '../../hooks/useApi.js';
+import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as validarNickname, nombre as validarNombre, cumpleagnos as validarCumpleagnos } from '../../libraries/validacionesBackend';
+import { TextoTraducido } from '../../libraries/traducir';
+import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos';
+import useAjustes from '../../hooks/useAjustes';
+import useApi from '../../hooks/useApi';
 import ImgCargando from '../Principal/ImgCargando';
-import useMensajes from '../../hooks/useMensajes.js';
+import useMensajes from '../../hooks/useMensajes';
 
-function FormularioRegister(props) {
+interface FormularioRegisterProps {
+  enviarPersonalizado?: (data: any) => void; 
+}
+
+function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
 
   const { register, cargando, error, resetEstados } = useApi();
   const objetoRegisterBasico = { correo: "", nickname: "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: "", cumpleagnos: "" }
@@ -24,13 +28,14 @@ function FormularioRegister(props) {
   const correoFalsoPlaceholder = useMemo(() => correoFalso(), []);
   const { lanzarMensaje } = useMensajes();
 
-  const cambio = (e) => {
-    if (e.target.nodeName === "INPUT") {
-      if (e.target.type === "checkbox") {
-        setObjetoRegister({ ...objetoRegister, [e.target.name]: e.target.checked });
+  const cambio = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (target.nodeName === "INPUT") {
+      if (target.type === "checkbox") {
+        setObjetoRegister({ ...objetoRegister, [target.name]: target.checked });
       } else {
         e.preventDefault();
-        setObjetoRegister({ ...objetoRegister, [e.target.name]: e.target.value });
+        setObjetoRegister({ ...objetoRegister, [target.name]: target.value });
       }
     }
   }
@@ -40,7 +45,7 @@ function FormularioRegister(props) {
     resetEstados();
   }
 
-  const validar = () => {
+  const validar = ():boolean => {
     return validarContrasegna(objetoRegister.contrasegna)
       && objetoRegister.contrasegna2 === objetoRegister.contrasegna
       && validarNombre(objetoRegister.nombre)
@@ -49,12 +54,12 @@ function FormularioRegister(props) {
       && validarCumpleagnos(objetoRegister.cumpleagnos);
   }
 
-  const enviar = async (e) => {
+  const enviar = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (validar()) {
       setErrorFormulario("");
-      if (typeof props.enviarPersonalizado === "function") {
-        props.enviarPersonalizado(objetoRegister);
+      if (typeof enviarPersonalizado === "function") {
+        enviarPersonalizado(objetoRegister);
       } else {
         const resultado = await register(objetoRegister);
         if (!error && !resultado.error) {
