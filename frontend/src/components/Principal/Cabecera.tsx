@@ -11,19 +11,19 @@ function Cabecera() {
   
   const { idiomaActual, idiomasAdmitidos, cambiarIdiomaActual, usuarioActual, textosInterfazEnlacesCabecera, PUBLIC_URL } = useAjustes();
   const navegar = useNavigate();
-  //usuarioActual.uuid = "si"; usuarioActual.nickname = "sisisi";
+  //usuarioActual.id = "si"; usuarioActual.nickname = "sisisi";
   return (
     <>
         <header id="cabecera">
-          {usuarioActual.uuid}
+          {usuarioActual.id}
             <img id="logo-cabecera" src={imgLogo ?? PUBLIC_URL + "/logoA.png"} alt="MEDIASTRAY" onClick={()=>{navegar("/")}} />
-            {textosInterfazEnlacesCabecera[(usuarioActual.uuid ? "si" : "no") + "Usuario"][idiomaActual]?.map((e:any, i:number) => {
+            {textosInterfazEnlacesCabecera[(usuarioActual.id ? "si" : "no") + "Usuario"][idiomaActual]?.map((e:any, i:number) => {
               return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} />)
             })}
             {textosInterfazEnlacesCabecera[idiomaActual]?.map((e:any, i:number) => {
               return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} />)
             })}
-            {usuarioActual.uuid ? (
+            {usuarioActual.id ? (
               <span className="usuario-cabecera">
                 <BotonNavegacion cabecera={true} direccion={"/user"} titulo={usuarioActual.nickname ?? "User"} />
               </span>

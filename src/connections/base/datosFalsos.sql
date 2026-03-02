@@ -3,7 +3,7 @@
 DELETE FROM USUARIOS; --CUIDADO solo para el testing
 
 -- Generate 40 Random Users
-INSERT INTO USUARIOS (uuid, nickname, nombre, contrasegna, correo, descripcion, url_foto, cumpleagnos, fechacreacion, disponibilidad, premium, cantidad_seguidores) VALUES
+INSERT INTO USUARIOS (id, nickname, nombre, contrasegna, correo, descripcion, url_foto, cumpleagnos, fechacreacion, disponibilidad, premium, cantidad_seguidores) VALUES
 ('a1b2c3d4-e5f6-7890-1234-567890abcdef', 'userOne', 'John Doe', '$2a$10$examplehashedpassword', 'john.doe@example.com', 'Enthusiastic about coding.', '/public/nopfp.png', '1990-05-10', '2023-10-26', 1, FALSE, 15),
 ('b2c3d4e5-f6a7-8901-2345-67890abcdef1', 'coderGirl', 'Jane Smith', '$2a$10$anotherhashedpassword', 'jane.smith@example.com', 'Loves photography and travel.', '/public/nopfp.png', '1985-11-22', '2023-10-27', 0, TRUE, 55),
 ('c3d4e5f6-a7b8-9012-3456-7890abcdef23', 'musicLover', 'David Lee', '$2a$10$yetanotherhashedpassword', 'david.lee@example.com', 'Passionate about music and concerts.', '/public/nopfp.png', '1998-03-15', '2023-10-27', 2, FALSE, 22),

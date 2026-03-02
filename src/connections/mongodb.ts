@@ -4,7 +4,7 @@ import { inicializarMongo } from './base/init.js';
 let cliente:any = null; //Conexión reusable a Mongodb
 
 //Recibe la conexión de Mongodb
-const getConexion = async ():Promise<any> => {
+export const getConexion = async ():Promise<any> => {
     if (!cliente) {
         try {
             cliente = new MongoClient(process.env.MONGODB_URI ?? '');
@@ -25,7 +25,7 @@ const getConexion = async ():Promise<any> => {
 }
 
 //Inserta un json en Mongodb en una colección
-const mongoSet = async (collectionNombre:string, data:Record<string,any>):Promise<boolean|object> => {
+export const mongoSet = async (collectionNombre:string, data:Record<string,any>):Promise<boolean|object> => {
     if (!cliente) await getConexion();
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base');
@@ -40,7 +40,7 @@ const mongoSet = async (collectionNombre:string, data:Record<string,any>):Promis
 }
 
 //Devuelve los elementos que coincidan con el json en la coleccion
-const mongoGet = async (collectionNombre:string, consulta:Record<string,any>):Promise<object|Record<string,any>|any> => {
+export const mongoGet = async (collectionNombre:string, consulta:Record<string,any>):Promise<object|Record<string,any>|any> => {
     if (!cliente) await getConexion();
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base')//.toArray();
@@ -55,7 +55,7 @@ const mongoGet = async (collectionNombre:string, consulta:Record<string,any>):Pr
 }
 
 //Borra el elemento que coincida con el json en la coleccion
-const mongoDelete = async (collectionNombre:string, consulta:Record<string,any>, multiple:boolean = false):Promise<any> => {
+export const mongoDelete = async (collectionNombre:string, consulta:Record<string,any>, multiple:boolean = false):Promise<any> => {
     if (!cliente) await getConexion();
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base')//.toArray();
@@ -70,7 +70,7 @@ const mongoDelete = async (collectionNombre:string, consulta:Record<string,any>,
 }
 
 //Devuelve la conexión para hacer operaciones personalizadas
-const getCliente = async ():Promise<any> => {
+export const getCliente = async ():Promise<any> => {
     if (!cliente) await getConexion();
     try {
         return cliente.db(process.env.MONGODB_DATABASE ?? 'base');
@@ -79,5 +79,3 @@ const getCliente = async ():Promise<any> => {
         return null;
     }
 }
-
-export { getConexion, mongoGet, mongoSet, getCliente, mongoDelete }

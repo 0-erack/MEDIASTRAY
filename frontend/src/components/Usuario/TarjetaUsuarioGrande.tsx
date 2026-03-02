@@ -28,16 +28,16 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
   const { lanzarMensaje } = useMensajes();
 
   const alternarSeguir = async () => {
-    if (soyYo || !usuarioActual.uuid) return false;
+    if (soyYo || !usuarioActual.id) return false;
     if (siguiendo) {
-      const resultado = await seguir(usuario.uuid, -1);
+      const resultado = await seguir(usuario.id, -1);
       if (resultado && !resultado.error) {
         lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "noSeguirUsuario"), 4);
         setSiguiendo(!siguiendo);
         setSeguidoresSimulados(seguidoresSimulados - 1);
       }
     } else {
-      const resultado = await seguir(usuario.uuid, 1);
+      const resultado = await seguir(usuario.id, 1);
       if (resultado && !resultado.error) {
         lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "seguirUsuario"), 4);
         setSiguiendo(!siguiendo); 
@@ -47,18 +47,18 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
   }
 
   const verSiguiendo = async (deVuelta?:boolean):Promise<boolean> => {
-    if (soyYo || !usuarioActual.uuid) return false;
+    if (soyYo || !usuarioActual.id) return false;
     if (deVuelta) {
-      const siguiendo = await verSeguir(usuario.uuid, usuarioActual.uuid);
+      const siguiendo = await verSeguir(usuario.id, usuarioActual.id);
       return siguiendo;
     } else {
-      const siguiendo = await verSeguir(usuarioActual.uuid, usuario.uuid);
+      const siguiendo = await verSeguir(usuarioActual.id, usuario.id);
       return siguiendo;
     }
   }
 
   const cargaInicial = async () => {
-    if (usuarioActual.uuid && !soyYo) {
+    if (usuarioActual.id && !soyYo) {
       setSiguiendo(await verSiguiendo());
       setTeSigue(await verSiguiendo(true));
     }
@@ -79,7 +79,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
         <p>{TextoTraducido("formularios", idiomaActual, "fechaCreacion")} {fechaCreacion}</p>
         <p>{TextoTraducido("formularios", idiomaActual, "premium")} {esPremium ? TextoTraducido("palabras", idiomaActual, "si") : TextoTraducido("palabras", idiomaActual, "no")}</p>
         {esPremium && (<p>{TextoTraducido("formularios", idiomaActual, "premiumCaducidad")} {fechaPremium}</p>)}
-        <p>{TextoTraducido("formularios", idiomaActual, "seguidores")} {seguidoresSimulados} {(!soyYo && usuarioActual.uuid) && (<span>
+        <p>{TextoTraducido("formularios", idiomaActual, "seguidores")} {seguidoresSimulados} {(!soyYo && usuarioActual.id) && (<span>
           <BotonFuncion funcion={alternarSeguir} titulo={TextoTraducido("botones", idiomaActual, siguiendo ? "noSeguir" : "seguir")} />
           <span>{usuario.nombre} {TextoTraducido("formularios", idiomaActual, teSigue ? "teSigue" : "noTeSigue")}</span>
         </span>)}</p>

@@ -1,10 +1,14 @@
-import { Client } from 'pg';
+import { Client, Pool } from 'pg';
 import { leerArchivo } from './archivos.js';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import * as schema from '../models/schema.js';
 
 let cliente:any = null; //Conexión reusable a Postgresql (para su correcto funcionamiento requiere haberse usado un par de veces antes, se hace en los tests)
+let db: any = null;
+let pool: Pool | null = null;
 
 //Recibir la conexión de Postgresql
-const getConexion = async ():Promise<any> => {
+export const getConexion = async ():Promise<any> => {
     if (!cliente) {
         try {
             cliente = new Client({ connectionString: process.env.DATABASE_URL/*, clientVersion: '8.16.3'*/ });
@@ -34,7 +38,7 @@ const getConexion = async ():Promise<any> => {
 }
 
 //Ejecuta una consulta sql sanitizándola y devuelve el posible resultado (parametros para el prepare y evitar inyección sql)
-const consulta = async (consulta:string, parametros:Array<any> = []):Promise<Array<any>> => {
+export const consulta = async (consulta:string, parametros:Array<any> = []):Promise<Array<any>> => {
     if (!cliente || !sigueConectado()) await getConexion();
     try {
         const resultado = await cliente.query(consulta, parametros);
@@ -48,7 +52,7 @@ const consulta = async (consulta:string, parametros:Array<any> = []):Promise<Arr
 }
 
 //Devuelve la conexión para hacer operaciones personalizadas
-const getCliente = async ():Promise<any> => {
+export const getCliente = async ():Promise<any> => {
     if (!cliente) await getConexion();
     try {
         return cliente;
@@ -72,4 +76,16 @@ const sigueConectado = async ():Promise<boolean> => {
     }
 }
 
-export { getConexion, consulta, getCliente }
+//Especial para Drizzle
+export const getDB = () => {
+    if (!db) {
+        if (!pool) {
+            pool = new Pool({ 
+                connectionString: process.env.DATABASE_URL,
+                max: 10,
+            });
+        }
+        db = drizzle(pool, { schema });
+    }
+    return db;
+}

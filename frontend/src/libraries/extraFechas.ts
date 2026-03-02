@@ -1,4 +1,4 @@
-const timestampAInputDate = (timestamp:string):string => {
+export const timestampAInputDate = (timestamp:string):string => {
     if (typeof timestamp !== "string" && typeof timestamp !== "number") return "";
     const date = new Date(Number(timestamp));
     const year = String(date.getFullYear()).padStart(4, '0');
@@ -7,9 +7,7 @@ const timestampAInputDate = (timestamp:string):string => {
     return `${year}-${month}-${day}`;
 }
 
-const timestampAFecha = (timestamp:string):string => {
+export const timestampAFecha = (timestamp:string):string => {
     //if (typeof timestamp !== "string" && typeof timestamp !== "number") return "";
     return new Date(Number(timestamp)).toLocaleDateString();
 }
-
-export { timestampAInputDate, timestampAFecha }

@@ -15,11 +15,16 @@ COPY . .
 EXPOSE 8510
 EXPOSE 8520
 
-WORKDIR /usr/src/app/
+WORKDIR /usr/src/app/fontend
 RUN npm install
 #RUN npm run build
-RUN npm run dev -- --port 8520 &
+#RUN npm run dev -- --port 8520 &
 WORKDIR /usr/src/app
 
+#CMD npx drizzle-kit push && npm run dev
 #CMD ["node", "server.mjs"]
-CMD ["npm", "run", "dev"]
+#CMD ["npm", "run", "dev"]
+CMD npx drizzle-kit push && \
+    npx concurrently \
+    "npm run dev" \
+    "cd frontend && npm run dev -- --port 8520 --host 0.0.0.0"

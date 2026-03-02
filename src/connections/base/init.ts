@@ -10,12 +10,12 @@ const inicializarMongo = async (cliente) => {
     const validadorIntermediario = {
         $jsonSchema: {
             bsonType: "object",
-            required: ["uuid", "sujeto", "verbo", "predicado"],
+            required: ["id", "sujeto", "verbo", "predicado"],
             properties: {
-                uuid: {bsonType: "string"}, //uuid del objeto
-                sujeto: {bsonType: "string"}, //Quien realiza la acción, uuid de usuario normalmente
-                verbo: {bsonType: "string"}, //"like" "sigue" "edita 1" "crea", para saber quien hizo x cosa o tiene permisos sobre x
-                predicado: {bsonType: "string"}, //A quien se le hace la acción, puede ser el uuid de otro usuario, un foro, un comentario, un juego...
+                id: {bsonType: "string"}, //id del objeto
+                sujeto: {bsonType: "string"}, //Quien realiza la acción, id de usuario normalmente
+                verbo: {bsonType: "string"}, //"like" "sigue" "edita 1" "crea" "jugado" "pertenece", para saber quien hizo x cosa o tiene permisos sobre x
+                predicado: {bsonType: "string"}, //A quien se le hace la acción, puede ser el id de otro usuario, un foro, un comentario, un juego...
                 extra: {bsonType: "object"} //Datos extra
             }
         }
@@ -30,14 +30,14 @@ const inicializarMongo = async (cliente) => {
     const validadorComentario = {
         $jsonSchema: {
             bsonType: "object",
-            required: ["uuid", "creador", "contenido", "objetivo"],
+            required: ["id", "creador", "contenido", "objetivo"],
             properties: {
-                uuid: {bsonType: "string"}, //uuid del objeto
-                creador: {bsonType: "string"}, //uuid del usuario creador
+                id: {bsonType: "string"}, //id del objeto
+                creador: {bsonType: "string"}, //id del usuario creador
                 contenido: {bsonType: "string"}, //Su contenido, normalmente markdown
-                objetivo: {bsonType: "string"}, //El uuid del objeto al que se le hace (a un foro (seria un post), a un juego, a otro post, etc)
+                objetivo: {bsonType: "string"}, //El id del objeto al que se le hace (a un foro (seria un post), a un juego, a otro post, etc)
                 respuestas: {bsonType: "array"}, //Otros objetos de este tipo que hagan de respuesta (anidados)
-                cantidadLikes: {bsonType: "array"} //Cantidad de likes que tiene y de quienes son (uuid de los usuarios)
+                cantidadLikes: {bsonType: "array"} //Cantidad de likes que tiene y de quienes son (id de los usuarios)
             }
         }
     }

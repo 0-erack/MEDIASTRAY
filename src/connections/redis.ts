@@ -3,7 +3,7 @@ import { createClient } from 'redis';
 let cliente:any = null; //Conexión reusable a Redis
 
 //Establecer la conexión a Redis
-const getConexion = async ():Promise<any> => {
+export const getConexion = async ():Promise<any> => {
     if (!cliente) {
         try {
             const client = createClient({ url: `redis://${process.env.REDIS_HOST}` });
@@ -23,7 +23,7 @@ const getConexion = async ():Promise<any> => {
 }
 
 //Establecer un valor en Redis
-const redisSet = async (clave:string, valor:string, ttl?:number):Promise<boolean> => {
+export const redisSet = async (clave:string, valor:string, ttl?:number):Promise<boolean> => {
     if (!cliente) await getConexion();
     try {
         await cliente.set(clave, valor, {EX: ttl});
@@ -35,7 +35,7 @@ const redisSet = async (clave:string, valor:string, ttl?:number):Promise<boolean
 }
 
 //Leer un valor de Redis
-const redisGet = async (clave:string):Promise<string|null> => {
+export const redisGet = async (clave:string):Promise<string|null> => {
     if (!cliente) await getConexion();
     try {
         return await cliente.get(clave);
@@ -46,7 +46,7 @@ const redisGet = async (clave:string):Promise<string|null> => {
 }
 
 //Borrar un registro en redis manualmente
-const redisDelete = async (clave:string):Promise<boolean> => {
+export const redisDelete = async (clave:string):Promise<boolean> => {
     if (!cliente) await getConexion();
     try {
         await cliente.del(clave);
@@ -60,7 +60,7 @@ const redisDelete = async (clave:string):Promise<boolean> => {
 //getConexion();
 
 //Devuelve la conexión para hacer operaciones personalizadas
-const getCliente = async ():Promise<any> => {
+export const getCliente = async ():Promise<any> => {
     if (!cliente) await getConexion();
     try {
         return cliente;
@@ -69,5 +69,3 @@ const getCliente = async ():Promise<any> => {
         return null;
     }
 }
-
-export { getConexion, redisGet, redisSet, redisDelete, getCliente }

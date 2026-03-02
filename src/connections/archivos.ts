@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 //Escribe un archivo con x contenido, en una ruta, con un nombre. Se debe saber si es de texto o no. Si ya existe lo reemplaza, y crea las carpetas necesarias para la ruta
-const escribirArchivo = async (contenido:any, ruta:string, nombre:string, esTexto:boolean = false):Promise<boolean> => {
+export const escribirArchivo = async (contenido:any, ruta:string, nombre:string, esTexto:boolean = false):Promise<boolean> => {
     try {
         await fs.promises.mkdir(ruta, {recursive:true});
         if (esTexto) {
@@ -19,7 +19,7 @@ const escribirArchivo = async (contenido:any, ruta:string, nombre:string, esText
 }
 
 //Agnade nuevas lineas en un archivo
-const agnadirEnArchivo = async (lineas:any, ruta:string, nombre:string):Promise<boolean> => {
+export const agnadirEnArchivo = async (lineas:any, ruta:string, nombre:string):Promise<boolean> => {
     try {
         await fs.promises.appendFile(path.join(ruta, nombre), lineas + "\n", 'utf8');
         return true;
@@ -30,7 +30,7 @@ const agnadirEnArchivo = async (lineas:any, ruta:string, nombre:string):Promise<
 }
 
 //Devuelve el contenido de un archivo a partir de la ruta. Se debe saber si es de texto o no. Si no existe o no es legible no devuelve nada
-const leerArchivo = async (rutaMasNombre:string, esTexto:boolean):Promise<string|null> => {
+export const leerArchivo = async (rutaMasNombre:string, esTexto:boolean):Promise<string|null> => {
     try {
         let contenido:any = "";
         if (esTexto) {
@@ -46,7 +46,7 @@ const leerArchivo = async (rutaMasNombre:string, esTexto:boolean):Promise<string
 }
 
 //Borra un archivo a partir de una ruta si existe
-const borrarArchivo = async (rutaMasNombre:string):Promise<boolean> => {
+export const borrarArchivo = async (rutaMasNombre:string):Promise<boolean> => {
     try {
         const esCarpeta = await fs.promises.stat(rutaMasNombre).then(stats => stats.isDirectory());
         if (esCarpeta) {
@@ -60,5 +60,3 @@ const borrarArchivo = async (rutaMasNombre:string):Promise<boolean> => {
         return false;
     }
 }
-
-export { escribirArchivo, leerArchivo, borrarArchivo, agnadirEnArchivo }

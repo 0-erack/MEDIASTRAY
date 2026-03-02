@@ -15,8 +15,8 @@ routerPriv.get("/authApiToken", autenticarTokenApi, (req, res) => {
 //Valida si un token de sesion de usuario es valido (en el body)
 routerPriv.get("/authSessionToken", autenticarTokenApi, autenticarTokenSesion, async (req, res) => {
     const token = req.header('X-auth-session') ?? "";
-    const uuid = await redisGet("SESSION-TOKEN-" + token) ?? "";
-    return res.json({ok:true, message: `User session token valid`, code: 200, uuid });
+    const id = await redisGet("SESSION-TOKEN-" + token) ?? "";
+    return res.json({ok:true, message: `User session token valid`, code: 200, id });
 });
 
 //Ruta para crear el usuario, requiere en el body (usuario): nombre, nickname, correo, contrasegna, cumpleagnos. Devuelve un token de sesion
@@ -60,9 +60,9 @@ routerPriv.post("/userLogin", autenticarTokenApi, async (req, res) => {
 routerPriv.patch("/userEdit", autenticarTokenApi, autenticarTokenSesion, async (req, res) => {
     try {
         const token = req.body.token ?? (req.header('X-auth-session') ?? "");
-        const uuid = await redisGet("SESSION-TOKEN-" + token) ?? "";
-        if (uuid === "") throw {message: "Invalid credentials", code: 401}
-        const { usuarioRenovado, tokenNuevo } = await editarUsuario(req.body.newData, uuid);
+        const id = await redisGet("SESSION-TOKEN-" + token) ?? "";
+        if (id === "") throw {message: "Invalid credentials", code: 401}
+        const { usuarioRenovado, tokenNuevo } = await editarUsuario(req.body.newData, id);
         res.setHeader('X-auth-session', tokenNuevo);
         return res.json({ok:true, message: `Data editted successfully`, code: 200, user: usuarioRenovado, sessionToken: tokenNuevo });
     } catch (error:any) {
@@ -80,9 +80,9 @@ routerPriv.patch("/userEdit", autenticarTokenApi, autenticarTokenSesion, async (
 routerPriv.delete("/userDelete", autenticarTokenApi, autenticarTokenSesion, async (req, res) => {
     try {
         const token = req.body.token ?? (req.header('X-auth-session') ?? "");
-        const uuid = await redisGet("SESSION-TOKEN-" + token) ?? "";
-        if (uuid === "" || !req.body.contrasegna) throw {message: "Invalid credentials", code: 401}
-        if (await borrarUsuario(req.body.contrasegna, uuid)) {
+        const id = await redisGet("SESSION-TOKEN-" + token) ?? "";
+        if (id === "" || !req.body.contrasegna) throw {message: "Invalid credentials", code: 401}
+        if (await borrarUsuario(req.body.contrasegna, id)) {
             return res.json({ok:true, message: `User deleted successfully...`, code: 200 });
             //MAS cascada
         } else {
@@ -99,15 +99,15 @@ routerPriv.delete("/userDelete", autenticarTokenApi, autenticarTokenSesion, asyn
     }
 });
 
-//Usuario A sigue a usuario B, se crea el registro en mongodb y se altera la cantidad de seguidores en el usuario B, requiere follow +1 o -1 para seguir o desseguir (si es posible) (uuid_b, cantidad)
+//Usuario A sigue a usuario B, se crea el registro en mongodb y se altera la cantidad de seguidores en el usuario B, requiere follow +1 o -1 para seguir o desseguir (si es posible) (id_b, cantidad)
 routerPriv.post("/userFollow", autenticarTokenApi, autenticarTokenSesion, async (req, res) => {
     try {
         const token = req.body.token ?? (req.header('X-auth-session') ?? "");
-        const uuid = await redisGet("SESSION-TOKEN-" + token) ?? "";
+        const id = await redisGet("SESSION-TOKEN-" + token) ?? "";
         let cantidad = req.body.cantidad;
         if (cantidad > 1) cantidad = 1;
         if (cantidad < -1) cantidad = -1;
-        if (await alterarSeguidores(uuid, req.body.uuid_b, cantidad)) {
+        if (await alterarSeguidores(id, req.body.id_b, cantidad)) {
             return res.json({ok:true, message: `User followed/unfollowed successfully`, code: 200 });
         } else {
             throw {message: "Couldn't perform action (follow)", code: 401};

@@ -19,6 +19,7 @@ WORKDIR /usr/src/app
 
 EXPOSE 8510
 
-CMD ["node", "dist/server.js"]
+CMD npx drizzle-kit push && node dist/server.js
+#CMD ["node", "dist/server.js"]
 #CMD ["npm", "run", "build", "; npm", "run", "start"]
 #CMD ["npm", "run", "start"]

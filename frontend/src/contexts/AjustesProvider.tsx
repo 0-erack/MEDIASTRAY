@@ -65,20 +65,20 @@ const AjustesProvider = ({ children }: Props) => {
       const usuarioRaw = await leerLS("usuarioActual");
       const usuarioPrecargado = JSON.parse(usuarioRaw ?? '{"ninguno": true}');
       
-      if (validarDatosUsuarioLS(usuarioPrecargado) && usuarioPrecargado?.uuid) {
+      if (validarDatosUsuarioLS(usuarioPrecargado) && usuarioPrecargado?.id) {
         setUsuarioActual(usuarioPrecargado);
       } else {
         setUsuarioActual({ ninguno: true });
         await borrarLS("usuarioActual");
       }
 
-      if (usuarioPrecargado.uuid) {
+      if (usuarioPrecargado.id) {
         const sesionValida = await peticionBasica(API_URL + "/authSessionToken", { 
           "X-auth-api": API_KEY, 
           "X-auth-session": tokenFromLS ?? '' 
         }, "GET");
         
-        if (!sesionValida.ok || sesionValida.uuid !== usuarioPrecargado.uuid || sesionValida.uuid === "") {
+        if (!sesionValida.ok || sesionValida.id !== usuarioPrecargado.id || sesionValida.id === "") {
           await logout();
           window.location.reload();
           return;
@@ -146,7 +146,7 @@ const AjustesProvider = ({ children }: Props) => {
 
   return (
     <AjustesContexto.Provider value={exportaciones}>
-      {(usuarioActual.ninguno || usuarioActual.uuid) && idiomaActual && children}
+      {(usuarioActual.ninguno || usuarioActual.id) && idiomaActual && children}
     </AjustesContexto.Provider>
   );
 };

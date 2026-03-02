@@ -10,10 +10,10 @@ router.get("/prueba", (req, res) => {
     res.json({ message: `Hello, World! Processed`, code: 200 });
 });
 
-//Devuelve si el usuario A sigue al usuario B (uuid_a, uuid_b)
-router.get("/userFollow/:uuid_a/:uuid_b", async (req, res) => {
+//Devuelve si el usuario A sigue al usuario B (id_a, id_b)
+router.get("/userFollow/:id_a/:id_b", async (req, res) => {
     try {
-        if (await alterarSeguidores(req.params.uuid_a, req.params.uuid_b, 0)) {
+        if (await alterarSeguidores(req.params.id_a, req.params.id_b, 0)) {
             return res.json({ ok:true, message: `Follows`, code: 200, data: true });
         } else {
             return res.json({ ok:true, message: `Does not follow`, code: 200, data: false });
@@ -34,7 +34,7 @@ router.get("/user/:id", async (req, res) => {
     try {
         if (!req.params.id) return res.status(404).json({ok: false, message: "User not found or not present", code: 404});
         const usuario = await verUsuario(req.params.id) ?? false;
-        if (!usuario.uuid) return res.status(404).json({ok: false, message: "User not found", code: 404});
+        if (!usuario.id) return res.status(404).json({ok: false, message: "User not found", code: 404});
         return res.json({ok:true, code: 200, data: usuario });
     } catch (error:any) {
         try {

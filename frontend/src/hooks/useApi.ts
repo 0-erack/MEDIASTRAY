@@ -11,7 +11,7 @@ const useApi = () => {
         await setCargando(true);
         await setError(false);
         try {
-            const resultado = await peticionBasica(url, {...headersExtra, "X-auth-api": API_KEY, "X-auth-session": tokenSesionActual ?? '', "X-auth-playtime": tokenJuegoActual ?? '', "X-my-uuid": usuarioActual.uuid ?? '', "X-auth-game": "X"}, verbo, body ?? undefined);
+            const resultado = await peticionBasica(url, {...headersExtra, "X-auth-api": API_KEY, "X-auth-session": tokenSesionActual ?? '', "X-auth-playtime": tokenJuegoActual ?? '', "X-my-id": usuarioActual.id ?? '', "X-auth-game": "X"}, verbo, body ?? undefined);
             if (!resultado.ok && resultado.code >= 400) throw {fallo: true, code: resultado.code ?? '', message: "Error api", result: resultado}
             return resultado;
         } catch (error) {
@@ -53,21 +53,21 @@ const useApi = () => {
         }
     }
 
-    const verSeguir = async (uuid1:string, uuid2:string):Promise<any> => {
+    const verSeguir = async (id1:string, id2:string):Promise<any> => {
         try {
-            const resultado = await peticionGenerica(API_URL + `/userFollow/${uuid1}/${uuid2}`, "GET");
+            const resultado = await peticionGenerica(API_URL + `/userFollow/${id1}/${id2}`, "GET");
             return resultado.data ?? false;
         } catch (error) {
             return {fallo: true, error}
         }
     }
 
-    const seguir = async (uuid:string, cantidad:number):Promise<any> => {
+    const seguir = async (id:string, cantidad:number):Promise<any> => {
         try {
             let cantidadCorrecta = cantidad;
             if (cantidadCorrecta > 1) cantidadCorrecta = 1;
             if (cantidadCorrecta < -1) cantidadCorrecta = -1;
-            await peticionGenerica(API_URL + `/userFollow/`, "POST", {"uuid_b": uuid, "cantidad": cantidadCorrecta});
+            await peticionGenerica(API_URL + `/userFollow/`, "POST", {"id_b": id, "cantidad": cantidadCorrecta});
             return true;
         } catch (error) {
             return {fallo: true, error}

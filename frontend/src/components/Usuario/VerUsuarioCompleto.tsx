@@ -13,17 +13,17 @@ interface VerUsuarioCompletoProps {
 function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
 
   const { usuarioActual } = useAjustes();
-  const [usuarioCargado, setUsuarioCargado] = useState({uuid: null});
-  const uuidBuscar = id ?? usuarioActual.uuid;
+  const [usuarioCargado, setUsuarioCargado] = useState({id: null});
+  const idBuscar = id ?? usuarioActual.id;
   const [soyYo, setSoyYo] = useState(false);
   const { verUsuario, cargando, error } = useApi();
   const [fallo, setFallo] = useState(false);
 
   const cargaInicial = async () => {
-    if (!id && !usuarioActual.uuid) {
+    if (!id && !usuarioActual.id) {
       setFallo(true);
     } else {
-      if (usuarioActual.uuid === id || usuarioActual.nickname === id || (!id && usuarioActual.uuid)) {
+      if (usuarioActual.id === id || usuarioActual.nickname === id || (!id && usuarioActual.id)) {
         setSoyYo(true);
         setUsuarioCargado(usuarioActual);
       } else {
@@ -38,9 +38,9 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
 
   return (
     <>
-      {uuidBuscar ? (<div>
+      {idBuscar ? (<div>
         {(fallo || error) ? (<CajaError nombre="usuarioNoEncontrado" />) : (<div>
-          {(usuarioCargado.uuid && !cargando) ? (<div className="ver-usuario">
+          {(usuarioCargado.id && !cargando) ? (<div className="ver-usuario">
             <TarjetaUsuarioGrande usuario={usuarioCargado} soyYo={soyYo} />
           </div>) : (<ImgCargando />)}
         </div>)}
