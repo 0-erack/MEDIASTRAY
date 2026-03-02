@@ -4,13 +4,22 @@ FROM node:20
 
 WORKDIR /usr/src/app
 
-#COPY package*.json ./
+COPY package*.json ./
 
 #RUN npm install --only=production
 
-#COPY . .
+RUN npm install
+
+COPY . .
 
 EXPOSE 8510
+EXPOSE 8520
+
+WORKDIR /usr/src/app/
+RUN npm install
+#RUN npm run build
+RUN npm run dev -- --port 8520 &
+WORKDIR /usr/src/app
 
 #CMD ["node", "server.mjs"]
 CMD ["npm", "run", "dev"]
