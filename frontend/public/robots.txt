@@ -1,0 +1,7 @@
+User-agent: GPTBot
+Disallow: /
+
+User-agent: *
+Disallow: /games/
+
+#Sitemap: https://yourdomain.com/sitemap.xml

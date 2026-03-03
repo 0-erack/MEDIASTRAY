@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { nombre as validarNombre, nickname as validarNickname, correo as validarCorreo, timestamp as validarCumpleagnos, contrasegna as validarContrasegna, descripcionForo as validarDescripcion, url as validarUrl, enteroPositivo as validarEnteroPositivo, contrasegna, correo } from '../libraries/validaciones.js';
+import { nombre as validarNombre, nickname as validarNickname, correo as validarCorreo, timestamp as validarCumpleagnos, contrasegna as validarContrasegna, descripcionUsuario as validarDescripcion, url as validarUrl, contrasegna, correo } from '../libraries/validaciones.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { redisDelete, redisSet } from '../connections/redis.js';
