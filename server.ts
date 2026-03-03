@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { getConexionMongoose } from './src/connections/mongodb.js';
 import { abrirServidorMetricas } from './src/servidorMetricas.js';
 import apiRoutes from "./src/routes/apiRoutes.js";
 import apiRoutesPriv from "./src/routes/apiRoutesPriv.js";
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 iniciarServicioLogs();
 
+await getConexionMongoose();
 
 if (process.env.INIT_TESTS === "true") {
     //Iniciar los tests para establecer las conexiones permanentes. Se hacen varias veces para asegurarse de que las bases de datos estan realmente preparadas

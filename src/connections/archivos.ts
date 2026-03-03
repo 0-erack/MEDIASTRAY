@@ -1,14 +1,24 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
+
+//Comprueba que un archivo exista, y sea un archivo
+export const archivoExiste = async (ruta: string): Promise<boolean> => {
+    try {
+        await fs.access(ruta);
+        return true;
+    } catch {
+        return false;
+    }
+}
 
 //Escribe un archivo con x contenido, en una ruta, con un nombre. Se debe saber si es de texto o no. Si ya existe lo reemplaza, y crea las carpetas necesarias para la ruta
 export const escribirArchivo = async (contenido:any, ruta:string, nombre:string, esTexto:boolean = false):Promise<boolean> => {
     try {
-        await fs.promises.mkdir(ruta, {recursive:true});
+        await fs.mkdir(ruta, {recursive:true});
         if (esTexto) {
-            await fs.promises.writeFile(path.join(ruta, nombre), contenido, 'utf8');
+            await fs.writeFile(path.join(ruta, nombre), contenido, 'utf8');
         } else {
-            await fs.promises.writeFile(path.join(ruta, nombre), contenido);
+            await fs.writeFile(path.join(ruta, nombre), contenido);
             
         }
         return true;
@@ -21,7 +31,7 @@ export const escribirArchivo = async (contenido:any, ruta:string, nombre:string,
 //Agnade nuevas lineas en un archivo
 export const agnadirEnArchivo = async (lineas:any, ruta:string, nombre:string):Promise<boolean> => {
     try {
-        await fs.promises.appendFile(path.join(ruta, nombre), lineas + "\n", 'utf8');
+        await fs.appendFile(path.join(ruta, nombre), lineas + "\n", 'utf8');
         return true;
     } catch (error) {
         console.log(error);
@@ -34,9 +44,9 @@ export const leerArchivo = async (rutaMasNombre:string, esTexto:boolean):Promise
     try {
         let contenido:any = "";
         if (esTexto) {
-            contenido = await fs.promises.readFile(path.join(rutaMasNombre), 'utf8');
+            contenido = await fs.readFile(path.join(rutaMasNombre), 'utf8');
         } else {
-            contenido = await fs.promises.readFile(path.join(rutaMasNombre));
+            contenido = await fs.readFile(path.join(rutaMasNombre));
         }
         return contenido;
     } catch (error) {
@@ -48,11 +58,11 @@ export const leerArchivo = async (rutaMasNombre:string, esTexto:boolean):Promise
 //Borra un archivo a partir de una ruta si existe
 export const borrarArchivo = async (rutaMasNombre:string):Promise<boolean> => {
     try {
-        const esCarpeta = await fs.promises.stat(rutaMasNombre).then(stats => stats.isDirectory());
+        const esCarpeta = await fs.stat(rutaMasNombre).then(stats => stats.isDirectory());
         if (esCarpeta) {
-            await fs.promises.rm(path.join(rutaMasNombre), { recursive: true, force: true });
+            await fs.rm(path.join(rutaMasNombre), { recursive: true, force: true });
         } else {
-            await fs.promises.unlink(path.join(rutaMasNombre));
+            await fs.unlink(path.join(rutaMasNombre));
         }
         return true;
     } catch (error) {
@@ -60,3 +70,4 @@ export const borrarArchivo = async (rutaMasNombre:string):Promise<boolean> => {
         return false;
     }
 }
+

@@ -60,9 +60,12 @@ services:
     networks:
       - mediastray-network
     depends_on:
-      - postgresql
-      - mongodb
-      - redis
+      postgresql:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
 
   postgresql:
     image: postgres:13
@@ -70,12 +73,17 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "5432:5432"
+    #ports:
+    #  - "5432:5432"
     volumes:
       - ./.docker/database/postgresql:/var/lib/postgresql/data
     networks:
       - mediastray-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     #depends_on:
     #  - redis
 

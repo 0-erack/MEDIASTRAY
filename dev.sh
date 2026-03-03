@@ -1,6 +1,6 @@
 #!/bin/bash
 sh down.sh
-clear
+#clear
 touch logs/backend.log
 touch logs/db.log
 cat .env.example > .env
