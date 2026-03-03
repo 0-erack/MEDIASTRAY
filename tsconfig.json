@@ -9,8 +9,13 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "checkJs": false,
+    /* OPTIMIZATION FLAGS */
+    "removeComments": true,         // Strips all comments from JS
+    "sourceMap": false,             // No bulky .map files in production
+    "declaration": false,           // No .d.ts files in dist (only needed for libraries)
+    "newLine": "lf",                // Consistent line endings
     "noImplicitAny": false,
+    "pretty": false                 // Disables colored output in logs (cleaner CI)
   },
   "include": ["server.ts", "src/**/*.ts"] 
 }
