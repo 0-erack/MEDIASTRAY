@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standard - API Documentation</title>
+    <style>
+        body { margin: 0; padding: 0; }
+        #opencollection-container { width: 100vw; height: 100vh; }
+    </style>
+    <link rel="stylesheet" href="https://cdn.opencollection.com/docs.css">
+    <script src="https://cdn.opencollection.com/docs.js"></script>
+</head>
+<body>
+    <div id="opencollection-container"></div>
+    <script>
+        const collectionData = "opencollection: 1.0.0\ninfo:\n  name: Standard\nconfig:\n  proxy:\n    inherit: true\n    config:\n      protocol: http\n      hostname: ''\n      port: ''\n      auth:\n        username: ''\n        password: ''\n      bypassProxy: ''\n  environments:\n    - name: Entorno\n      variables:\n        - name: url_frontend\n          value: http://localhost:8510\n        - name: url_backend\n          value: http://localhost:8510/api/v1\n        - name: url_graphql\n          value: http://localhost:8510/api/v2\n        - name: session_token\n          secret: true\n        - name: uuid_item1\n          value: ''\n        - name: test\n          secret: true\nitems:\n  - info:\n      name: test\n      type: http\n      seq: 1\n    http:\n      method: GET\n      url: '{{url_backend}}/test'\n      headers:\n        - name: Content-Type\n          value: application/json\n        - name: Accept\n          value: application/json\n        - name: X-session-token\n          value: '{{session_token}}'\n      auth:\n        type: bearer\n        token: '{{session_token}}'\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: after\n      type: script\n    script: ''\n  - info:\n      name: before\n      type: script\n    script: ''\nbundled: true\nextensions:\n  bruno:\n    ignore:\n      - node_modules\n      - .git\n    exportedAt: '2026-03-04T16:10:34.061Z'\n    exportedUsing: Bruno/3.1.4\n";
+        new window.OpenCollection({
+            target: document.getElementById('opencollection-container'),
+            opencollection: collectionData,
+            theme: 'light'
+        });
+    </script>
+</body>
+</html>
