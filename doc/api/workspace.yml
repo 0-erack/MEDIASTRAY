@@ -1,0 +1,12 @@
+opencollection: 1.0.0
+info:
+  name: "MEDIASTRAY"
+  type: workspace
+
+collections:
+  - name: "Standard"
+    path: "collections/Standard"
+
+specs:
+
+docs: ''

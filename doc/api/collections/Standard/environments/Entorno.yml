@@ -1,0 +1,14 @@
+name: Entorno
+variables:
+  - name: url_frontend
+    value: http://localhost:8510
+  - name: url_backend
+    value: http://localhost:8510/api/v1
+  - name: url_graphql
+    value: http://localhost:8510/api/v2
+  - secret: true
+    name: session_token
+  - name: uuid_item1
+    value: ""
+  - secret: true
+    name: test

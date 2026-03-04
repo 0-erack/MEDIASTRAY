@@ -1,0 +1,24 @@
+info:
+  name: test
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{url_backend}}/test"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
