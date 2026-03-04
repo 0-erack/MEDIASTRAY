@@ -1,87 +1,38 @@
-//Comprueba que sea string (no null)
-export const esString = (data:string):boolean => {
-    return typeof data === 'string';
-}
+import { z } from "zod";
 
-//Valida un numero entero positivo
-export const enteroPositivo = (data:string):boolean => {
-    return typeof data === 'number' && Number.isInteger(data) && data >= 0;
-}
+const idSchema = z.string().uuid();
+const nicknameSchema = z.string().min(4).max(15).regex(/^[a-zA-Z0-9._\-|]+$/);
+const nombreSchema = z.string().min(5).max(100);
+const correoSchema = z.string().email();
+const timestampSchema = z.string().regex(/^\d{1,15}$/);
+const urlPattern = /^(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(?::\d{1,5})?\b(?:[-a-zA-Z0-9()@:%_+.~#?&\/=]*))/;
 
 //Valida un id uuid
-export const id = (data:string):boolean => {
-    return esString(data) && /^[0-9a-fA-F\-]{36}$/.test(data);
-}
+export const id = (data: unknown): data is string => idSchema.safeParse(data).success;
 
 //Valida un nickname de usuario, de 4 a 15 caracteres que sean letras, numeros o simbolos concretos
-export const nickname = (data:string):boolean => {
-    return esString(data) && /^[a-zA-Z0-9._\-|]{4,15}$/.test(data);
-}
+export const nickname = (data: unknown): data is string => nicknameSchema.safeParse(data).success;
 
 //Valida un nombre de usuario, de 5 a 100 caracteres
-export const nombre = (data:string):boolean => {
-    return esString(data) && data.length >= 5 && data.length < 100;
-}
+export const nombre = (data: unknown): data is string => nombreSchema.safeParse(data).success;
 
 //Valida una contrasegna, debe tener entre 8 y 32 caracteres y contener una letra mayuscula y minuscula, un numero y un simbolo
-export const contrasegna = (data:string):boolean => {
-    return esString(data) && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}$$:;<>,.?~\\/-]).{8,32}$/.test(data);
-}
+export const contrasegna = (data: unknown): data is string => z.string().min(8).max(32).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}$$:;<>,.?~\\/-]).*$/).safeParse(data).success;
 
 //Valida un correo
-export const correo = (data:string):boolean => {
-    return esString(data) && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data);
-}
+export const correo = (data: unknown): data is string => correoSchema.safeParse(data).success;
 
 //Valida que sea un correo o un nickname valido (identificacion para login)
-export const identificacion = (data:string):boolean => {
-    return correo(data) || nickname(data);
-}
+export const identificacion = (data: unknown): data is string => z.union([correoSchema, nicknameSchema]).safeParse(data).success;
 
 //Valida una descripcion de un usuario, hasta 511 caracteres
-export const descripcionUsuario = (data:string):boolean => {
-    return esString(data) && data.length < 512;
-}
+export const descripcionUsuario = (data: unknown): data is string => z.string().max(511).safeParse(data).success;
 
 //Valida una url
-export const url = (data:string):boolean => {
-    return esString(data) && (/^(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(?::\d{1,5})?\b(?:[-a-zA-Z0-9()@:%_+.~#?&\/=]*))/.test(data) || data === "/public/nopfp.png" || data === "");
-}
+export const url = (data: unknown): data is string => z.string().refine(val => urlPattern.test(val) || val === "/public/nopfp.png" || val === "").safeParse(data).success;
 
 //Valida un timestamp (fecha)
-export const timestamp = (data:string):boolean => {
-    return esString(data) && /^\d{1,15}$/.test(data);
-}
-
-//Valida el titulo de un juego, de 3 a 63 caracteres
-export const titulo = (data:string):boolean => {
-    return esString(data) && data.length > 2 && data.length < 64;
-}
-
-//Valida la version de un juego, debe ser <lo que sea><numero(s)>.<numero(s)><lo que sea> pero hasta 15 caracteres
-export const version = (data:string):boolean => {
-    return esString(data) && data.length < 16 && /^\D*\d+\.\d+\D*$/.test(data);
-}
-
-//Valida la descripcion de un juego, hasta 1023 caracteres
-export const descripcionJuego = (data:string):boolean => {
-    return esString(data) && data.length < 1024;
-}
-
-//Valida el nombre de un foro, de 3 a 63 caracteres
-export const nombreForo = (data:string):boolean => {
-    return esString(data) && data.length > 2 && data.length < 64;
-}
-
-//Valida la descripcion de un foro, hasta 511 caracteres
-export const descripcionForo = (data:string):boolean => {
-    return esString(data) && data.length < 512;
-}
-
-//Valida el campo de texto del juego asociado a un foro (un juego externo o un id de un juego en la plataforma)
-export const juegoDeForo = (data:string):boolean => {
-    return esString(data) && (id(data) || (data.length > 2 && data.length < 36));
-}
+export const timestamp = (data: unknown): data is string => timestampSchema.safeParse(data).success;
 
 //Valida la fecha de cumpleagnos
 export const cumpleagnos = (data:string):boolean => {
@@ -89,7 +40,7 @@ export const cumpleagnos = (data:string):boolean => {
     return timestamp(texto + "") && texto < Date.now();
 }
 
-//Pensada para validar el localstorage
+//Pensada para validar el localstorage TODO
 export const validarDatosUsuarioLS = (usuario:any):boolean => {
     return typeof usuario === "object"
         && id(usuario.id)
@@ -100,7 +51,7 @@ export const validarDatosUsuarioLS = (usuario:any):boolean => {
         && (url(usuario.url_foto) || usuario.url_foto === "/public/nopfp.png" || usuario.url_foto === "")
         && timestamp(usuario.cumpleagnos)
         && timestamp(usuario.fechacreacion)
-        && enteroPositivo(usuario.disponibilidad)
+        && usuario.disponibilidad > 0
         && (usuario.premium === "" || timestamp(usuario.premium))
         //&& enteroPositivo(usuario.permisos);
 }
