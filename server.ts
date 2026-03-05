@@ -38,11 +38,32 @@ if (process.env.NODE_ENV === "DEVELOPMENT") { //Código solo para development
         origin: process.env.FRONTEND_URL_DEV ?? 'http://localhost:8520', //Permitir peticiones de vite
         credentials: true,
     }));
+} else { 
+    const origenes = [
+        process.env.FRONTEND_URL, 
+        "app://.",
+        "capacitor://localhost",
+        "http://localhost",
+        //"http://localhost:3000",
+        //"*",
+    ]
+    app.use(cors({
+        origin: (origin, callback) => {
+            if (!origin || origenes.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error());
+            }
+        },
+        credentials: true
+    }));
+
+    //app.use(cors({
+    //    origin: process.env.FRONTEND_URL ?? "localhost",
+    //    credentials: true
+    //}));
 }
-/*app.use(cors({
-    origin: process.env.FRONTEND_URL ?? "localhost",
-    credentials: true
-}));*/
+
 
 //Rutas con contenido estático
 if (process.env.SERVE_STATIC === "true") app.use("/public", express.static(process.env.PUBLIC_FILES_PATH ?? './public'));

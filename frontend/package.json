@@ -3,14 +3,26 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "Mediastray game platform",
+  "author": {
+    "name": "Rack",
+    "email": "freewillfooljoy@gmail.com"
+  },
+  "homepage": "./",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "buildall": "rm -rf dist/* && rm -rf build/* && npm run build && npx electron-builder --linux && npx electron-builder --win",
+    "android": "npx cap init && npx cap add android && npm run build && npx cap copy && npx cap open android 2> /dev/null"
   },
   "dependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
+    "@capacitor/filesystem": "^8.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.2.1",
     "@tanstack/react-query": "^5.90.21",
@@ -29,11 +41,48 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.0",
+    "electron": "^40.7.0",
+    "electron-builder": "^26.8.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "typescript": "^5.9.3",
     "vite": "^7.2.2"
+  },
+  "main": "main.cjs",
+  "build": {
+    "appId": "com.mediastray.www",
+    "productName": "Mediastray",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "main.cjs",
+      "preload.js"
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "category": "Network"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "dist/favicon.ico"
+    },
+    "portable": {
+      "artifactName": "${productName}_Portable_${version}.${ext}"
+    }
   }
 }
