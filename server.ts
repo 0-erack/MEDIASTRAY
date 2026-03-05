@@ -72,7 +72,7 @@ if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(proces
 app.use("/api", apiRoutes);
 app.use("/api", apiRoutesPriv);
 //Las peticiones en / se dirigen al dist del frontend
-if (process.env.SERVE_FRONTEND === "true") app.use(express.static(path.join(process.cwd(), process.env.FRONTEND_DIST_PATH ?? './frontend/dist')));
+
 //Errores 404
 app.use((req, res) => {
     if (req.path.startsWith("/public")) {
@@ -97,6 +97,14 @@ app.use((req, res) => {
         res.sendFile(path.join(process.cwd(), process.env.FRONTEND_DIST_PATH ?? './frontend/dist', "index.html")); //El error 404 en / lo maneja el frontend
     }
 });
+
+if (process.env.SERVE_FRONTEND === "true") {
+  const frontendPath = path.join(process.cwd(), process.env.FRONTEND_DIST_PATH ?? './frontend/dist');
+  app.use(express.static(frontendPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
+}
 
 if (process.env.INIT_METRICS === "true") try {abrirServidorMetricas(app);} catch (e) {console.log("No se han habierto los servicios de métricas");} //Abrir el servidor de métricas
 
