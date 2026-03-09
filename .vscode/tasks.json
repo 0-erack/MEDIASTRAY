@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Instalaciones",
+            "type": "shell",
+            "command": "npm install ; cat .env.example > .env ; npm audit ; cd frontend ; npm install ; cat .env.example > .env ; npm audit",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Iniciar dev",
+            "type": "shell",
+            "command": "sh dev.sh",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Iniciar prod",
+            "type": "shell",
+            "command": "sh prod.sh",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Cerrar",
+            "type": "shell",
+            "command": "sh down.sh.sh",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            }
+        }
+    ]
+}

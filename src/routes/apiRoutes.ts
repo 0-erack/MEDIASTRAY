@@ -1,6 +1,7 @@
 import express from 'express';
 import { hacerTestsConexiones } from '../tests/tests.js';
 import { alterarSeguidores, verUsuario } from '../controllers/usuarioController.js';
+import { exito, fallo, falloInterno, manejadorRuta } from './respuesta.js';
 
 const router = express.Router();
 
@@ -12,21 +13,13 @@ router.get("/prueba", (req, res) => {
 
 //Devuelve si el usuario A sigue al usuario B (id_a, id_b)
 router.get("/userFollow/:id_a/:id_b", async (req, res) => {
-    try {
+    manejadorRuta(req, res, async () => {
         if (await alterarSeguidores(req.params.id_a, req.params.id_b, 0)) {
-            return res.json({ ok:true, message: `Follows`, code: 200, data: true });
+            return res.json(exito("Follows", true));
         } else {
-            return res.json({ ok:true, message: `Does not follow`, code: 200, data: false });
+            return res.json(exito("Does not follow", false));
         }
-    } catch (error:any) {
-        try {
-            console.log(error);
-            return res.status(error.code).json({ok: false, message: error.message, code: error.code ?? 400});
-        } catch (error2) {
-            //console.log(error2);
-            return res.status(500).json({ok:false, message: "Server error", code: 500});
-        }
-    }
+    });
 });
 
 //Devuelve los datos públicos base de un usuario
