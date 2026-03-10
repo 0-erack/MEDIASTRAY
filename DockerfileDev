@@ -1,6 +1,6 @@
 # backend/Dockerfile
 
-FROM node:20
+FROM node:trixie
 
 WORKDIR /usr/src/app
 
@@ -15,16 +15,18 @@ COPY . .
 EXPOSE 8510
 EXPOSE 8520
 
-WORKDIR /usr/src/app/fontend
+WORKDIR /usr/src/app/frontend
 RUN npm install
 #RUN npm run build
 #RUN npm run dev -- --port 8520 &
 WORKDIR /usr/src/app
-
+RUN npm run build
 #CMD npx drizzle-kit push && npm run dev
 #CMD ["node", "server.mjs"]
 #CMD ["npm", "run", "dev"]
-CMD npx drizzle-kit push && \
-    npx concurrently \
-    "npm run dev" \
-    "cd frontend && npm run dev -- --port 8520 --host 0.0.0.0"
+# Use a single execution line that keeps the process in the foreground
+CMD npx drizzle-kit push && npx concurrently \
+    --kill-others \
+    --raw \
+    "npx tsx watch server.ts" \
+    "npm run dev --prefix frontend -- --port 8520 --host 0.0.0.0"

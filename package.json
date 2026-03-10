@@ -13,7 +13,7 @@
     "dockerprod": "sh prod.sh",
     "dockerdev": "sh dev.sh",
     "build-old": "npx tsc && (cp -r src dist/ 2>/dev/null || true) && cp .env dist/ 2>/dev/null || true",
-    "build": "npm run clean && npx tsc && npx esbuild \"dist/**/*.js\" --minify --platform=node --allow-overwrite --outdir=dist",
+    "build": "rm -rf dist && tsc --project tsconfig.json && npx esbuild server.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server.js",
     "clean": "rm -rf dist"
   },
   "keywords": [],

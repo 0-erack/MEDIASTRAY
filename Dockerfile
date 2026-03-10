@@ -1,6 +1,6 @@
 # backend/Dockerfile
 
-FROM node:20
+FROM node:trixie
 
 WORKDIR /usr/src/app
 
