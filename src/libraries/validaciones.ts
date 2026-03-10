@@ -19,6 +19,9 @@ export const nombre = (data: unknown): data is string => nombreSchema.safeParse(
 //Valida una contrasegna, debe tener entre 8 y 32 caracteres y contener una letra mayuscula y minuscula, un numero y un simbolo
 export const contrasegna = (data: unknown): data is string => z.string().min(8).max(32).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}$$:;<>,.?~\\/-]).*$/).safeParse(data).success;
 
+//Valida que la contrasegna en reposo sea correcta (osea el hash)
+export const contrasegnaReposo = (data: unknown): data is string => z.string().min(1).safeParse(data).success;
+
 //Valida un correo
 export const correo = (data: unknown): data is string => correoSchema.safeParse(data).success;
 
@@ -50,7 +53,7 @@ export const validarDatosUsuarioLS = (usuario:any):boolean => {
         && descripcionUsuario(usuario.descripcion)
         && (url(usuario.url_foto) || usuario.url_foto === "/public/nopfp.png" || usuario.url_foto === "")
         && timestamp(usuario.cumpleagnos)
-        && timestamp(usuario.fechacreacion)
+        && timestamp(usuario.fechaCreacion)
         && usuario.disponibilidad > 0
         && (usuario.premium === "" || timestamp(usuario.premium))
         //&& enteroPositivo(usuario.permisos);

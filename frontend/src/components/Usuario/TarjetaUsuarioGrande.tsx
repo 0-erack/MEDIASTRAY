@@ -18,7 +18,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
   const { idiomaActual, usuarioActual } = useAjustes();
   const esPremium = usuario.premium ? (usuario.premium > Date.now()) : false;
   const fechaCumpleagnos = timestampAFecha(usuario.cumpleagnos);
-  const fechaCreacion = timestampAFecha(usuario.fechacreacion);
+  const fechaCreacion = timestampAFecha(usuario.fechaCreacion);
   const fechaPremium = timestampAFecha(usuario.premium);
   const [siguiendo, setSiguiendo] = useState(false);
   const [teSigue, setTeSigue] = useState(false);

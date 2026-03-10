@@ -38,12 +38,12 @@ export const crearUsuario = async (datosUsuario:Record<string,any>):Promise<Reco
         const contrasegnaEncriptada = await bcrypt.hash(datosUsuario.contrasegna, 10);
         const fechaCreacion = Date.now() + "";
         const TOKEN_SECRET = process.env.JWT_SECRET;
-        const token = await jwt.sign({ id, nickname: datosUsuario.nickname }, TOKEN_SECRET, { expiresIn: '4h', algorithm: 'HS256' });
+        const token = await jwt.sign({ id, nickname: datosUsuario.nickname }, TOKEN_SECRET, { expiresIn: '20h', algorithm: 'HS256' });
         await redisDelete("SESSION-TOKEN-" + id);
         await redisDelete("SESSION-TOKEN-" + token);
-        await redisSet("SESSION-TOKEN-" + id, token, 14400);
-        await redisSet("SESSION-TOKEN-" + token, id, 14400);
-        const creacion = await consulta("INSERT INTO USUARIOS (id, nickname, nombre, contrasegna, correo, cumpleagnos, fechacreacion) VALUES ($1, $2, $3, $4, $5, $6, $7);",
+        await redisSet("SESSION-TOKEN-" + id, token, 72000);
+        await redisSet("SESSION-TOKEN-" + token, id, 72000);
+        const creacion = await consulta("INSERT INTO USUARIOS (id, nickname, nombre, contrasegna, correo, cumpleagnos, fechaCreacion) VALUES ($1, $2, $3, $4, $5, $6, $7);",
             [id, datosUsuario.nickname, datosUsuario.nombre, contrasegnaEncriptada, datosUsuario.correo, datosUsuario.cumpleagnos, fechaCreacion]);
         if (creacion) {
             const usuario = await consulta("SELECT * FROM USUARIOS WHERE id = $1;", [id]) ?? [];
@@ -67,11 +67,11 @@ export const loginUsuario = async (datosLogin:Record<string,any>):Promise<Record
         if (!elUsuario[0] || !contrasegnaCoincide) throw { message: "Invalid credentials", code: 401 };
         if (elUsuario[0].disponibilidad === 3) throw { message: "User has not allowed login", code: 401 };
         const TOKEN_SECRET = process.env.JWT_SECRET;
-        const token = await jwt.sign({ id: elUsuario[0].id, nickname: elUsuario[0].nickname }, TOKEN_SECRET, { expiresIn: '4h', algorithm: 'HS256' });
+        const token = await jwt.sign({ id: elUsuario[0].id, nickname: elUsuario[0].nickname }, TOKEN_SECRET, { expiresIn: '20h', algorithm: 'HS256' });
         await redisDelete("SESSION-TOKEN-" + elUsuario[0].id);
         await redisDelete("SESSION-TOKEN-" + token);
-        await redisSet("SESSION-TOKEN-" + elUsuario[0].id, token, 14400);
-        await redisSet("SESSION-TOKEN-" + token, elUsuario[0].id, 14400);
+        await redisSet("SESSION-TOKEN-" + elUsuario[0].id, token, 72000);
+        await redisSet("SESSION-TOKEN-" + token, elUsuario[0].id, 72000);
         elUsuario[0].contrasegna = "";
         agnadirLog("backend.log", "User logged in " + elUsuario[0].id);
         return { token, usuario: elUsuario[0] };
@@ -122,11 +122,11 @@ export const editarUsuario = async (nuevos:Record<string, any>, id:string):Promi
         if (await consulta("UPDATE USUARIOS SET nickname = $1, nombre = $2, contrasegna = $3, correo = $4, descripcion = $5, url_foto = $6, cumpleagnos = $7 WHERE id = $8;",
             [nuevos.nickname ?? usuarioPrevio[0].nickname, nuevos.nombre ?? usuarioPrevio[0].nombre, nuevos.contrasegna ?? usuarioPrevio[0].contrasegna, nuevos.correo ?? usuarioPrevio[0].correo, nuevos.descripcion ?? usuarioPrevio[0].descripcion, nuevos.url_foto ?? usuarioPrevio[0].url_foto, nuevos.cumpleagnos ?? usuarioPrevio[0].cumpleagnos, id])) {
             const TOKEN_SECRET = process.env.JWT_SECRET;
-            const token = await jwt.sign({ id, nickname: nuevos.nickname ?? usuarioPrevio[0].nickname }, TOKEN_SECRET, { expiresIn: '4h', algorithm: 'HS256' });
+            const token = await jwt.sign({ id, nickname: nuevos.nickname ?? usuarioPrevio[0].nickname }, TOKEN_SECRET, { expiresIn: '20h', algorithm: 'HS256' });
             await redisDelete("SESSION-TOKEN-" + id);
             await redisDelete("SESSION-TOKEN-" + token);
-            await redisSet("SESSION-TOKEN-" + id, token, 14400);
-            await redisSet("SESSION-TOKEN-" + token, id, 14400);
+            await redisSet("SESSION-TOKEN-" + id, token, 72000);
+            await redisSet("SESSION-TOKEN-" + token, id, 72000);
             const nuevoTodo = await consulta("SELECT * FROM USUARIOS WHERE id = $1;", [id]);
             nuevoTodo[0].contrasegna = "";
             agnadirLog("backend.log", "User editted " + id);

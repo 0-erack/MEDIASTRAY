@@ -10,7 +10,7 @@ export const usuarios = pgTable("usuarios", {
   descripcion: varchar("descripcion", { length: 512 }).default(""), //Descripcion markdown
   urlFoto: varchar("url_foto", { length: 255 }).default("/public/nopfp.png"), //Url de su foto
   cumpleagnos: varchar("cumpleagnos", { length: 16 }), //Fecha de nacimiento en timestamp para evitar juegos +18
-  fechacreacion: varchar("fechacreacion", { length: 16 }), //Fecha de creacion del usuario en timestamp
+  fechaCreacion: varchar("fechaCreacion", { length: 16 }), //Fecha de creacion del usuario en timestamp
   strikes: integer("strikes").default(0), //Manejo interno
   disponibilidad: integer("disponibilidad").default(0), //Permisos restrictivos: 0 disponible, 1 desabilitada de subir juegos, 2 desabilitada de interactuar, 3 desabilitada de login...
   premium: varchar("premium", { length: 16 }).default(""), //Si tiene el premium (se almacena la fecha de caducidad, si esta vacio no tiene directamente)
@@ -28,10 +28,10 @@ export const juegos = pgTable("juegos", {
   urlPortada3: varchar("url_portada3", { length: 256 }).default("/public/coverless3.png"),
   publico: boolean("publico").default(true), //Si esta publicado
   versionactual: varchar("versionactual", { length: 16 }).default("1.0.0"), //Ultima version
-  fechaCreacion: varchar("fecha_creacion", { length: 16 }), //Fecha en la que se creo
+  fechaCreacion: varchar("fechaCreacion", { length: 16 }), //Fecha en la que se creo
   fechaUltima: varchar("fecha_ultima", { length: 16 }), //Ultima fecha en la que se edito el juego
   descripcion: varchar("descripcion", { length: 1024 }).default(""), //Descripcion en markdown (alternativamente cambia en los archivos html)
-  idCreador: varchar("id_creador", { length: 36 }).notNull().references(() => usuarios.id), //FK id de su creador
+  idCreador: varchar("id_creador", { length: 36 }).notNull().references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador
   tokenAdministracion: varchar("token_administracion", { length: 32 }), //Token actual para administracion y edicion
   //TODO logros builds savedatas extensiones paginas
   generos: varchar("generos", { length: 255 }), //Generos separados por comas
@@ -48,8 +48,8 @@ export const foros = pgTable("foros", {
   urlFoto: varchar("url_foto", { length: 255 }).default("/public/coverless_forum.png"), //Url de la foto principal
   urlBanner: varchar("url_banner", { length: 255 }).default("/public/bannerless.png"), //Url de la foto principal (horizontal)
   //TODO publico o no, exclusivo, igdb
-  idCreador: varchar("id_creador", { length: 36 }).references(() => usuarios.id), //FK id de su creador
-  fechaCreacion: varchar("fecha_creacion", { length: 15 }), //Fecha en la que se creo
+  idCreador: varchar("id_creador", { length: 36 }).references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador
+  fechaCreacion: varchar("fechaCreacion", { length: 15 }), //Fecha en la que se creo
   cantidadSeguidores: integer("cantidad_seguidores").default(0), //Cantidad de seguidores actual
   cantidadLikes: integer("cantidad_likes").default(0), //Cantidad de likes actual
   juegoAsociado: varchar("juego_asociado", { length: 36 }), //FK? juego asociado
