@@ -15,6 +15,8 @@ http:
       value: "{{session_token}}"
     - name: X-auth-api
       value: OUI2LzdfMUdbcy4cR01DXXQXKYaXxCf1
+    - name: X-auth-session
+      value: "{{session_token}}"
   auth:
     type: bearer
     token: "{{session_token}}"

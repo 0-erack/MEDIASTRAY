@@ -1,5 +1,5 @@
 #!/bin/bash
-sh down.sh
+bash down.sh
 #clear
 touch logs/backend.log
 touch logs/db.log

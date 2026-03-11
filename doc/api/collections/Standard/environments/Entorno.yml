@@ -12,3 +12,7 @@ variables:
     value: ""
   - secret: true
     name: test
+  - secret: true
+    name: api_token
+  - name: uuid_item2
+    value: ""

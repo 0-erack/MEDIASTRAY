@@ -43,7 +43,7 @@ export const validarEdicionUsuario = (data:any): Partial<Usuario> => {
  * @throws error si no es valido
  */
 export const validarLoginUsuario = (data:any): boolean => {
-    if (!correo(data.email) && !nickname(data.nickname)) throw new Error("Invalid email or nickname");
+    if (!correo(data.identification) && !nickname(data.identification)) throw new Error("Invalid email or nickname");
     if (!contrasegnaReposo(data.password)) throw new Error("Invalid password");
     return true;
 }

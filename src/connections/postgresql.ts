@@ -14,7 +14,7 @@ export const getConexion = async ():Promise<any> => {
             cliente = new Client({ connectionString: process.env.DATABASE_URL/*, clientVersion: '8.16.3'*/ });
             await cliente.connect();
             //Ejecutar las consultas iniciales para crear las tablas
-            const consultasIniciales = await leerArchivo(process.env.SQL_INIT_PATH ?? "", true);
+            /*const consultasIniciales = await leerArchivo(process.env.SQL_INIT_PATH ?? "", true);
             if (consultasIniciales) {
                 try {
                     const test = await cliente.query("SELECT 1 FROM USUARIOS LIMIT 1;");
@@ -27,7 +27,7 @@ export const getConexion = async ():Promise<any> => {
                         await cliente.query(datosIniciales);
                     }
                 }
-            }
+            }*/
             return cliente;
         } catch (error) {
             console.log(error);

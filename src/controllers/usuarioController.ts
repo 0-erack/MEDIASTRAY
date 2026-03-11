@@ -3,20 +3,22 @@ import { nombre as validarNombre, nickname as validarNickname, correo as validar
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { redisDelete, redisSet } from '../connections/redis.js';
-import { consulta } from '../connections/postgresql.js';
+import { consulta, getDB } from '../connections/postgresql.js';
 import { agnadirLog } from '../connections/logs.js';
 import { mongoDelete, mongoGet, mongoSet } from '../connections/mongodb.js';
 import { autenticarContrasegnaUsuario } from '../routes/autenticaciones.js';
+import { Usuario } from '../types/Usuario.js';
+import { validarCreacionUsuario, validarLoginUsuario } from '../validators/validacionesUsuario.js';
+import { eq, or } from 'drizzle-orm';
+import { usuarios } from '../models/schema.js';
+import { crearSesion, cerrarSesion, verSesionToken, verSesionUsuario } from './sessionController.js';
 
-export const validarJsonCreacionUsuario = (usuario:Record<string,any>):boolean => {
-    return validarNombre(usuario.nombre) && validarNickname(usuario.nickname) && validarCorreo(usuario.correo) && validarContrasegna(usuario.contrasegna) && validarCumpleagnos(usuario.cumpleagnos);
-}
 
-const validarJsonLoginUsuario = (credenciales:Record<string,any>):boolean => {
+const validarJsonLoginUsuario = (credenciales: Record<string, any>): boolean => {
     return (validarCorreo(credenciales.identification) || validarNickname(credenciales.identification)) && validarContrasegna(credenciales.contrasegna);
 }
 
-const validarJsonEdicionUsuario = (usuario:Record<string,any>) => {
+const validarJsonEdicionUsuario = (usuario: Record<string, any>) => {
     if (usuario.nombre && !validarNombre(usuario.nombre)) throw { message: "Invalid credentials (name)", code: 401 };
     if (usuario.url_foto && !validarUrl(usuario.url_foto)) throw { message: "Invalid credentials (pfp url)", code: 401 };
     if (usuario.descripcion && !validarDescripcion(usuario.descripcion)) throw { message: "Invalid credentials (description)", code: 401 };
@@ -27,62 +29,51 @@ const validarJsonEdicionUsuario = (usuario:Record<string,any>) => {
 }
 
 //Registrarse, requiere en el body (usuario): nombre, nickname, correo, contrasegna, cumpleagnos. Devuelve un token de sesion
-export const crearUsuario = async (datosUsuario:Record<string,any>):Promise<Record<string, any>> => {
-    try {
-        if (!validarJsonCreacionUsuario(datosUsuario)) throw { message: "Invalid user data", code: 400 };
-        const nicknameExiste = await consulta("select id from USUARIOS where nickname = $1;", [datosUsuario.nickname]);
-        const correoExiste = await consulta("select id from USUARIOS where correo = $1;", [datosUsuario.correo]);
-        if (nicknameExiste[0]) throw { message: "Nickname already in use", code: 400, data: { doubleNickname: true } };
-        if (correoExiste[0]) throw { message: "Email already in use", code: 400, data: { doubleEmail: true } };
-        const id = uuidv4();
-        const contrasegnaEncriptada = await bcrypt.hash(datosUsuario.contrasegna, 10);
-        const fechaCreacion = Date.now() + "";
-        const TOKEN_SECRET = process.env.JWT_SECRET;
-        const token = await jwt.sign({ id, nickname: datosUsuario.nickname }, TOKEN_SECRET, { expiresIn: '20h', algorithm: 'HS256' });
-        await redisDelete("SESSION-TOKEN-" + id);
-        await redisDelete("SESSION-TOKEN-" + token);
-        await redisSet("SESSION-TOKEN-" + id, token, 72000);
-        await redisSet("SESSION-TOKEN-" + token, id, 72000);
-        const creacion = await consulta("INSERT INTO USUARIOS (id, nickname, nombre, contrasegna, correo, cumpleagnos, fechaCreacion) VALUES ($1, $2, $3, $4, $5, $6, $7);",
-            [id, datosUsuario.nickname, datosUsuario.nombre, contrasegnaEncriptada, datosUsuario.correo, datosUsuario.cumpleagnos, fechaCreacion]);
-        if (creacion) {
-            const usuario = await consulta("SELECT * FROM USUARIOS WHERE id = $1;", [id]) ?? [];
-            agnadirLog("backend.log", "New user created " + id);
-            agnadirLog("db.log", "New user created USUARIOS " + id);
-            return { token, usuario: usuario[0] };
-        } else {
-            throw { message: "Invalid user data", code: 400 };
-        }
-    } catch (error) {
-        throw error;
-    }
+export const crearUsuario = async (datos: Record<string, any>): Promise<Record<string, any>> => {
+    const usuarioCreado = validarCreacionUsuario(datos);
+    const db = getDB();
+    const nicknameExiste = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.nickname, usuarioCreado.nickname!)).limit(1);
+    const correoExiste = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.correo, usuarioCreado.correo!)).limit(1);
+    if (nicknameExiste[0]) throw { message: "Nickname already in use", code: 400, data: { doubleNickname: true } };
+    if (correoExiste[0]) throw { message: "Email already in use", code: 400, data: { doubleEmail: true } };
+    usuarioCreado.id = uuidv4();
+    usuarioCreado.contrasegna = await bcrypt.hash(usuarioCreado.contrasegna!, 10);
+    usuarioCreado.fechaCreacion = Date.now() + "";
+    const token = await crearSesion(usuarioCreado.id, { recienCreado: true });
+    const creacion = await db.insert(usuarios).values({ id: usuarioCreado.id, nickname: usuarioCreado.nickname, nombre: usuarioCreado.nombre, contrasegna: usuarioCreado.contrasegna, correo: usuarioCreado.correo, cumpleagnos: usuarioCreado.cumpleagnos, fechaCreacion: usuarioCreado.fechaCreacion }).returning({ id: usuarios.id });
+    if (!creacion.length) throw { message: "Internal server error", code: 500 }
+    agnadirLog("backend.log", "New user created " + usuarioCreado.id);
+    agnadirLog("db.log", "New user created USUARIOS " + usuarioCreado.id);
+    usuarioCreado.contrasegna = undefined;
+    return { token: token, usuario: usuarioCreado };
 }
 
 //Hacer login con el usuario, requiere en el body (credentials): contrasegna, identificacion (su correo o nickname). Devuelve un token de sesion valido por 4 horas y los datos del usuario
-export const loginUsuario = async (datosLogin:Record<string,any>):Promise<Record<string, any>> => {
-    try {
-        if (!validarJsonLoginUsuario(datosLogin)) throw { message: "Invalid user data", code: 400 };
-        const elUsuario = await consulta("SELECT * FROM USUARIOS WHERE nickname = $1 OR correo = $1;", [datosLogin.identification]);
-        const contrasegnaCoincide = await autenticarContrasegnaUsuario(datosLogin.contrasegna, elUsuario[0].contrasegna);
-        if (!elUsuario[0] || !contrasegnaCoincide) throw { message: "Invalid credentials", code: 401 };
-        if (elUsuario[0].disponibilidad === 3) throw { message: "User has not allowed login", code: 401 };
-        const TOKEN_SECRET = process.env.JWT_SECRET;
-        const token = await jwt.sign({ id: elUsuario[0].id, nickname: elUsuario[0].nickname }, TOKEN_SECRET, { expiresIn: '20h', algorithm: 'HS256' });
-        await redisDelete("SESSION-TOKEN-" + elUsuario[0].id);
-        await redisDelete("SESSION-TOKEN-" + token);
-        await redisSet("SESSION-TOKEN-" + elUsuario[0].id, token, 72000);
-        await redisSet("SESSION-TOKEN-" + token, elUsuario[0].id, 72000);
-        elUsuario[0].contrasegna = "";
-        agnadirLog("backend.log", "User logged in " + elUsuario[0].id);
-        return { token, usuario: elUsuario[0] };
-    } catch (error) {
-        throw error;
-    }
+export const loginUsuario = async (datosLogin: Record<string, any>): Promise<Record<string, any>> => {
+
+    if (!validarLoginUsuario(datosLogin)) throw { message: "Invalid user data", code: 401 }
+    const db = getDB();
+    const elUsuario = await db.select().from(usuarios).where(or(eq(usuarios.nickname, datosLogin.identification), eq(usuarios.correo, datosLogin.identification))).limit(1);
+    if (!elUsuario[0]?.id) throw { message: "User not found", code: 404 }
+    const contrasegnaCoincide = await autenticarContrasegnaUsuario(datosLogin.password, elUsuario[0].contrasegna);
+    if (!elUsuario[0] || !contrasegnaCoincide) throw { message: "Invalid credentials", code: 401 };
+    const usuario = elUsuario[0] as Partial<Usuario>;
+    if (elUsuario[0].disponibilidad === 3) throw { message: "User has not allowed login", code: 401 };
+    console.log(usuario)
+    const token = await crearSesion(usuario.id!);
+    usuario.contrasegna = undefined;
+    agnadirLog("backend.log", "User logged in " + usuario.id);
+    return { token, usuario };
+}
+
+//Cierra la sesion de un usuario
+export const logoutUsuario = async (id: string): Promise<boolean> => {
+    return true;
 }
 
 //Editar un usuario actualizando sus datos, requiere en el body (newData) todos los posibles nuevos datos. Devuelve true si va todo bien
 //Concretamente se pueden editar: nickname, nombre, contrasegna, correo, descripcion, url_foto, cumpleagnos. Para nickname, correo o contrasegna se requiere tambien la contrasegna antigua (contrasegnaAntigua)
-export const editarUsuario = async (nuevos:Record<string, any>, id:string):Promise<Record<string, any>> => {
+export const editarUsuario = async (nuevos: Record<string, any>, id: string): Promise<Record<string, any>> => {
     try {
         if (!nuevos || !id) throw { message: "Invalid credentials", code: 401 };
         const usuarioPrevio = await consulta("SELECT * FROM USUARIOS WHERE id = $1;", [id]);
@@ -98,14 +89,14 @@ export const editarUsuario = async (nuevos:Record<string, any>, id:string):Promi
                 if (contrasegnaCoincide) {
                     proporcionadoContrasegnaAntigua = true;
                 } else {
-                    throw { message: "Validate password is needed", code: 401, data: {failedPassword: true} }
+                    throw { message: "Validate password is needed", code: 401, data: { failedPassword: true } }
                 };
             }
         }
         if (nuevos.nickname && nuevos.nickname !== usuarioPrevio[0].nickname) {
             if (!proporcionadoContrasegnaAntigua) throw { message: "Validate password is needed", code: 401 };
             const conEseNickname = await consulta("SELECT id FROM USUARIOS WHERE nickname = $1;", [nuevos.nickname]);
-            if (conEseNickname[0]) throw { message: "Nickname already in use", code: 401,  data: { doubleNickname: true } };
+            if (conEseNickname[0]) throw { message: "Nickname already in use", code: 401, data: { doubleNickname: true } };
         }
         if (nuevos.correo && nuevos.correo !== usuarioPrevio[0].correo) {
             if (!proporcionadoContrasegnaAntigua) throw { message: "Validate password is needed", code: 401 };
@@ -141,7 +132,7 @@ export const editarUsuario = async (nuevos:Record<string, any>, id:string):Promi
 }
 
 //Borra el usuario, requiere de su contrasegna en el body asi como el token de sesion
-export const borrarUsuario = async (contrasegna:string, id:string):Promise<boolean> => {
+export const borrarUsuario = async (contrasegna: string, id: string): Promise<boolean> => {
     try {
         const usuario = await consulta("SELECT * FROM USUARIOS WHERE id = $1;", [id]);
         if (!usuario[0]) throw { message: "Invalid credentials", code: 401 };
@@ -179,7 +170,7 @@ export const borrarUsuario = async (contrasegna:string, id:string):Promise<boole
 
 
 
-            
+
             const seguidos = await mongoGet("intermediario", { sujeto: id, verbo: "sigue" });
             console.log("BORR", seguidos);
 
@@ -195,13 +186,13 @@ export const borrarUsuario = async (contrasegna:string, id:string):Promise<boole
 }
 
 //Devuelve datos básicos y públicos de un usuario a partir de su id o su nickname
-export const verUsuario = async (id:string):Promise<Record<string, any>> => {
+export const verUsuario = async (id: string): Promise<Record<string, any>> => {
     try {
         const usuario = await consulta("SELECT * FROM USUARIOS WHERE id = $1 OR nickname = $2;", [id, id]);
         if (!usuario[0] || usuario[0].nivel_publico === 2) throw { message: "User not found", code: 401 }
         //usuario[0].contrasegna = undefined;
         if (usuario[0].nivel_publico === 1) {
-            return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "", cantidad_seguidores: 0, premium: "",  };
+            return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "", cantidad_seguidores: 0, premium: "", };
         }
         return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "" };
     } catch (error) {
@@ -210,7 +201,7 @@ export const verUsuario = async (id:string):Promise<Record<string, any>> => {
 }
 
 //Altera la disponibilidad de un usuario (no para api), 0 disponible, 1 desabilitada de subir juegos, 2 desabilitada de interactuar, 3 desabilitada de login...
-export const alterarDisponibilidadUsuario = async (nuevoValor:number, id:string):Promise<boolean> => {
+export const alterarDisponibilidadUsuario = async (nuevoValor: number, id: string): Promise<boolean> => {
     try {
         const resultado = await consulta("UPDATE USUARIOS SET disponibilidad = $1 WHERE id = $2;", [nuevoValor, id]);
         agnadirLog("backend.log", `User ${id} altered its disponibility to ${nuevoValor}`);
@@ -222,11 +213,11 @@ export const alterarDisponibilidadUsuario = async (nuevoValor:number, id:string)
 }
 
 //Altera la visibilidad del usuario, 0 normal, 1 pueden saber que existe pero no ver datos, 2 totalmente anonimo...
-export const alterarVisibilidadUsuario = async (nuevoValor:number, id:string):Promise<boolean> => {
+export const alterarVisibilidadUsuario = async (nuevoValor: number, id: string): Promise<boolean> => {
     try {
         const resultado = await consulta("UPDATE USUARIOS SET nivel_publico = $1 WHERE id = $2;", [nuevoValor, id]);
 
-        
+
 
         agnadirLog("backend.log", `User ${id} altered its visibility to ${nuevoValor}`);
 
@@ -237,7 +228,7 @@ export const alterarVisibilidadUsuario = async (nuevoValor:number, id:string):Pr
 }
 
 //Renueva el premium de un usuario estableciendo la fecha de caducidad
-export const alterarPremiumUsuario = async (id:string, fechaCaducidad:string):Promise<boolean> => {
+export const alterarPremiumUsuario = async (id: string, fechaCaducidad: string): Promise<boolean> => {
     try {
         const resultado = await consulta("UPDATE USUARIOS SET premium = $1 WHERE id = $2;", [fechaCaducidad, id]);
         agnadirLog("backend.log", "User got premium " + id);
@@ -249,7 +240,7 @@ export const alterarPremiumUsuario = async (id:string, fechaCaducidad:string):Pr
 }
 
 //Altera la cantidad de seguidores de un usuario (en su registro sql), si la cantidad es 0 devuelve si el usuario a sigue al b
-export const alterarSeguidores = async (idA:string, idB:string, cantidad:number):Promise<boolean> => {
+export const alterarSeguidores = async (idA: string, idB: string, cantidad: number): Promise<boolean> => {
     try {
         const yaLeSigue = await mongoGet("intermediario", { sujeto: idA, verbo: "sigue", predicado: idB }) ?? {};
         if (cantidad === 0) return yaLeSigue.id;
@@ -257,7 +248,7 @@ export const alterarSeguidores = async (idA:string, idB:string, cantidad:number)
         if (!seguidoresPrevios[0] || seguidoresPrevios[0].nivel_publico >= 1 || seguidoresPrevios[0].disponibilidad >= 2) throw { message: "Invalid credentials", code: 401 };
         const usuarioSeguidor = await consulta("SELECT disponibilidad FROM USUARIOS WHERE id = $1;", [idA]);
         if (!usuarioSeguidor[0] || usuarioSeguidor[0].disponibilidad >= 2) throw { message: "Invalid credentials", code: 401 };
-        let resultado:boolean|Array<any> = false;
+        let resultado: boolean | Array<any> = false;
         if (yaLeSigue.id && cantidad < 0) {
             await mongoDelete("intermediario", { sujeto: idA, verbo: "sigue", predicado: idB }, true);
             resultado = await consulta("UPDATE USUARIOS SET cantidad_seguidores = $1 WHERE id = $2;", [seguidoresPrevios[0].cantidad_seguidores + cantidad, idB]);

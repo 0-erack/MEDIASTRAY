@@ -39,8 +39,8 @@ export const timestamp = (data: unknown): data is string => timestampSchema.safe
 
 //Valida la fecha de cumpleagnos
 export const cumpleagnos = (data:string):boolean => {
-    const texto = Date.parse(data);
-    return timestamp(texto + "") && texto < Date.now();
+    const texto = new Date(Number(data));
+    return timestamp(data + "") && texto < new Date();
 }
 
 //Pensada para validar el localstorage TODO

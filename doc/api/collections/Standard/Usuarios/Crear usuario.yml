@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{url_backend}}/prueba"
+  url: "{{url_backend}}/user/create"
   headers:
     - name: Content-Type
       value: application/json
@@ -14,7 +14,20 @@ http:
     - name: X-session-token
       value: "{{session_token}}"
     - name: X-auth-api
-      value: OUI2LzdfMUdbcy4cR01DXXQXKYaXxCf1
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "user": {
+          "email": "holaque@gma.co",
+          "name": "Holaque uno",
+          "nickname": "holaque1",
+          "password": "Ja.12121212",
+          "birthdate": "1773252289389"
+          
+        }
+      }
   auth:
     type: bearer
     token: "{{session_token}}"
@@ -24,3 +37,6 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  Ruta privada para crear un usuario

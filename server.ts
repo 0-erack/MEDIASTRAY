@@ -112,3 +112,4 @@ if (process.env.INIT_METRICS === "true") try {abrirServidorMetricas(app);} catch
 app.listen(APP_PORT, () => {
     console.log(`Ejecutandose en ${APP_PORT}`);
 });
+ 

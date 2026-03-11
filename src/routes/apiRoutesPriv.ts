@@ -1,8 +1,10 @@
 import express from 'express';
 import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
-import { crearUsuario, loginUsuario, editarUsuario, borrarUsuario, alterarSeguidores } from '../controllers/usuarioController.js';
+import { crearUsuario, loginUsuario, editarUsuario, borrarUsuario, alterarSeguidores, logoutUsuario } from '../controllers/usuarioController.js';
 import { redisGet } from '../connections/redis.js';
 import { exito, fallo, manejadorRuta } from './respuesta.js';
+import { verSesionToken } from '../controllers/sessionController.js';
+import Reques
 
 const routerPriv = express.Router();
 
@@ -17,28 +19,35 @@ routerPriv.get("/auth/apiToken", autenticarTokenApi, (req, res) => {
 routerPriv.get("/auth/sessionToken", autenticarTokenApi, autenticarTokenSesion, async (req, res) => {
     return manejadorRuta(req, res, async () => {
         const token = req.header('X-auth-session') ?? "";
-        const id = await redisGet("SESSION-TOKEN-" + token) ?? "";
-        return res.json(exito("User session token valid", id));
+        const data = await verSesionToken(token);
+        return res.json(exito("User session token valid", data));
     });
 });
 
 //Ruta para crear el usuario, requiere en el body (usuario): nombre, nickname, correo, contrasegna, cumpleagnos. Devuelve un token de sesion
 routerPriv.post("/user/create", autenticarTokenApi, async (req, res) => {
     return manejadorRuta(req, res, async () => {
-        const { token, usuario } = await crearUsuario(req.body.usuario);
-        usuario.contrasegna = "";
+        const { token, usuario } = await crearUsuario(req.body.user);
         res.setHeader('X-auth-session', token);
         return res.json(exito("User created successfully", {sessionToken: token, user: usuario}));
     });
 });
 
 //Ruta para hacer login con un usuario existente, requiere en el body (credentials): contrasegna, identificacion (su correo o nickname). Devuelve un token de sesion valido por 4 horas y los datos del usuario
-routerPriv.post("/user/login", autenticarTokenApi, async (req, res) => {
+routerPriv.post("/user/login", autenticarTokenApi, async (req: Request, res) => {
     return manejadorRuta(req, res, async () => {
         const { token, usuario } = await loginUsuario(req.body.credentials);
-        usuario.contrasegna = "";
         res.setHeader('X-auth-session', token);
         return res.json(exito("User logged in successfully", {sessionToken: token, user: usuario}));
+    })
+});
+
+
+routerPriv.delete("/user/logout", autenticarTokenApi, autenticarTokenSesion, async (req, res) => {
+    return manejadorRuta(req, res, async () => {
+        const resultado = await logoutUsuario(req.datosSesion.id);
+        res.setHeader('X-auth-session', '');
+        return res.json(exito("User logged out successfully"));
     })
 });
 

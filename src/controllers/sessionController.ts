@@ -11,7 +11,7 @@ export const crearSesion = async (id:string, datosExtra:Record<string, any> = {}
     const token = await jwt.sign({ id, datosExtra, entropia: Math.random()*(Math.random()*10) }, process.env.JWT_SECRET, { expiresIn: process.env.DURACION_SESION_TOKEN ?? '20h', algorithm: 'HS256' });
     await cerrarSesion(id, token);
     await redisSet("SESSION-TOKEN-" + id, token, parseInt(process.env.DURACION_SESION ?? '72000'));
-    await redisSet("SESSION-TOKEN-" + token, id, parseInt(process.env.DURACION_SESION ?? '72000'));
+    //await redisSet("SESSION-TOKEN-" + token, id, parseInt(process.env.DURACION_SESION ?? '72000'));
     return token;
 }
 
@@ -22,7 +22,7 @@ export const crearSesion = async (id:string, datosExtra:Record<string, any> = {}
  */
 export const cerrarSesion = async (id:string, token:string) => {
     await redisDelete("SESSION-TOKEN-" + id);
-    await redisDelete("SESSION-TOKEN-" + token);
+    //await redisDelete("SESSION-TOKEN-" + token);
 }
 
 /**
@@ -33,9 +33,9 @@ export const cerrarSesion = async (id:string, token:string) => {
 export const verSesionToken = async (token:string):Promise<Record<string, any>|null> => {
     const datos = await jwt.verify(token, process.env.JWT_SECRET);
     if (!datos) return null;
-    const idGuardado = await redisGet("SESSION-TOKEN-" + token);
-    const tokenGuardado = await redisGet("SESSION-TOKEN-" + idGuardado);
-    if (token !== tokenGuardado || idGuardado !== datos.id) return null;
+    //const idGuardado = await redisGet("SESSION-TOKEN-" + token);
+    //const tokenGuardado = await redisGet("SESSION-TOKEN-" + idGuardado);
+    //if (token !== tokenGuardado || idGuardado !== datos.id) return null;
     return datos;
 }
 

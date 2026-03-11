@@ -1,11 +1,11 @@
 info:
-  name: Verificar API token
+  name: Login usuario
   type: http
-  seq: 4
+  seq: 2
 
 http:
-  method: GET
-  url: "{{url_backend}}/auth/apiToken"
+  method: POST
+  url: "{{url_backend}}/user/login"
   headers:
     - name: Content-Type
       value: application/json
@@ -14,7 +14,16 @@ http:
     - name: X-session-token
       value: "{{session_token}}"
     - name: X-auth-api
-      value: OUI2LzdfMUdbcy4cR01DXXQXKYaXxCf1
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "credentials": {
+          "identification": "holaque@gma.co",
+          "password": "Ja.12121212"
+        }
+      }
   auth:
     type: bearer
     token: "{{session_token}}"
@@ -24,3 +33,6 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  Ruta privada para crear un usuario

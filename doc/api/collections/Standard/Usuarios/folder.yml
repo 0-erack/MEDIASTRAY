@@ -5,3 +5,11 @@ info:
 
 request:
   auth: inherit
+  scripts:
+    - type: after-response
+      code: |-
+        const sessionToken = res.getBody()?.data?.sessionToken;
+
+        if (sessionToken) {
+          bru.setEnvVar("session_token", sessionToken);
+        }

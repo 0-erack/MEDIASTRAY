@@ -21,13 +21,7 @@ export const autenticarTokenApi = (req, res, next) => {
 //Para requerir el token de sesion de un usuario en el header X-auth-session
 export const autenticarTokenSesion = async (req, res, next) => {
     try {
-        const TOKEN_SECRET = process.env.JWT_SECRET;
-        /*const token = req?.body?.token ?? (req.header('X-auth-session') ?? "");
-        const id = await redisGet("SESSION-TOKEN-" + token) ?? "";
-        const token2 = await redisGet("SESSION-TOKEN-" + id) ?? "";
-        const id2 = jwt.verify(token, TOKEN_SECRET)?.id ?? undefined;
-        if (token2 === token && id2 === id && token !== "" && token2 !== "" && id !== "" && id2) {*/
-        const datosSesion = await verSesionToken(req?.body?.token ?? (req.header('X-auth-session') ?? ""));
+        const datosSesion = await verSesionToken(req.headers.authorization?.split(" ")[1] ?? (req?.body?.token ?? (req.header('X-auth-session') ?? "")));
         if (datosSesion?.id) {
             req.datosSesion = datosSesion;
             next();
