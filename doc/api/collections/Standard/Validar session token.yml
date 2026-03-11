@@ -1,11 +1,11 @@
 info:
-  name: test
+  name: Validar session token
   type: http
-  seq: 2
+  seq: 5
 
 http:
   method: GET
-  url: "{{url_backend}}/prueba"
+  url: "{{url_backend}}/auth/sessionToken"
   headers:
     - name: Content-Type
       value: application/json

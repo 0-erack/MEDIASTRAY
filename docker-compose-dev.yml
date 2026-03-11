@@ -55,8 +55,9 @@ services:
       - ./games:/var/www/games
       - ./:/usr/src/app
       - /usr/src/app/node_modules
-      - /usr/src/app/dist
       - /usr/src/app/frontend/node_modules
+      - /usr/src/app/dist
+      - /usr/src/app/frontend/dist
     networks:
       - mediastray-network
     depends_on:

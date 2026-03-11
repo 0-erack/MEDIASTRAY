@@ -1,7 +1,7 @@
 info:
-  name: test
+  name: Verificar API token
   type: http
-  seq: 2
+  seq: 4
 
 http:
   method: GET

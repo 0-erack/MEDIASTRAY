@@ -7,6 +7,7 @@ const router = express.Router();
 
 //Rutas de la API
 
+//Solo una prueba para comprobar que el backend este operativo
 router.get("/prueba", (req, res) => {
     res.json({ message: `Hello, World! Processed`, code: 200 });
 });

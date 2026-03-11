@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
 import { verSesionToken } from "../controllers/sessionController.js";
+import { fallo } from './respuesta.js';
+
 
 //Para requerir el token de la api en el header X-auth-api
 export const autenticarTokenApi = (req, res, next) => {
@@ -7,12 +9,12 @@ export const autenticarTokenApi = (req, res, next) => {
     try {
         const auth = req.header('X-auth-api');
         if (auth !== API_TOKEN || API_TOKEN === undefined || auth === undefined) {
-            return res.status(401).json({message: "401: Valid token not provided at private endpoint", code: 401});
+            return res.status(401).json(fallo("Valid token not provided at private endpoint", null, 401));
         } else {
             next();
         }
     } catch (e) {
-        return res.status(401).json({message: "401: Token not provided at private endpoint", code: 401});
+        return res.status(401).json(fallo("Valid token not provided at private endpoint", null, 401));
     }
 }
 
@@ -30,11 +32,11 @@ export const autenticarTokenSesion = async (req, res, next) => {
             req.datosSesion = datosSesion;
             next();
         } else {
-            throw { message: `User session token NOT valid OR server error`, code: 401}
+            return res.status(401).json(fallo("User session token NOT valid OR server error", null, 401));
         }
     } catch (error) {
         console.log(error);
-        return res.json({ message: `User session token NOT valid OR server error`, code: 401});
+        return res.status(401).json(fallo("User session token NOT valid OR server error", null, 401));
     }
 }
 
