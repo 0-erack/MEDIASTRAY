@@ -108,8 +108,8 @@ services:
 
   redis:
     image: redis:6.2
-    ports:
-      - "8521:6379"
+    #ports:
+    #  - "8522:6379"
     networks:
       - mediastray-network
 

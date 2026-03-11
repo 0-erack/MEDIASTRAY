@@ -9,7 +9,7 @@
     "dev-old": "nodemon server.mjs",
     "start": "npm run build && node dist/server.js",
     "dev-old2": "nodemon --recursive --watch 'src/**/*.ts' --exec tsx server.ts",
-    "dev": "npx tsx watch --interval 1000 server.ts",
+    "dev": "nodemon --legacy-watch --watch server.ts --exec tsx server.ts",
     "dockerprod": "sh prod.sh",
     "dockerdev": "sh dev.sh",
     "build-old": "npx tsc && (cp -r src dist/ 2>/dev/null || true) && cp .env dist/ 2>/dev/null || true",

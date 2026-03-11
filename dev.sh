@@ -21,7 +21,7 @@ npm run dev -- --port 8520 &
 cd ..
 docker compose -f ./docker-compose-dev.yml down
 docker compose -f ./docker-compose.yml down
-docker compose -f docker-compose-dev.yml up #--build
+docker compose -f docker-compose-dev.yml up --build
 #docker exec -it mediastray-frontend /bin/sh
 #cd /usr/share/nginx/html/frontend/app
 #npm install
