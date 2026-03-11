@@ -12,10 +12,13 @@ COPY . .
 
 RUN npm run build
 
-WORKDIR /usr/src/app/frontend
-RUN npm install
-RUN npm run build
-WORKDIR /usr/src/app
+#WORKDIR /usr/src/app/frontend
+#RUN npm install
+#RUN npm run build
+#WORKDIR /usr/src/app
+#RUN npm install --prefix frontend
+#RUN npm run build --prefix frontend
+COPY frontend/dist ./frontend/dist
 
 EXPOSE 8510
 
