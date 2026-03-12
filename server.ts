@@ -4,6 +4,7 @@ import { getConexionMongoose } from './src/connections/mongodb.js';
 import { abrirServidorMetricas } from './src/servidorMetricas.js';
 import apiRoutes from "./src/routes/apiRoutes.js";
 import apiRoutesPriv from "./src/routes/apiRoutesPriv.js";
+import apiRoutesAdmin from "./src/routes/apiRoutesAdmin.js";
 import path from 'path';
 import { iniciarServicioLogs } from './src/connections/logs.js';
 import { fileURLToPath } from 'url'
@@ -71,6 +72,7 @@ if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(proces
 //Peticiones a la API (se gestionan manualmente por el servidor)
 app.use("/api/v1", apiRoutes);
 app.use("/api/v1", apiRoutesPriv);
+app.use("/api/v1/admin", apiRoutesAdmin);
 //Las peticiones en / se dirigen al dist del frontend
 
 if (process.env.SERVE_FRONTEND === "true") {

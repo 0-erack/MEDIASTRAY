@@ -30,7 +30,7 @@ export const validarEdicionUsuario = (data:any): Partial<Usuario> => {
     if (data.nickname != undefined && !nickname(data.nickname)) throw new Error("Invalid nickname");
     if (data.email != undefined && !correo(data.email)) throw new Error("Invalid email");
     if (data.password != undefined && !contrasegna(data.password)) throw new Error("Invalid password");
-    if (data.changePassword == true && (data.nickname != undefined || data.email != undefined)) {
+    if (data.changePassword == true || data.nickname != undefined || data.email != undefined || data.password != undefined) {
         if (data.oldPassword == undefined || !contrasegna(data.oldPassword)) throw new Error("Invalid old password");
     }
     return {nombre: data.name, nickname: data.nickname, urlfoto: data.urlPhoto, descripcion: data.description, cumpleagnos: data.birthdate, correo: data.email, contrasegna: data.password, contrasegnaAntigua: data.oldPassword} as Partial<Usuario>;

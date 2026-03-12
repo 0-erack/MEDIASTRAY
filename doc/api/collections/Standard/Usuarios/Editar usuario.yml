@@ -1,11 +1,11 @@
 info:
-  name: Logout usuario
+  name: Editar usuario
   type: http
-  seq: 3
+  seq: 4
 
 http:
-  method: DELETE
-  url: "{{url_backend}}/user/logout"
+  method: PATCH
+  url: "{{url_backend}}/user/edit"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,15 +17,20 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "newData": {
+          "email": "holaque@gma.co",
+          "name": "Holaque uno",
+          "nickname": "holaque1",
+          "password": "Ja.12121212",
+          "birthdate": "1773252289389"
+          
+        }
+      }
   auth:
     type: bearer
     token: "{{session_token}}"
-
-runtime:
-  scripts:
-    - type: after-response
-      code: bru.setEnvVar("session_token", ' ');
 
 settings:
   encodeUrl: true

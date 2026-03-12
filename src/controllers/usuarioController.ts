@@ -14,10 +14,6 @@ import { usuarios } from '../models/schema.js';
 import { crearSesion, cerrarSesion, verSesionToken, verSesionUsuario } from './sessionController.js';
 
 
-const validarJsonLoginUsuario = (credenciales: Record<string, any>): boolean => {
-    return (validarCorreo(credenciales.identification) || validarNickname(credenciales.identification)) && validarContrasegna(credenciales.contrasegna);
-}
-
 const validarJsonEdicionUsuario = (usuario: Record<string, any>) => {
     if (usuario.nombre && !validarNombre(usuario.nombre)) throw { message: "Invalid credentials (name)", code: 401 };
     if (usuario.url_foto && !validarUrl(usuario.url_foto)) throw { message: "Invalid credentials (pfp url)", code: 401 };
@@ -59,7 +55,6 @@ export const loginUsuario = async (datosLogin: Record<string, any>): Promise<Rec
     if (!elUsuario[0] || !contrasegnaCoincide) throw { message: "Invalid credentials", code: 401 };
     const usuario = elUsuario[0] as Partial<Usuario>;
     if (elUsuario[0].disponibilidad === 3) throw { message: "User has not allowed login", code: 401 };
-    console.log(usuario)
     const token = await crearSesion(usuario.id!);
     usuario.contrasegna = undefined;
     agnadirLog("backend.log", "User logged in " + usuario.id);
@@ -67,7 +62,8 @@ export const loginUsuario = async (datosLogin: Record<string, any>): Promise<Rec
 }
 
 //Cierra la sesion de un usuario
-export const logoutUsuario = async (id: string): Promise<boolean> => {
+export const logoutUsuario = async (id: string, token: string): Promise<boolean> => {
+    await cerrarSesion(id, token);
     return true;
 }
 

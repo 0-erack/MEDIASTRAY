@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request as ExpressRequest, Response as ExpressResponse } from "express";
 import { hacerTestsConexiones } from '../tests/tests.js';
 import { alterarSeguidores, verUsuario } from '../controllers/usuarioController.js';
 import { exito, fallo, manejadorRuta } from './respuesta.js';
@@ -13,7 +14,7 @@ router.get("/prueba", (req, res) => {
 });
 
 //Devuelve si el usuario A sigue al usuario B (id_a, id_b)
-router.get("/user/follow/:id_a/:id_b", async (req, res) => {
+router.get("/user/follow/:id_a/:id_b", async (req: ExpressRequest<{ id_a: string; id_b: string }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         if (await alterarSeguidores(req.params.id_a, req.params.id_b, 0)) {
             return res.json(exito("Follows", true));
@@ -24,7 +25,7 @@ router.get("/user/follow/:id_a/:id_b", async (req, res) => {
 });
 
 //Devuelve los datos públicos base de un usuario
-router.get("/user/:id", async (req, res) => {
+router.get("/user/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         if (!req.params.id) return res.status(404).json(fallo("User not found", null, 404));
         const usuario = await verUsuario(req.params.id) ?? false;
