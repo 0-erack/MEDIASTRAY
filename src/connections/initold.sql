@@ -17,7 +17,7 @@ CREATE TABLE USUARIOS (
     contrasegna VARCHAR(127) NOT NULL, --Contrasegna encriptada
     correo VARCHAR(255) UNIQUE NOT NULL, --Correo para login
     descripcion VARCHAR(511) DEFAULT '', --Descripcion markdown
-    url_foto VARCHAR(255) DEFAULT '/public/nopfp.png', --Url de su foto
+    urlFoto VARCHAR(255) DEFAULT '/public/nopfp.png', --Url de su foto
     --telefono VARCHAR(20),
     cumpleagnos VARCHAR(15), --Fecha de nacimiento en timestamp para evitar juegos +18
     fechacreacion VARCHAR(15), --Fecha de creacion del usuario en timestamp
@@ -57,7 +57,7 @@ CREATE TABLE FOROS (
     uuid VARCHAR(36) PRIMARY KEY, --Identificador
     titulo VARCHAR(63) UNIQUE NOT NULL, --Titulo del foro
     descripcion VARCHAR(511) DEFAULT '', --Descripcion en markdown
-    url_foto VARCHAR(255) DEFAULT '/public/coverless_forum.png', --Url de la foto principal
+    urlFoto VARCHAR(255) DEFAULT '/public/coverless_forum.png', --Url de la foto principal
     url_banner VARCHAR(255) DEFAULT '/public/bannerless.png', --Url del banner (foto horizontal)
     publico BOOLEAN DEFAULT TRUE, --Si esta publico
     uuid_creador VARCHAR(36) REFERENCES USUARIOS(uuid), --uuid de su creador

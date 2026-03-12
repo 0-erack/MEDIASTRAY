@@ -1,7 +1,7 @@
 info:
-  name: Editar usuario
+  name: Editar usuario simple
   type: http
-  seq: 4
+  seq: 5
 
 http:
   method: PATCH
@@ -20,12 +20,10 @@ http:
     data: |-
       {
         "newData": {
-          "email": "holaque@gma.co",
-          "name": "Holaque uno",
-          "nickname": "holaque1",
-          "password": "Ja.12121212",
-          "birthdate": "1773252289389"
-          
+          "name": "Holaque uno s",
+          "changePassword": false,
+          "description": "aasd",
+          "urlPhoto": "https://fotos.com/2"
         }
       }
   auth:

@@ -22,7 +22,7 @@ export const validarCreacionUsuario = (data:any): Partial<Usuario> => {
  * @returns parte del usuario en caso de ser correcto
  * @throws error si no es valido
  */
-export const validarEdicionUsuario = (data:any): Partial<Usuario> => {
+export const validarEdicionUsuario = (data:any): Record<string, any> => {
     if (data.name != undefined && !nombre(data.name)) throw new Error("Invalid name");
     if (data.urlPhoto != undefined && !url(data.urlPhoto)) throw new Error("Invalid photo url");
     if (data.description != undefined && !descripcionUsuario(data.description)) throw new Error("Invalid description");
@@ -33,7 +33,7 @@ export const validarEdicionUsuario = (data:any): Partial<Usuario> => {
     if (data.changePassword == true || data.nickname != undefined || data.email != undefined || data.password != undefined) {
         if (data.oldPassword == undefined || !contrasegna(data.oldPassword)) throw new Error("Invalid old password");
     }
-    return {nombre: data.name, nickname: data.nickname, urlfoto: data.urlPhoto, descripcion: data.description, cumpleagnos: data.birthdate, correo: data.email, contrasegna: data.password, contrasegnaAntigua: data.oldPassword} as Partial<Usuario>;
+    return {cambiarContrasegna: data.changePassword, nombre: data.name, nickname: data.nickname, urlFoto: data.urlPhoto, descripcion: data.description, cumpleagnos: data.birthdate, correo: data.email, contrasegna: data.password, contrasegnaAntigua: data.oldPassword} as Partial<Usuario>;
 }
 
 /**
@@ -70,4 +70,20 @@ export const validarUsuario = (data:Usuario): Usuario => {
     if (isNaN(data.nivelAcceso)) throw new Error("Invalid access level");
     if (isNaN(data.nivelPublico)) throw new Error("Invalid public level");
     return data;
+}
+
+/**
+ * Formatea los datos de un usuario para presentarlos hacia fuera de la api
+ * @param data el usuario crudo
+ */
+export const formatearUsuarioPrivado = (data:Partial<Usuario>): Record<string, any> => {
+    return {id: data.id, nickname: data.nickname, name: data.nombre, email: data.correo, password: undefined, description: data.descripcion, urlPhoto: data.urlFoto, birthdate: data.cumpleagnos, creationDate: data.fechaCreacion, followersAmount: data.cantidadSeguidores}
+}
+
+/**
+ * Formatea los datos de un usuario para presentarlos hacia fuera de la api
+ * @param data el usuario crudo
+ */
+export const formatearUsuarioPublico = (data:Partial<Usuario>): Record<string, any> => {
+    return {id: data.id, nickname: data.nickname, name: data.nombre, email: undefined, password: undefined, description: data.descripcion, urlPhoto: data.urlFoto, birthdate: undefined, creationDate: data.fechaCreacion, followersAmount: data.cantidadSeguidores}
 }

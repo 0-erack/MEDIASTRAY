@@ -20,7 +20,7 @@ http:
     data: |-
       {
         "credentials": {
-          "identification": "holaque@gma.co",
+          "identification": "holaque1",
           "password": "Ja.12121212"
         }
       }

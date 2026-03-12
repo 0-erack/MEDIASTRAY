@@ -70,9 +70,9 @@ if (process.env.NODE_ENV === "DEVELOPMENT") { //Código solo para development
 if (process.env.SERVE_STATIC === "true") app.use("/public", express.static(process.env.PUBLIC_FILES_PATH ?? './public'));
 if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(process.env.GAMES_FILES_PATH ?? './games'));
 //Peticiones a la API (se gestionan manualmente por el servidor)
-app.use("/api/v1", apiRoutes);
 app.use("/api/v1", apiRoutesPriv);
 app.use("/api/v1/admin", apiRoutesAdmin);
+app.use("/api/v1", apiRoutes);
 //Las peticiones en / se dirigen al dist del frontend
 
 if (process.env.SERVE_FRONTEND === "true") {

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { nombre as validarNombre, nickname as validarNickname, correo as validarCorreo, timestamp as validarCumpleagnos, contrasegna as validarContrasegna, descripcionUsuario as validarDescripcion, url as validarUrl, contrasegna, correo } from '../libraries/validaciones.js';
+import { nombre as validarNombre, nickname as validarNickname, correo as validarCorreo, timestamp as validarCumpleagnos, contrasegna as validarContrasegna, descripcionUsuario as validarDescripcion, url as validarUrl, contrasegna, correo, nickname, cumpleagnos } from '../libraries/validaciones.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { redisDelete, redisSet } from '../connections/redis.js';
@@ -8,20 +8,23 @@ import { agnadirLog } from '../connections/logs.js';
 import { mongoDelete, mongoGet, mongoSet } from '../connections/mongodb.js';
 import { autenticarContrasegnaUsuario } from '../routes/autenticaciones.js';
 import { Usuario } from '../types/Usuario.js';
-import { validarCreacionUsuario, validarEdicionUsuario, validarLoginUsuario } from '../validators/validacionesUsuario.js';
+import { formatearUsuarioPrivado, formatearUsuarioPublico, validarCreacionUsuario, validarEdicionUsuario, validarLoginUsuario } from '../validators/validacionesUsuario.js';
 import { eq, or } from 'drizzle-orm';
 import { usuarios } from '../models/schema.js';
 import { crearSesion, cerrarSesion, verSesionToken, verSesionUsuario } from './sessionController.js';
 
 
-const validarJsonEdicionUsuario = (usuario: Record<string, any>) => {
-    if (usuario.nombre && !validarNombre(usuario.nombre)) throw { message: "Invalid credentials (name)", code: 401 };
-    if (usuario.url_foto && !validarUrl(usuario.url_foto)) throw { message: "Invalid credentials (pfp url)", code: 401 };
-    if (usuario.descripcion && !validarDescripcion(usuario.descripcion)) throw { message: "Invalid credentials (description)", code: 401 };
-    if (usuario.cumpleagnos && !validarCumpleagnos(usuario.cumpleagnos)) throw { message: "Invalid credentials (birth date)", code: 401 };
-    if (usuario.nickname && !validarNickname(usuario.nickname)) throw { message: "Invalid credentials (nickname)", code: 401 };
-    if (usuario.correo && !validarCorreo(usuario.correo)) throw { message: "Invalid credentials (email)", code: 401 };
-    if (usuario.contrasegna && !validarContrasegna(usuario.contrasegna)) throw { message: "Invalid credentials (password)", code: 401 };
+/**
+ * Busca un usuario en la base de datos segun su id
+ * @param id el id a buscar
+ * @returns el usuario encontrado, o null si no se ha encontrado
+ */
+const buscarUsuario = async (id: string): Promise<Usuario | null> => {
+    const db = getDB();
+    const usuarioPrevio = await db.select().from(usuarios).where(eq(usuarios.id, id)).limit(1);
+    const usuario = usuarioPrevio[0] as Usuario;
+    if (!usuario || !usuarioPrevio.length) return null;
+    return usuario;
 }
 
 //Registrarse, requiere en el body (usuario): nombre, nickname, correo, contrasegna, cumpleagnos. Devuelve un token de sesion
@@ -38,15 +41,14 @@ export const crearUsuario = async (datos: Record<string, any>): Promise<Record<s
     const token = await crearSesion(usuarioCreado.id, { recienCreado: true });
     const creacion = await db.insert(usuarios).values({ id: usuarioCreado.id, nickname: usuarioCreado.nickname, nombre: usuarioCreado.nombre, contrasegna: usuarioCreado.contrasegna, correo: usuarioCreado.correo, cumpleagnos: usuarioCreado.cumpleagnos, fechaCreacion: usuarioCreado.fechaCreacion }).returning({ id: usuarios.id });
     if (!creacion.length) throw { message: "Internal server error", code: 500 }
+    const usuarioFinal = await buscarUsuario(usuarioCreado.id);
     agnadirLog("backend.log", "New user created " + usuarioCreado.id);
     agnadirLog("db.log", "New user created USUARIOS " + usuarioCreado.id);
-    usuarioCreado.contrasegna = undefined;
-    return { token: token, usuario: usuarioCreado };
+    return { token: token, usuario: formatearUsuarioPrivado(usuarioFinal!) };
 }
 
 //Hacer login con el usuario, requiere en el body (credentials): contrasegna, identificacion (su correo o nickname). Devuelve un token de sesion valido por 4 horas y los datos del usuario
 export const loginUsuario = async (datosLogin: Record<string, any>): Promise<Record<string, any>> => {
-
     if (!validarLoginUsuario(datosLogin)) throw { message: "Invalid user data", code: 401 }
     const db = getDB();
     const elUsuario = await db.select().from(usuarios).where(or(eq(usuarios.nickname, datosLogin.identification), eq(usuarios.correo, datosLogin.identification))).limit(1);
@@ -58,7 +60,7 @@ export const loginUsuario = async (datosLogin: Record<string, any>): Promise<Rec
     const token = await crearSesion(usuario.id!);
     usuario.contrasegna = undefined;
     agnadirLog("backend.log", "User logged in " + usuario.id);
-    return { token, usuario };
+    return { token, usuario: formatearUsuarioPrivado(usuario) };
 }
 
 //Cierra la sesion de un usuario
@@ -68,61 +70,58 @@ export const logoutUsuario = async (id: string, token: string): Promise<boolean>
 }
 
 //Editar un usuario actualizando sus datos, requiere en el body (newData) todos los posibles nuevos datos. Devuelve true si va todo bien
-//Concretamente se pueden editar: nickname, nombre, contrasegna, correo, descripcion, url_foto, cumpleagnos. Para nickname, correo o contrasegna se requiere tambien la contrasegna antigua (contrasegnaAntigua)
+//Concretamente se pueden editar: nickname, nombre, contrasegna, correo, descripcion, urlFoto, cumpleagnos. Para nickname, correo o contrasegna se requiere tambien la contrasegna antigua (contrasegnaAntigua)
 export const editarUsuario = async (nuevos: Record<string, any>, id: string): Promise<Record<string, any>> => {
-        const usuarioPrevio = await consulta("SELECT * FROM USUARIOS WHERE id = $1;", [id]);
-        if (!usuarioPrevio[0]) throw { message: "Invalid credentials", code: 401 };
-        if (usuarioPrevio[0].disponibilidad >= 2) throw { message: "User has not allowed login nor edit credentials or profile", code: 401 };
-        const datsNuevos = validarEdicionUsuario(nuevos);
-
-
-        
-        let proporcionadoContrasegnaAntigua = false;
-        if (!nuevos.cambiarContrasegna) { //Solo se pide la contrasegna original si se va a cambiar a otra distinta
-            proporcionadoContrasegnaAntigua = true;
+    const datosNuevos = validarEdicionUsuario(nuevos);
+    const usuarioPrevio = await buscarUsuario(id);
+    if (!usuarioPrevio) throw { message: "Invalid credentials", code: 401 };
+    if (usuarioPrevio.disponibilidad >= 2) throw { message: "User has not allowed login edit credentials nor profile", code: 401 };
+    let edicionAutenticada = false; //Hace referencia a si la peticion esta autorizada para editar datos sensibles
+    if (datosNuevos.cambiarContrasegna && datosNuevos.contrasegnaAntigua != undefined) { //Solo se pide la contrasegna original si se va a cambiar a otra distinta
+        const contrasegnaCoincide = await autenticarContrasegnaUsuario(datosNuevos.contrasegnaAntigua, usuarioPrevio.contrasegna!);
+        if (contrasegnaCoincide) {
+            edicionAutenticada = true;
         } else {
-            if (nuevos.contrasegnaAntigua) {
-                const contrasegnaCoincide = await autenticarContrasegnaUsuario(nuevos.contrasegnaAntigua, usuarioPrevio[0].contrasegna);
-                if (contrasegnaCoincide) {
-                    proporcionadoContrasegnaAntigua = true;
-                } else {
-                    throw { message: "Validate password is needed", code: 401, data: { failedPassword: true } }
-                };
-            }
+            throw { message: "Validate password is needed", code: 401, data: { failedPassword: true } }
         }
-        if (nuevos.nickname && nuevos.nickname !== usuarioPrevio[0].nickname) {
-            if (!proporcionadoContrasegnaAntigua) throw { message: "Validate password is needed", code: 401 };
-            const conEseNickname = await consulta("SELECT id FROM USUARIOS WHERE nickname = $1;", [nuevos.nickname]);
-            if (conEseNickname[0]) throw { message: "Nickname already in use", code: 401, data: { doubleNickname: true } };
-        }
-        if (nuevos.correo && nuevos.correo !== usuarioPrevio[0].correo) {
-            if (!proporcionadoContrasegnaAntigua) throw { message: "Validate password is needed", code: 401 };
-            const conEseEmail = await consulta("SELECT id FROM USUARIOS WHERE correo = $1;", [nuevos.correo]);
-            if (conEseEmail[0]) throw { message: "Email already in use", code: 401, data: { doubleEmail: true } };
-        }
-        if (nuevos.contrasegna && nuevos.cambiarContrasegna) {
-            console.log("casmbiocon", nuevos.contrasegna);
-            if (!proporcionadoContrasegnaAntigua) throw { message: "Validate password is needed", code: 401 };
-            nuevos.contrasegna = await bcrypt.hash(nuevos.contrasegna, 10);
-        } else {
-            nuevos.contrasegna = usuarioPrevio[0].contrasegna;
-        }
-        if (await consulta("UPDATE USUARIOS SET nickname = $1, nombre = $2, contrasegna = $3, correo = $4, descripcion = $5, url_foto = $6, cumpleagnos = $7 WHERE id = $8;",
-            [nuevos.nickname ?? usuarioPrevio[0].nickname, nuevos.nombre ?? usuarioPrevio[0].nombre, nuevos.contrasegna ?? usuarioPrevio[0].contrasegna, nuevos.correo ?? usuarioPrevio[0].correo, nuevos.descripcion ?? usuarioPrevio[0].descripcion, nuevos.url_foto ?? usuarioPrevio[0].url_foto, nuevos.cumpleagnos ?? usuarioPrevio[0].cumpleagnos, id])) {
-            const TOKEN_SECRET = process.env.JWT_SECRET;
-            const token = await jwt.sign({ id, nickname: nuevos.nickname ?? usuarioPrevio[0].nickname }, TOKEN_SECRET, { expiresIn: '20h', algorithm: 'HS256' });
-            await redisDelete("SESSION-TOKEN-" + id);
-            await redisDelete("SESSION-TOKEN-" + token);
-            await redisSet("SESSION-TOKEN-" + id, token, 72000);
-            await redisSet("SESSION-TOKEN-" + token, id, 72000);
-            const nuevoTodo = await consulta("SELECT * FROM USUARIOS WHERE id = $1;", [id]);
-            nuevoTodo[0].contrasegna = "";
-            agnadirLog("backend.log", "User editted " + id);
-            agnadirLog("db.log", "User editted via update USUARIOS " + id);
-            return { usuarioRenovado: nuevoTodo[0] ?? {}, tokenNuevo: token }
-        } else {
-            throw { message: "There was an error updating the user", code: 401 };
-        }
+    }
+    const db = getDB();
+    if (datosNuevos.nickname && datosNuevos.nickname !== usuarioPrevio.nickname) {
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 401 };
+        const conEseNickname = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.nickname, datosNuevos.nickname!)).limit(1);
+        if (conEseNickname[0]) throw { message: "Nickname already in use", code: 401, data: { doubleNickname: true } };
+    }
+    if (datosNuevos.correo && datosNuevos.correo !== usuarioPrevio.correo) {
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 401 };
+        const conEseEmail = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.correo, datosNuevos.correo!)).limit(1);
+        if (conEseEmail[0]) throw { message: "Email already in use", code: 401, data: { doubleEmail: true } };
+    }
+    if (datosNuevos.contrasegna && datosNuevos.cambiarContrasegna) {
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 401 };
+        if (!validarContrasegna(datosNuevos.contrasegna)) throw { message: "New password doesnt have the required security", code: 401 };
+        datosNuevos.contrasegna = await bcrypt.hash(datosNuevos.contrasegna, 10);
+    } else {
+        datosNuevos.contrasegna = usuarioPrevio.contrasegna;
+    }
+    const resultado = await db.update(usuarios).set({
+            nombre: datosNuevos.nombre ?? usuarioPrevio.nombre,
+            contrasegna: datosNuevos.contrasegna ?? usuarioPrevio.contrasegna,
+            nickname: datosNuevos.nickname ?? usuarioPrevio.nickname,
+            urlFoto: datosNuevos.urlFoto ?? usuarioPrevio.urlFoto,
+            descripcion: datosNuevos.descripcion ?? usuarioPrevio.descripcion,
+            cumpleagnos: datosNuevos.cumpleagnos || usuarioPrevio.cumpleagnos,
+            correo: datosNuevos.correo ?? usuarioPrevio.correo
+        }).where(eq(usuarios.id, id)).returning({ id: usuarios.id });
+    if (resultado.length) {
+        const token = await crearSesion(id);
+        const usuarioFinal = await buscarUsuario(id);
+        usuarioFinal!.contrasegna! = "";
+        agnadirLog("backend.log", "User editted " + id);
+        agnadirLog("db.log", "User editted via update USUARIOS " + id);
+        return { usuarioRenovado: formatearUsuarioPrivado(usuarioFinal!), tokenNuevo: token }
+    } else {
+        throw { message: "There was an error updating the user", code: 401 };
+    }
 }
 
 //Borra el usuario, requiere de su contrasegna en el body asi como el token de sesion
@@ -180,15 +179,19 @@ export const borrarUsuario = async (contrasegna: string, id: string): Promise<bo
 }
 
 //Devuelve datos básicos y públicos de un usuario a partir de su id o su nickname
-export const verUsuario = async (id: string): Promise<Record<string, any>> => {
+export const verUsuario = async (id: string, publico = true): Promise<Record<string, any>> => {
     try {
-        const usuario = await consulta("SELECT * FROM USUARIOS WHERE id = $1 OR nickname = $2;", [id, id]);
-        if (!usuario[0] || usuario[0].nivel_publico === 2) throw { message: "User not found", code: 401 }
-        //usuario[0].contrasegna = undefined;
+        const db = getDB();
+        const usuario = await db.select().from(usuarios).where(or(eq(usuarios.id, id), eq(usuarios.nickname, id))).limit(1);
+        if (!usuario[0] || usuario[0].nivel_publico === 2) throw { message: "User not found", code: 404 }
         if (usuario[0].nivel_publico === 1) {
-            return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "", cantidad_seguidores: 0, premium: "", };
+            return { ...usuario, contrasegna: "", correo: undefined, cumpleagnos: "", cantidad_seguidores: 0, premium: "", };
         }
-        return { ...usuario[0], contrasegna: "", correo: undefined, cumpleagnos: "" };
+        if (publico) {
+            return formatearUsuarioPublico(usuario[0]);
+        } else {
+            return formatearUsuarioPrivado(usuario[0]);
+        }
     } catch (error) {
         throw error;
     }

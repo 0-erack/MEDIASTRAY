@@ -27,9 +27,9 @@ router.get("/user/follow/:id_a/:id_b", async (req: ExpressRequest<{ id_a: string
 //Devuelve los datos públicos base de un usuario
 router.get("/user/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        if (!req.params.id) return res.status(404).json(fallo("User not found", null, 404));
-        const usuario = await verUsuario(req.params.id) ?? false;
-        if (!usuario.id) return res.status(404).json(fallo("User not found", null, 404));
+        if (!req.params?.id) return res.status(404).json(fallo("User not found", null, 404));
+        const usuario = await verUsuario(req.params?.id, true) ?? false;
+        if (!usuario) return res.status(404).json(fallo("User not found", null, 404));
         return res.json(exito("User found", usuario));
     });
 });

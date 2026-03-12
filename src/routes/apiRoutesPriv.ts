@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request as ExpressRequest, Response as ExpressResponse } from "express";
 import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
-import { crearUsuario, loginUsuario, editarUsuario, borrarUsuario, alterarSeguidores, logoutUsuario } from '../controllers/usuarioController.js';
+import { crearUsuario, loginUsuario, editarUsuario, borrarUsuario, alterarSeguidores, logoutUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { redisGet } from '../connections/redis.js';
 import { exito, fallo, falloInterno, manejadorRuta } from './respuesta.js';
 import { verSesionToken } from '../controllers/sessionController.js';
@@ -55,12 +55,21 @@ routerPriv.delete("/user/logout", autenticarTokenApi, autenticarTokenSesion, asy
 });
 
 //Ruta para editar un usuario existente, requiere en el body (newData) todos los posibles nuevos datos. Devuelve true si va todo bien
-//Concretamente se pueden editar: nickname, nombre, contrasegna, correo, descripcion, url_foto, cumpleagnos. Para nickname, correo o contrasegna se requiere tambien la contrasegna antigua (contrasegnaAntigua)
+//Concretamente se pueden editar: nickname, nombre, contrasegna, correo, descripcion, urlFoto, cumpleagnos. Para nickname, correo o contrasegna se requiere tambien la contrasegna antigua (contrasegnaAntigua)
 routerPriv.patch("/user/edit", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         const { usuarioRenovado, tokenNuevo } = await editarUsuario(req.body.newData, req.datosSesion!.id);
         res.setHeader('X-auth-session', tokenNuevo);
         return res.json(exito("User editted successfully", {sessionToken: tokenNuevo, user: usuarioRenovado}));
+    });
+});
+
+//Ver los datos del usuario que ha hecho la peticion
+routerPriv.get("/user/me", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const usuario = await verUsuario(req.datosSesion!.id, false) ?? false;
+        if (!usuario) return res.status(404).json(fallo("User not found", null, 404));
+        return res.json(exito("User found", usuario));
     });
 });
 
@@ -72,7 +81,7 @@ routerPriv.delete("/user/delete", autenticarTokenApi, autenticarTokenSesion, asy
         if (id === "" || !req.body.contrasegna) return res.status(401).json(fallo("Invalid credentials", null, 401));
         if (await borrarUsuario(req.body.contrasegna, id)) {
             return res.json(exito("User deleted successfully..."));
-            //MAS cascada
+            //TODO: MAS cascada
         } else {
             return res.status(401).json(fallo("Invalid credentials", null, 401));
         }

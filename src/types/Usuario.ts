@@ -2,7 +2,7 @@ export type Usuario = {
     id: string;
     nickname: string;
     nombre: string;
-    contrasegna: string;
+    contrasegna: string|null|undefined;
     correo: string;
     descripcion: string|null;
     urlFoto: string|null;

@@ -8,7 +8,7 @@ export const usuarios = pgTable("usuarios", {
   contrasegna: varchar("contrasegna", { length: 128 }).notNull(), //Contrasegna encriptada
   correo: varchar("correo", { length: 255 }).unique().notNull(), //Correo para login
   descripcion: varchar("descripcion", { length: 512 }).default(""), //Descripcion markdown
-  urlFoto: varchar("url_foto", { length: 255 }).default("/public/nopfp.png"), //Url de su foto
+  urlFoto: varchar("urlFoto", { length: 255 }).default("/public/nopfp.png"), //Url de su foto
   cumpleagnos: varchar("cumpleagnos", { length: 16 }), //Fecha de nacimiento en timestamp para evitar juegos +18
   fechaCreacion: varchar("fechaCreacion", { length: 16 }), //Fecha de creacion del usuario en timestamp
   strikes: integer("strikes").default(0), //Manejo interno
@@ -45,7 +45,7 @@ export const foros = pgTable("foros", {
   id: varchar("id", { length: 36 }).primaryKey(), //Identificador
   titulo: varchar("titulo", { length: 63 }).unique().notNull(), //Titulo del foro
   descripcion: varchar("descripcion", { length: 511 }).default(""), //Descripcion en markdown
-  urlFoto: varchar("url_foto", { length: 255 }).default("/public/coverless_forum.png"), //Url de la foto principal
+  urlFoto: varchar("urlFoto", { length: 255 }).default("/public/coverless_forum.png"), //Url de la foto principal
   urlBanner: varchar("url_banner", { length: 255 }).default("/public/bannerless.png"), //Url de la foto principal (horizontal)
   //TODO publico o no, exclusivo, igdb
   idCreador: varchar("id_creador", { length: 36 }).references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador

@@ -25,7 +25,7 @@
         <mxCell id="__gE_71Bklw0PoVe9oY1-35" parent="__gE_71Bklw0PoVe9oY1-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="descripcion" vertex="1">
           <mxGeometry height="30" width="140" y="180" as="geometry" />
         </mxCell>
-        <mxCell id="__gE_71Bklw0PoVe9oY1-36" parent="__gE_71Bklw0PoVe9oY1-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="url_foto" vertex="1">
+        <mxCell id="__gE_71Bklw0PoVe9oY1-36" parent="__gE_71Bklw0PoVe9oY1-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="urlFoto" vertex="1">
           <mxGeometry height="30" width="140" y="210" as="geometry" />
         </mxCell>
         <mxCell id="__gE_71Bklw0PoVe9oY1-37" parent="__gE_71Bklw0PoVe9oY1-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="cumpleagnos" vertex="1">
@@ -112,7 +112,7 @@
         <mxCell id="__gE_71Bklw0PoVe9oY1-12" parent="__gE_71Bklw0PoVe9oY1-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;descripcion&lt;/div&gt;" vertex="1">
           <mxGeometry height="30" width="220" y="90" as="geometry" />
         </mxCell>
-        <mxCell id="__gE_71Bklw0PoVe9oY1-78" parent="__gE_71Bklw0PoVe9oY1-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="url_foto" vertex="1">
+        <mxCell id="__gE_71Bklw0PoVe9oY1-78" parent="__gE_71Bklw0PoVe9oY1-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="urlFoto" vertex="1">
           <mxGeometry height="30" width="220" y="120" as="geometry" />
         </mxCell>
         <mxCell id="__gE_71Bklw0PoVe9oY1-79" parent="__gE_71Bklw0PoVe9oY1-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="url_banner" vertex="1">

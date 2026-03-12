@@ -71,7 +71,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
     <div className="tarjeta-usuario-grande">
       {JSON.stringify(usuario)}
         <h2>{usuario.nombre}</h2>
-        <img src={usuario.url_foto ?? "#"} alt={TextoTraducido("errores", idiomaActual, "nopfp")} />
+        <img src={usuario.urlFoto ?? "#"} alt={TextoTraducido("errores", idiomaActual, "nopfp")} />
         <p>{"("}{usuario.nickname}{")"}</p>
         {soyYo && (<p>{usuario.correo}</p>)}
         <p>{usuario.descripcion.length ? usuario.descripcion : TextoTraducido("errores", idiomaActual, "noDescripcion")}</p>

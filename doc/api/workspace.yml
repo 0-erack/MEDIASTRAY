@@ -8,5 +8,7 @@ collections:
     path: "collections/Standard"
 
 specs:
+  - name: "prueba"
+    path: "apispec/prueba.yaml"
 
 docs: ''

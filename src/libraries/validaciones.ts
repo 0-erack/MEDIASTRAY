@@ -43,19 +43,4 @@ export const cumpleagnos = (data:string):boolean => {
     return timestamp(data + "") && texto < new Date();
 }
 
-//Pensada para validar el localstorage TODO
-export const validarDatosUsuarioLS = (usuario:any):boolean => {
-    return typeof usuario === "object"
-        && id(usuario.id)
-        && nickname(usuario.nickname)
-        && nombre(usuario.nombre)
-        && correo(usuario.correo)
-        && descripcionUsuario(usuario.descripcion)
-        && (url(usuario.url_foto) || usuario.url_foto === "/public/nopfp.png" || usuario.url_foto === "")
-        && timestamp(usuario.cumpleagnos)
-        && timestamp(usuario.fechaCreacion)
-        && usuario.disponibilidad > 0
-        && (usuario.premium === "" || timestamp(usuario.premium))
-        //&& enteroPositivo(usuario.permisos);
-}
-
+export const validarDatosUsuarioLS = (...data:any):any => {} //TODO: borrar
