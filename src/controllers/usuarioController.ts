@@ -8,7 +8,7 @@ import { agnadirLog } from '../connections/logs.js';
 import { mongoDelete, mongoGet, mongoSet } from '../connections/mongodb.js';
 import { autenticarContrasegnaUsuario } from '../routes/autenticaciones.js';
 import { Usuario } from '../types/Usuario.js';
-import { validarCreacionUsuario, validarLoginUsuario } from '../validators/validacionesUsuario.js';
+import { validarCreacionUsuario, validarEdicionUsuario, validarLoginUsuario } from '../validators/validacionesUsuario.js';
 import { eq, or } from 'drizzle-orm';
 import { usuarios } from '../models/schema.js';
 import { crearSesion, cerrarSesion, verSesionToken, verSesionUsuario } from './sessionController.js';
@@ -70,12 +70,13 @@ export const logoutUsuario = async (id: string, token: string): Promise<boolean>
 //Editar un usuario actualizando sus datos, requiere en el body (newData) todos los posibles nuevos datos. Devuelve true si va todo bien
 //Concretamente se pueden editar: nickname, nombre, contrasegna, correo, descripcion, url_foto, cumpleagnos. Para nickname, correo o contrasegna se requiere tambien la contrasegna antigua (contrasegnaAntigua)
 export const editarUsuario = async (nuevos: Record<string, any>, id: string): Promise<Record<string, any>> => {
-    try {
-        if (!nuevos || !id) throw { message: "Invalid credentials", code: 401 };
         const usuarioPrevio = await consulta("SELECT * FROM USUARIOS WHERE id = $1;", [id]);
         if (!usuarioPrevio[0]) throw { message: "Invalid credentials", code: 401 };
         if (usuarioPrevio[0].disponibilidad >= 2) throw { message: "User has not allowed login nor edit credentials or profile", code: 401 };
-        validarJsonEdicionUsuario(nuevos);
+        const datsNuevos = validarEdicionUsuario(nuevos);
+
+
+        
         let proporcionadoContrasegnaAntigua = false;
         if (!nuevos.cambiarContrasegna) { //Solo se pide la contrasegna original si se va a cambiar a otra distinta
             proporcionadoContrasegnaAntigua = true;
@@ -122,9 +123,6 @@ export const editarUsuario = async (nuevos: Record<string, any>, id: string): Pr
         } else {
             throw { message: "There was an error updating the user", code: 401 };
         }
-    } catch (error) {
-        throw error;
-    }
 }
 
 //Borra el usuario, requiere de su contrasegna en el body asi como el token de sesion
