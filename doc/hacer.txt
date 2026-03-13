@@ -1,28 +1,5 @@
 bugs:
 
- borrado en cascada usuario
- permisos y demas usuarios 
-mejorar api
- tests
- monitoreo
-refactor backend (usar orm, modelos, reducir conexiones, permisos, mas)
-        cambiar numero seguidores y opcion de seguir, getPremium, rutas de disponibilidad y visibilidad
- refactor frontend (librerias)
-manejo de errores personalizado
-reportes
-ajustes y bajar visibilidad
-
-init db 
-rutas api usuarios y funcionalidad
-interfaz basica interactuar con usuarios
-busqueda de usuarios
-rutas api crear juegos y foros (si eso), y interactibilidad con usuarios
-aplicar edicion de metadatos de jeugos y foros en la interfaz
-agregar funcionalidad de subir el juego en si
-que el juego sea visible en la interfaz
-mejorar interfaz
-...
-
 
 
 extras:
@@ -39,3 +16,9 @@ jams
 logs en red
 monitoreo
 cicd
+html personalizado juegos
+mails
+api guardados
+idiomas
+incrustacion juego
+docs
