@@ -1,7 +1,7 @@
 info:
   name: Validar session token
   type: http
-  seq: 5
+  seq: 7
 
 http:
   method: GET

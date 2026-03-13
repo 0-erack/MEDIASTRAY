@@ -87,3 +87,11 @@ export const formatearUsuarioPrivado = (data:Partial<Usuario>): Record<string, a
 export const formatearUsuarioPublico = (data:Partial<Usuario>): Record<string, any> => {
     return {id: data.id, nickname: data.nickname, name: data.nombre, email: undefined, password: undefined, description: data.descripcion, urlPhoto: data.urlFoto, birthdate: undefined, creationDate: data.fechaCreacion, followersAmount: data.cantidadSeguidores}
 }
+
+/**
+ * Formatea los datos de un usuario para devolver solo los datos indispensables en una lista
+ * @param data el usuario crudo
+ */
+export const formatearUsuarioMiniatura = (data:Partial<Usuario>): Record<string, any> => {
+    return {id: data.id, nickname: data.nickname, urlPhoto: data.urlFoto}
+}

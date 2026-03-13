@@ -20,7 +20,7 @@ export const crearSesion = async (id:string, datosExtra:Record<string, any> = {}
  * @param id 
  * @param token 
  */
-export const cerrarSesion = async (id:string, token:string) => {
+export const cerrarSesion = async (id:string, token?:string) => {
     await redisDelete("SESSION-TOKEN-" + id);
     //await redisDelete("SESSION-TOKEN-" + token);
 }

@@ -4,7 +4,7 @@ const idSchema = z.string().uuid();
 const nicknameSchema = z.string().min(4).max(15).regex(/^[a-zA-Z0-9._\-|]+$/);
 const nombreSchema = z.string().min(5).max(100);
 const correoSchema = z.string().email();
-const timestampSchema = z.string().regex(/^\d{1,15}$/);
+const timestampSchema = z.string().regex(/^-?\d{1,15}$/);
 const urlPattern = /^(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(?::\d{1,5})?\b(?:[-a-zA-Z0-9()@:%_+.~#?&\/=]*))/;
 
 //Valida un id uuid

@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request as ExpressRequest, Response as ExpressResponse } from "express";
 import { hacerTestsConexiones } from '../tests/tests.js';
-import { alterarSeguidores, buscarUsuarios, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
+import { alterarSeguidores, buscarUsuarios, usuarioTienePremium, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { exito, fallo, manejadorRuta } from './respuesta.js';
 
 const router = express.Router();
@@ -31,11 +31,11 @@ router.get("/user/follow/followingsList/:id", async (req: ExpressRequest<{ id: s
     });
 });
 
-//Busqueda de usuarios por texto
+//Busqueda de usuarios por texto, usar ! para que salgan todos
 router.get("/user/search/:query", async (req: ExpressRequest<{ query: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         const pagina = Number.isInteger(req.query?.page) ? parseInt(req.query.page as string) : 0;
-        const resultado = await buscarUsuarios(req.params?.query, pagina);
+        const resultado = await buscarUsuarios(req.params?.query === "!" ? '' : req.params?.query, pagina);
         return res.json(exito("Users found", {results: resultado, amount: resultado.length}));
     });
 });
@@ -51,6 +51,15 @@ router.get("/user/follow/:id_a/:id_b", async (req: ExpressRequest<{ id_a: string
     });
 });
 
+//Ver si un usuario es premium o no
+router.get("/user/premium/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("User not found", null, 404));
+        const premium = await usuarioTienePremium(req.params.id);
+        return res.json(exito("Premium state", premium));
+    });
+});
+
 //Devuelve los datos públicos base de un usuario
 router.get("/user/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
@@ -60,6 +69,8 @@ router.get("/user/:id", async (req: ExpressRequest<{ id: string; }>, res: Expres
         return res.json(exito("User found", usuario));
     });
 });
+
+
 
 if (process.env.NODE_ENV === "DEVELOPMENT") router.get('/test', async (req, res) => { //Re-ejecutar los tests
     await hacerTestsConexiones();

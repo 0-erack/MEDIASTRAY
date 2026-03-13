@@ -80,7 +80,6 @@ routerPriv.delete("/user", autenticarTokenApi, autenticarTokenSesion, async (req
             res.setHeader('X-auth-session', '');
             await cerrarSesion(req.datosSesion!.id, req.datosSesion!.token);
             return res.json(exito("User deleted successfully..."));
-            //TODO: MAS cascada
         } else {
             return res.status(401).json(fallo("Invalid credentials", null, 401));
         }

@@ -1,7 +1,7 @@
 info:
   name: Foros
   type: folder
-  seq: 6
+  seq: 8
 
 request:
   auth: inherit

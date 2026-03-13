@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { verSesionToken } from "../controllers/sessionController.js";
 import { fallo } from './respuesta.js';
+import { usuarioEsAdmin } from '../controllers/usuarioController.js';
 
 
 //Para requerir el token de la api en el header X-auth-api
@@ -41,9 +42,15 @@ export const autenticarContrasegnaUsuario = async (entrante:string, encriptada:s
     return contrasegnaCoincide;
 }
 
-//Para requerir que el usuario sea administrador
-export const autenticarAdmin = (req, res, next) => {
-
+//Para requerir que el usuario sea administrador, se tiene que hacer despues de autenticarTokenSesion
+export const autenticarAdmin = async (req, res, next) => {
+    if (!req?.datosSesion?.id) return res.status(401).json(fallo("User is not admin", null, 401));
+    if (await usuarioEsAdmin(req.datosSesion.id)) {
+        req.datosSesion.esAdmin = true;
+        next();
+    } else {
+        return res.status(401).json(fallo("User is not admin", null, 401));
+    }
 }
 
 //Para requerir el token de sesion de juego (de un usuario) en el header X-auth-playtime
