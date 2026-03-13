@@ -1,11 +1,11 @@
 info:
-  name: Ver usuario publico
+  name: Borrar usuario
   type: http
-  seq: 6
+  seq: 8
 
 http:
-  method: GET
-  url: "{{url_backend}}/user/f20022ec-827e-45b2-96e9-9d7d2e18c2c6"
+  method: DELETE
+  url: "{{url_backend}}/user"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,7 +17,10 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "password": "Ja.12121212"
+      }
   auth:
     type: bearer
     token: "{{session_token}}"

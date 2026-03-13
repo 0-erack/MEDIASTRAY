@@ -100,8 +100,8 @@ services:
         hard: 64000
     logging:
       driver: none
-    ports:
-      - "8522:27017"
+    #ports:
+    #  - "8522:27017"
     volumes:
       - ./.docker/database/mongodb:/data/db
     networks:

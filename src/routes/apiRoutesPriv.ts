@@ -4,7 +4,7 @@ import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js'
 import { crearUsuario, loginUsuario, editarUsuario, borrarUsuario, alterarSeguidores, logoutUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { redisGet } from '../connections/redis.js';
 import { exito, fallo, falloInterno, manejadorRuta } from './respuesta.js';
-import { verSesionToken } from '../controllers/sessionController.js';
+import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 
 const routerPriv = express.Router();
 
@@ -42,7 +42,7 @@ routerPriv.post("/user/login", autenticarTokenApi, async (req: ExpressRequest, r
     })
 });
 
-
+//Ruta para borrar la sesion actual de un usuario
 routerPriv.delete("/user/logout", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         const resultado = await logoutUsuario(req.datosSesion!.id, req.datosSesion!.token);
@@ -74,12 +74,11 @@ routerPriv.get("/user/me", autenticarTokenApi, autenticarTokenSesion, async (req
 });
 
 //Ruta para borrar un usuario, requiere de su contrasegna (sin encriptar, introducida por el usuario) en el body asi como el token de sesion
-routerPriv.delete("/user/delete", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+routerPriv.delete("/user", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const token = req.body.token ?? (req.header('X-auth-session') ?? "");
-        const id = await redisGet("SESSION-TOKEN-" + token) ?? "";
-        if (id === "" || !req.body.contrasegna) return res.status(401).json(fallo("Invalid credentials", null, 401));
-        if (await borrarUsuario(req.body.contrasegna, id)) {
+        if (await borrarUsuario(req.body?.password ?? '', req.datosSesion!.id)) {
+            res.setHeader('X-auth-session', '');
+            await cerrarSesion(req.datosSesion!.id, req.datosSesion!.token);
             return res.json(exito("User deleted successfully..."));
             //TODO: MAS cascada
         } else {
@@ -91,12 +90,8 @@ routerPriv.delete("/user/delete", autenticarTokenApi, autenticarTokenSesion, asy
 //Usuario A sigue a usuario B, se crea el registro en mongodb y se altera la cantidad de seguidores en el usuario B, requiere follow +1 o -1 para seguir o desseguir (si es posible) (id_b, cantidad)
 routerPriv.post("/user/follow", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const token = req.body.token ?? (req.header('X-auth-session') ?? "");
-        const id = await redisGet("SESSION-TOKEN-" + token) ?? "";
-        let cantidad = req.body.cantidad;
-        if (cantidad > 1) cantidad = 1;
-        if (cantidad < -1) cantidad = -1;
-        if (await alterarSeguidores(id, req.body.id_b, cantidad)) {
+        let cantidad = Number.isInteger(req.body?.cantidad ?? 0) ? Math.sign(req.body?.cantidad) : 0;
+        if (cantidad != 0 && await alterarSeguidores(req.datosSesion!.id, req.body.id_b, cantidad)) {
             return res.json(exito("User followed/unfollowed successfully"));
         } else {
             return res.status(401).json(fallo("Couldn't perform action (follow)", null, 401));

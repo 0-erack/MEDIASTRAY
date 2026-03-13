@@ -1,11 +1,11 @@
 info:
-  name: Ver usuario publico
+  name: Crear otro usuario distinto
   type: http
-  seq: 6
+  seq: 2
 
 http:
-  method: GET
-  url: "{{url_backend}}/user/f20022ec-827e-45b2-96e9-9d7d2e18c2c6"
+  method: POST
+  url: "{{url_backend}}/user/create"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,7 +17,17 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "user": {
+          "email": "holaque2@gma.co",
+          "name": "Holaque dos",
+          "nickname": "holaque2",
+          "password": "Ja.12121212",
+          "birthdate": "1773252289389"
+          
+        }
+      }
   auth:
     type: bearer
     token: "{{session_token}}"

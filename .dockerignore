@@ -5,3 +5,6 @@ frontend/build
 frontend/android
 doc
 .vscode
+dist
+frontend/dist
+.docker

@@ -23,7 +23,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
   const [siguiendo, setSiguiendo] = useState(false);
   const [teSigue, setTeSigue] = useState(false);
   const { verSeguir, seguir } = useApi();
-  const [seguidoresSimulados, setSeguidoresSimulados] = useState(usuario.cantidad_seguidores);
+  const [seguidoresSimulados, setSeguidoresSimulados] = useState(usuario.cantidadSeguidores);
   const [editandoPerfil, setEditandoPerfil] = useState(false);
   const { lanzarMensaje } = useMensajes();
 

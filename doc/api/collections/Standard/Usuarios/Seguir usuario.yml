@@ -1,11 +1,11 @@
 info:
-  name: Ver usuario publico
+  name: Seguir usuario
   type: http
-  seq: 6
+  seq: 10
 
 http:
-  method: GET
-  url: "{{url_backend}}/user/f20022ec-827e-45b2-96e9-9d7d2e18c2c6"
+  method: POST
+  url: "{{url_backend}}/user/follow"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,7 +17,11 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "cantidad": 1,
+        "id_b": "88028721-7a94-4bc6-831e-267a7452612c"
+      }
   auth:
     type: bearer
     token: "{{session_token}}"

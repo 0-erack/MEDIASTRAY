@@ -1,11 +1,11 @@
 info:
-  name: Ver usuario publico
+  name: Ver seguidores usuario
   type: http
-  seq: 6
+  seq: 12
 
 http:
   method: GET
-  url: "{{url_backend}}/user/f20022ec-827e-45b2-96e9-9d7d2e18c2c6"
+  url: "{{url_backend}}/user/follow/followersList/9a74c50c-91d2-4ab6-ac04-3675b276e5d2?page=0"
   headers:
     - name: Content-Type
       value: application/json
@@ -15,6 +15,10 @@ http:
       value: "{{session_token}}"
     - name: X-auth-api
       value: "{{api_token}}"
+  params:
+    - name: page
+      value: "0"
+      type: query
   body:
     type: json
     data: ""

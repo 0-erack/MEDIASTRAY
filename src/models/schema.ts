@@ -14,9 +14,9 @@ export const usuarios = pgTable("usuarios", {
   strikes: integer("strikes").default(0), //Manejo interno
   disponibilidad: integer("disponibilidad").default(0), //Permisos restrictivos: 0 disponible, 1 desabilitada de subir juegos, 2 desabilitada de interactuar, 3 desabilitada de login...
   premium: varchar("premium", { length: 16 }).default(""), //Si tiene el premium (se almacena la fecha de caducidad, si esta vacio no tiene directamente)
-  cantidadSeguidores: integer("cantidad_seguidores").default(0), //Cantidad de seguidores que tiene
-  nivelPublico: integer("nivel_publico").default(0), //Nivel de anonimato: 0 normal, 1 pueden saber que existe pero no ver datos, 2 totalmente anonimo...
-  nivelAcceso: integer("nivel_acceso").default(0), //Permisos permisisvos: 0 normal, 1 panel de administracion, 2 full admin (no controla desde interfaz), 3 moderador
+  cantidadSeguidores: integer("cantidadSeguidores").default(0), //Cantidad de seguidores que tiene
+  nivelPublico: integer("nivelPublico").default(0), //Nivel de anonimato: 0 normal, 1 pueden saber que existe pero no ver datos, 2 totalmente anonimo...
+  nivelAcceso: integer("nivelAcceso").default(0), //Permisos permisisvos: 0 normal, 1 panel de administracion, 2 full admin (no controla desde interfaz), 3 moderador
 });
 
 export const juegos = pgTable("juegos", {
@@ -36,7 +36,7 @@ export const juegos = pgTable("juegos", {
   //TODO logros builds savedatas extensiones paginas
   generos: varchar("generos", { length: 255 }), //Generos separados por comas
   idiomas: varchar("idiomas", { length: 255 }), //Idiomas separados por comas
-  cantidadSeguidores: integer("cantidad_seguidores").default(0), //Cantidad de seguidores actual
+  cantidadSeguidores: integer("cantidadSeguidores").default(0), //Cantidad de seguidores actual
   cantidadLikes: integer("cantidad_likes").default(0), //Cantidad de likes actual
   edad: integer("edad").default(0), //Edad minima para jugar el juego
 });
@@ -50,7 +50,7 @@ export const foros = pgTable("foros", {
   //TODO publico o no, exclusivo, igdb
   idCreador: varchar("id_creador", { length: 36 }).references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador
   fechaCreacion: varchar("fechaCreacion", { length: 15 }), //Fecha en la que se creo
-  cantidadSeguidores: integer("cantidad_seguidores").default(0), //Cantidad de seguidores actual
+  cantidadSeguidores: integer("cantidadSeguidores").default(0), //Cantidad de seguidores actual
   cantidadLikes: integer("cantidad_likes").default(0), //Cantidad de likes actual
   juegoAsociado: varchar("juego_asociado", { length: 36 }), //FK? juego asociado
 });

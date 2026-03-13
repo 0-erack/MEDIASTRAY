@@ -24,9 +24,9 @@ CREATE TABLE USUARIOS (
     strikes INTEGER DEFAULT 0, --Manejo interno
     disponibilidad INTEGER DEFAULT 0, --0 disponible, 1 desabilitada de subir juegos, 2 desabilitada de interactuar, 3 desabilitada de login...
     premium VARCHAR(15) DEFAULT '', --Si tiene el premium (se almacena la fecha de caducidad, si esta vacio no tiene directamente)
-    cantidad_seguidores INTEGER DEFAULT 0, --Cantidad de seguidores que tiene
-    nivel_publico INTEGER DEFAULT 0, --0 normal, 1 pueden saber que existe pero no ver datos, 2 totalmente anonimo...
-    nivel_acceso INTEGER DEFAULT 0 --0 normal, 1 panel de administracion, 2 full admin (no controla desde interfaz), 3 moderador
+    cantidadSeguidores INTEGER DEFAULT 0, --Cantidad de seguidores que tiene
+    nivelPublico INTEGER DEFAULT 0, --0 normal, 1 pueden saber que existe pero no ver datos, 2 totalmente anonimo...
+    nivelAcceso INTEGER DEFAULT 0 --0 normal, 1 panel de administracion, 2 full admin (no controla desde interfaz), 3 moderador
 );
 
 CREATE TABLE JUEGOS (
@@ -49,7 +49,7 @@ CREATE TABLE JUEGOS (
     --savedatas
     generos VARCHAR(255), --Generos separados por ,
     idiomas VARCHAR(255), --Idiomas separados por ,
-    cantidad_seguidores INTEGER DEFAULT 0, --Cantidad de seguidores del juego
+    cantidadSeguidores INTEGER DEFAULT 0, --Cantidad de seguidores del juego
     cantidad_likes INTEGER DEFAULT 0 --Cantidad de likes del juego
 );
 
@@ -62,7 +62,7 @@ CREATE TABLE FOROS (
     publico BOOLEAN DEFAULT TRUE, --Si esta publico
     uuid_creador VARCHAR(36) REFERENCES USUARIOS(uuid), --uuid de su creador
     fecha_creacion VARCHAR(15), --Fecha en la que se creo en formato timestamp
-    cantidad_seguidores INTEGER DEFAULT 0, --Cantidad de seguidores que tiene
+    cantidadSeguidores INTEGER DEFAULT 0, --Cantidad de seguidores que tiene
     cantidad_likes INTEGER DEFAULT 0, --Cantidad de likes que tiene
     juego_asociado VARCHAR(36) --A que juego esta asociado, puede ser un id de igdb o un uuid de un juego en la plataforma
 );

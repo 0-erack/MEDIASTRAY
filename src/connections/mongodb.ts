@@ -43,12 +43,12 @@ export const mongoSet = async (collectionNombre: string, data: Record<string, an
 }
 
 //Devuelve los elementos que coincidan con el json en la coleccion
-export const mongoGet = async (collectionNombre: string, consulta: Record<string, any>): Promise<object | Record<string, any> | any> => {
+export const mongoGet = async (collectionNombre: string, consulta: Record<string, any>, multiple = false): Promise<object | Record<string, any> | any> => {
     if (!cliente) await getConexion();
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base')//.toArray();
         const collection = db.collection(collectionNombre);
-        const result = await collection.findOne(consulta);
+        const result = multiple ? await collection.find(consulta) : await collection.findOne(consulta);
         return result;
     } catch (error) {
         //cliente = null; getConexion();
@@ -83,8 +83,7 @@ export const getCliente = async (): Promise<any> => {
     }
 }
 
-export const getConexionMongoose = async (): Promise<any> => {
-    if (!conectado) {
+export const getConexionMongoose = async (): Promise<mongoose.Connection | null> => {    if (!conectado) {
         try {
             const uri = process.env.MONGODB_URI ?? '';
             const dbName = process.env.MONGODB_DATABASE ?? 'base';
@@ -94,12 +93,7 @@ export const getConexionMongoose = async (): Promise<any> => {
                 socketTimeoutMS: 45000,
                 dbName: dbName
             });
-            await Promise.all([
-                Intermediario.createCollection(),
-                Comentario.createCollection()
-            ]);
             conectado = true;
-            const nativeClient = mongoose.connection.getClient() as any;
             mongoose.connection.on("disconnected", () => {
                 conectado = false;
                 console.log("DESCONECTADO mongodb (Mongoose)");

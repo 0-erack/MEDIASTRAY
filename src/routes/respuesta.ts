@@ -19,10 +19,10 @@ export const manejadorRuta = async (req, res, funcion:Function) => {
         return await funcion();
     } catch (error:any) {
         try {
-            console.log(error);
+            if (process.env.NODE_ENV === "DEVELOPMENT") console.log(error);
             return res.status(error?.code ?? 400).json(fallo(error?.message, error?.data ?? undefined, error?.code ?? 400));
         } catch (error2:any) {
-            console.log(error2);
+            if (process.env.NODE_ENV === "DEVELOPMENT") console.log(error2);
             return res.status(error2?.code ?? 500).json(falloInterno(error2?.message));
         }
     }

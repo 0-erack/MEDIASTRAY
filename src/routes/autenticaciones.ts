@@ -41,6 +41,11 @@ export const autenticarContrasegnaUsuario = async (entrante:string, encriptada:s
     return contrasegnaCoincide;
 }
 
+//Para requerir que el usuario sea administrador
+export const autenticarAdmin = (req, res, next) => {
+
+}
+
 //Para requerir el token de sesion de juego (de un usuario) en el header X-auth-playtime
 export const autenticarTokenJuego = (req, res, next) => {
 
