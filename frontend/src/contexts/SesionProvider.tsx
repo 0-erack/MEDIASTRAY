@@ -6,7 +6,6 @@ import useAjustes from "../hooks/useAjustes";
 import { deApiAUsuario, validarUsuarioLocal } from "../validators/validacionesUsuario";
 import useMensajes from "../hooks/useMensajes";
 import useIdioma from "../hooks/useIdioma";
-import useApiUsuarios from "../hooks/api/useApiUsuarios";
 
 interface SesionContextType {
     usuario: Partial<Usuario> | null;
@@ -39,7 +38,6 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
             const tokenFromLS: string | null = await leerLS("tokenSesionActual");
             setTokenSesionActual(tokenFromLS ?? '');
             if (tokenFromLS) {
-                console.log(tokenFromLS);
                 const sesionValida = await peticionBasica(API_URL + "/auth/sessionToken", {
                     "X-auth-api": API_KEY,
                     "X-auth-session": tokenFromLS ?? ''
@@ -51,7 +49,6 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
                 }
                 //Sesion es valida al recargar la pagina
                 const datosUsuario = await peticionBasica(API_URL + "/user/me", {"X-auth-api": API_KEY,"X-auth-session": tokenFromLS ?? ''}, "GET", undefined, tokenFromLS + "");
-                console.log(datosUsuario);
                 if (!datosUsuario?.data?.id) {
                     await logout();
                     return;

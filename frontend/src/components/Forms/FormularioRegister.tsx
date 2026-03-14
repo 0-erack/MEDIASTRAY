@@ -60,7 +60,7 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
   const enviar = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (validar()) {
-      console.log("b");
+      console.log("b", objetoRegister);
       setErrorFormulario("");
       if (typeof enviarPersonalizado === "function") {
         enviarPersonalizado(objetoRegister);
@@ -69,12 +69,12 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
         console.log(resultado);
         if (!error && !resultado.error) {
           lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "registrarMal"), 1);
-          navegar("/user/" + resultado.user.nickname);
+          navegar("/user/" + resultado.data.user.nickname);
           reset();
         } else {
           if (resultado?.error?.result?.data?.doubleNickname) {
             setErrorFormulario(TextoTraducido("errores", idiomaActual, "nicknameRepetido"));
-          } else if (resultado?.error?.result?.data.doubleEmail) {
+          } else if (resultado?.error?.result?.data?.doubleEmail) {
             setErrorFormulario(TextoTraducido("errores", idiomaActual, "correoRepetido"));
           } else {
             setErrorFormulario(TextoTraducido("errores", idiomaActual, "noRegister"));

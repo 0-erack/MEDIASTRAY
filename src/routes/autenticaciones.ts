@@ -22,7 +22,12 @@ export const autenticarTokenApi = (req, res, next) => {
 //Para requerir el token de sesion de un usuario en el header X-auth-session
 export const autenticarTokenSesion = async (req, res, next) => {
     try {
-        const tokenActual = req.headers.authorization?.split(" ")[1] ?? (req?.body?.token ?? (req.header('X-auth-session') ?? ""));
+        //const tokenActual = req.headers.authorization?.split(" ")[1] ?? (req?.body?.token ?? (req.header('X-auth-session') ?? ""));
+        const tokenActual = 
+            req.headers.authorization?.split(" ")[1] ?? 
+            req?.body?.token ?? 
+            req.header('X-auth-session') ?? 
+            null;
         const datosSesion = await verSesionToken(tokenActual);
         if (datosSesion?.id) {
             req.datosSesion = datosSesion;

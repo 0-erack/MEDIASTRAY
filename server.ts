@@ -34,7 +34,7 @@ if (process.env.INIT_TESTS === "true") {
 }
 if (process.env.FREE_CORS) {
     app.use(cors({
-        origin: "*",
+        origin: (origin, callback) => callback(null, true),
         credentials: true
     }));
 } else {

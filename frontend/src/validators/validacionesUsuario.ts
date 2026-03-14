@@ -22,5 +22,5 @@ export const deApiAUsuario = (data:Record<string, any>):Partial<Usuario> => {
 }
 
 export const deUsuarioAApi = (data:Partial<Usuario>):Record<string, any> => {
-    return { description: data?.descripcion ?? undefined, email: data?.correo ?? undefined, birthdate: data?.cumpleagnos ?? undefined, name: data?.nombre ?? undefined, nickname: data?.nickname ?? undefined, urlPhoto: data?.urlFoto ?? undefined}
+    return { password: data?.contrasegna ?? undefined, description: data?.descripcion ?? undefined, email: data?.correo ?? undefined, birthdate: data?.cumpleagnos ?? undefined, name: data?.nombre ?? undefined, nickname: data?.nickname ?? undefined, urlPhoto: data?.urlFoto ?? undefined}
 }

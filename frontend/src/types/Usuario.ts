@@ -9,4 +9,5 @@ export type Usuario = {
     fechaCreacion: string;
     premium: string|null;
     cantidadSeguidores: number;
+    contrasegna: string|null;
 }

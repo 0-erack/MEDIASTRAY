@@ -41,8 +41,6 @@ const useApiUsuarios = () => {
     const register = async (objetoRegister:Record<string, any>):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/user/create", "POST", { user: { ...(deUsuarioAApi(objetoRegister)), birthdate: Date.parse(objetoRegister?.cumpleagnos) + "" } });
-            console.log("REGISTRAR");
-            console.log(resultado);
             if (resultado.ok) {
                 cambiarTokenSesionActual(resultado.data.sessionToken);
                 cambiarUsuarioActual(deApiAUsuario(resultado.data.user));
@@ -56,7 +54,8 @@ const useApiUsuarios = () => {
     const verUsuario = async (id:string):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/user/" + (id ?? ''), "GET");
-            return resultado.data;
+            if (resultado.ok) return deApiAUsuario(resultado.data);
+            return null;
         } catch (error) {
             return {fallo: true, error}
         }
