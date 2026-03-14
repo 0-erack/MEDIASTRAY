@@ -69,7 +69,7 @@ services:
         condition: service_started
 
   postgresql:
-    image: postgres:13
+    image: postgres:15
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -89,7 +89,7 @@ services:
     #  - redis
 
   mongodb:
-    image: mongo:4.4
+    image: mongo:8.2.5
     command: ["mongod", "--quiet", "--logpath", "/dev/null"]
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}

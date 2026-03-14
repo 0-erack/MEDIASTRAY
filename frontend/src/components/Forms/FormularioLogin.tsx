@@ -6,7 +6,7 @@ import BotonFuncion from '../Elements/BotonFuncion';
 import { identificacion as validarIdentificacion, contrasegna as validarContrasegna } from '../../libraries/validacionesBackend';
 import { TextoTraducido } from '../../libraries/traducir';
 import useAjustes from '../../hooks/useAjustes';
-import useApi from '../../hooks/useApi';
+import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import ImgCargando from '../Principal/ImgCargando';
 import useMensajes from '../../hooks/useMensajes';
 
@@ -16,7 +16,7 @@ interface FormularioLoginProps {
 
 function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
 
-  const { login, cargando } = useApi();
+  const { login, cargando } = useApiUsuarios();
   const objetoLoginBasico = { identificacion: "", contrasegna: "", verContrasegna: false }
   const [objetoLogin, setObjetoLogin] = useState({ ...objetoLoginBasico });
   const [errorFormulario, setErrorFormulario] = useState("");
@@ -54,7 +54,7 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
         const resultado = await login(objetoLogin);
         if (resultado.code === 200 && !resultado.fallo) {
           lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "loginBien"), 1);
-          navegar("/user/" + resultado.user.nickname);
+          navegar("/user/" + resultado.data.user.nickname);
           reset();
         } else {
           lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "loginMal"), 2);

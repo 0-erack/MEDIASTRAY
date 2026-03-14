@@ -32,37 +32,44 @@ if (process.env.INIT_TESTS === "true") {
         await hacerTestsConexiones();
     }, 5000);
 }
-if (process.env.NODE_ENV === "DEVELOPMENT") { //Código solo para development
-    console.log("ACTUALMENTE EN DEV");
+if (process.env.FREE_CORS) {
     app.use(cors({
-        //origin: process.env.FREE_CORS ?? "n" === "s" ? true : 'http://localhost:8520', //Permitir peticiones de vite
-        origin: process.env.FRONTEND_URL_DEV ?? 'http://localhost:8520', //Permitir peticiones de vite
-        credentials: true,
-    }));
-} else { 
-    const origenes = [
-        process.env.FRONTEND_URL, 
-        "app://.",
-        "capacitor://localhost",
-        "http://localhost",
-        //"http://localhost:3000",
-        //"*",
-    ]
-    app.use(cors({
-        origin: (origin, callback) => {
-            if (!origin || origenes.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error());
-            }
-        },
+        origin: "*",
         credentials: true
     }));
+} else {
+    if (process.env.NODE_ENV === "DEVELOPMENT") { //Código solo para development
+        console.log("ACTUALMENTE EN DEV");
+        app.use(cors({
+            //origin: process.env.FREE_CORS ?? "n" === "s" ? true : 'http://localhost:8520', //Permitir peticiones de vite
+            origin: process.env.FRONTEND_URL_DEV ?? 'http://localhost:8520', //Permitir peticiones de vite
+            credentials: true,
+        }));
+    } else {
+        const origenes = [
+            process.env.FRONTEND_URL,
+            "app://.",
+            "capacitor://localhost",
+            "http://localhost",
+            //"http://localhost:3000",
+            //"*",
+        ]
+        app.use(cors({
+            origin: (origin, callback) => {
+                if (!origin || origenes.includes(origin)) {
+                    callback(null, true);
+                } else {
+                    callback(new Error());
+                }
+            },
+            credentials: true
+        }));
 
-    //app.use(cors({
-    //    origin: process.env.FRONTEND_URL ?? "localhost",
-    //    credentials: true
-    //}));
+        //app.use(cors({
+        //    origin: process.env.FRONTEND_URL ?? "localhost",
+        //    credentials: true
+        //}));
+    }
 }
 
 
@@ -76,32 +83,32 @@ app.use("/api/v1", apiRoutes);
 //Las peticiones en / se dirigen al dist del frontend
 
 if (process.env.SERVE_FRONTEND === "true") {
-  const frontendPath = path.join(process.cwd(), process.env.FRONTEND_DIST_PATH ?? './frontend/dist');
-  app.use(express.static(frontendPath));
-  app.get(/^(?!\/api).+/, (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
-  });
+    const frontendPath = path.join(process.cwd(), process.env.FRONTEND_DIST_PATH ?? './frontend/dist');
+    app.use(express.static(frontendPath));
+    app.get(/^(?!\/api).+/, (req, res) => {
+        res.sendFile(path.join(frontendPath, 'index.html'));
+    });
 }
 
 //Errores 404
 app.use((req, res) => {
     if (req.path.startsWith("/public")) {
         if (process.env.SERVE_STATIC === "false") {
-            res.status(404).json({message: "404 Not found", code: 404});
+            res.status(404).json({ message: "404 Not found", code: 404 });
             return;
         }
         res.status(404).redirect('/public/err404.html');
     } else if (req.path.startsWith("/games")) {
         if (process.env.SERVE_STATIC === "false") {
-            res.status(404).json({message: "404 Not found", code: 404});
+            res.status(404).json({ message: "404 Not found", code: 404 });
             return;
         }
         res.status(404).redirect('/games/err404.html');
     } else if (req.path.startsWith("/api")) {
-        res.status(404).json({message: "404 Not found", code: 404});
+        res.status(404).json({ message: "404 Not found", code: 404 });
     } else {
         if (process.env.SERVE_FRONTEND === "false") {
-            res.status(404).json({message: "404 Not found", code: 404});
+            res.status(404).json({ message: "404 Not found", code: 404 });
             return;
         }
         res.sendFile(path.join(process.cwd(), process.env.FRONTEND_DIST_PATH ?? './frontend/dist', "index.html")); //El error 404 en / lo maneja el frontend
@@ -109,9 +116,8 @@ app.use((req, res) => {
 });
 
 
-if (process.env.INIT_METRICS === "true") try {abrirServidorMetricas(app);} catch (e) {console.log("No se han habierto los servicios de métricas");} //Abrir el servidor de métricas
+if (process.env.INIT_METRICS === "true") try { abrirServidorMetricas(app); } catch (e) { console.log("No se han habierto los servicios de métricas"); } //Abrir el servidor de métricas
 
 app.listen(APP_PORT, () => {
     console.log(`Ejecutandose en ${APP_PORT}`);
 });
- 

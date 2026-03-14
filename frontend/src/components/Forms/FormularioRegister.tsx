@@ -7,9 +7,10 @@ import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as
 import { TextoTraducido } from '../../libraries/traducir';
 import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos';
 import useAjustes from '../../hooks/useAjustes';
-import useApi from '../../hooks/useApi';
+import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import ImgCargando from '../Principal/ImgCargando';
 import useMensajes from '../../hooks/useMensajes';
+import { inputDateATimestamp } from '../../libraries/extraFechas';
 
 interface FormularioRegisterProps {
   enviarPersonalizado?: (data: any) => void; 
@@ -17,7 +18,7 @@ interface FormularioRegisterProps {
 
 function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
 
-  const { register, cargando, error, resetEstados } = useApi();
+  const { register, cargando, error, resetEstados } = useApiUsuarios();
   const objetoRegisterBasico = { correo: "", nickname: "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: "", cumpleagnos: "" }
   const [objetoRegister, setObjetoRegister] = useState({ ...objetoRegisterBasico });
   const [errorFormulario, setErrorFormulario] = useState("");
@@ -45,29 +46,33 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
     resetEstados();
   }
 
+  const validarFechaInput = (e:string) => validarCumpleagnos(inputDateATimestamp(e));
+
   const validar = ():boolean => {
     return validarContrasegna(objetoRegister.contrasegna)
       && objetoRegister.contrasegna2 === objetoRegister.contrasegna
       && validarNombre(objetoRegister.nombre)
       && validarCorreo(objetoRegister.correo)
       && validarNickname(objetoRegister.nickname)
-      && validarCumpleagnos(objetoRegister.cumpleagnos);
+      && validarFechaInput(objetoRegister.cumpleagnos);
   }
 
   const enviar = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (validar()) {
+      console.log("b");
       setErrorFormulario("");
       if (typeof enviarPersonalizado === "function") {
         enviarPersonalizado(objetoRegister);
       } else {
         const resultado = await register(objetoRegister);
+        console.log(resultado);
         if (!error && !resultado.error) {
           lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "registrarMal"), 1);
           navegar("/user/" + resultado.user.nickname);
           reset();
         } else {
-          if (resultado?.error?.result?.data.doubleNickname) {
+          if (resultado?.error?.result?.data?.doubleNickname) {
             setErrorFormulario(TextoTraducido("errores", idiomaActual, "nicknameRepetido"));
           } else if (resultado?.error?.result?.data.doubleEmail) {
             setErrorFormulario(TextoTraducido("errores", idiomaActual, "correoRepetido"));
@@ -85,13 +90,15 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
     if (objetoRegister.contrasegna2 !== objetoRegister.contrasegna) setErrorFormulario(TextoTraducido("errores", idiomaActual, "dobleContrasegna"));
   }
 
+  
+
   return (
     <div>
       <form onChange={cambio}>
         <InputBasico nombre="nickname" placeholder={nicknameFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="nickname" />} valor={objetoRegister.nickname} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionNickname" />} validador={validarNickname} />
         <InputBasico nombre="correo" placeholder={correoFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="correo" />} valor={objetoRegister.correo} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionEmail" />} validador={validarCorreo} />
         <InputBasico nombre="nombre" placeholder={nombreFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="nombre" />} valor={objetoRegister.nombre} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionNombre" />} validador={validarNombre} />
-        <InputBasico nombre="cumpleagnos" titulo={<Texto tipo="formularios" nombre="cumpleagnos" />} valor={objetoRegister.cumpleagnos} tipo="date" mensajeError={<Texto tipo="errores" nombre="validacionCumpleagnos" />} validador={validarCumpleagnos} />
+        <InputBasico nombre="cumpleagnos" titulo={<Texto tipo="formularios" nombre="cumpleagnos" />} valor={objetoRegister.cumpleagnos} tipo="date" mensajeError={<Texto tipo="errores" nombre="validacionCumpleagnos" />} validador={validarFechaInput} />
         <InputBasico nombre="contrasegna" titulo={<Texto tipo="formularios" nombre="contrasegna" />} valor={objetoRegister.contrasegna} tipo={objetoRegister.verContrasegna ? "text" : "password"} placeholder="········" mensajeError={<Texto tipo="errores" nombre="validacionContrasegna" />} validador={validarContrasegna} />
         <InputBasico nombre="contrasegna2" titulo={<Texto tipo="formularios" nombre="contrasegna2" />} valor={objetoRegister.contrasegna2} tipo={objetoRegister.verContrasegna ? "text" : "password"} placeholder="········" />
         <InputBasico nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoRegister.verContrasegna} tipo="checkbox" />

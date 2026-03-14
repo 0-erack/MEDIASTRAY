@@ -7,7 +7,20 @@ export const timestampAInputDate = (timestamp:string):string => {
     return `${year}-${month}-${day}`;
 }
 
+export const inputDateATimestamp = (fecha: string): string => {
+    return new Date(fecha).getTime() + "";
+}
+
 export const timestampAFecha = (timestamp:string):string => {
     //if (typeof timestamp !== "string" && typeof timestamp !== "number") return "";
     return new Date(Number(timestamp)).toLocaleDateString();
+}
+
+export const esMayorEdad = (timestamp:string, edad = 18):boolean => {
+    if (isNaN(parseInt(timestamp))) return false;
+    const fecha = new Date(parseInt(timestamp));
+    const ahora = new Date();
+    const limite = new Date(fecha);
+    limite.setFullYear(fecha.getFullYear() + edad);
+    return ahora >= limite;
 }

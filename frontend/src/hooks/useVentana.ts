@@ -1,0 +1,1 @@
+//TODO: ventanas emergentes con html y tal y componentes y que se conecten con los datos de fuera bidireccional

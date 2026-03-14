@@ -6,26 +6,28 @@ import './Cabecera.css';
 import EnlaceFuncion from '../Elements/EnlaceFuncion';
 import { cambiarIdiomaHtml } from '../../libraries/accionesIndex';
 import useAjustes from '../../hooks/useAjustes';
+import useSesion from '../../hooks/useSesion';
 
 function Cabecera() {
   
-  const { idiomaActual, idiomasAdmitidos, cambiarIdiomaActual, usuarioActual, textosInterfazEnlacesCabecera, PUBLIC_URL } = useAjustes();
+  const { idiomaActual, idiomasAdmitidos, cambiarIdiomaActual, textosInterfazEnlacesCabecera, PUBLIC_URL } = useAjustes();
+  const { usuario } = useSesion();
   const navegar = useNavigate();
   //usuarioActual.id = "si"; usuarioActual.nickname = "sisisi";
   return (
     <>
         <header id="cabecera">
-          {usuarioActual.id}
+          {usuario?.id}
             <img id="logo-cabecera" src={imgLogo ?? PUBLIC_URL + "/logoA.png"} alt="MEDIASTRAY" onClick={()=>{navegar("/")}} />
-            {textosInterfazEnlacesCabecera[(usuarioActual.id ? "si" : "no") + "Usuario"][idiomaActual]?.map((e:any, i:number) => {
+            {textosInterfazEnlacesCabecera[(usuario ? "si" : "no") + "Usuario"][idiomaActual]?.map((e:any, i:number) => {
               return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} />)
             })}
             {textosInterfazEnlacesCabecera[idiomaActual]?.map((e:any, i:number) => {
               return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} />)
             })}
-            {usuarioActual.id ? (
+            {usuario ? (
               <span className="usuario-cabecera">
-                <BotonNavegacion cabecera={true} direccion={"/user"} titulo={usuarioActual.nickname ?? "User"} />
+                <BotonNavegacion cabecera={true} direccion={"/user"} titulo={usuario.nickname ?? "User"} />
               </span>
             ) : ""}
             <span id="cambiar-idioma">

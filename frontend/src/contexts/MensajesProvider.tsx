@@ -7,23 +7,19 @@ interface Mensaje {
   id: string;
 }
 interface MensajesContextType {
-  lanzarMensaje: (mensaje: string, tipo: number) => void;
+  lanzarMensaje: (mensaje: string, tipo: number) => void; //const tipos = ["generico", "exito", "error", "alerta", "informacion"];
   mensajesPendientes: Mensaje[];
   borrarMensajes: () => void;
 }
 
-export const MensajesContexto = createContext<MensajesContextType | null>(null);
+export const MensajesContext = createContext<MensajesContextType | null>(null);
 
-interface Props {
-  children: ReactNode;
-}
-
-const MensajesProviders = ({ children }: Props) => {
+const MensajesProviders = ({ children }: { children: ReactNode }) => {
 
   const [mensajesPendientes, setMensajesPendientes] = useState<Mensaje[]>([]);
   const duracionGeneral = 2000;
 
-  const lanzarMensaje = (mensaje: string, tipo: number) => {
+  const lanzarMensaje = (mensaje: string, tipo = 0) => {
     const id = self.crypto.randomUUID();
     setMensajesPendientes((prev) => [...prev, { mensaje, tipo: tipo ?? 0, id }]);
     mandarQuitar(id);
@@ -46,14 +42,14 @@ const MensajesProviders = ({ children }: Props) => {
   };
 
   return (
-    <MensajesContexto.Provider value={exportaciones}>
+    <MensajesContext.Provider value={exportaciones}>
       <div className="zona-mensajes">
         {mensajesPendientes.map((e) => (
           <MensajeFlotante key={e.id} mensaje={e.mensaje} tipo={e.tipo} />
         ))}
       </div>
       {children}
-    </MensajesContexto.Provider>
+    </MensajesContext.Provider>
   );
 };
 

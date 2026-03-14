@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import Texto from '../Texto';
-import useApi from '../../hooks/useApi';
+import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import InputBasico from '../Elements/InputBasico';
 import BotonFuncion from '../Elements/BotonFuncion';
 import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as validarNickname, nombre as validarNombre, cumpleagnos as validarCumpleagnos, url as validarUrl, descripcionUsuario as validarDescripcion } from '../../libraries/validacionesBackend';
@@ -15,7 +15,7 @@ import useMensajes from '../../hooks/useMensajes';
 function FormularioEditarPerfil({usuario}: {usuario: any}) {
 
     const previo = usuario;
-    const { editarUsuario, borrarUsuario, cargando, error, resetEstados } = useApi();
+    const { editarUsuario, borrarUsuario, cargando, error, resetEstados } = useApiUsuarios();
     //const objetoPatchBasico = useMemo(() => {return {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", urlFoto: previo.urlFoto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }}, [previo]);
     const objetoPatchBasico = {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", urlFoto: previo.urlFoto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }
     const [objetoPatch, setObjetoPatch] = useState(objetoPatchBasico);

@@ -230,7 +230,8 @@
                 "nopfp": "No user profile photo",
                 "noDescripcion": "No description...",
                 "validacionDescripcion": "Description too long",
-                "noUsuarioDelete": "Couldn't authenticate to delete the user"
+                "noUsuarioDelete": "Couldn't authenticate to delete the user",
+                "genericoSesion": "There was an error loading the session"
             },
             "ES-es": {
                 "error": "Ha habido un error",
@@ -250,7 +251,8 @@
                 "nopfp": "Sin foto de perfil",
                 "noDescripcion": "Sin descripción...",
                 "validacionDescripcion": "La descripción es muy larga",
-                "noUsuarioDelete": "No se ha podido autenticar para borrar el usuario"
+                "noUsuarioDelete": "No se ha podido autenticar para borrar el usuario",
+                "genericoSesion": "Ha habido un error cargando la sesión"
             }
         },
         "titulosHtml": {

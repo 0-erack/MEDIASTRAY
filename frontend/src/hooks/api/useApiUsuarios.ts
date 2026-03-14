@@ -1,18 +1,21 @@
 import { useState } from "react";
-import useAjustes from "./useAjustes";
-import { peticionBasica } from "../libraries/peticiones";
+import useAjustes from "../useAjustes";
+import { peticionBasica } from "../../libraries/peticiones";
+import useSesion from "../useSesion";
+import { deApiAUsuario, deUsuarioAApi } from "../../validators/validacionesUsuario";
 
-const useApi = () => {
+const useApiUsuarios = () => {
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState<boolean|object>(false);
-    const { tokenSesionActual, usuarioActual, tokenJuegoActual, API_URL, API_KEY, cambiarTokenSesionActual, cambiarUsuarioActual, logout } = useAjustes();
+    const { API_URL, API_KEY } = useAjustes();
+    const { cambiarTokenSesionActual, cambiarUsuarioActual, logout, tokenSesionActual, usuario } = useSesion();
 
     const peticionGenerica = async (url:string, verbo = "GET", body?:Record<string, any>, headersExtra:Record<string, any> = {}):Promise<any> => {
         await setCargando(true);
         await setError(false);
         try {
-            const resultado = await peticionBasica(url, {...headersExtra, "X-auth-api": API_KEY, "X-auth-session": tokenSesionActual ?? '', "X-auth-playtime": tokenJuegoActual ?? '', "X-my-id": usuarioActual.id ?? '', "X-auth-game": "X"}, verbo, body ?? undefined);
-            if (!resultado.ok && resultado.code >= 400) throw {fallo: true, code: resultado.code ?? '', message: "Error api", result: resultado}
+            const resultado = await peticionBasica(url, {...headersExtra, "X-auth-api": API_KEY, "X-auth-session": tokenSesionActual ?? '', }, verbo, body ?? undefined, tokenSesionActual ?? '');
+            if (!resultado.ok || resultado.code >= 400) throw {fallo: true, code: resultado.code ?? '', message: "Error api", result: resultado}
             return resultado;
         } catch (error) {
             setError({fallo: true, error});
@@ -24,9 +27,11 @@ const useApi = () => {
 
     const login = async (objetoLogin:Record<string, any>):Promise<any> => {
         try {
-            const resultado = await peticionGenerica(API_URL + "/userLogin", "POST", {credentials: { contrasegna: objetoLogin.contrasegna, identification: objetoLogin.identificacion}});
-            cambiarTokenSesionActual(resultado.sessionToken);
-            cambiarUsuarioActual(resultado.user);
+            const resultado = await peticionGenerica(API_URL + "/user/login", "POST", {credentials: { password: objetoLogin.contrasegna, identification: objetoLogin.identificacion}});
+            if (resultado.ok) {
+                cambiarTokenSesionActual(resultado.data.sessionToken);
+                cambiarUsuarioActual(deApiAUsuario(resultado.data.user));
+            }
             return resultado;
         } catch (error) {
             return {fallo: true, error}
@@ -35,9 +40,13 @@ const useApi = () => {
 
     const register = async (objetoRegister:Record<string, any>):Promise<any> => {
         try {
-            const resultado = await peticionGenerica(API_URL + "/userCreate", "POST", { usuario: { ...objetoRegister, cumpleagnos: Date.parse(objetoRegister?.cumpleagnos) + "" } });
-            cambiarTokenSesionActual(resultado.sessionToken);
-            cambiarUsuarioActual(resultado.user);
+            const resultado = await peticionGenerica(API_URL + "/user/create", "POST", { user: { ...(deUsuarioAApi(objetoRegister)), birthdate: Date.parse(objetoRegister?.cumpleagnos) + "" } });
+            console.log("REGISTRAR");
+            console.log(resultado);
+            if (resultado.ok) {
+                cambiarTokenSesionActual(resultado.data.sessionToken);
+                cambiarUsuarioActual(deApiAUsuario(resultado.data.user));
+            }
             return resultado;
         } catch (error) {
             return {fallo: true, error}
@@ -103,4 +112,4 @@ const useApi = () => {
     return { cargando, error, peticionGenerica, login, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario };
 };
 
-export default useApi;
+export default useApiUsuarios;

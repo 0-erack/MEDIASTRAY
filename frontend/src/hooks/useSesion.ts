@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { MensajesContext } from "../contexts/MensajesProvider";
+import { SesionContext } from "../contexts/SesionProvider";
 
-const useMensajes = () => {
+const useSesion = () => {
 
-  const contexto = useContext(MensajesContext);
+  const contexto = useContext(SesionContext);
 
   if (!contexto) {
     throw new Error(
@@ -14,4 +14,4 @@ const useMensajes = () => {
   return contexto;
 };
 
-export default useMensajes;
+export default useSesion;

@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import useAjustes from '../hooks/useAjustes';
 import { TextoTraducido } from '../libraries/traducir';
 import useMensajes from '../hooks/useMensajes';
+import useSesion from '../hooks/useSesion';
 
 function Logout() {
 
-  const { logout, idiomaActual } = useAjustes();
+  const { idiomaActual } = useAjustes();
+  const { logout } = useSesion();
   const navegar = useNavigate();
   const { lanzarMensaje } = useMensajes();
 

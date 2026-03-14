@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import TarjetaUsuarioGrande from './TarjetaUsuarioGrande';
 import useAjustes from '../../hooks/useAjustes';
-import useApi from '../../hooks/useApi';
+import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import ImgCargando from '../Principal/ImgCargando';
 import CajaError from '../Principal/CajaError';
 
@@ -16,7 +16,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
   const [usuarioCargado, setUsuarioCargado] = useState({id: null});
   const idBuscar = id ?? usuarioActual.id;
   const [soyYo, setSoyYo] = useState(false);
-  const { verUsuario, cargando, error } = useApi();
+  const { verUsuario, cargando, error } = useApiUsuarios();
   const [fallo, setFallo] = useState(false);
 
   const cargaInicial = async () => {

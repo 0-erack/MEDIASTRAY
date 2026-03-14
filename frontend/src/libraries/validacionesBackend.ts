@@ -42,5 +42,3 @@ export const cumpleagnos = (data:string):boolean => {
     const texto = new Date(Number(data));
     return timestamp(data + "") && texto < new Date();
 }
-
-export const validarDatosUsuarioLS = (...data:any):any => {} //TODO: borrar

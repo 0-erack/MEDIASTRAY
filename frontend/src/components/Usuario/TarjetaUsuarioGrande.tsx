@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { TextoTraducido } from '../../libraries/traducir';
 import useAjustes from '../../hooks/useAjustes';
 import BotonFuncion from '../Elements/BotonFuncion';
-import useApi from '../../hooks/useApi';
+import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import FormularioEditarPerfil from '../Forms/FormularioEditarPerfil';
 import { timestampAFecha } from '../../libraries/extraFechas';
 import BotonNavegacion from '../Elements/BotonNavegacion';
@@ -22,7 +22,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
   const fechaPremium = timestampAFecha(usuario.premium);
   const [siguiendo, setSiguiendo] = useState(false);
   const [teSigue, setTeSigue] = useState(false);
-  const { verSeguir, seguir } = useApi();
+  const { verSeguir, seguir } = useApiUsuarios();
   const [seguidoresSimulados, setSeguidoresSimulados] = useState(usuario.cantidadSeguidores);
   const [editandoPerfil, setEditandoPerfil] = useState(false);
   const { lanzarMensaje } = useMensajes();

@@ -4,19 +4,22 @@ import Cabecera from './components/Principal/Cabecera';
 import Pie from './components/Principal/Pie';
 import AjustesProvider from './contexts/AjustesProvider';
 import MensajesProviders from './contexts/MensajesProvider';
+import { SesionProvider } from './contexts/SesionProvider';
 
 function App() {
-  
+
 
   return (
     <>
-      <AjustesProvider>
-        <MensajesProviders>
-          <Cabecera />
-          <Contenido />
-        </MensajesProviders>
-        <Pie />
-      </AjustesProvider>
+      <MensajesProviders>
+        <AjustesProvider>
+          <SesionProvider>
+            <Cabecera />
+            <Contenido />
+          </SesionProvider>
+          <Pie />
+        </AjustesProvider>
+      </MensajesProviders>
     </>
   )
 }

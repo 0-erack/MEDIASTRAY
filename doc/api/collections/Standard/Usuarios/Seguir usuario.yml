@@ -20,7 +20,7 @@ http:
     data: |-
       {
         "cantidad": 1,
-        "id_b": "88028721-7a94-4bc6-831e-267a7452612c"
+        "id_b": "85ac9432-426f-479f-89f2-52cd92e18063"
       }
   auth:
     type: bearer
