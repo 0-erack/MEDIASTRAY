@@ -56,8 +56,8 @@ export const crearUsuario = async (datos: Record<string, any>): Promise<Record<s
     const db = getDB();
     const nicknameExiste = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.nickname, usuarioCreado.nickname!)).limit(1);
     const correoExiste = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.correo, usuarioCreado.correo!)).limit(1);
-    if (nicknameExiste[0]) throw { message: "Nickname already in use", code: 400, data: { doubleNickname: true } };
-    if (correoExiste[0]) throw { message: "Email already in use", code: 400, data: { doubleEmail: true } };
+    if (nicknameExiste[0]) throw { message: "Nickname already in use", code: 409, data: { doubleNickname: true } };
+    if (correoExiste[0]) throw { message: "Email already in use", code: 409, data: { doubleEmail: true } };
     usuarioCreado.id = uuidv4();
     usuarioCreado.contrasegna = await bcrypt.hash(usuarioCreado.contrasegna!, 10);
     usuarioCreado.fechaCreacion = Date.now() + "";
@@ -84,14 +84,14 @@ export const crearUsuario = async (datos: Record<string, any>): Promise<Record<s
  * @returns datos del usuairo y token de sesion
  */
 export const loginUsuario = async (datosLogin: Record<string, any>): Promise<Record<string, any>> => {
-    if (!validarLoginUsuario(datosLogin)) throw { message: "Invalid user data", code: 401 }
+    if (!validarLoginUsuario(datosLogin)) throw { message: "Invalid user data", code: 422 }
     const db = getDB();
     const elUsuario = await db.select().from(usuarios).where(or(eq(usuarios.nickname, datosLogin.identification), eq(usuarios.correo, datosLogin.identification))).limit(1);
     if (!elUsuario[0]?.id) throw { message: "User not found", code: 404 }
     const contrasegnaCoincide = await autenticarContrasegnaUsuario(datosLogin.password, elUsuario[0].contrasegna);
-    if (!elUsuario[0] || !contrasegnaCoincide) throw { message: "Invalid credentials", code: 401 };
+    if (!elUsuario[0] || !contrasegnaCoincide) throw { message: "Invalid credentials", code: 403 };
     const usuario = elUsuario[0] as Partial<Usuario>;
-    if (elUsuario[0].disponibilidad === 3) throw { message: "User has not allowed login", code: 401 };
+    if (elUsuario[0].disponibilidad === 3) throw { message: "User has not allowed login", code: 403 };
     const token = await crearSesion(usuario.id!);
     usuario.contrasegna = undefined;
     agnadirLog("backend.log", "User logged in " + usuario.id);
@@ -119,31 +119,31 @@ export const logoutUsuario = async (id: string, token?: string): Promise<boolean
 export const editarUsuario = async (nuevos: Record<string, any>, id: string): Promise<Record<string, any>> => {
     const datosNuevos = validarEdicionUsuario(nuevos);
     const usuarioPrevio = await buscarUsuario(id);
-    if (!usuarioPrevio) throw { message: "Invalid credentials", code: 401 };
-    if (usuarioPrevio.disponibilidad >= 2) throw { message: "User has not allowed login edit credentials nor profile", code: 401 };
+    if (!usuarioPrevio) throw { message: "Invalid credentials", code: 403 };
+    if (usuarioPrevio.disponibilidad >= 2) throw { message: "User has not allowed login edit credentials nor profile", code: 403 };
     let edicionAutenticada = false; //Hace referencia a si la peticion esta autorizada para editar datos sensibles
     if (datosNuevos.cambiarContrasegna && datosNuevos.contrasegnaAntigua != undefined) { //Solo se pide la contrasegna original si se va a cambiar a otra distinta
         const contrasegnaCoincide = await autenticarContrasegnaUsuario(datosNuevos.contrasegnaAntigua, usuarioPrevio.contrasegna!);
         if (contrasegnaCoincide) {
             edicionAutenticada = true;
         } else {
-            throw { message: "Validate password is needed", code: 401, data: { failedPassword: true } }
+            throw { message: "Validate password is needed", code: 422, data: { failedPassword: true } }
         }
     }
     const db = getDB();
     if (datosNuevos.nickname && datosNuevos.nickname !== usuarioPrevio.nickname) {
-        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 401 };
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422 };
         const conEseNickname = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.nickname, datosNuevos.nickname!)).limit(1);
-        if (conEseNickname[0]) throw { message: "Nickname already in use", code: 401, data: { doubleNickname: true } };
+        if (conEseNickname[0]) throw { message: "Nickname already in use", code: 409, data: { doubleNickname: true } };
     }
     if (datosNuevos.correo && datosNuevos.correo !== usuarioPrevio.correo) {
-        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 401 };
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422 };
         const conEseEmail = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.correo, datosNuevos.correo!)).limit(1);
-        if (conEseEmail[0]) throw { message: "Email already in use", code: 401, data: { doubleEmail: true } };
+        if (conEseEmail[0]) throw { message: "Email already in use", code: 409, data: { doubleEmail: true } };
     }
     if (datosNuevos.contrasegna && datosNuevos.cambiarContrasegna) {
-        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 401 };
-        if (!validarContrasegna(datosNuevos.contrasegna)) throw { message: "New password doesnt have the required security", code: 401 };
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422 };
+        if (!validarContrasegna(datosNuevos.contrasegna)) throw { message: "New password doesnt have the required security", code: 422 };
         datosNuevos.contrasegna = await bcrypt.hash(datosNuevos.contrasegna, 10);
     } else {
         datosNuevos.contrasegna = usuarioPrevio.contrasegna;
@@ -165,7 +165,7 @@ export const editarUsuario = async (nuevos: Record<string, any>, id: string): Pr
         agnadirLog("db.log", "User editted via update USUARIOS " + id);
         return { usuarioRenovado: formatearUsuarioPrivado(usuarioFinal!), tokenNuevo: token }
     } else {
-        throw { message: "There was an error updating the user", code: 401 };
+        throw { message: "There was an error updating the user", code: 400 };
     }
 }
 
@@ -178,7 +178,7 @@ export const editarUsuario = async (nuevos: Record<string, any>, id: string): Pr
  */
 export const borrarUsuario = async (contrasegna: string, id: string): Promise<boolean> => {
     const usuario = await buscarUsuario(id);
-    if (!usuario || !validarContrasegna(contrasegna)) throw { message: "Invalid credentials", code: 401 };
+    if (!usuario || !validarContrasegna(contrasegna)) throw { message: "Invalid credentials", code: 403 };
     const contrasegnaCoincide = await autenticarContrasegnaUsuario(contrasegna, usuario.contrasegna!);
     if (contrasegnaCoincide) {
         const db = getDB();
@@ -192,7 +192,7 @@ export const borrarUsuario = async (contrasegna: string, id: string): Promise<bo
             throw { message: "Couldn't delete user", code: 500 }
         }
     } else {
-        throw { message: "Validate password is needed", code: 401 }
+        throw { message: "Validate password is needed", code: 422 }
     }
 }
 

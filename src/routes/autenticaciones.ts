@@ -49,12 +49,12 @@ export const autenticarContrasegnaUsuario = async (entrante:string, encriptada:s
 
 //Para requerir que el usuario sea administrador, se tiene que hacer despues de autenticarTokenSesion
 export const autenticarAdmin = async (req, res, next) => {
-    if (!req?.datosSesion?.id) return res.status(401).json(fallo("User is not admin", null, 401));
+    if (!req?.datosSesion?.id) return res.status(401).json(fallo("User is not admin", null, 403));
     if (await usuarioEsAdmin(req.datosSesion.id)) {
         req.datosSesion.esAdmin = true;
         next();
     } else {
-        return res.status(401).json(fallo("User is not admin", null, 401));
+        return res.status(403).json(fallo("User is not admin", null, 403));
     }
 }
 

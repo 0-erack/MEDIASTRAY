@@ -29,7 +29,7 @@ routerPriv.post("/user/create", autenticarTokenApi, async (req: ExpressRequest, 
     return manejadorRuta(req, res, async () => {
         const { token, usuario } = await crearUsuario(req.body.user);
         res.setHeader('X-auth-session', token);
-        return res.json(exito("User created successfully", {sessionToken: token, user: usuario}));
+        return res.json(exito("User created successfully", {sessionToken: token, user: usuario}, 201));
     });
 });
 
@@ -81,7 +81,7 @@ routerPriv.delete("/user", autenticarTokenApi, autenticarTokenSesion, async (req
             await cerrarSesion(req.datosSesion!.id, req.datosSesion!.token);
             return res.json(exito("User deleted successfully..."));
         } else {
-            return res.status(401).json(fallo("Invalid credentials", null, 401));
+            return res.status(403).json(fallo("Invalid credentials", null, 403));
         }
     });
 });
@@ -91,9 +91,9 @@ routerPriv.post("/user/follow", autenticarTokenApi, autenticarTokenSesion, async
     return manejadorRuta(req, res, async () => {
         let cantidad = Number.isInteger(req.body?.cantidad ?? 0) ? Math.sign(req.body?.cantidad) : 0;
         if (cantidad != 0 && await alterarSeguidores(req.datosSesion!.id, req.body.id_b, cantidad)) {
-            return res.json(exito("User followed/unfollowed successfully"));
+            return res.json(exito("User followed/unfollowed successfully", undefined, 201));
         } else {
-            return res.status(401).json(fallo("Couldn't perform action (follow)", null, 401));
+            return res.status(409).json(fallo("Couldn't perform action (follow)", null, 409));
         }
     });
 });
