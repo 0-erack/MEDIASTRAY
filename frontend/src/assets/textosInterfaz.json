@@ -185,7 +185,7 @@
                 "cambiarContrasegna": "Change password",
                 "urlFoto": "Photo URL",
                 "descripcion": "Description:",
-                "contrasegnaAntigua": "Original password:",
+                "contrasegnaAntigua": "Original password (needed for changing the password, email or nickname):",
                 "correoAntiguo": "Original email for verification:"
             },
             "ES-es": {
@@ -206,12 +206,13 @@
                 "cambiarContrasegna": "Cambiar contraseña",
                 "urlFoto": "URL de la foto",
                 "descripcion": "Descripción:",
-                "contrasegnaAntigua": "Contraseña original:",
+                "contrasegnaAntigua": "Contraseña original (necesaria para cambiar el correo, la contraseña o el nickname):",
                 "correoAntiguo": "Correo original para verificar:"
             }
         },
         "errores": {
             "EN-us": {
+                "malaContrasegna": "There was an error with the password, check it",
                 "error": "There was an error",
                 "noLogin": "Couldn't log in, check that the password and the identification are correct",
                 "noRegister": "Couldn't create an user, there was an error, check all the fields",
@@ -234,6 +235,7 @@
                 "genericoSesion": "There was an error loading the session"
             },
             "ES-es": {
+                "malaContrasegna": "Ha habido un error con la contraseña, revísala",
                 "error": "Ha habido un error",
                 "noLogin": "No se ha podido iniciar sesión, comprueba que la contraseña y la identificación sean correctas",
                 "noRegister": "No se ha podido crear el usuario, ha habido un error, comprueba todos los campos",

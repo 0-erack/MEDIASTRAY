@@ -60,15 +60,13 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
   const enviar = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (validar()) {
-      console.log("b", objetoRegister);
       setErrorFormulario("");
       if (typeof enviarPersonalizado === "function") {
         enviarPersonalizado(objetoRegister);
       } else {
         const resultado = await register(objetoRegister);
-        console.log(resultado);
         if (!error && !resultado.error) {
-          lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "registrarMal"), 1);
+          lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "registrarBien"), 1);
           navegar("/user/" + resultado.data.user.nickname);
           reset();
         } else {

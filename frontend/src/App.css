@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+input {
+  background-color: #1d1d1d;
+  border: 1px white solid;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

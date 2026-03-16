@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAjustes from "../useAjustes";
-import { peticionBasica } from "../../libraries/peticiones";
+import { limpiarVaciosStrings, peticionBasica } from "../../libraries/peticiones";
 import useSesion from "../useSesion";
 import { deApiAUsuario, deUsuarioAApi } from "../../validators/validacionesUsuario";
 
@@ -8,7 +8,7 @@ const useApiUsuarios = () => {
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState<boolean|object>(false);
     const { API_URL, API_KEY } = useAjustes();
-    const { cambiarTokenSesionActual, cambiarUsuarioActual, logout, tokenSesionActual, usuario } = useSesion();
+    const { cambiarTokenSesionActual, cambiarUsuarioActual, logout, tokenSesionActual, usuario, actualizarEstadoPremium } = useSesion();
 
     const peticionGenerica = async (url:string, verbo = "GET", body?:Record<string, any>, headersExtra:Record<string, any> = {}):Promise<any> => {
         await setCargando(true);
@@ -31,6 +31,7 @@ const useApiUsuarios = () => {
             if (resultado.ok) {
                 cambiarTokenSesionActual(resultado.data.sessionToken);
                 cambiarUsuarioActual(deApiAUsuario(resultado.data.user));
+                await actualizarEstadoPremium(resultado.data.user.id, resultado.data.sessionToken);
             }
             return resultado;
         } catch (error) {
@@ -44,6 +45,7 @@ const useApiUsuarios = () => {
             if (resultado.ok) {
                 cambiarTokenSesionActual(resultado.data.sessionToken);
                 cambiarUsuarioActual(deApiAUsuario(resultado.data.user));
+                await actualizarEstadoPremium(resultado.data.user.id, resultado.data.sessionToken);
             }
             return resultado;
         } catch (error) {
@@ -63,7 +65,7 @@ const useApiUsuarios = () => {
 
     const verSeguir = async (id1:string, id2:string):Promise<any> => {
         try {
-            const resultado = await peticionGenerica(API_URL + `/userFollow/${id1}/${id2}`, "GET");
+            const resultado = await peticionGenerica(API_URL + `/user/follow/${id1}/${id2}`, "GET");
             return resultado.data ?? false;
         } catch (error) {
             return {fallo: true, error}
@@ -75,7 +77,7 @@ const useApiUsuarios = () => {
             let cantidadCorrecta = cantidad;
             if (cantidadCorrecta > 1) cantidadCorrecta = 1;
             if (cantidadCorrecta < -1) cantidadCorrecta = -1;
-            await peticionGenerica(API_URL + `/userFollow/`, "POST", {"id_b": id, "cantidad": cantidadCorrecta});
+            await peticionGenerica(API_URL + `/user/follow/`, "POST", {"id_b": id, "cantidad": cantidadCorrecta});
             return true;
         } catch (error) {
             return {fallo: true, error}
@@ -84,9 +86,12 @@ const useApiUsuarios = () => {
 
     const editarUsuario = async (datosNuevos:Record<string, any>):Promise<any> => {
         try {
-            const resultado = await peticionGenerica(API_URL + "/userEdit", "PATCH", { newData: {...datosNuevos, cumpleagnos: Date.parse(datosNuevos?.cumpleagnos) + "", correoEliminar: undefined, contrasegnaEliminar: undefined} });
+            datosNuevos = limpiarVaciosStrings(datosNuevos);
+            const objetoEdicion = {...(deUsuarioAApi(datosNuevos)), birthdate: Date.parse(datosNuevos?.cumpleagnos) + "", changePassword: datosNuevos.contrasegna?.length ? true : false, oldPassword: datosNuevos.contrasegnaAntigua?.length ? datosNuevos.contrasegnaAntigua : undefined}
+            const resultado = await peticionGenerica(API_URL + "/user/edit", "PATCH", { newData: objetoEdicion });
             cambiarTokenSesionActual(resultado.sessionToken);
-            cambiarUsuarioActual(resultado.user);
+            cambiarUsuarioActual(deApiAUsuario(resultado.data.user));
+            await actualizarEstadoPremium(resultado.data.user.id, resultado.data.sessionToken);
             return resultado;
         } catch (error) {
             return {fallo: true, error}
@@ -95,11 +100,20 @@ const useApiUsuarios = () => {
 
     const borrarUsuario = async (contrasegna:string):Promise<any> => {
         try {
-            const resultado = await peticionGenerica(API_URL + "/userDelete", "DELETE", {contrasegna});
-            await logout();
+            const resultado = await peticionGenerica(API_URL + "/user", "DELETE", {password: contrasegna});
+            await logout(true);
             return resultado;
         } catch (error) {
             return {fallo: true, error}
+        }
+    }
+
+    const verPremium = async (id:string):Promise<boolean> => {
+        try {
+            const resultado = await peticionGenerica(API_URL + `/user/premium/${id}`, "GET");
+            return resultado?.data ?? false;
+        } catch (error) {
+            return false;
         }
     }
 
@@ -108,7 +122,7 @@ const useApiUsuarios = () => {
         setError(false)
     }
 
-    return { cargando, error, peticionGenerica, login, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario };
+    return { cargando, error, peticionGenerica, login, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario, verPremium };
 };
 
 export default useApiUsuarios;

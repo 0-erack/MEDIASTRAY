@@ -8,7 +8,7 @@ import { TextoTraducido } from '../../libraries/traducir';
 import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos';
 import useAjustes from '../../hooks/useAjustes';
 import ImgCargando from '../Principal/ImgCargando';
-import { timestampAInputDate } from '../../libraries/extraFechas';
+import { inputDateATimestamp, timestampAInputDate } from '../../libraries/extraFechas';
 import { useNavigate } from 'react-router-dom';
 import useMensajes from '../../hooks/useMensajes';
 
@@ -45,6 +45,8 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
         resetEstados();
     }
 
+    const validarFechaInput = (e:string) => validarCumpleagnos(inputDateATimestamp(e));
+
     const validarEdicion = () => {
         const contrasegnasBien = objetoPatch.cambiarContrasegna ? (validarContrasegna(objetoPatch.contrasegna) && objetoPatch.contrasegna === objetoPatch.contrasegna2 && validarContrasegna(objetoPatch.contrasegnaAntigua)) : true;
         return contrasegnasBien
@@ -52,7 +54,7 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
             && validarNombre(objetoPatch.nombre)
             && validarCorreo(objetoPatch.correo)
             && validarNickname(objetoPatch.nickname)
-            && validarCumpleagnos(objetoPatch.cumpleagnos)
+            && validarFechaInput(objetoPatch.cumpleagnos)
             && validarUrl(objetoPatch.urlFoto)
             && validarDescripcion(objetoPatch.descripcion);
     }
@@ -67,19 +69,21 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
         //validar correctamente, mirar que no haya uniques en uso (a no ser que sean propios), enviar al servidor, si es correcto setear datos nuevos, si no mostrar error
         if (validarEdicion()) {
             setErrorFormulario("");
-            const resultado = await editarUsuario(objetoPatch);
+            const objetoEdicion = {...objetoPatch, correo: objetoPatch.correo === previo.correo ? undefined : objetoPatch.correo, contrasegna: objetoPatch.contrasegna === previo.contrasegna ? undefined : objetoPatch.contrasegna, nickname: objetoPatch.nickname === previo.nickname ? undefined : objetoPatch.nickname, contrasegna2: undefined, verContrasegna: undefined, contrasegnaEliminar: undefined, correoEliminar: undefined }
+            const resultado = await editarUsuario(objetoEdicion);
             if (resultado?.ok && !error) {
                 reset();
                 //navegar("/user/" + resultado.user.nickname);
+                navegar("/user");
                 window.location.reload();
                 lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "editarUsuarioBien"), 1);
             } else {
-                if (resultado?.error?.result?.data.doubleNickname) {
+                if (resultado?.error?.result?.data?.doubleNickname) {
                     setErrorFormulario(TextoTraducido("errores", idiomaActual, "nicknameRepetido"));
-                } else if (resultado?.error?.result?.data.doubleEmail) {
+                } else if (resultado?.error?.result?.data?.doubleEmail) {
                     setErrorFormulario(TextoTraducido("errores", idiomaActual, "correoRepetido"));
-                } else if (resultado?.error?.result?.data.failedPassword) {
-                    setErrorFormulario(TextoTraducido("errores", idiomaActual, "noLogin"));
+                } else if (resultado?.error?.result?.data?.failedPassword) {
+                    setErrorFormulario(TextoTraducido("errores", idiomaActual, "malaContrasegna"));
                 } else {
                     setErrorFormulario(TextoTraducido("errores", idiomaActual, "noUsuarioEdit"));
                 }
@@ -96,7 +100,9 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
 
     const enviarEliminarCuenta = async (e: React.SyntheticEvent) => {
         e.preventDefault();
+        console.log("a")
         if (quiereEliminar && validarBorrado()) {
+            console.log("b")
             const resultado = await borrarUsuario(objetoPatch.contrasegnaEliminar);
             if (resultado.ok) {
                 lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "borrarUsuario"), 3);
@@ -116,14 +122,14 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
                 <InputBasico nombre="nombre" placeholder={nombreFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="nombre" />} valor={objetoPatch.nombre} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionNombre" />} validador={validarNombre} />
                 <InputBasico nombre="urlFoto" placeholder={''} titulo={<Texto tipo="formularios" nombre="urlFoto" />} valor={objetoPatch.urlFoto} tipo="url" mensajeError={<Texto tipo="errores" nombre="validacionUrl" />} validador={validarUrl} />
                 <InputBasico nombre="descripcion" placeholder={'...'} titulo={<Texto tipo="formularios" nombre="descripcion" />} valor={objetoPatch.descripcion} tipo="textarea" mensajeError={<Texto tipo="errores" nombre="validacionDescripcion" />} validador={validarDescripcion} />
-                <InputBasico nombre="cumpleagnos" titulo={<Texto tipo="formularios" nombre="cumpleagnos" />} valor={objetoPatch.cumpleagnos} tipo="date" mensajeError={<Texto tipo="errores" nombre="validacionCumpleagnos" />} validador={validarCumpleagnos} />
+                <InputBasico nombre="cumpleagnos" titulo={<Texto tipo="formularios" nombre="cumpleagnos" />} valor={objetoPatch.cumpleagnos} tipo="date" mensajeError={<Texto tipo="errores" nombre="validacionCumpleagnos" />} validador={validarFechaInput} />
                 <InputBasico nombre="cambiarContrasegna" titulo={<Texto tipo="formularios" nombre="cambiarContrasegna" />} estaChecked={objetoPatch.cambiarContrasegna} tipo="checkbox" />
                 {objetoPatch.cambiarContrasegna && (<div>
-                    <InputBasico nombre="contrasegnaAntigua" titulo={<Texto tipo="formularios" nombre="contrasegnaAntigua" />} valor={objetoPatch.contrasegnaAntigua} tipo={objetoPatch.verContrasegna ? "text" : "password"} placeholder="········" />
                     <InputBasico nombre="contrasegna" titulo={<Texto tipo="formularios" nombre="contrasegna" />} valor={objetoPatch.contrasegna} tipo={objetoPatch.verContrasegna ? "text" : "password"} placeholder="········"  mensajeError={<Texto tipo="errores" nombre="validacionContrasegna" />} validador={validarContrasegna} />
                     <InputBasico nombre="contrasegna2" titulo={<Texto tipo="formularios" nombre="contrasegna2" />} valor={objetoPatch.contrasegna2} tipo={objetoPatch.verContrasegna ? "text" : "password"} placeholder="········" />
                     <InputBasico nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoPatch.verContrasegna} tipo="checkbox" />
                 </div>)}
+                <InputBasico nombre="contrasegnaAntigua" titulo={<Texto tipo="formularios" nombre="contrasegnaAntigua" />} valor={objetoPatch.contrasegnaAntigua} tipo={objetoPatch.verContrasegna ? "text" : "password"} placeholder="········" />
                 <BotonFuncion titulo={<Texto tipo="botones" nombre="editarPerfil" />} funcion={enviar} />
                 <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} />
 

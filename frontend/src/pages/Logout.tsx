@@ -11,11 +11,13 @@ function Logout() {
   const { logout } = useSesion();
   const navegar = useNavigate();
   const { lanzarMensaje } = useMensajes();
+  let hecho = false;
 
   const cerrarSesion = async () => {
-    lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "logout"), 3);
-    await logout();
+    if (!hecho) lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "logout"), 3);
+    await logout(true);
     navegar("/");
+    hecho = true;
   }
 
   useEffect(() => {

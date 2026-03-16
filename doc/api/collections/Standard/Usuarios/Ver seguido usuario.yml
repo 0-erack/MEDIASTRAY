@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{url_backend}}/user/follow/53b22dfc-0220-4bd2-ae12-ab32d89edf0d/85ac9432-426f-479f-89f2-52cd92e18063"
+  url: "{{url_backend}}/user/follow/8dde3574-d09b-41ad-8c3a-40c0f44186b3/6f4bdd73-6e40-4fd9-9d13-9b993a6e3751"
   headers:
     - name: Content-Type
       value: application/json

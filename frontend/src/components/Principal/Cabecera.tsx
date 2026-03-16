@@ -17,7 +17,6 @@ function Cabecera() {
   return (
     <>
         <header id="cabecera">
-          {usuario?.id}
             <img id="logo-cabecera" src={imgLogo ?? PUBLIC_URL + "/logoA.png"} alt="MEDIASTRAY" onClick={()=>{navegar("/")}} />
             {textosInterfazEnlacesCabecera[(usuario ? "si" : "no") + "Usuario"][idiomaActual]?.map((e:any, i:number) => {
               return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} />)
@@ -27,7 +26,7 @@ function Cabecera() {
             })}
             {usuario ? (
               <span className="usuario-cabecera">
-                <BotonNavegacion cabecera={true} direccion={"/user"} titulo={usuario.nickname ?? "User"} />
+                <BotonNavegacion cabecera={true} direccion={"/user"} titulo={ (typeof usuario === 'object' && usuario !== null) ? usuario?.nickname : "User"} />
               </span>
             ) : ""}
             <span id="cambiar-idioma">

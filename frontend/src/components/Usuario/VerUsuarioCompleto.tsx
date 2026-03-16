@@ -13,23 +13,28 @@ interface VerUsuarioCompletoProps {
 
 function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
 
-  const { usuario } = useSesion();
+  const { usuario, premium } = useSesion();
+  const [usuarioEsPremium, setUsuarioEsPremium] = useState(false);
+  const idUsuario = (typeof usuario === 'object' && usuario) ? usuario!.id! : '';
+  const nicknameUsuario = (typeof usuario === 'object' && usuario) ? usuario!.nickname! : '';
   const [usuarioCargado, setUsuarioCargado] = useState<Partial<Usuario>|null>(null);
-  const idBuscar = id ?? (usuario?.id ?? '');
+  const idBuscar = id ?? (idUsuario ?? 'x');
   const [soyYo, setSoyYo] = useState(false);
-  const { verUsuario, cargando, error } = useApiUsuarios();
+  const { verUsuario, cargando, error, verPremium } = useApiUsuarios();
   const [fallo, setFallo] = useState(false);
 
   const cargaInicial = async () => {
     if (!id && !usuario) {
       setFallo(true);
     } else {
-      if (usuario!?.id === id || usuario!?.nickname === id || (!id && usuario!?.id)) {
+      if (idUsuario === id || nicknameUsuario === id || (!id && idUsuario)) {
         setSoyYo(true);
-        setUsuarioCargado(usuario!);
+        setUsuarioCargado(usuario! as Partial<Usuario>);
+        setUsuarioEsPremium(premium);
       } else {
         const usuarioAjeno = await verUsuario(id);
-        setUsuarioCargado({...usuarioAjeno, correo: "", contrasegna: "", cumpleagnos: "", disponibilidad: ""});
+        setUsuarioCargado({...usuarioAjeno, correo: "", contrasegna: "", cumpleagnos: "", disponibilidad: "", premiumExpirationDate: undefined});
+        setUsuarioEsPremium(await verPremium(usuarioAjeno.id));
       }
     }
   }
@@ -42,7 +47,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
       {idBuscar ? (<div>
         {(fallo || error) ? (<CajaError nombre="usuarioNoEncontrado" />) : (<div>
           {(usuarioCargado && !cargando) ? (<div className="ver-usuario">
-            <TarjetaUsuarioGrande usuario={usuarioCargado} soyYo={soyYo} />
+            <TarjetaUsuarioGrande usuario={usuarioCargado} soyYo={soyYo} esPremium={usuarioEsPremium} />
           </div>) : (<ImgCargando />)}
         </div>)}
       </div>) : (<CajaError nombre="usuarioNoEncontrado" />)}

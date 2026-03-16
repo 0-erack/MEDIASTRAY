@@ -122,7 +122,8 @@ export const editarUsuario = async (nuevos: Record<string, any>, id: string): Pr
     if (!usuarioPrevio) throw { message: "Invalid credentials", code: 403 };
     if (usuarioPrevio.disponibilidad >= 2) throw { message: "User has not allowed login edit credentials nor profile", code: 403 };
     let edicionAutenticada = false; //Hace referencia a si la peticion esta autorizada para editar datos sensibles
-    if (datosNuevos.cambiarContrasegna && datosNuevos.contrasegnaAntigua != undefined) { //Solo se pide la contrasegna original si se va a cambiar a otra distinta
+    //Solo se pide la contrasegna original si se va a cambiar a otra distinta
+    if (datosNuevos.contrasegnaAntigua != undefined) { 
         const contrasegnaCoincide = await autenticarContrasegnaUsuario(datosNuevos.contrasegnaAntigua, usuarioPrevio.contrasegna!);
         if (contrasegnaCoincide) {
             edicionAutenticada = true;
@@ -132,18 +133,18 @@ export const editarUsuario = async (nuevos: Record<string, any>, id: string): Pr
     }
     const db = getDB();
     if (datosNuevos.nickname && datosNuevos.nickname !== usuarioPrevio.nickname) {
-        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422 };
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422, data: { failedPassword: true } };
         const conEseNickname = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.nickname, datosNuevos.nickname!)).limit(1);
         if (conEseNickname[0]) throw { message: "Nickname already in use", code: 409, data: { doubleNickname: true } };
     }
     if (datosNuevos.correo && datosNuevos.correo !== usuarioPrevio.correo) {
-        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422 };
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422, data: { failedPassword: true } };
         const conEseEmail = await db.select({ id: usuarios.id }).from(usuarios).where(eq(usuarios.correo, datosNuevos.correo!)).limit(1);
         if (conEseEmail[0]) throw { message: "Email already in use", code: 409, data: { doubleEmail: true } };
     }
     if (datosNuevos.contrasegna && datosNuevos.cambiarContrasegna) {
-        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422 };
-        if (!validarContrasegna(datosNuevos.contrasegna)) throw { message: "New password doesnt have the required security", code: 422 };
+        if (!edicionAutenticada) throw { message: "Validate password is needed", code: 422, data: { failedPassword: true } };
+        if (!validarContrasegna(datosNuevos.contrasegna)) throw { message: "New password doesnt have the required security", code: 422, data: { failedPassword: true } };
         datosNuevos.contrasegna = await bcrypt.hash(datosNuevos.contrasegna, 10);
     } else {
         datosNuevos.contrasegna = usuarioPrevio.contrasegna;

@@ -11,17 +11,16 @@ import useSesion from '../../hooks/useSesion';
 
 interface TarjetaUsuarioGrandeProps {
   usuario: Record<string, any>;
-  soyYo: boolean|null
+  soyYo: boolean|null;
+  esPremium: boolean;
 }
 
-function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
+function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrandeProps) {
 
   const { idiomaActual } = useAjustes();
   const { usuario: usuarioActual } = useSesion();
-  const esPremium = usuario.premium ? (usuario.premium > Date.now()) : false;
   const fechaCumpleagnos = timestampAFecha(usuario.cumpleagnos);
   const fechaCreacion = timestampAFecha(usuario.fechaCreacion);
-  const fechaPremium = timestampAFecha(usuario.premium);
   const [siguiendo, setSiguiendo] = useState(false);
   const [teSigue, setTeSigue] = useState(false);
   const { verSeguir, seguir } = useApiUsuarios();
@@ -51,10 +50,10 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
   const verSiguiendo = async (deVuelta?:boolean):Promise<boolean> => {
     if (soyYo || !usuarioActual) return false;
     if (deVuelta) {
-      const siguiendo = await verSeguir(usuario.id, usuarioActual!.id ?? '');
+      const siguiendo = await verSeguir(usuario.id, (typeof usuarioActual === 'object' && usuarioActual) ? usuarioActual!.id! : '');
       return siguiendo;
     } else {
-      const siguiendo = await verSeguir(usuarioActual!.id ?? '', usuario.id);
+      const siguiendo = await verSeguir((typeof usuarioActual === 'object' && usuarioActual) ? usuarioActual!.id! : '', usuario.id);
       return siguiendo;
     }
   }
@@ -71,7 +70,6 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
 
   return (
     <div className="tarjeta-usuario-grande">
-      {JSON.stringify(usuario)}
         <h2>{usuario.nombre}</h2>
         <img src={usuario.urlFoto ?? "#"} alt={TextoTraducido("errores", idiomaActual, "nopfp")} />
         <p>{"("}{usuario.nickname}{")"}</p>
@@ -80,7 +78,6 @@ function TarjetaUsuarioGrande({ usuario, soyYo }: TarjetaUsuarioGrandeProps) {
         {soyYo && (<p>{TextoTraducido("formularios", idiomaActual, "cumpleagnos")} {fechaCumpleagnos}</p>)}
         <p>{TextoTraducido("formularios", idiomaActual, "fechaCreacion")} {fechaCreacion}</p>
         <p>{TextoTraducido("formularios", idiomaActual, "premium")} {esPremium ? TextoTraducido("palabras", idiomaActual, "si") : TextoTraducido("palabras", idiomaActual, "no")}</p>
-        {esPremium && (<p>{TextoTraducido("formularios", idiomaActual, "premiumCaducidad")} {fechaPremium}</p>)}
         <p>{TextoTraducido("formularios", idiomaActual, "seguidores")} {seguidoresSimulados} {(!soyYo && usuarioActual) && (<span>
           <BotonFuncion funcion={alternarSeguir} titulo={TextoTraducido("botones", idiomaActual, siguiendo ? "noSeguir" : "seguir")} />
           <span>{usuario.nombre} {TextoTraducido("formularios", idiomaActual, teSigue ? "teSigue" : "noTeSigue")}</span>
