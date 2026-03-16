@@ -27,10 +27,23 @@ Tailwind
 ReactDom
 ReactHookForm
 ReactRouterDom
-DBVis
+DBeaver
 Nginx?
 Mailgun?Resend?
 GraphQL?
-ApolloClient?
+ApolloClient?ApolloServer?
 Multer?
-ApolloServer?
+React-markdown
+React-hook-form
+Remark GFM
+MantoSDK?
+Capacitor
+Electron
+Bash 
+Penpot 
+DrawIO
+Excalidraw
+Stripe?
+AWS?
+Cloudflare?
+PDF
