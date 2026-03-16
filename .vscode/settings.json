@@ -1,3 +1,6 @@
 {
-    "window.titleBarStyle": "native"
+    "window.titleBarStyle": "native",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    }
 }

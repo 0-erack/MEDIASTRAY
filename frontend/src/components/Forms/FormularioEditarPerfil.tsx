@@ -1,16 +1,15 @@
-import { useState, useMemo } from 'react';
-import Texto from '../Texto';
-import useApiUsuarios from '../../hooks/api/useApiUsuarios';
-import InputBasico from '../Elements/InputBasico';
-import BotonFuncion from '../Elements/BotonFuncion';
-import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as validarNickname, nombre as validarNombre, cumpleagnos as validarCumpleagnos, url as validarUrl, descripcionUsuario as validarDescripcion } from '../../libraries/validacionesBackend';
-import { TextoTraducido } from '../../libraries/traducir';
-import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos';
-import useAjustes from '../../hooks/useAjustes';
-import ImgCargando from '../Principal/ImgCargando';
-import { inputDateATimestamp, timestampAInputDate } from '../../libraries/extraFechas';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useApiUsuarios from '../../hooks/api/useApiUsuarios';
+import useIdioma from '../../hooks/useIdioma';
 import useMensajes from '../../hooks/useMensajes';
+import { correoFalso, nicknameFalso, nombreFalso } from '../../libraries/datosFalsos';
+import { inputDateATimestamp, timestampAInputDate } from '../../libraries/extraFechas';
+import { contrasegna as validarContrasegna, correo as validarCorreo, cumpleagnos as validarCumpleagnos, descripcionUsuario as validarDescripcion, nickname as validarNickname, nombre as validarNombre, url as validarUrl } from '../../libraries/validacionesBackend';
+import BotonFuncion from '../Elements/BotonFuncion';
+import InputBasico from '../Elements/InputBasico';
+import ImgCargando from '../Principal/ImgCargando';
+import Texto from '../Texto';
 
 function FormularioEditarPerfil({usuario}: {usuario: any}) {
 
@@ -20,7 +19,6 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
     const objetoPatchBasico = {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", urlFoto: previo.urlFoto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }
     const [objetoPatch, setObjetoPatch] = useState(objetoPatchBasico);
     const [errorFormulario, setErrorFormulario] = useState("");
-    const { idiomaActual } = useAjustes();
     const nombreFalsoPlaceholder = useMemo(() => nombreFalso(), []);
     const nicknameFalsoPlaceholder = useMemo(() => nicknameFalso(), []);
     const correoFalsoPlaceholder = useMemo(() => correoFalso(), []);
@@ -76,41 +74,39 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
                 //navegar("/user/" + resultado.user.nickname);
                 navegar("/user");
                 window.location.reload();
-                lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "editarUsuarioBien"), 1);
+                lanzarMensaje(useIdioma("mensajes", "editarUsuarioBien"), 1);
             } else {
                 if (resultado?.error?.result?.data?.doubleNickname) {
-                    setErrorFormulario(TextoTraducido("errores", idiomaActual, "nicknameRepetido"));
+                    setErrorFormulario(useIdioma("errores", "nicknameRepetido"));
                 } else if (resultado?.error?.result?.data?.doubleEmail) {
-                    setErrorFormulario(TextoTraducido("errores", idiomaActual, "correoRepetido"));
+                    setErrorFormulario(useIdioma("errores", "correoRepetido"));
                 } else if (resultado?.error?.result?.data?.failedPassword) {
-                    setErrorFormulario(TextoTraducido("errores", idiomaActual, "malaContrasegna"));
+                    setErrorFormulario(useIdioma("errores", "malaContrasegna"));
                 } else {
-                    setErrorFormulario(TextoTraducido("errores", idiomaActual, "noUsuarioEdit"));
+                    setErrorFormulario(useIdioma("errores", "noUsuarioEdit"));
                 }
-                lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "editarUsuarioMal"), 2);
+                lanzarMensaje(useIdioma("mensajes", "editarUsuarioMal"), 2);
             }
             resetEstados();
         } else {
-            lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "editarUsuarioMal"), 2);
-            setErrorFormulario(TextoTraducido("errores", idiomaActual, "noUsuarioEdit"));
-            if (objetoPatch.cambiarContrasegna && objetoPatch.contrasegna !== objetoPatch.contrasegna2) setErrorFormulario(TextoTraducido("errores", idiomaActual, "dobleContrasegna"));
+            lanzarMensaje(useIdioma("mensajes", "editarUsuarioMal"), 2);
+            setErrorFormulario(useIdioma("errores", "noUsuarioEdit"));
+            if (objetoPatch.cambiarContrasegna && objetoPatch.contrasegna !== objetoPatch.contrasegna2) setErrorFormulario(useIdioma("errores", "dobleContrasegna"));
         }
-        if (objetoPatch.contrasegna2 !== objetoPatch.contrasegna) setErrorFormulario(TextoTraducido("errores", idiomaActual, "dobleContrasegna"));
+        if (objetoPatch.contrasegna2 !== objetoPatch.contrasegna) setErrorFormulario(useIdioma("errores", "dobleContrasegna"));
     }
 
     const enviarEliminarCuenta = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        console.log("a")
         if (quiereEliminar && validarBorrado()) {
-            console.log("b")
             const resultado = await borrarUsuario(objetoPatch.contrasegnaEliminar);
             if (resultado.ok) {
-                lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "borrarUsuario"), 3);
+                lanzarMensaje(useIdioma("mensajes", "borrarUsuario"), 3);
                 navegar("/");
                 return;
             }
         }
-        setErrorFormulario(TextoTraducido("errores", idiomaActual, "noUsuarioDelete"));
+        setErrorFormulario(useIdioma("errores", "noUsuarioDelete"));
     }
 
     return (

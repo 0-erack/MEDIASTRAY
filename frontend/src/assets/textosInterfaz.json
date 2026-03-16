@@ -212,6 +212,7 @@
         },
         "errores": {
             "EN-us": {
+                "sesionExpirada": "User session expired, log in again",
                 "malaContrasegna": "There was an error with the password, check it",
                 "error": "There was an error",
                 "noLogin": "Couldn't log in, check that the password and the identification are correct",
@@ -235,6 +236,7 @@
                 "genericoSesion": "There was an error loading the session"
             },
             "ES-es": {
+                "sesionExpirada": "La sesión del usuario ha expirado, inicie sesión de nuevo",
                 "malaContrasegna": "Ha habido un error con la contraseña, revísala",
                 "error": "Ha habido un error",
                 "noLogin": "No se ha podido iniciar sesión, comprueba que la contraseña y la identificación sean correctas",

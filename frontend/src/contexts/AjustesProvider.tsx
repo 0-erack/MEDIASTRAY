@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import { textos } from '../assets/textosInterfaz.json';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useMensajes from '../hooks/useMensajes';
@@ -48,7 +48,6 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
 
       setFallo(false);
     } catch (error) {
-      console.log(error);
       setFallo({ error: true, objeto: error });
       lanzarMensaje("Unknown error", 2);
     }

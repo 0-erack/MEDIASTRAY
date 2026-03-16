@@ -4,11 +4,10 @@ import Texto from '../Texto';
 import InputBasico from '../Elements/InputBasico';
 import BotonFuncion from '../Elements/BotonFuncion';
 import { identificacion as validarIdentificacion, contrasegna as validarContrasegna } from '../../libraries/validacionesBackend';
-import { TextoTraducido } from '../../libraries/traducir';
-import useAjustes from '../../hooks/useAjustes';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import ImgCargando from '../Principal/ImgCargando';
 import useMensajes from '../../hooks/useMensajes';
+import useIdioma from '../../hooks/useIdioma';
 
 interface FormularioLoginProps {
   enviarPersonalizado?: (data: any) => void; 
@@ -20,7 +19,6 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
   const objetoLoginBasico = { identificacion: "", contrasegna: "", verContrasegna: false }
   const [objetoLogin, setObjetoLogin] = useState({ ...objetoLoginBasico });
   const [errorFormulario, setErrorFormulario] = useState("");
-  const { idiomaActual } = useAjustes();
   const navegar = useNavigate();
   const { lanzarMensaje } = useMensajes();
 
@@ -53,17 +51,17 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
       } else {
         const resultado = await login(objetoLogin);
         if (resultado.code === 200 && !resultado.fallo) {
-          lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "loginBien"), 1);
+          lanzarMensaje(useIdioma("mensajes", "loginBien"), 1);
           navegar("/user/" + resultado.data.user.nickname);
           reset();
         } else {
-          lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "loginMal"), 2);
-          setErrorFormulario(TextoTraducido("errores", idiomaActual, "noLogin"));
+          lanzarMensaje(useIdioma("mensajes", "loginMal"), 2);
+          setErrorFormulario(useIdioma("errores", "noLogin"));
         }
       }
     } else {
-      lanzarMensaje(TextoTraducido("mensajes", idiomaActual, "loginMal"), 2);
-      setErrorFormulario(TextoTraducido("errores", idiomaActual, "noLogin"));
+      lanzarMensaje(useIdioma("mensajes", "loginMal"), 2);
+      setErrorFormulario(useIdioma("errores", "noLogin"));
     }
   }
 

@@ -1,11 +1,11 @@
-import { createContext, useState, ReactNode, useEffect } from "react";
-import { Usuario } from "../types/Usuario";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { peticionBasica } from "../libraries/peticiones";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import useAjustes from "../hooks/useAjustes";
-import { deApiAUsuario, validarUsuarioLocal } from "../validators/validacionesUsuario";
-import useMensajes from "../hooks/useMensajes";
 import useIdioma from "../hooks/useIdioma";
+import useLocalStorage from "../hooks/useLocalStorage";
+import useMensajes from "../hooks/useMensajes";
+import { peticionBasica } from "../libraries/peticiones";
+import { Usuario } from "../types/Usuario";
+import { deApiAUsuario, validarUsuarioLocal } from "../validators/validacionesUsuario";
 
 interface SesionContextType {
     usuario: Partial<Usuario> | null | boolean;
@@ -65,12 +65,12 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
 
             } else {
                 await logout();
+                lanzarMensaje(useIdioma("errores", "sesionExpirada"), 2);
                 return;
             }
-
         } catch (e) {
             await logout();
-            lanzarMensaje(useIdioma("err", "genericoSesion"), 2);
+            lanzarMensaje(useIdioma("errores", "genericoSesion"), 2);
         }
     }
 
