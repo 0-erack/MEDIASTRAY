@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{url_backend}}/user/premium/9a74c50c-91d2-4ab6-ac04-3675b276e5d2"
+  url: "{{url_backend}}/user/premium/8dde3574-d09b-41ad-8c3a-40c0f44186b3"
   headers:
     - name: Content-Type
       value: application/json
