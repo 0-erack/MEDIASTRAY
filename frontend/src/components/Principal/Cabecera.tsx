@@ -1,12 +1,11 @@
 
-import BotonNavegacion from '../Elements/BotonNavegacion';
-import imgLogo from '../../assets/images/logoA.png';
 import { useNavigate } from 'react-router-dom';
-import './Cabecera.css';
-import EnlaceFuncion from '../Elements/EnlaceFuncion';
-import { cambiarIdiomaHtml } from '../../libraries/accionesIndex';
+import imgLogo from '../../assets/images/logoA.png';
 import useAjustes from '../../hooks/useAjustes';
 import useSesion from '../../hooks/useSesion';
+import { cambiarIdiomaHtml } from '../../libraries/accionesIndex';
+import BotonNavegacion from '../Elements/BotonNavegacion';
+import EnlaceFuncion from '../Elements/EnlaceFuncion';
 
 function Cabecera() {
   
@@ -16,7 +15,7 @@ function Cabecera() {
   //usuarioActual.id = "si"; usuarioActual.nickname = "sisisi";
   return (
     <>
-        <header id="cabecera">
+        <header id="cabecera" className='bg-principal mt-5'>
             <img id="logo-cabecera" src={imgLogo ?? PUBLIC_URL + "/logoA.png"} alt="MEDIASTRAY" onClick={()=>{navegar("/")}} />
             {textosInterfazEnlacesCabecera[(usuario ? "si" : "no") + "Usuario"][idiomaActual]?.map((e:any, i:number) => {
               return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} />)

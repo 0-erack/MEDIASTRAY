@@ -1,8 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import useAjustes from "../hooks/useAjustes";
-import useIdioma from "../hooks/useIdioma";
 import useLocalStorage from "../hooks/useLocalStorage";
-import useMensajes from "../hooks/useMensajes";
 import { peticionBasica } from "../libraries/peticiones";
 import { Usuario } from "../types/Usuario";
 import { deApiAUsuario, validarUsuarioLocal } from "../validators/validacionesUsuario";
@@ -29,7 +27,6 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
     const { leerLS, guardarLS, borrarLS } = useLocalStorage();
     const [fallo, setFallo] = useState<any>(false);
     const { API_KEY, API_URL } = useAjustes();
-    const { lanzarMensaje } = useMensajes();
     const [esAdmin, setEsAdmin] = useState<boolean>(false);
     const [bloqueado, setBloqueado] = useState<boolean>(false);
     const [premium, setPremium] = useState<boolean>(false);
@@ -65,12 +62,12 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
 
             } else {
                 await logout();
-                lanzarMensaje(useIdioma("errores", "sesionExpirada"), 2);
+                //lanzarMensaje(useIdioma("errores", "sesionExpirada"), 2);
                 return;
             }
         } catch (e) {
             await logout();
-            lanzarMensaje(useIdioma("errores", "genericoSesion"), 2);
+            //lanzarMensaje(useIdioma("errores", "genericoSesion"), 2);
         }
     }
 

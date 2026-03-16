@@ -4,9 +4,10 @@ function Pie() {
   
   return (
     <>
-        <div><br /><br /><br />
+        <footer className="bg-fondo2 text-fondo-especial-2">
+          <br /><br /><br />
             adios
-        </div>
+        </footer>
     </>
   )
 }

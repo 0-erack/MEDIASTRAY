@@ -2,5 +2,6 @@
     "window.titleBarStyle": "native",
     "editor.codeActionsOnSave": {
         "source.organizeImports": "explicit"
-    }
+    },
+    "css.lint.unknownAtRules": "ignore"
 }
