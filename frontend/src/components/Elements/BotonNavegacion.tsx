@@ -1,5 +1,5 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface BotonNavegacoinProps {
   cabecera?: boolean|string|null;
@@ -8,11 +8,13 @@ interface BotonNavegacoinProps {
 }
 
 function BotonNavegacion({cabecera, direccion, titulo}: BotonNavegacoinProps) {
+
+  const slug = useLocation();
+  const coincide = slug.pathname.includes(direccion ?? 'x');
   
-  return (
-        <span className={(cabecera ? "boton-cabecera" : "") + " boton-navegacion bg-fondo-especial-1 text-principal m-1 p-3 hover:text-resaltado"}>
-            <Link to={direccion ?? '/'}>{titulo ?? ''}</Link>
-        </span>
+  return (<>
+      <Link className={(cabecera ? "boton-cabecera" : "") + " boton-navegacion whitespace-nowrap " + (coincide ? 'bg-resaltado!' : '')} to={direccion ?? '/'}>{titulo ?? ''}</Link>
+    </>
   )
 }
 

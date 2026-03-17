@@ -24,6 +24,7 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
     const correoFalsoPlaceholder = useMemo(() => correoFalso(), []);
     const [quiereEliminar, setQuiereEliminar] = useState(false);
     const navegar = useNavigate();
+    const traduccion = useIdioma();
     const { lanzarMensaje } = useMensajes();
 
     const cambio = (e: React.SyntheticEvent) => {
@@ -74,26 +75,26 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
                 //navegar("/user/" + resultado.user.nickname);
                 navegar("/user");
                 window.location.reload();
-                lanzarMensaje(useIdioma("mensajes", "editarUsuarioBien"), 1);
+                lanzarMensaje(traduccion("mensajes", "editarUsuarioBien"), 1);
             } else {
                 if (resultado?.error?.result?.data?.doubleNickname) {
-                    setErrorFormulario(useIdioma("errores", "nicknameRepetido"));
+                    setErrorFormulario(traduccion("errores", "nicknameRepetido"));
                 } else if (resultado?.error?.result?.data?.doubleEmail) {
-                    setErrorFormulario(useIdioma("errores", "correoRepetido"));
+                    setErrorFormulario(traduccion("errores", "correoRepetido"));
                 } else if (resultado?.error?.result?.data?.failedPassword) {
-                    setErrorFormulario(useIdioma("errores", "malaContrasegna"));
+                    setErrorFormulario(traduccion("errores", "malaContrasegna"));
                 } else {
-                    setErrorFormulario(useIdioma("errores", "noUsuarioEdit"));
+                    setErrorFormulario(traduccion("errores", "noUsuarioEdit"));
                 }
-                lanzarMensaje(useIdioma("mensajes", "editarUsuarioMal"), 2);
+                lanzarMensaje(traduccion("mensajes", "editarUsuarioMal"), 2);
             }
             resetEstados();
         } else {
-            lanzarMensaje(useIdioma("mensajes", "editarUsuarioMal"), 2);
-            setErrorFormulario(useIdioma("errores", "noUsuarioEdit"));
-            if (objetoPatch.cambiarContrasegna && objetoPatch.contrasegna !== objetoPatch.contrasegna2) setErrorFormulario(useIdioma("errores", "dobleContrasegna"));
+            lanzarMensaje(traduccion("mensajes", "editarUsuarioMal"), 2);
+            setErrorFormulario(traduccion("errores", "noUsuarioEdit"));
+            if (objetoPatch.cambiarContrasegna && objetoPatch.contrasegna !== objetoPatch.contrasegna2) setErrorFormulario(traduccion("errores", "dobleContrasegna"));
         }
-        if (objetoPatch.contrasegna2 !== objetoPatch.contrasegna) setErrorFormulario(useIdioma("errores", "dobleContrasegna"));
+        if (objetoPatch.contrasegna2 !== objetoPatch.contrasegna) setErrorFormulario(traduccion("errores", "dobleContrasegna"));
     }
 
     const enviarEliminarCuenta = async (e: React.SyntheticEvent) => {
@@ -101,12 +102,12 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
         if (quiereEliminar && validarBorrado()) {
             const resultado = await borrarUsuario(objetoPatch.contrasegnaEliminar);
             if (resultado.ok) {
-                lanzarMensaje(useIdioma("mensajes", "borrarUsuario"), 3);
+                lanzarMensaje(traduccion("mensajes", "borrarUsuario"), 3);
                 navegar("/");
                 return;
             }
         }
-        setErrorFormulario(useIdioma("errores", "noUsuarioDelete"));
+        setErrorFormulario(traduccion("errores", "noUsuarioDelete"));
     }
 
     return (

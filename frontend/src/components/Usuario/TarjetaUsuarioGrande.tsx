@@ -25,20 +25,21 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
   const [seguidoresSimulados, setSeguidoresSimulados] = useState(usuario.cantidadSeguidores);
   const [editandoPerfil, setEditandoPerfil] = useState(false);
   const { lanzarMensaje } = useMensajes();
+  const traduccion = useIdioma();
 
   const alternarSeguir = async () => {
     if (soyYo || !usuarioActual) return false;
     if (siguiendo) {
       const resultado = await seguir(usuario.id, -1);
       if (resultado && !resultado.error) {
-        lanzarMensaje(useIdioma("mensajes", "noSeguirUsuario"), 4);
+        lanzarMensaje(traduccion("mensajes", "noSeguirUsuario"), 4);
         setSiguiendo(!siguiendo);
         setSeguidoresSimulados(seguidoresSimulados - 1);
       }
     } else {
       const resultado = await seguir(usuario.id, 1);
       if (resultado && !resultado.error) {
-        lanzarMensaje(useIdioma("mensajes", "seguirUsuario"), 4);
+        lanzarMensaje(traduccion("mensajes", "seguirUsuario"), 4);
         setSiguiendo(!siguiendo); 
         setSeguidoresSimulados(seguidoresSimulados + 1);
       }
@@ -69,21 +70,21 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
   return (
     <div className="tarjeta-usuario-grande">
         <h2>{usuario.nombre}</h2>
-        <img src={usuario.urlFoto ?? "#"} alt={useIdioma("errores", "nopfp")} />
+        <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} />
         <p>{"("}{usuario.nickname}{")"}</p>
         {soyYo && (<p>{usuario.correo}</p>)}
-        <p>{usuario.descripcion?.length ? usuario.descripcion : useIdioma("errores", "noDescripcion")}</p>
-        {soyYo && (<p>{useIdioma("formularios", "cumpleagnos")} {fechaCumpleagnos}</p>)}
-        <p>{useIdioma("formularios", "fechaCreacion")} {fechaCreacion}</p>
-        <p>{useIdioma("formularios", "premium")} {esPremium ? useIdioma("palabras", "si") : useIdioma("palabras", "no")}</p>
-        <p>{useIdioma("formularios", "seguidores")} {seguidoresSimulados} {(!soyYo && usuarioActual) && (<span>
-          <BotonFuncion funcion={alternarSeguir} titulo={useIdioma("botones", siguiendo ? "noSeguir" : "seguir")} />
-          <span>{usuario.nombre} {useIdioma("formularios", teSigue ? "teSigue" : "noTeSigue")}</span>
+        <p>{usuario.descripcion?.length ? usuario.descripcion : traduccion("errores", "noDescripcion")}</p>
+        {soyYo && (<p>{traduccion("formularios", "cumpleagnos")} {fechaCumpleagnos}</p>)}
+        <p>{traduccion("formularios", "fechaCreacion")} {fechaCreacion}</p>
+        <p>{traduccion("formularios", "premium")} {esPremium ? traduccion("palabras", "si") : traduccion("palabras", "no")}</p>
+        <p>{traduccion("formularios", "seguidores")} {seguidoresSimulados} {(!soyYo && usuarioActual) && (<span>
+          <BotonFuncion funcion={alternarSeguir} titulo={traduccion("botones", siguiendo ? "noSeguir" : "seguir")} />
+          <span>{usuario.nombre} {traduccion("formularios", teSigue ? "teSigue" : "noTeSigue")}</span>
         </span>)}</p>
         {(soyYo) ? (<div>
-          {!editandoPerfil && (<BotonFuncion funcion={() => {setEditandoPerfil(true)}} titulo={useIdioma("botones", "editarPerfil")} />)}
+          {!editandoPerfil && (<BotonFuncion funcion={() => {setEditandoPerfil(true)}} titulo={traduccion("botones", "editarPerfil")} />)}
           <br />
-          <BotonNavegacion direccion="/logout" titulo={useIdioma("botones", "logout")} />
+          <BotonNavegacion direccion="/logout" titulo={traduccion("botones", "logout")} />
         </div>) : (<p>REPORTAR USUARIO</p>) /*//TODO: */}
         {editandoPerfil && soyYo && (<FormularioEditarPerfil usuario={usuario} />)}
     </div>

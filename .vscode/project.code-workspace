@@ -1,0 +1,39 @@
+{
+    "folders": [
+        {
+            "name": "docs",
+            "path": "doc"
+        },
+        {
+            "name": "frontend",
+            "path": "frontend"
+        },
+        {
+            "name": "backend",
+            "path": "src"
+        },
+        {
+            "name": "public",
+            "path": "public"
+        },
+        {
+            "name": "games",
+            "path": "games"
+        },
+        {
+            "name": "root",
+            "path": "."
+        }
+        
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/.git": true,
+            "**/.svn": true,
+            "**/.hg": true,
+            "**/.DS_Store": true,
+            "**/Thumbs.db": true,
+            "**/.docker/database/*": true
+        }
+    }
+}

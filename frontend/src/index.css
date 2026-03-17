@@ -1,4 +1,24 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Datatype:wdth,wght@99.5,429&family=Syne+Mono&display=swap');*/
+@font-face {
+  font-family: 'Chelsea Market';
+  src: url('./assets/fonts/ChelseaMarket-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Syne Mono';
+  src: url('./assets/fonts/SyneMono-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Datatype';
+  src: url('./assets/fonts/Datatype-VariableFont_wdth.wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-stretch: 50% 150%;
+  font-display: swap;
+}
+
 @import "tailwindcss"; 
+
 @theme {
 	--color-fondo1: #202225;
 	--color-fondo2: #333435;
@@ -8,6 +28,25 @@
 	--color-resaltado: #ffd100;
 	--color-error: #d53912;
 }
+
+body {
+	font-family: "Datatype", monospace !important;
+  	font-stretch: normal;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "wght" 429 !important;
+}
+.fuente1 {
+  	font-family: "Chelsea Market", system-ui !important;
+  	font-weight: 400;
+  	font-style: normal;
+}
+.fuente2 {
+	font-family: "Syne Mono", monospace !important;
+  	font-weight: bolder;
+  	font-style: normal;
+	font-size: smaller;
+}
+
 
 .oculto {
   display: hidden;

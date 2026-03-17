@@ -29,7 +29,7 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
   const TAMAGNO_PAGINA = import.meta.env.VITE_TAMAGNO_PAGINA ?? ((window as any).process?.env?.REACT_APP_TAMAGNO_PAGINA ?? "50");
 
   const [idiomaActual, setIdiomaActual] = useState("");
-  const idiomasAdmitidos = ["EN-us", "ES-es"];
+  const idiomasAdmitidos = ["EN-us", "ES-es", "ZH-ch"];
   const [fallo, setFallo] = useState<any>(false);
   const { leerLS, guardarLS, borrarLS } = useLocalStorage();
   const { lanzarMensaje } = useMensajes();

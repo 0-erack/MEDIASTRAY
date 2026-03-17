@@ -1,6 +1,7 @@
 .zona-mensajes {
     position:absolute; /*posicionar*/
     overflow: scroll;
+    z-index: 999;
 }
 .mensaje-flotante {
     border: 1px solid white;

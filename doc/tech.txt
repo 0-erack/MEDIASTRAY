@@ -47,3 +47,6 @@ Stripe?
 AWS?
 Cloudflare?
 PDF
+Chelsea Market
+Datatype
+Syne Mono

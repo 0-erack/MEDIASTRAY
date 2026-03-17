@@ -1,15 +1,15 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Texto from '../Texto';
-import InputBasico from '../Elements/InputBasico';
-import BotonFuncion from '../Elements/BotonFuncion';
-import { correo as validarCorreo, contrasegna as validarContrasegna, nickname as validarNickname, nombre as validarNombre, cumpleagnos as validarCumpleagnos } from '../../libraries/validacionesBackend';
-import { nicknameFalso, nombreFalso, correoFalso } from '../../libraries/datosFalsos';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
-import ImgCargando from '../Principal/ImgCargando';
-import useMensajes from '../../hooks/useMensajes';
-import { inputDateATimestamp } from '../../libraries/extraFechas';
 import useIdioma from '../../hooks/useIdioma';
+import useMensajes from '../../hooks/useMensajes';
+import { correoFalso, nicknameFalso, nombreFalso } from '../../libraries/datosFalsos';
+import { inputDateATimestamp } from '../../libraries/extraFechas';
+import { contrasegna as validarContrasegna, correo as validarCorreo, cumpleagnos as validarCumpleagnos, nickname as validarNickname, nombre as validarNombre } from '../../libraries/validacionesBackend';
+import BotonFuncion from '../Elements/BotonFuncion';
+import InputBasico from '../Elements/InputBasico';
+import ImgCargando from '../Principal/ImgCargando';
+import Texto from '../Texto';
 
 interface FormularioRegisterProps {
   enviarPersonalizado?: (data: any) => void; 
@@ -26,6 +26,7 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
   const nicknameFalsoPlaceholder = useMemo(() => nicknameFalso(), []);
   const correoFalsoPlaceholder = useMemo(() => correoFalso(), []);
   const { lanzarMensaje } = useMensajes();
+  const traduccion = useIdioma();
 
   const cambio = (e: React.SyntheticEvent) => {
     const target = e.target as HTMLInputElement;
@@ -64,26 +65,26 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
       } else {
         const resultado = await register(objetoRegister);
         if (!error && !resultado.error) {
-          lanzarMensaje(useIdioma("mensajes", "registrarBien"), 1);
+          lanzarMensaje(traduccion("mensajes", "registrarBien"), 1);
           navegar("/user/" + resultado.data.user.nickname);
           reset();
         } else {
           if (resultado?.error?.result?.data?.doubleNickname) {
-            setErrorFormulario(useIdioma("errores", "nicknameRepetido"));
+            setErrorFormulario(traduccion("errores", "nicknameRepetido"));
           } else if (resultado?.error?.result?.data?.doubleEmail) {
-            setErrorFormulario(useIdioma("errores", "correoRepetido"));
+            setErrorFormulario(traduccion("errores", "correoRepetido"));
           } else {
-            setErrorFormulario(useIdioma("errores", "noRegister"));
+            setErrorFormulario(traduccion("errores", "noRegister"));
           }
-          lanzarMensaje(useIdioma("mensajes", "registrarMal"), 2);
+          lanzarMensaje(traduccion("mensajes", "registrarMal"), 2);
         }
         resetEstados();
       }
     } else {
-      lanzarMensaje(useIdioma("mensajes", "registrarMal"), 2);
-      setErrorFormulario(useIdioma("errores", "noRegister"));
+      lanzarMensaje(traduccion("mensajes", "registrarMal"), 2);
+      setErrorFormulario(traduccion("errores", "noRegister"));
     }
-    if (objetoRegister.contrasegna2 !== objetoRegister.contrasegna) setErrorFormulario(useIdioma("errores", "dobleContrasegna"));
+    if (objetoRegister.contrasegna2 !== objetoRegister.contrasegna) setErrorFormulario(traduccion("errores", "dobleContrasegna"));
   }
 
   

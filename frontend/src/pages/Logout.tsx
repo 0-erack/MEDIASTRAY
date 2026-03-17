@@ -10,7 +10,7 @@ function Logout() {
   const navegar = useNavigate();
   const { lanzarMensaje } = useMensajes();
   let hecho = false;
-  const mensajeLogout = useIdioma("mensajes", "logout");
+  const mensajeLogout = useIdioma()("mensajes", "logout");
 
   const cerrarSesion = async () => {
     if (!hecho) lanzarMensaje(mensajeLogout, 3);

@@ -1,9 +1,12 @@
 import { TextoTraducido } from "../libraries/traducir";
 import useAjustes from "./useAjustes";
 
-const useIdioma = (seccion:string, nombre:string, idioma?:string):string => {
+const useIdioma = (idioma?:string) => {
     const { idiomaActual } = useAjustes();
-    return TextoTraducido(seccion, idioma ?? idiomaActual, nombre) ?? '';
+    const traduccion = (seccion:string, nombre:string):string => {
+        return TextoTraducido(seccion, idioma ?? idiomaActual, nombre) ?? '';
+    }
+    return traduccion;
 };
 
 export default useIdioma;

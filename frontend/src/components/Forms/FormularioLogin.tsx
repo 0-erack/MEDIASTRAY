@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Texto from '../Texto';
-import InputBasico from '../Elements/InputBasico';
-import BotonFuncion from '../Elements/BotonFuncion';
-import { identificacion as validarIdentificacion, contrasegna as validarContrasegna } from '../../libraries/validacionesBackend';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
-import ImgCargando from '../Principal/ImgCargando';
-import useMensajes from '../../hooks/useMensajes';
 import useIdioma from '../../hooks/useIdioma';
+import useMensajes from '../../hooks/useMensajes';
+import { contrasegna as validarContrasegna, identificacion as validarIdentificacion } from '../../libraries/validacionesBackend';
+import BotonFuncion from '../Elements/BotonFuncion';
+import InputBasico from '../Elements/InputBasico';
+import ImgCargando from '../Principal/ImgCargando';
+import Texto from '../Texto';
 
 interface FormularioLoginProps {
   enviarPersonalizado?: (data: any) => void; 
@@ -21,6 +21,7 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
   const [errorFormulario, setErrorFormulario] = useState("");
   const navegar = useNavigate();
   const { lanzarMensaje } = useMensajes();
+  const traduccion = useIdioma();
 
   const cambio = (e: React.SyntheticEvent) => {
     const target = e.target as HTMLInputElement;
@@ -51,17 +52,17 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
       } else {
         const resultado = await login(objetoLogin);
         if (resultado.code === 200 && !resultado.fallo) {
-          lanzarMensaje(useIdioma("mensajes", "loginBien"), 1);
+          lanzarMensaje(traduccion("mensajes", "loginBien"), 1);
           navegar("/user/" + resultado.data.user.nickname);
           reset();
         } else {
-          lanzarMensaje(useIdioma("mensajes", "loginMal"), 2);
-          setErrorFormulario(useIdioma("errores", "noLogin"));
+          lanzarMensaje(traduccion("mensajes", "loginMal"), 2);
+          setErrorFormulario(traduccion("errores", "noLogin"));
         }
       }
     } else {
-      lanzarMensaje(useIdioma("mensajes", "loginMal"), 2);
-      setErrorFormulario(useIdioma("errores", "noLogin"));
+      lanzarMensaje(traduccion("mensajes", "loginMal"), 2);
+      setErrorFormulario(traduccion("errores", "noLogin"));
     }
   }
 
