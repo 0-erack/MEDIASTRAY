@@ -8,14 +8,14 @@
                     "numeroIcono": 3
                 },
                 {
-                    "direccion": "/browseGames",
-                    "titulo": "Browse games",
-                    "numeroIcono": 4
-                },
-                {
                     "direccion": "/featuredForums",
                     "titulo": "Featured forums",
                     "numeroIcono": 5
+                },
+                {
+                    "direccion": "/browseGames",
+                    "titulo": "Browse games",
+                    "numeroIcono": 4
                 },
                 {
                     "direccion": "/browseForums",
@@ -55,14 +55,14 @@
                     "numeroIcono": 3
                 },
                 {
-                    "direccion": "/browseGames",
-                    "titulo": "Buscar juegos",
-                    "numeroIcono": 4
-                },
-                {
                     "direccion": "/featuredForums",
                     "titulo": "Foros destacados",
                     "numeroIcono": 5
+                },
+                {
+                    "direccion": "/browseGames",
+                    "titulo": "Buscar juegos",
+                    "numeroIcono": 4
                 },
                 {
                     "direccion": "/browseForums",
@@ -186,10 +186,12 @@
         },
         "parrafos": {
             "EN-us": {
-                "error404Explicacion": "Site not found :("
+                "error404Explicacion": "Site not found :(",
+                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a>"
             },
             "ES-es": {
-                "error404Explicacion": "Sitio no encontrado :("
+                "error404Explicacion": "Sitio no encontrado :(",
+                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a>"
             }
         },
         "formularios": {

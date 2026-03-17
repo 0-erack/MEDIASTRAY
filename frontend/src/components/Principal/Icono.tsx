@@ -19,24 +19,17 @@ function Icono({ numero, tamagno = 8, color = 'var(--color-resaltado)' }: IconoP
     return (
         <>
             <span
-            className={`inline-block rendering-pixelated min-w-${tamagno ?? 8} min-h-${tamagno ?? 8}`}
+            className={`inline-block pointer-events-none rendering-pixelated min-w-${tamagno ?? 8} min-h-${tamagno ?? 8}`}
             style={{
                 width: `${tamagno * 2}px`,
                 height: `${tamagno * 2}px`,
                 backgroundColor: color,
-                
-                // Using Mask to allow tinting
                 WebkitMaskImage: `url(${imageUrl})`,
                 maskImage: `url(${imageUrl})`,
-                
-                // Position the "stencil"
                 WebkitMaskPosition: `-${x * TAMAGNO * ESCALA}px -${y * TAMAGNO * ESCALA}px`,
                 maskPosition: `-${x * TAMAGNO * ESCALA}px -${y * TAMAGNO * ESCALA}px`,
-                
-                // Scale the "stencil"
                 WebkitMaskSize: `${TAMAGNO_ATLAS * ESCALA}px ${TAMAGNO_ATLAS * ESCALA}px`,
                 maskSize: `${TAMAGNO_ATLAS * ESCALA}px ${TAMAGNO_ATLAS * ESCALA}px`,
-                
                 WebkitMaskRepeat: 'no-repeat',
                 maskRepeat: 'no-repeat',
                 imageRendering: 'pixelated'

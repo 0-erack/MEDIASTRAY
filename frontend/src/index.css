@@ -27,6 +27,8 @@
 	--color-principal: #f2edd5;
 	--color-resaltado: #ffd100;
 	--color-error: #d53912;
+	--color-info1: #7b2bcf;
+	--color-info2: #7de62b;
 }
 
 body {

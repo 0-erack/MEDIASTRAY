@@ -27,7 +27,7 @@ function Cabecera() {
     })}
     {textosInterfazEnlacesCabecera[idiomaActual]?.map((e: any, i: number) => {
       return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} >
-        <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={e.numeroIcono} color="var(--color-fondo1)" /></span>
+        <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={e.numeroIcono} color={`var(--color-${e.numeroIcono === 7 ? 'info1' : 'fondo1'})`} /></span>
       </BotonNavegacion>)
     })}</>);
 
@@ -46,16 +46,16 @@ function Cabecera() {
           </nav>
         </div>
         {menuAbierto && (
-          <div className="bg-fondo-especial-2 sm:hidden scale-130 absolute top-16 right-4 z-50 flex flex-col gap-1 md:hidden p-2 shadow-xl animate-in fade-in slide-in-from-top-2">
-            <div className="flex flex-col gap-2 *:w-full *:text-left">
+          <div className="bg-fondo-especial-2 sm:hidden scale-130 translate-y-13 absolute items-start top-16 right-4 z-50 flex flex-col gap-1 md:hidden p-2 shadow-xl animate-in fade-in slide-in-from-top-2">
+            <div className="flex flex-col gap-2 *:w-full *:text-left" onClick={() => setMenuAbierto(false)}>
               {enlaces()}
             </div>
           </div>
         )}
 
-        <div className='text-center m-0 sm:m-2'>
+        <div className='text-right m-0 sm:mr-10'>
           {usuario ? (
-            <span className="usuario-cabecera flex bg-principal text-fondo-especial-1 fuente2 text-lg! hover:bg-resaltado hover:underline transition-all duration-100 hover:scale-x-110">
+            <span className="usuario-cabecera min-w-fit w-max whitespace-nowrap flex bg-principal text-fondo-especial-1 fuente2 text-lg! hover:bg-resaltado hover:underline transition-all duration-100 hover:scale-x-110">
               <img className='w-8 h-8' src={(typeof usuario === 'object' && usuario) ? usuario!.urlFoto! : '/public/nopfp.png'} alt="" />
               <BotonNavegacion cabecera={true} direccion={"/user"} titulo={(typeof usuario === 'object' && usuario !== null) ? usuario?.nickname : "User"} />
             </span>
@@ -72,7 +72,7 @@ function Cabecera() {
             </select>
           </div>
         </div>
-        <div className={`block sm:hidden transition-all duration-200 cursor-pointer ${menuAbierto ? 'bg-resaltado scale-80' : 'bg-principal scale-100'} p-1`}>
+        <div className={`block sm:hidden transition-all duration-200 cursor-pointer z-40 ml-auto ${menuAbierto ? 'bg-resaltado scale-80' : 'bg-principal scale-100'} p-1`}>
           <button className='pr-1 translate-y-0.5 inline-block' onClick={(e) => {
             e.preventDefault();
             setMenuAbierto(!menuAbierto);
