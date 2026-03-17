@@ -1,4 +1,3 @@
-
 import Texto from '../Texto';
 
 interface CajaErrorProps {

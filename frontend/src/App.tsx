@@ -16,7 +16,7 @@ function App() {
           <AjustesProvider>
             <SesionProvider>
               <Cabecera />
-              <div className="flex-1 bg-fondo1 mx-10">
+              <div className="flex-1 bg-fondo1 mx-0 lg:mx-10 sm:mx-2">
                 <Contenido />
               </div>
             </SesionProvider>

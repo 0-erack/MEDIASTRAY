@@ -4,98 +4,120 @@
             "EN-us": [
                 {
                     "direccion": "/featuredGames",
-                    "titulo": "Featured games"
+                    "titulo": "Featured games",
+                    "numeroIcono": 3
                 },
                 {
                     "direccion": "/browseGames",
-                    "titulo": "Browse games"
+                    "titulo": "Browse games",
+                    "numeroIcono": 4
                 },
                 {
                     "direccion": "/featuredForums",
-                    "titulo": "Featured forums"
+                    "titulo": "Featured forums",
+                    "numeroIcono": 5
                 },
                 {
                     "direccion": "/browseForums",
-                    "titulo": "Browse forums"
+                    "titulo": "Browse forums",
+                    "numeroIcono": 4
                 },
                 {
                     "direccion": "/browseUsers",
-                    "titulo": "Browse users"
+                    "titulo": "Browse users",
+                    "numeroIcono": 4
                 },
                 {
                     "direccion": "/docs",
-                    "titulo": "Documentation"
+                    "titulo": "Documentation",
+                    "numeroIcono": 8
                 },
                 {
                     "direccion": "/premium",
-                    "titulo": "Premium"
+                    "titulo": "Premium",
+                    "numeroIcono": 7
                 },
                 {
                     "direccion": "/info",
-                    "titulo": "About"
+                    "titulo": "About",
+                    "numeroIcono": 6
                 },
                 {
                     "direccion": "/settings",
-                    "titulo": "Settings"
+                    "titulo": "Settings",
+                    "numeroIcono": 9
                 }
             ],
             "ES-es": [
                 {
                     "direccion": "/featuredGames",
-                    "titulo": "Juegos destacados"
+                    "titulo": "Juegos destacados",
+                    "numeroIcono": 3
                 },
                 {
                     "direccion": "/browseGames",
-                    "titulo": "Buscar juegos"
+                    "titulo": "Buscar juegos",
+                    "numeroIcono": 4
                 },
                 {
                     "direccion": "/featuredForums",
-                    "titulo": "Foros destacados"
+                    "titulo": "Foros destacados",
+                    "numeroIcono": 5
                 },
                 {
                     "direccion": "/browseForums",
-                    "titulo": "Buscar foros"
+                    "titulo": "Buscar foros",
+                    "numeroIcono": 4
                 },
                 {
                     "direccion": "/browseUsers",
-                    "titulo": "Buscar usuarios"
+                    "titulo": "Buscar usuarios",
+                    "numeroIcono": 4
                 },
                 {
                     "direccion": "/docs",
-                    "titulo": "Documentación"
+                    "titulo": "Documentación",
+                    "numeroIcono": 8
                 },
                 {
                     "direccion": "/premium",
-                    "titulo": "Premium"
+                    "titulo": "Premium",
+                    "numeroIcono": 7
                 },
                 {
                     "direccion": "/info",
-                    "titulo": "Información"
+                    "titulo": "Información",
+                    "numeroIcono": 6
                 },
                 {
                     "direccion": "/settings",
-                    "titulo": "Ajustes"
+                    "titulo": "Ajustes",
+                    "numeroIcono": 9
                 }
             ],
             "noUsuario": {
                 "EN-us": [
                     {
                         "direccion": "/register",
-                        "titulo": "Register"
+                        "titulo": "Register",
+                        "numeroIcono": 1
                     },
                     {
                         "direccion": "/login",
-                        "titulo": "Log in"
+                        "titulo": "Log in",
+                        "numeroIcono": 2
                     }
                 ],
                 "ES-es": [
                     {
                         "direccion": "/register",
-                        "titulo": "Registrarse"
+                        "titulo": "Registrarse",
+                        "numeroIcono": 1
                     },
                     {
                         "direccion": "/login",
-                        "titulo": "Iniciar sesión"
+                        "titulo": "Iniciar sesión",
+                        "numeroIcono": 2
                     }
                 ]
             },
@@ -103,13 +125,15 @@
                 "EN-us": [
                     {
                         "direccion": "/logout",
-                        "titulo": "Log out"
+                        "titulo": "Log out",
+                        "numeroIcono": 10
                     }
                 ],
                 "ES-es": [
                     {
                         "direccion": "/logout",
-                        "titulo": "Cerrar sesión"
+                        "titulo": "Cerrar sesión",
+                        "numeroIcono": 10
                     }
                 ]
             }
@@ -117,6 +141,7 @@
         "botones": {
             "EN-us": {
                 "irInicio": "Back to home",
+                "inicio": "Home",
                 "iniciarSesion": "Log in",
                 "crearCuenta": "Create account",
                 "seguir": "Follow",
@@ -129,6 +154,7 @@
             },
             "ES-es": {
                 "irInicio": "Volver al icorreoRepetidonicio",
+                "inicio": "Inicio",
                 "iniciarSesion": "Iniciar sesión",
                 "crearCuenta": "Crear cuenta",
                 "seguir": "Seguir",

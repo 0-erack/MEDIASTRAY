@@ -18,7 +18,7 @@ interface AjustesContextType {
   cambiarIdiomaActual: (nuevo: string) => Promise<void>;
 }
 
-export const AjustesContext = createContext<AjustesContextType | null>(null);
+export const AjustesContext = createContext<AjustesContextType | null>(null); 
 
 const AjustesProvider = ({ children }: { children: ReactNode }) => {
 
