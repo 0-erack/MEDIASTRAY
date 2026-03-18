@@ -7,7 +7,7 @@ interface EnlaceFuncionProps {
 function EnlaceFuncion({cabecera, titulo, funcion}: EnlaceFuncionProps) {
   
   return (
-        <span className={(cabecera ? "enlace-cabecera" : "") + "enlace-funcion"}>
+        <span className={(cabecera ? "enlace-cabecera" : "") + "enlace-funcion text-resaltado underline cursor-pointer fuente2"}>
             <a href="" onClick={(e) => {
               e.preventDefault();
               try {funcion()} catch (e) {e}
