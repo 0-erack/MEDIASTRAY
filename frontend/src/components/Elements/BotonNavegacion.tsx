@@ -15,7 +15,7 @@ function BotonNavegacion({cabecera, direccion, titulo, children}: BotonNavegacoi
   const coincide = direccion === "/" ? slug.pathname === "/" : slug.pathname.includes(direccion ?? 'x');
   
   return (<>
-      <Link className={(cabecera ? "boton-cabecera" : "") + " boton-navegacion whitespace-nowrap " + (coincide ? 'bg-resaltado!' : '')} to={direccion ?? '/'}>{children}{titulo ?? ''}</Link>
+      <Link className={(cabecera ? "boton-cabecera" : "") + " boton-navegacion px-1 whitespace-nowrap " + (coincide ? 'bg-resaltado!' : '')} to={direccion ?? '/'}>{children}{titulo ?? ''}</Link>
     </>
   )
 }

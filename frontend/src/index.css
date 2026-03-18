@@ -41,6 +41,17 @@
 	--color-info1: #7b2bcf;
 	--color-info2: #7de62b;
 }
+* {
+	--color-fondo1: #202225;
+	--color-fondo2: #333435;
+	--color-fondo-especial-1: #222831;
+	--color-fondo-especial-2: #848383;
+	--color-principal: #f2edd5;
+	--color-resaltado: #ffd100;
+	--color-error: #d53912;
+	--color-info1: #7b2bcf;
+	--color-info2: #7de62b;
+}
 
 .fuente3 {
 	font-family: "Datatype", monospace !important;

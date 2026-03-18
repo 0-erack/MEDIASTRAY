@@ -3,15 +3,43 @@
     overflow: scroll;
     z-index: 999;
 }
+.mensaje-flotante p::before {content: " ●  ";}
 .mensaje-flotante {
-    border: 1px solid white;
-    width: 200px;
+    font-family: "Funnel Sans", sans-serif;
+    width: 400px;
+    padding: 7px 5px;
     margin: 5px;
-    color: black;
+    background-color: var(--color-fondo1);
+    overflow: scroll;
+
+    animation: aparecer 4s ease-out forwards;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.mensaje-flotante.generico {background-color: gray;}
-.mensaje-flotante.exito {background-color: greenyellow;}
-.mensaje-flotante.error {background-color: red;}
-.mensaje-flotante.alerta {background-color: orange;}
-.mensaje-flotante.informacion {background-color: cyan;}
-/*animacion*/
+@media (max-width: 500px) {
+    .mensaje-flotante {
+        width: 200px;
+    }
+}
+@keyframes aparecer {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    3% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    70% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+.mensaje-flotante.generico {color: var(--color-principal); border: 2px solid var(--color-principal);}
+.mensaje-flotante.exito {color: var(--color-info2); border: 2px solid var(--color-info2);}
+.mensaje-flotante.error {color: var(--color-error); border: 2px solid var(--color-error);}
+.mensaje-flotante.alerta {color: var(--color-resaltado); border: 2px solid var(--color-resaltado);}
+.mensaje-flotante.informacion {color: var(--color-info1); border: 2px solid var(--color-info1);}

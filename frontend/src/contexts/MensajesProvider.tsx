@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { createContext, useState, ReactNode } from 'react';
+import { createContext, ReactNode, useState } from 'react';
 import MensajeFlotante from '../components/Principal/MensajeFlotante';
 interface Mensaje {
   mensaje: string;
@@ -17,7 +17,7 @@ export const MensajesContext = createContext<MensajesContextType | null>(null);
 const MensajesProviders = ({ children }: { children: ReactNode }) => {
 
   const [mensajesPendientes, setMensajesPendientes] = useState<Mensaje[]>([]);
-  const duracionGeneral = 2000;
+  const duracionGeneral = 4000;
 
   const lanzarMensaje = (mensaje: string, tipo = 0) => {
     const id = self.crypto.randomUUID();

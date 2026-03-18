@@ -4,7 +4,7 @@ import Rutas from './Rutas';
 const Contenido = () => {
 
   return (
-    <div className="m-1">
+    <div className="m-1 px-1">
       <Rutas />
     </div>
   )

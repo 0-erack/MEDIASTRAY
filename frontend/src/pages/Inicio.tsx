@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import img from '../assets/react.svg';
-import { cambiarTitulo } from '../libraries/accionesIndex';
 import useAjustes from '../hooks/useAjustes';
 import useMensajes from '../hooks/useMensajes';
+import { cambiarTitulo } from '../libraries/accionesIndex';
 
 function Inicio() {
 
@@ -40,7 +40,13 @@ function Inicio() {
             <p className="read-the-docs">
                 Click on the Vite and React logos to learn more
             </p>
-            <button onClick={()=>{lanzarMensaje("hola" + Math.random(), 1)}}>si</button>
+            <button onClick={()=>{
+                lanzarMensaje("hola" + Math.random(), 0);
+                lanzarMensaje("hola" + Math.random(), 1);
+                lanzarMensaje("hola" + Math.random(), 2);
+                lanzarMensaje("hola" + Math.random(), 3);
+                lanzarMensaje("hola" + Math.random(), 4);
+                }}>si</button>
         </>
     )
 }
