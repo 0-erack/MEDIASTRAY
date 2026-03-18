@@ -50,3 +50,5 @@ PDF
 Chelsea Market
 Datatype
 Syne Mono
+Lexend Deca 
+Funnel Sans 

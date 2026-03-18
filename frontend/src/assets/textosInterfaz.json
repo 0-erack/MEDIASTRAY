@@ -187,11 +187,11 @@
         "parrafos": {
             "EN-us": {
                 "error404Explicacion": "Site not found :(",
-                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a>"
+                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> "
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
-                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a>"
+                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> "
             }
         },
         "formularios": {
