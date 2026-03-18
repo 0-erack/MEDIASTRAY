@@ -1,7 +1,8 @@
 
-import useTituloDinamico from '../hooks/useTituloDinamico.js';
+import Titulo from '../components/Elements/Titulo.js';
 import FormularioLogin from '../components/Forms/FormularioLogin';
 import Texto from '../components/Texto';
+import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
 function Login() {
 
@@ -9,7 +10,7 @@ function Login() {
 
   return (
     <>
-      <h2><Texto tipo="titulos" nombre="login" /></h2>
+      <Titulo><Texto tipo="titulos" nombre="login" /></Titulo>
       <FormularioLogin />
     </>
   )

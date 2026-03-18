@@ -33,7 +33,7 @@ function Cabecera() {
 
   return (
     <>
-      <header id="cabecera" className='flex items-center justify-start gap-1 sm:gap-4 p-1 bg-fondo2 fuente2'>
+      <header id="cabecera" className='flex items-center justify-start gap-1 sm:gap-4 p-1 bg-fondo2 fuente2                '>
         <div className='shrink-0 group relative min-w-50 max-w-60 h-auto m-0 sm:m-2'>
           <img src={imgLogo ?? PUBLIC_URL + "/logoA.png"} className="w-full cursor-pointer block group-hover:hidden" style={{ imageRendering: 'pixelated' }} alt="Logo" onClick={() => navegar("/")} />
           <img src={imgLogoHover ?? PUBLIC_URL + "/logoAhover.png"} className="w-full cursor-pointer hidden group-hover:block" style={{ imageRendering: 'pixelated' }} alt="Logo Hover" onClick={() => navegar("/")} />
@@ -84,3 +84,4 @@ function Cabecera() {
 }
 
 export default Cabecera;
+//0123456789. ;;; 

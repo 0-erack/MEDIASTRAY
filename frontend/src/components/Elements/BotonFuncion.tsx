@@ -4,17 +4,34 @@ interface BotonFuncionProps {
   titulo: string|null|React.ReactNode;
   funcion?: (data?: any) => any | null; 
   hueco?: boolean;
-  colorA?: string;
-  colorB?: string;
+  tipo?: 0 | 1 | 2;
 }
 
-function BotonFuncion({cabecera, titulo, funcion, hueco = false, colorA = 'var(--color-principal)', colorB = 'var(--color-fondo2)'}: BotonFuncionProps) {
+function BotonFuncion({cabecera, titulo, funcion, hueco = true, tipo = 0}: BotonFuncionProps) {
   
+  const colorClasses = {
+    0: { border: 'border-principal', bg: 'bg-principal' },   // normal
+    1: { border: 'border-resaltado', bg: 'bg-resaltado' },   // resaltado
+    2: { border: 'border-error', bg: 'bg-error' },           // rojo
+  };
+
+  const currentStyles = colorClasses[tipo as keyof typeof colorClasses] || colorClasses[0];
+  const bgClass = hueco ? 'bg-fondo1' : currentStyles.bg;
+  const textClass = hueco ? 'text-principal' : 'text-fondo-especial-1';
+
   return (
-        <span className={`${cabecera ? "boton-cabecera" : ""} boton-funcion`}>
-            <button className={`text-[${colorA}] border-2 border-[${colorA}] bg-[${hueco ? 'fondo2' : colorB}] cursor-pointer py-1 px-2 `} onClick={(e)=>{e.preventDefault(); funcion?.(e)}}>{titulo}</button>
-        </span>
-  )
+    <span className={`${cabecera ? "boton-cabecera" : ""} boton-funcion m-1`}>
+      <button 
+        className={`cursor-pointer py-1 px-2 border-2 my-1 ${currentStyles.border} ${bgClass} ${textClass} transition-colors hover:border-fondo2 hover:brightness-80 hover:scale-110`}
+        onClick={(e) => {
+          e.preventDefault(); 
+          funcion?.(e);
+        }}
+      >
+        {titulo}
+      </button>
+    </span>
+  );
 }
 
 export default BotonFuncion;

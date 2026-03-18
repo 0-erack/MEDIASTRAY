@@ -1,4 +1,5 @@
 
+import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
 function FeaturedForums() {
@@ -7,7 +8,7 @@ function FeaturedForums() {
 
   return (
     <>
-      <h2>FeaturedForums</h2>
+      <Titulo>FeaturedForums</Titulo>
     </>
   )
 }

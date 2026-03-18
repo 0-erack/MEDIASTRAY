@@ -1,4 +1,5 @@
 
+import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
 function InicioDocumentacion() {
@@ -7,7 +8,7 @@ function InicioDocumentacion() {
 
   return (
     <>
-      <h2>InicioDocumentacion</h2>
+      <Titulo>InicioDocumentacion</Titulo>
     </>
   )
 }

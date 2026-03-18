@@ -16,8 +16,12 @@ function App() {
           <AjustesProvider>
             <SesionProvider>
               <Cabecera />
-              <div className="flex-1 bg-fondo1 mx-0 lg:mx-10 sm:mx-2">
-                <Contenido />
+              <div className="flex justify-center w-full">
+
+                <div className="w-full max-w-[1440px] bg-fondo1 min-h-screen px-2 lg:px-10">
+                  <Contenido />
+                </div>
+
               </div>
             </SesionProvider>
             <Pie />

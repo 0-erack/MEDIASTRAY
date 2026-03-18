@@ -2,11 +2,12 @@
     position:absolute; /*posicionar*/
     overflow: scroll;
     z-index: 999;
+    margin: 7px;
 }
 .mensaje-flotante p::before {content: " ●  ";}
 .mensaje-flotante {
     font-family: "Funnel Sans", sans-serif;
-    width: 400px;
+    width: 350px;
     padding: 7px 5px;
     margin: 5px;
     background-color: var(--color-fondo1);

@@ -9,7 +9,7 @@ function Imagen({ imagen, tamagno, alterno }: ImagenProps) {
 
     return (
         <>
-            <img src={imagen ?? '#'} alt={alterno ?? ''} className={`h-auto w-${tamagno ?? 'max'}`} style={{width: tamagno ?? 'auto', height: 'auto'}} />
+            <img src={imagen ?? '#'} alt={alterno ?? ''} className={`h-auto ${tamagno ? "w-" + tamagno : 'w-max'}`} style={{width: tamagno ?? 'auto', height: 'auto'}} />
         </>
     )
 }

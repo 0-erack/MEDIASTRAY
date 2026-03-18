@@ -8,6 +8,7 @@ import { inputDateATimestamp } from '../../libraries/extraFechas';
 import { contrasegna as validarContrasegna, correo as validarCorreo, cumpleagnos as validarCumpleagnos, nickname as validarNickname, nombre as validarNombre } from '../../libraries/validacionesBackend';
 import BotonFuncion from '../Elements/BotonFuncion';
 import InputBasico from '../Elements/InputBasico';
+import CajaError from '../Principal/CajaError';
 import ImgCargando from '../Principal/ImgCargando';
 import Texto from '../Texto';
 
@@ -99,9 +100,9 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
         <InputBasico nombre="contrasegna" titulo={<Texto tipo="formularios" nombre="contrasegna" />} valor={objetoRegister.contrasegna} tipo={objetoRegister.verContrasegna ? "text" : "password"} placeholder="········" mensajeError={<Texto tipo="errores" nombre="validacionContrasegna" />} validador={validarContrasegna} />
         <InputBasico nombre="contrasegna2" titulo={<Texto tipo="formularios" nombre="contrasegna2" />} valor={objetoRegister.contrasegna2} tipo={objetoRegister.verContrasegna ? "text" : "password"} placeholder="········" />
         <InputBasico nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoRegister.verContrasegna} tipo="checkbox" />
-        <BotonFuncion titulo={<Texto tipo="botones" nombre="crearCuenta" />} funcion={enviar} />
-        <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} />
-        <div className="caja-errores">{errorFormulario}</div>
+        <BotonFuncion titulo={<Texto tipo="botones" nombre="crearCuenta" />} funcion={enviar} hueco={false} tipo={1} />
+        <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} tipo={2} />
+        <CajaError texto={errorFormulario ?? ''} nivel="input" />
         {cargando && (<ImgCargando />)}
       </form>
     </div>

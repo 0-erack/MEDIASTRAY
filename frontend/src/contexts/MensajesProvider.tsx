@@ -3,6 +3,7 @@ import { createContext, ReactNode, useState } from 'react';
 import MensajeFlotante from '../components/Principal/MensajeFlotante';
 interface Mensaje {
   mensaje: string;
+  //tipo: null | 0 | 1 | 2 | 3 | 4;
   tipo: null | number;
   id: string;
 }

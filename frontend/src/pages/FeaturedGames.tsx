@@ -1,4 +1,5 @@
 
+import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
 function FeaturedGames() {
@@ -7,7 +8,7 @@ function FeaturedGames() {
 
   return (
     <>
-      <h2>FeaturedGames</h2>
+      <Titulo>FeaturedGames</Titulo>
     </>
   )
 }

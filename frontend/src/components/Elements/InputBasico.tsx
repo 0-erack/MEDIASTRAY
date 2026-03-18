@@ -18,14 +18,15 @@ function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, plac
   const funcionValidadora = validador ?? (() => true);
 
   return (
-    <div className="input-basico">
-      <label htmlFor={nombre ?? ''}>{titulo}</label>
+    <div className={`input-basico m-2 pl-1 border-l-2 ${correcto ? 'border-l-principal' : 'border-l-error'}`}> 
+      <label htmlFor={nombre ?? ''} className='pr-2'>{titulo}<br/></label>
       {tipo === "textarea" ? (
         <textarea 
         cols={80} rows={300} 
         name={nombre ?? ''} id={nombre ?? ''} 
         onChange={(e)=>{setCorrecto(funcionValidadora(e.target.value) ?? true)}} 
-        value={valor ?? ''} />
+        value={valor ?? ''} 
+        className='bg-fondo2 ml-2'/>
         /*<div contentEditable="true" onBlur={handleTextareaChange} >{valor}</div>*/
       ) : (
         <input
@@ -36,6 +37,7 @@ function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, plac
           id={nombre ?? ''}
           checked={tipo === "checkbox" && estaChecked }
           placeholder={placeholder ?? ''}
+          className='bg-fondo2 ml-2'
         />
       )}
       {!correcto && (<CajaError texto={mensajeError ?? ''} nivel="input" />)}

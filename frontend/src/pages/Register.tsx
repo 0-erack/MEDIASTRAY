@@ -1,7 +1,8 @@
 
-import useTituloDinamico from '../hooks/useTituloDinamico';
+import Titulo from '../components/Elements/Titulo';
 import FormularioRegister from '../components/Forms/FormularioRegister';
 import Texto from '../components/Texto';
+import useTituloDinamico from '../hooks/useTituloDinamico';
 
 function Register() {
 
@@ -9,7 +10,7 @@ function Register() {
 
   return (
     <>
-      <h2><Texto tipo="titulos" nombre="register" /></h2>
+      <Titulo><Texto tipo="titulos" nombre="register" /></Titulo>
       <FormularioRegister />
     </>
   )

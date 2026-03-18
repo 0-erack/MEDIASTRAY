@@ -8,6 +8,8 @@ import { inputDateATimestamp, timestampAInputDate } from '../../libraries/extraF
 import { contrasegna as validarContrasegna, correo as validarCorreo, cumpleagnos as validarCumpleagnos, descripcionUsuario as validarDescripcion, nickname as validarNickname, nombre as validarNombre, url as validarUrl } from '../../libraries/validacionesBackend';
 import BotonFuncion from '../Elements/BotonFuncion';
 import InputBasico from '../Elements/InputBasico';
+import Titulo from '../Elements/Titulo';
+import CajaError from '../Principal/CajaError';
 import ImgCargando from '../Principal/ImgCargando';
 import Texto from '../Texto';
 
@@ -65,14 +67,12 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
 
     const enviar = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        //validar correctamente, mirar que no haya uniques en uso (a no ser que sean propios), enviar al servidor, si es correcto setear datos nuevos, si no mostrar error
         if (validarEdicion()) {
             setErrorFormulario("");
             const objetoEdicion = {...objetoPatch, correo: objetoPatch.correo === previo.correo ? undefined : objetoPatch.correo, contrasegna: objetoPatch.contrasegna === previo.contrasegna ? undefined : objetoPatch.contrasegna, nickname: objetoPatch.nickname === previo.nickname ? undefined : objetoPatch.nickname, contrasegna2: undefined, verContrasegna: undefined, contrasegnaEliminar: undefined, correoEliminar: undefined }
             const resultado = await editarUsuario(objetoEdicion);
             if (resultado?.ok && !error) {
                 reset();
-                //navegar("/user/" + resultado.user.nickname);
                 navegar("/user");
                 window.location.reload();
                 lanzarMensaje(traduccion("mensajes", "editarUsuarioBien"), 1);
@@ -112,7 +112,7 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
 
     return (
         <>
-            <h3><Texto tipo="titulos" nombre="editarUsuario" /></h3>
+            <Titulo magnitud={3}><Texto tipo="titulos" nombre="editarUsuario" /></Titulo>
             <form onChange={cambio}>
                 <InputBasico nombre="nickname" placeholder={nicknameFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="nickname" />} valor={objetoPatch.nickname} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionNickname" />} validador={validarNickname} />
                 <InputBasico nombre="correo" placeholder={correoFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="correo" />} valor={objetoPatch.correo} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionEmail" />} validador={validarCorreo} />
@@ -127,16 +127,15 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
                     <InputBasico nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoPatch.verContrasegna} tipo="checkbox" />
                 </div>)}
                 <InputBasico nombre="contrasegnaAntigua" titulo={<Texto tipo="formularios" nombre="contrasegnaAntigua" />} valor={objetoPatch.contrasegnaAntigua} tipo={objetoPatch.verContrasegna ? "text" : "password"} placeholder="········" />
-                <BotonFuncion titulo={<Texto tipo="botones" nombre="editarPerfil" />} funcion={enviar} />
-                <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} />
+                <BotonFuncion titulo={<Texto tipo="botones" nombre="editarPerfil" />} funcion={enviar} tipo={1} hueco={false} />
+                <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} tipo={2} />
 
-                {!quiereEliminar ? (<BotonFuncion titulo={<Texto tipo="botones" nombre="eliminarCuenta1" />} funcion={() => {setQuiereEliminar(true)}} />) : (<div>
+                {!quiereEliminar ? (<BotonFuncion titulo={<Texto tipo="botones" nombre="eliminarCuenta1" />} funcion={() => {setQuiereEliminar(true)}} tipo={2} hueco={false} />) : (<div className='border border-error'>
                     <InputBasico nombre="correoEliminar" titulo={<Texto tipo="formularios" nombre="correoAntiguo" />} valor={objetoPatch.correoEliminar} tipo="text" placeholder="" />
                     <InputBasico nombre="contrasegnaEliminar" titulo={<Texto tipo="formularios" nombre="contrasegnaAntigua" />} valor={objetoPatch.contrasegnaEliminar} tipo="password" placeholder="········" />
-                    <BotonFuncion titulo={<Texto tipo="botones" nombre="eliminarCuenta2" />} funcion={enviarEliminarCuenta} />
+                    <BotonFuncion titulo={<Texto tipo="botones" nombre="eliminarCuenta2" />} funcion={enviarEliminarCuenta} tipo={2} hueco={false} />
                 </div>)}
-
-                <div className="caja-errores">{errorFormulario}</div>
+                <CajaError texto={errorFormulario ?? ''} nivel="input" />
                 {cargando && (<ImgCargando />)}
             </form>
         </>

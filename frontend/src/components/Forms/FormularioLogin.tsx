@@ -6,6 +6,7 @@ import useMensajes from '../../hooks/useMensajes';
 import { contrasegna as validarContrasegna, identificacion as validarIdentificacion } from '../../libraries/validacionesBackend';
 import BotonFuncion from '../Elements/BotonFuncion';
 import InputBasico from '../Elements/InputBasico';
+import CajaError from '../Principal/CajaError';
 import ImgCargando from '../Principal/ImgCargando';
 import Texto from '../Texto';
 
@@ -72,8 +73,8 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
         <InputBasico nombre="identificacion" titulo={<Texto tipo="formularios" nombre="identificacion" />} valor={objetoLogin.identificacion} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionIdentificacion" />} validador={validarIdentificacion} />
         <InputBasico nombre="contrasegna" titulo={<Texto tipo="formularios" nombre="contrasegna" />} valor={objetoLogin.contrasegna} tipo={objetoLogin.verContrasegna ? "text" : "password"} placeholder="········" />
         <InputBasico nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoLogin.verContrasegna} tipo="checkbox" />
-        <BotonFuncion titulo={<Texto tipo="botones" nombre="iniciarSesion" />} funcion={enviar} />
-        <div className="caja-errores">{errorFormulario}</div>
+        <BotonFuncion titulo={<Texto tipo="botones" nombre="iniciarSesion" />} funcion={enviar} hueco={false} />
+        <CajaError texto={errorFormulario ?? ''} nivel="input" />
       </form>)}
     </div>
   )

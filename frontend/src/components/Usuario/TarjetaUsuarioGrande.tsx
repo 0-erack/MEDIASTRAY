@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import useIdioma from '../../hooks/useIdioma';
 import useMensajes from '../../hooks/useMensajes';
 import useSesion from '../../hooks/useSesion';
 import { timestampAFecha } from '../../libraries/extraFechas';
 import BotonFuncion from '../Elements/BotonFuncion';
-import BotonNavegacion from '../Elements/BotonNavegacion';
+import EnlaceFuncion from '../Elements/EnlaceFuncion';
+import Titulo from '../Elements/Titulo';
 import FormularioEditarPerfil from '../Forms/FormularioEditarPerfil';
 
 interface TarjetaUsuarioGrandeProps {
@@ -26,6 +28,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
   const [editandoPerfil, setEditandoPerfil] = useState(false);
   const { lanzarMensaje } = useMensajes();
   const traduccion = useIdioma();
+  const navegar = useNavigate();
 
   const alternarSeguir = async () => {
     if (soyYo || !usuarioActual) return false;
@@ -69,26 +72,33 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
 
   return (
     <div className="tarjeta-usuario-grande">
-        <h2>{usuario.nombre}</h2>
+        <Titulo>{usuario.nombre}</Titulo>
+
         <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} />
-        <p>{"("}{usuario.nickname}{")"}</p>
-        {soyYo && (<p>{usuario.correo}</p>)}
-        <p>{usuario.descripcion?.length ? usuario.descripcion : traduccion("errores", "noDescripcion")}</p>
-        {soyYo && (<p>{traduccion("formularios", "cumpleagnos")} {fechaCumpleagnos}</p>)}
-        <p>{traduccion("formularios", "fechaCreacion")} {fechaCreacion}</p>
-        <p>{traduccion("formularios", "premium")} {esPremium ? traduccion("palabras", "si") : traduccion("palabras", "no")}</p>
-        <p>{traduccion("formularios", "seguidores")} {seguidoresSimulados} {(!soyYo && usuarioActual) && (<span>
+
+        <p>{"( "}{usuario.nickname}{" ) "}{soyYo && (<span className='fuente2'>{usuario.correo}</span>)}</p>
+
+        <div className='my-2'><span className='border border-principal p-2'>{usuario.descripcion?.length ? usuario.descripcion : traduccion("errores", "noDescripcion")}</span></div>
+
+        {soyYo && (<p><span className='font-black'>{traduccion("formularios", "cumpleagnos")}</span> {fechaCumpleagnos}</p>)}
+
+        <p><span className='font-black'>{traduccion("formularios", "fechaCreacion")}</span> {fechaCreacion}</p>
+
+        <p><span className='font-black'>{traduccion("formularios", "premium")}</span> {esPremium ? traduccion("palabras", "si") : traduccion("palabras", "no")}</p>
+
+        <p><span className='font-black'>{traduccion("formularios", "seguidores")}</span> {seguidoresSimulados} {(!soyYo && usuarioActual) && (<span>
           <BotonFuncion funcion={alternarSeguir} titulo={traduccion("botones", siguiendo ? "noSeguir" : "seguir")} />
           <span>{usuario.nombre} {traduccion("formularios", teSigue ? "teSigue" : "noTeSigue")}</span>
         </span>)}</p>
+
         {(soyYo) ? (<div>
           {!editandoPerfil && (<BotonFuncion funcion={() => {setEditandoPerfil(true)}} titulo={traduccion("botones", "editarPerfil")} />)}
-          <br />
-          <BotonNavegacion direccion="/logout" titulo={traduccion("botones", "logout")} />
+          <EnlaceFuncion titulo={traduccion("botones", "logout")} funcion={()=>{navegar("/logout")}} />
         </div>) : (<p>REPORTAR USUARIO</p>) /*//TODO: */}
+
         {editandoPerfil && soyYo && (<FormularioEditarPerfil usuario={usuario} />)}
     </div>
   )
 }
 
-export default TarjetaUsuarioGrande;
+export default TarjetaUsuarioGrande; 

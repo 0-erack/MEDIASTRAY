@@ -1,4 +1,5 @@
 
+import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
 function BrowseForums() {
@@ -7,7 +8,7 @@ function BrowseForums() {
 
   return (
     <>
-      <h2>BrowseForums</h2>
+      <Titulo>BrowseForums</Titulo>
     </>
   )
 }
