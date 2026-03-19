@@ -1,20 +1,18 @@
 
-import { Routes, Route } from 'react-router-dom';
-import Inicio from '../pages/Inicio';
+import { Route, Routes } from 'react-router-dom';
+import Browse from '../pages/Browse';
 import ErrorNotFound from '../pages/ErrorNotFound';
-import Info from '../pages/Info';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
-import ViewUser from '../pages/ViewUser';
-import Settings from '../pages/Settings';
-import Premium from '../pages/Premium';
-import Logout from '../pages/Logout';
-import FeaturedGames from '../pages/FeaturedGames';
-import BrowseGames from '../pages/BrowseGames';
 import FeaturedForums from '../pages/FeaturedForums';
-import BrowseForums from '../pages/BrowseForums';
-import BrowseUsers from '../pages/BrowseUsers';
+import FeaturedGames from '../pages/FeaturedGames';
+import Info from '../pages/Info';
+import Inicio from '../pages/Inicio';
 import InicioDocumentacion from '../pages/InicioDocumentacion';
+import Login from '../pages/Login';
+import Logout from '../pages/Logout';
+import Premium from '../pages/Premium';
+import Register from '../pages/Register';
+import Settings from '../pages/Settings';
+import ViewUser from '../pages/ViewUser';
 
 
 function Rutas() {
@@ -28,10 +26,8 @@ function Rutas() {
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/featuredGames" element={<FeaturedGames />} />
-        <Route path="/browseGames" element={<BrowseGames />} />
+        <Route path="/browse" element={<Browse />} />
         <Route path="/featuredForums" element={<FeaturedForums />} />
-        <Route path="/browseForums" element={<BrowseForums />} />
-        <Route path="/browseUsers" element={<BrowseUsers />} />
         <Route path="/premium" element={<Premium />} />
         <Route path="/docs">
           <Route index element={<InicioDocumentacion />} />

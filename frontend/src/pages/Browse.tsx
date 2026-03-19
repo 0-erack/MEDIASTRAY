@@ -2,15 +2,15 @@
 import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
-function BrowseGames() {
+function Browse() {
 
-  useTituloDinamico("browseGames");
+  useTituloDinamico("browse");
 
   return (
     <>
-      <Titulo>BrowseGames</Titulo>
+      <Titulo>Browse</Titulo>
     </>
   )
 }
 
-export default BrowseGames;
+export default Browse;

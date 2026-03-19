@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import imgLogo from '../../assets/images/logoA.png';
 import imgLogoHover from '../../assets/images/logoAhover.png';
 import useAjustes from '../../hooks/useAjustes';
@@ -16,6 +16,7 @@ function Cabecera() {
   const { usuario } = useSesion();
   const navegar = useNavigate();
   const traduccion = useIdioma();
+  const slug = useLocation();
   const [menuAbierto, setMenuAbierto] = useState(false);
   const enlaces = () => (<><BotonNavegacion key={-1} cabecera={true} direccion={"/"} titulo={traduccion("botones", "inicio")} >
     <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={0} color="var(--color-fondo1)" /></span>
@@ -39,7 +40,7 @@ function Cabecera() {
           <img src={imgLogoHover ?? PUBLIC_URL + "/logoAhover.png"} className="w-full cursor-pointer hidden group-hover:block" style={{ imageRendering: 'pixelated' }} alt="Logo Hover" onClick={() => navegar("/")} />
         </div>
 
-        
+
         <div className='hidden sm:block'>
           <nav className='py-1 flex min-w-80 flex-1 min-h-18 flex-wrap items-center content-center gap-2 *:bg-principal *:text-fondo-especial-1 *:hover:bg-resaltado *:p-2 *:hover:underline *:transition-all *:duration-100 *:hover:scale-y-120'>
             {enlaces()}
@@ -53,13 +54,24 @@ function Cabecera() {
           </div>
         )}
 
-        <div className='text-right m-0 sm:mr-10'>
+        <div className='text-right m-0 ml-4 sm:mr-10 sm:ml-auto'>
           {usuario ? (
             <span className="usuario-cabecera min-w-fit w-max whitespace-nowrap flex bg-principal text-fondo-especial-1 fuente2 text-lg! hover:bg-resaltado hover:underline transition-all duration-100 hover:scale-x-110">
               <img className='w-8 h-8' src={(typeof usuario === 'object' && usuario) ? usuario!.urlFoto! : '/public/nopfp.png'} alt="" />
               <BotonNavegacion cabecera={true} direccion={"/user"} titulo={(typeof usuario === 'object' && usuario !== null) ? usuario?.nickname : "User"} />
             </span>
-          ) : ""}
+          ) : <div className='block text-center'>
+            <div className={`my-1 mt-4 usuario-cabecera min-w-fit whitespace-nowrap flex bg-principal text-fondo-especial-1 fuente2 text-lg! hover:bg-resaltado hover:underline transition-all duration-100 hover:scale-x-110 ${((slug.pathname.includes('/register')) ? 'bg-resaltado! text-fondo1' : '')}`}>
+              <BotonNavegacion cabecera={true} direccion={"/register"} titulo={traduccion("titulosHtml", "register")} >
+                <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={1} color={`var(--color-fondo1)`} /></span>
+              </BotonNavegacion>
+            </div>
+            <div className={`my-1 usuario-cabecera min-w-fit whitespace-nowrap flex bg-principal text-fondo-especial-1 fuente2 text-lg! hover:bg-resaltado hover:underline transition-all duration-100 hover:scale-x-110 ${((slug.pathname.includes('/login')) ? 'bg-resaltado! text-fondo1' : '')}`}>
+              <BotonNavegacion cabecera={true} direccion={"/login"} titulo={traduccion("titulosHtml", "login")} >
+                <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={2} color={`var(--color-fondo1)`} /></span>
+              </BotonNavegacion>
+            </div>
+          </div>}
           <div id="cambiar-idioma *:block ml-auto">
             <select name="selector-idioma" id="selector-idioma" className='cursor-pointer'>
               <option value={idiomaActual}>{idiomaActual}</option>

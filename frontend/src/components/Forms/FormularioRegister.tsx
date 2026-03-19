@@ -7,8 +7,8 @@ import { correoFalso, nicknameFalso, nombreFalso } from '../../libraries/datosFa
 import { inputDateATimestamp } from '../../libraries/extraFechas';
 import { contrasegna as validarContrasegna, correo as validarCorreo, cumpleagnos as validarCumpleagnos, nickname as validarNickname, nombre as validarNombre } from '../../libraries/validacionesBackend';
 import BotonFuncion from '../Elements/BotonFuncion';
+import CajaError from '../Elements/CajaError';
 import InputBasico from '../Elements/InputBasico';
-import CajaError from '../Principal/CajaError';
 import ImgCargando from '../Principal/ImgCargando';
 import Texto from '../Texto';
 

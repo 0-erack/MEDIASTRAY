@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import CajaError from '../Principal/CajaError';
-import './InputBasico.css';
+import CajaError from './CajaError';
+import MarkdownDisplay from './MarkdownDisplay';
 
 interface InputBasicoProps {
   validador?: (data: any) => any | null;
@@ -11,14 +11,15 @@ interface InputBasicoProps {
   mensajeError?: string|null|React.ReactNode;
   placeholder?: any;
   estaChecked?: any;
+  markdown?: boolean;
 }
 
-function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, placeholder, estaChecked}: InputBasicoProps) {
+function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, placeholder, estaChecked, markdown}: InputBasicoProps) {
   const [correcto, setCorrecto] = useState(true);
   const funcionValidadora = validador ?? (() => true);
 
   return (
-    <div className={`input-basico m-2 pl-1 border-l-2 ${correcto ? 'border-l-principal' : 'border-l-error'}`}> 
+    <div className={`input-basico m-4 pl-1 border-l-2 ${correcto ? 'border-l-principal' : 'border-l-error'}`}> 
       <label htmlFor={nombre ?? ''} className='pr-2'>{titulo}<br/></label>
       {tipo === "textarea" ? (
         <textarea 
@@ -26,7 +27,7 @@ function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, plac
         name={nombre ?? ''} id={nombre ?? ''} 
         onChange={(e)=>{setCorrecto(funcionValidadora(e.target.value) ?? true)}} 
         value={valor ?? ''} 
-        className='bg-fondo2 ml-2'/>
+        className='bg-fondo2 ml-2 inline max-h-100'/>
         /*<div contentEditable="true" onBlur={handleTextareaChange} >{valor}</div>*/
       ) : (
         <input
@@ -40,6 +41,7 @@ function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, plac
           className='bg-fondo2 ml-2'
         />
       )}
+      {markdown && (<div className='w-full ml-1'><MarkdownDisplay text={valor ?? ''} /></div>)}
       {!correcto && (<CajaError texto={mensajeError ?? ''} nivel="input" />)}
     </div>
   );

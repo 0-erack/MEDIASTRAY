@@ -5,8 +5,8 @@ import useIdioma from '../../hooks/useIdioma';
 import useMensajes from '../../hooks/useMensajes';
 import { contrasegna as validarContrasegna, identificacion as validarIdentificacion } from '../../libraries/validacionesBackend';
 import BotonFuncion from '../Elements/BotonFuncion';
+import CajaError from '../Elements/CajaError';
 import InputBasico from '../Elements/InputBasico';
-import CajaError from '../Principal/CajaError';
 import ImgCargando from '../Principal/ImgCargando';
 import Texto from '../Texto';
 

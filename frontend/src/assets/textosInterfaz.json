@@ -13,18 +13,8 @@
                     "numeroIcono": 5
                 },
                 {
-                    "direccion": "/browseGames",
-                    "titulo": "Browse games",
-                    "numeroIcono": 4
-                },
-                {
-                    "direccion": "/browseForums",
-                    "titulo": "Browse forums",
-                    "numeroIcono": 4
-                },
-                {
-                    "direccion": "/browseUsers",
-                    "titulo": "Browse users",
+                    "direccion": "/browse",
+                    "titulo": "Browse",
                     "numeroIcono": 4
                 },
                 {
@@ -60,18 +50,8 @@
                     "numeroIcono": 5
                 },
                 {
-                    "direccion": "/browseGames",
-                    "titulo": "Buscar juegos",
-                    "numeroIcono": 4
-                },
-                {
-                    "direccion": "/browseForums",
-                    "titulo": "Buscar foros",
-                    "numeroIcono": 4
-                },
-                {
-                    "direccion": "/browseUsers",
-                    "titulo": "Buscar usuarios",
+                    "direccion": "/browse",
+                    "titulo": "Buscar",
                     "numeroIcono": 4
                 },
                 {
@@ -97,28 +77,10 @@
             ],
             "noUsuario": {
                 "EN-us": [
-                    {
-                        "direccion": "/register",
-                        "titulo": "Register",
-                        "numeroIcono": 1
-                    },
-                    {
-                        "direccion": "/login",
-                        "titulo": "Log in",
-                        "numeroIcono": 2
-                    }
+                    
                 ],
                 "ES-es": [
-                    {
-                        "direccion": "/register",
-                        "titulo": "Registrarse",
-                        "numeroIcono": 1
-                    },
-                    {
-                        "direccion": "/login",
-                        "titulo": "Iniciar sesión",
-                        "numeroIcono": 2
-                    }
+                    
                 ]
             },
             "siUsuario": {
@@ -202,7 +164,7 @@
                 "contrasegnaMostrar": "Show password",
                 "correo": "Email:",
                 "nickname": "Nickname:",
-                "nombre": "Name:",
+                "nombre": "User name:",
                 "cumpleagnos": "Birth date:",
                 "fechaCreacion": "Creation date:",
                 "premium": "Premium:",
@@ -212,7 +174,7 @@
                 "noTeSigue": "doesn't follow you",
                 "cambiarContrasegna": "Change password",
                 "urlFoto": "Photo URL",
-                "descripcion": "Description:",
+                "descripcion": "Description (Markdown format):",
                 "contrasegnaAntigua": "Original password (needed for changing the password, email or nickname):",
                 "correoAntiguo": "Original email for verification:"
             },
@@ -223,7 +185,7 @@
                 "contrasegnaMostrar": "Mostrar contraseña",
                 "correo": "Correo:",
                 "nickname": "Nickname:",
-                "nombre": "Nombre:",
+                "nombre": "Nombre de usuario:",
                 "cumpleagnos": "Fecha de nacimiento:",
                 "fechaCreacion": "Fecha de creación:",
                 "premium": "Premium:",
@@ -233,7 +195,7 @@
                 "noTeSigue": "no te sigue",
                 "cambiarContrasegna": "Cambiar contraseña",
                 "urlFoto": "URL de la foto",
-                "descripcion": "Descripción:",
+                "descripcion": "Descripción (formato Markdown):",
                 "contrasegnaAntigua": "Contraseña original (necesaria para cambiar el correo, la contraseña o el nickname):",
                 "correoAntiguo": "Correo original para verificar:"
             }
@@ -289,9 +251,7 @@
         },
         "titulosHtml": {
             "EN-us": {
-                "browseForums": "Browse forums",
-                "browseGames": "Browse games",
-                "browseUsers": "Browse users",
+                "browse": "Browse",
                 "errorNotFound": "404 not found",
                 "featuredForums": "Featured forums",
                 "featuredGames": "Featured games",
@@ -301,12 +261,12 @@
                 "premium": "PREMIUM",
                 "register": "Register",
                 "settings": "Settings",
-                "viewUser": "User"
+                "viewUser": "User",
+                "saludo": "Hello"
             },
             "ES-es": {
-                "browseForums": "Buscar foros",
-                "browseGames": "Buscar juegos",
-                "browseUsers": "Buscar usuarios",
+                "saludo": "Hola",
+                "browse": "Buscar",
                 "errorNotFound": "404 no encontrado",
                 "featuredForums": "Foros destacados",
                 "featuredGames": "Juegos destacados",

@@ -7,6 +7,7 @@ import useSesion from '../../hooks/useSesion';
 import { timestampAFecha } from '../../libraries/extraFechas';
 import BotonFuncion from '../Elements/BotonFuncion';
 import EnlaceFuncion from '../Elements/EnlaceFuncion';
+import MarkdownDisplay from '../Elements/MarkdownDisplay';
 import Titulo from '../Elements/Titulo';
 import FormularioEditarPerfil from '../Forms/FormularioEditarPerfil';
 
@@ -35,14 +36,14 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
     if (siguiendo) {
       const resultado = await seguir(usuario.id, -1);
       if (resultado && !resultado.error) {
-        lanzarMensaje(traduccion("mensajes", "noSeguirUsuario"), 4);
+        lanzarMensaje(traduccion("mensajes", "noSeguirUsuario"), 3);
         setSiguiendo(!siguiendo);
         setSeguidoresSimulados(seguidoresSimulados - 1);
       }
     } else {
       const resultado = await seguir(usuario.id, 1);
       if (resultado && !resultado.error) {
-        lanzarMensaje(traduccion("mensajes", "seguirUsuario"), 4);
+        lanzarMensaje(traduccion("mensajes", "seguirUsuario"), 1);
         setSiguiendo(!siguiendo); 
         setSeguidoresSimulados(seguidoresSimulados + 1);
       }
@@ -72,14 +73,14 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
 
   return (
     <div className="tarjeta-usuario-grande">
-        <Titulo>{usuario.nombre}</Titulo>
+        <Titulo>{traduccion("titulosHtml", "saludo") + ", " + usuario.nombre}</Titulo>
 
-        <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} />
+        <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className='h-auto w-[10%] max-w-50 mb-2 border-4 border-resaltado aspect-square object-cover'/>
 
         <p>{"( "}{usuario.nickname}{" ) "}{soyYo && (<span className='fuente2'>{usuario.correo}</span>)}</p>
 
-        <div className='my-2'><span className='border border-principal p-2'>{usuario.descripcion?.length ? usuario.descripcion : traduccion("errores", "noDescripcion")}</span></div>
-
+        <div className='my-2'><div>{usuario.descripcion?.length ? (<MarkdownDisplay text={usuario.descripcion} />) : traduccion("errores", "noDescripcion")}</div></div>
+        
         {soyYo && (<p><span className='font-black'>{traduccion("formularios", "cumpleagnos")}</span> {fechaCumpleagnos}</p>)}
 
         <p><span className='font-black'>{traduccion("formularios", "fechaCreacion")}</span> {fechaCreacion}</p>

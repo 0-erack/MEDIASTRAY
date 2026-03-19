@@ -1,0 +1,125 @@
+.markdown {
+    line-height: 1.6;
+    color: inherit;
+}
+
+.markdown h1, .markdown h2, .markdown h3,
+.markdown h4, .markdown h5, .markdown h6 {
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+.markdown h1 { font-size: 2em; }
+.markdown h2 { font-size: 1.5em; }
+.markdown h3 { font-size: 1.25em; }
+.markdown h4 { font-size: 1em; }
+.markdown h5 { font-size: 0.875em; }
+.markdown h6 { font-size: 0.75em; }
+
+.markdown p {
+    margin-bottom: 0.75em;
+}
+
+.markdown ul, .markdown ol {
+    margin: 0.5em 0 0.75em 0;
+    padding-left: 1.5em;
+}
+
+.markdown ul {
+    list-style-type: disc;
+}
+
+.markdown ol {
+    list-style-type: decimal;
+}
+
+.markdown li {
+    margin-bottom: 0.25em;
+}
+
+.markdown li > ul, .markdown li > ol {
+    margin: 0.25em 0 0.25em 1em;
+}
+
+.markdown ul ul { list-style-type: circle; }
+.markdown ul ul ul { list-style-type: square; }
+
+.markdown a {
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+.markdown a:hover {
+    color: #2563eb;
+}
+
+.markdown strong {
+    font-weight: bold;
+}
+
+.markdown em {
+    font-style: italic;
+}
+
+.markdown code {
+    font-family: monospace;
+    font-size: 0.875em;
+    background-color: rgba(0, 0, 0, 0.08);
+    padding: 0.15em 0.35em;
+    border-radius: 4px;
+}
+
+.markdown pre {
+    background-color: rgba(0, 0, 0, 0.08);
+    padding: 1em;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin-bottom: 0.75em;
+}
+
+.markdown pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.875em;
+}
+
+.markdown blockquote {
+    border-left: 4px solid #d1d5db;
+    padding-left: 1em;
+    margin: 0.75em 0;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.markdown hr {
+    border: none;
+    border-top: 1px solid #d1d5db;
+    margin: 1em 0;
+}
+
+.markdown table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 0.75em;
+}
+
+.markdown th, .markdown td {
+    border: 1px solid #d1d5db;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+.markdown th {
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.markdown input[type="checkbox"] {
+    margin-right: 0.4em;
+}
+
+.markdown del {
+    text-decoration: line-through;
+}

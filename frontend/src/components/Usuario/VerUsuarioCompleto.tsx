@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useState, useEffect } from 'react';
-import TarjetaUsuarioGrande from './TarjetaUsuarioGrande';
+import { useEffect, useState } from 'react';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
-import ImgCargando from '../Principal/ImgCargando';
-import CajaError from '../Principal/CajaError';
+import useIdioma from '../../hooks/useIdioma';
 import useSesion from '../../hooks/useSesion';
 import { Usuario } from '../../types/Usuario';
+import CajaError from '../Elements/CajaError';
+import EnlaceFuncion from '../Elements/EnlaceFuncion';
+import ImgCargando from '../Principal/ImgCargando';
+import TarjetaUsuarioGrande from './TarjetaUsuarioGrande';
 
 interface VerUsuarioCompletoProps {
   id: string;
@@ -22,6 +24,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
   const [soyYo, setSoyYo] = useState(false);
   const { verUsuario, cargando, error, verPremium } = useApiUsuarios();
   const [fallo, setFallo] = useState(false);
+  const traduccion = useIdioma();
 
   const cargaInicial = async () => {
     if (!id && !usuario) {
@@ -33,6 +36,10 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
         setUsuarioEsPremium(premium);
       } else {
         const usuarioAjeno = await verUsuario(id);
+        if (usuarioAjeno?.fallo) {
+          setFallo(usuarioAjeno);
+          return;
+        }
         setUsuarioCargado({...usuarioAjeno, correo: "", contrasegna: "", cumpleagnos: "", disponibilidad: "", premiumExpirationDate: undefined});
         setUsuarioEsPremium(await verPremium(usuarioAjeno.id));
       }
@@ -45,7 +52,10 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
   return (
     <>
       {idBuscar ? (<div>
-        {(fallo || error) ? (<CajaError nombre="usuarioNoEncontrado" />) : (<div>
+        {(fallo || error) ? (<>
+          <CajaError nombre="usuarioNoEncontrado" />
+          <EnlaceFuncion titulo={traduccion("botones", "irInicio")} funcion="/" />
+        </>) : (<div>
           {(usuarioCargado && !cargando) ? (<div className="ver-usuario">
             <TarjetaUsuarioGrande usuario={usuarioCargado} soyYo={soyYo} esPremium={usuarioEsPremium} />
           </div>) : (<ImgCargando />)}
