@@ -135,7 +135,8 @@
                 "error404": "Error 404",
                 "error404Explicacion": "Site not found :(",
                 "cargando": "Loading...",
-                "editarUsuario": "Edit user details"
+                "editarUsuario": "Edit user details",
+                "browse": "Browse users, games and forums"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -143,7 +144,8 @@
                 "error404": "Error 404",
                 "error404Explicacion": "Sitio no encontrado :(",
                 "cargando": "Cargando...",
-                "editarUsuario": "Editar los detalles del usuario"
+                "editarUsuario": "Editar los detalles del usuario",
+                "browse": "Buscar usuarios, juegos y foros"
             }
         },
         "parrafos": {

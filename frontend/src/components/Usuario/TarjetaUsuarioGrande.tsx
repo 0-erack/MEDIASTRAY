@@ -73,7 +73,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
 
   return (
     <div className="tarjeta-usuario-grande">
-        <Titulo>{traduccion("titulosHtml", "saludo") + ", " + usuario.nombre}</Titulo>
+        <Titulo>{(soyYo ? (traduccion("titulosHtml", "saludo") + ", " ) : '') + usuario.nombre}</Titulo>
 
         <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className='h-auto w-[10%] max-w-50 mb-2 border-4 border-resaltado aspect-square object-cover'/>
 

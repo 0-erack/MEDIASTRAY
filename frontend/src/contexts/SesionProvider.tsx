@@ -114,7 +114,7 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
         <SesionContext.Provider value={{ actualizarEstadoPremium, premium, usuario: usuarioActual, tokenSesionActual, logout, cambiarUsuarioActual, cambiarTokenSesionActual, fallo, esAdmin, bloqueado }}>
             {((usuarioActual && typeof usuarioActual === 'object' && 'id' in usuarioActual) || usuarioActual === false) && (<>
                 {children}
-                {JSON.stringify(usuarioActual)}{JSON.stringify(premium)}
+                {/*JSON.stringify(usuarioActual)*/}{/*JSON.stringify(premium)*/}
             </>)}
         </SesionContext.Provider>
     );

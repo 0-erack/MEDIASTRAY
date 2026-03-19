@@ -4,7 +4,7 @@ import './MarkdownDisplay.css';
 
 function MarkdownDisplay({ text }:{text:string}) {
   return (
-    <div className='markdown overflow-y-scroll w-auto border border-principal p-2' style={{ maxHeight: '400px' }}>
+    <div className='markdown overflow-y-scroll w-auto border border-principal p-2 bg-fondo-especial-1' style={{ maxHeight: '400px' }}>
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
     </div>
     
