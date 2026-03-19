@@ -12,9 +12,10 @@ interface InputBasicoProps {
   placeholder?: any;
   estaChecked?: any;
   markdown?: boolean;
+  objetoHook?: any;
 }
 
-function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, placeholder, estaChecked, markdown}: InputBasicoProps) {
+function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, placeholder, estaChecked, markdown, objetoHook}: InputBasicoProps) {
   const [correcto, setCorrecto] = useState(true);
   const funcionValidadora = validador ?? (() => true);
 
@@ -27,7 +28,9 @@ function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, plac
         name={nombre ?? ''} id={nombre ?? ''} 
         onChange={(e)=>{setCorrecto(funcionValidadora(e.target.value) ?? true)}} 
         value={valor ?? ''} 
-        className='bg-fondo2 ml-2 inline max-h-100'/>
+        className='bg-fondo2 ml-2 inline max-h-100
+        {...(objetoHook ?? {})}
+      '/>
         /*<div contentEditable="true" onBlur={handleTextareaChange} >{valor}</div>*/
       ) : (
         <input
@@ -39,6 +42,7 @@ function InputBasico({validador, nombre, tipo, titulo, valor, mensajeError, plac
           checked={tipo === "checkbox" && estaChecked }
           placeholder={placeholder ?? ''}
           className='bg-fondo2 ml-2'
+          {...(objetoHook ?? {})}
         />
       )}
       {markdown && (<div className='w-full ml-1'><MarkdownDisplay text={valor ?? ''} /></div>)}

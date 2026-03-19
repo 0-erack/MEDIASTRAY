@@ -136,7 +136,10 @@
                 "error404Explicacion": "Site not found :(",
                 "cargando": "Loading...",
                 "editarUsuario": "Edit user details",
-                "browse": "Browse users, games and forums"
+                "browse": "Browse anything",
+                "parteUsuarios": "Users",
+                "parteJuegos": "Games",
+                "parteForos": "Forums"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -145,7 +148,10 @@
                 "error404Explicacion": "Sitio no encontrado :(",
                 "cargando": "Cargando...",
                 "editarUsuario": "Editar los detalles del usuario",
-                "browse": "Buscar usuarios, juegos y foros"
+                "browse": "Busca lo que sea",
+                "parteUsuarios": "Usuarios",
+                "parteJuegos": "Juegos",
+                "parteForos": "Foros"
             }
         },
         "parrafos": {
