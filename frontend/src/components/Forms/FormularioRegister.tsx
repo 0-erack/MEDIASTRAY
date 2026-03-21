@@ -9,6 +9,7 @@ import { contrasegna as validarContrasegna, correo as validarCorreo, cumpleagnos
 import BotonFuncion from '../Elements/BotonFuncion';
 import CajaError from '../Elements/CajaError';
 import InputBasico from '../Elements/InputBasico';
+import Icono from '../Principal/Icono';
 import ImgCargando from '../Principal/ImgCargando';
 import Texto from '../Texto';
 
@@ -100,8 +101,8 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
         <InputBasico nombre="contrasegna" titulo={<Texto tipo="formularios" nombre="contrasegna" />} valor={objetoRegister.contrasegna} tipo={objetoRegister.verContrasegna ? "text" : "password"} placeholder="········" mensajeError={<Texto tipo="errores" nombre="validacionContrasegna" />} validador={validarContrasegna} />
         <InputBasico nombre="contrasegna2" titulo={<Texto tipo="formularios" nombre="contrasegna2" />} valor={objetoRegister.contrasegna2} tipo={objetoRegister.verContrasegna ? "text" : "password"} placeholder="········" />
         <InputBasico nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoRegister.verContrasegna} tipo="checkbox" />
-        <BotonFuncion titulo={<Texto tipo="botones" nombre="crearCuenta" />} funcion={enviar} hueco={false} tipo={1} />
-        <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} tipo={2} />
+        <BotonFuncion titulo={<Texto tipo="botones" nombre="crearCuenta" />} funcion={enviar} hueco={false} tipo={1} ><Icono numero={16} color='var(--color-fondo1)' /></BotonFuncion>
+        <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} tipo={2} ><Icono numero={10} color='var(--color-error)' /></BotonFuncion>
         <CajaError texto={errorFormulario ?? ''} nivel="input" />
         {cargando && (<ImgCargando />)}
       </form>

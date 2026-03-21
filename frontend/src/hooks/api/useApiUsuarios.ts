@@ -1,8 +1,8 @@
 import { useState } from "react";
-import useAjustes from "../useAjustes";
 import { limpiarVaciosStrings, peticionBasica } from "../../libraries/peticiones";
-import useSesion from "../useSesion";
 import { deApiAUsuario, deUsuarioAApi } from "../../validators/validacionesUsuario";
+import useAjustes from "../useAjustes";
+import useSesion from "../useSesion";
 
 const useApiUsuarios = () => {
     const [cargando, setCargando] = useState(false);
@@ -117,12 +117,21 @@ const useApiUsuarios = () => {
         }
     }
 
+    const buscar = async (consulta:string, pagina = 0, orden = 0):Promise<Array<Record<string, any>>> => {
+        try {
+            const resultado = await peticionGenerica(API_URL + `/user/search/${consulta}?page=${pagina}&order=${orden}`, "GET");
+            return resultado?.data?.results?.map((e: Record<string,any>) => deApiAUsuario(e)) ?? [];
+        } catch (error) {
+            return [];
+        }
+    }
+
     const resetEstados = () => {
         setCargando(false);
         setError(false)
     }
 
-    return { cargando, error, peticionGenerica, login, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario, verPremium };
+    return { cargando, error, peticionGenerica, login, buscar, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario, verPremium };
 };
 
 export default useApiUsuarios;

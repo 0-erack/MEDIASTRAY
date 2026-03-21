@@ -7,6 +7,7 @@ import { contrasegna as validarContrasegna, identificacion as validarIdentificac
 import BotonFuncion from '../Elements/BotonFuncion';
 import CajaError from '../Elements/CajaError';
 import InputBasico from '../Elements/InputBasico';
+import Icono from '../Principal/Icono';
 import ImgCargando from '../Principal/ImgCargando';
 import Texto from '../Texto';
 
@@ -70,10 +71,10 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
   return (
     <div>
       {cargando ? (<ImgCargando />) : (<form onChange={cambio}>
-        <InputBasico nombre="identificacion" titulo={<Texto tipo="formularios" nombre="identificacion" />} valor={objetoLogin.identificacion} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionIdentificacion" />} validador={validarIdentificacion} />
-        <InputBasico nombre="contrasegna" titulo={<Texto tipo="formularios" nombre="contrasegna" />} valor={objetoLogin.contrasegna} tipo={objetoLogin.verContrasegna ? "text" : "password"} placeholder="········" />
-        <InputBasico nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoLogin.verContrasegna} tipo="checkbox" />
-        <BotonFuncion titulo={<Texto tipo="botones" nombre="iniciarSesion" />} funcion={enviar} hueco={false} />
+        <InputBasico iconoA={1} nombre="identificacion" titulo={<Texto tipo="formularios" nombre="identificacion" />} valor={objetoLogin.identificacion} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionIdentificacion" />} validador={validarIdentificacion} />
+        <InputBasico iconoA={2} nombre="contrasegna" titulo={<Texto tipo="formularios" nombre="contrasegna" />} valor={objetoLogin.contrasegna} tipo={objetoLogin.verContrasegna ? "text" : "password"} placeholder="········" />
+        <InputBasico iconoA={13} nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoLogin.verContrasegna} tipo="checkbox" />
+        <BotonFuncion titulo={<Texto tipo="botones" nombre="iniciarSesion" />} funcion={enviar} hueco={false} ><Icono numero={15} color='var(--color-fondo1)' /></BotonFuncion>
         <CajaError texto={errorFormulario ?? ''} nivel="input" />
       </form>)}
     </div>

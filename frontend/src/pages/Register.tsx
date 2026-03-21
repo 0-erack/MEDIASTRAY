@@ -1,6 +1,7 @@
 
 import Titulo from '../components/Elements/Titulo';
 import FormularioRegister from '../components/Forms/FormularioRegister';
+import Icono from '../components/Principal/Icono';
 import Texto from '../components/Texto';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
@@ -10,7 +11,7 @@ function Register() {
 
   return (
     <>
-      <Titulo><Texto tipo="titulos" nombre="register" /></Titulo>
+      <Titulo><Icono numero={1} color="var(--color-resaltado)" /> <Texto tipo="titulos" nombre="register" /></Titulo>
       <FormularioRegister />
     </>
   )

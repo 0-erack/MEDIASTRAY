@@ -15,6 +15,7 @@ interface AjustesContextType {
   TAMAGNO_PAGINA: string|number;
   textosInterfaz: any;
   textosInterfazEnlacesCabecera: any;
+  FRECUENCIA_ACTUALIZACION: number;
   cambiarIdiomaActual: (nuevo: string) => Promise<void>;
 }
 
@@ -27,6 +28,7 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
   const GAMES_URL = import.meta.env.VITE_GAMES_URL ?? ((window as any).process?.env?.REACT_APP_GAMES_URL ?? "/games");
   const API_KEY = import.meta.env.VITE_API_KEY ?? ((window as any).process?.env?.REACT_APP_API_KEY ?? "");
   const TAMAGNO_PAGINA = import.meta.env.VITE_TAMAGNO_PAGINA ?? ((window as any).process?.env?.REACT_APP_TAMAGNO_PAGINA ?? "50");
+  const FRECUENCIA_ACTUALIZACION = import.meta.env.VITE_FRECUENCIA_ACTUALIZACION ?? ((window as any).process?.env?.REACT_APP_FRECUENCIA_ACTUALIZACION ?? 1000);
 
   const [idiomaActual, setIdiomaActual] = useState("");
   const idiomasAdmitidos = ["EN-us", "ES-es", "ZH-ch"];
@@ -65,7 +67,7 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
 
   const exportaciones: AjustesContextType = {
     fallo, idiomaActual, idiomasAdmitidos, API_URL, API_KEY, PUBLIC_URL, GAMES_URL,
-    textosInterfaz: textos, TAMAGNO_PAGINA,
+    textosInterfaz: textos, TAMAGNO_PAGINA: parseInt(TAMAGNO_PAGINA), FRECUENCIA_ACTUALIZACION: parseInt(FRECUENCIA_ACTUALIZACION),
     textosInterfazEnlacesCabecera: (textos as any).enlacesCabecera,
     cambiarIdiomaActual
   }

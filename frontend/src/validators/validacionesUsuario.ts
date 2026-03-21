@@ -1,5 +1,5 @@
-import { Usuario } from '../types/Usuario';
 import { correo, cumpleagnos, descripcionUsuario, id, nickname, nombre, timestamp, url } from '../libraries/validacionesBackend';
+import { Usuario } from '../types/Usuario';
 
 export const validarUsuarioLocal = (data:any): boolean => {
     try {
@@ -18,7 +18,7 @@ export const validarUsuarioLocal = (data:any): boolean => {
 }
 
 export const deApiAUsuario = (data:Record<string, any>):Partial<Usuario> => {
-    return {id: data.id, fechaCreacion: data.creationDate, descripcion: data.description, correo: data.email, cantidadSeguidores: data.followersAmount, cumpleagnos: data.birthdate, nombre: data.name, nickname: data.nickname, urlFoto: data.urlPhoto}
+    return {id: data.id, fechaCreacion: data.creationDate, descripcion: data.description, correo: data.email, cantidadSeguidores: data.followersAmount ?? data.followers, cumpleagnos: data.birthdate, nombre: data.name, nickname: data.nickname, urlFoto: data.urlPhoto}
 }
 
 export const deUsuarioAApi = (data:Partial<Usuario>):Record<string, any> => {

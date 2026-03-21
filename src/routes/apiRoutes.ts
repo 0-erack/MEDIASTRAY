@@ -1,7 +1,6 @@
-import express from 'express';
-import { Request as ExpressRequest, Response as ExpressResponse } from "express";
-import { hacerTestsConexiones } from '../tests/tests.js';
+import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { alterarSeguidores, buscarUsuarios, usuarioTienePremium, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
+import { hacerTestsConexiones } from '../tests/tests.js';
 import { exito, fallo, manejadorRuta } from './respuesta.js';
 
 const router = express.Router();
@@ -16,7 +15,7 @@ router.get("/prueba", (req, res) => {
 //Devuelve la lista de uuid de usuarios que le siguen
 router.get("/user/follow/followersList/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const pagina = Number.isInteger(req.query?.page) ? parseInt(req.query.page as string) : 0;
+        const pagina = parseInt(req.query.page as string) ?? 0;
         const resultado = await verSeguimientosUsuario(req.params?.id, pagina, false);
         return res.json(exito("List of followers of the user", {results: resultado, amount: resultado.length}));
     });
@@ -25,7 +24,7 @@ router.get("/user/follow/followersList/:id", async (req: ExpressRequest<{ id: st
 //Devuelve la lista de uuid de usuarios que sigue
 router.get("/user/follow/followingsList/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const pagina = Number.isInteger(req.query?.page) ? parseInt(req.query.page as string) : 0;
+        const pagina = parseInt(req.query.page as string) ?? 0;
         const resultado = await verSeguimientosUsuario(req.params?.id, pagina, true);
         return res.json(exito("List of users that follow the user", {results: resultado, amount: resultado.length}));
     });
@@ -34,8 +33,9 @@ router.get("/user/follow/followingsList/:id", async (req: ExpressRequest<{ id: s
 //Busqueda de usuarios por texto, usar ! para que salgan todos
 router.get("/user/search/:query", async (req: ExpressRequest<{ query: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const pagina = Number.isInteger(req.query?.page) ? parseInt(req.query.page as string) : 0;
-        const resultado = await buscarUsuarios(req.params?.query === "!" ? '' : req.params?.query, pagina);
+        const pagina = parseInt(req.query.page as string) ?? 0;
+        const orden = parseInt(req.query.order as string) ?? 0;
+        const resultado = await buscarUsuarios(req.params?.query === "!" ? '' : req.params?.query, pagina, orden);
         return res.json(exito("Users found", {results: resultado, amount: resultado.length}));
     });
 });

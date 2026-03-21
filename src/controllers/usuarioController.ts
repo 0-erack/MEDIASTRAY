@@ -1,16 +1,16 @@
-import { v4 as uuidv4 } from 'uuid';
-import { contrasegna as validarContrasegna } from '../libraries/validaciones.js';
 import bcrypt from 'bcrypt';
-import { getDB } from '../connections/postgresql.js';
+import { desc, eq, ilike, inArray, or, sql } from 'drizzle-orm';
+import { v4 as uuidv4 } from 'uuid';
 import { agnadirLog } from '../connections/logs.js';
 import { mongoDelete, mongoGet, mongoSet } from '../connections/mongodb.js';
+import { getDB } from '../connections/postgresql.js';
+import { contrasegna as validarContrasegna } from '../libraries/validaciones.js';
+import { usuarios } from '../models/schema.js';
+import { Intermediario } from '../models/schemaMongo.js';
 import { autenticarContrasegnaUsuario } from '../routes/autenticaciones.js';
 import { Usuario } from '../types/Usuario.js';
 import { formatearUsuarioMiniatura, formatearUsuarioPrivado, formatearUsuarioPublico, validarCreacionUsuario, validarEdicionUsuario, validarLoginUsuario } from '../validators/validacionesUsuario.js';
-import { eq, or, ilike, sql, inArray, desc } from 'drizzle-orm';
-import { usuarios } from '../models/schema.js';
-import { crearSesion, cerrarSesion } from './sessionController.js';
-import { Intermediario } from '../models/schemaMongo.js';
+import { cerrarSesion, crearSesion } from './sessionController.js';
 
 
 /**
@@ -296,6 +296,7 @@ export const alterarSeguidores = async (idA: string, idB: string, cantidad: numb
  */
 export const verSeguimientosUsuario = async (id: string, pagina = 0, seguidos = false): Promise<Record<string, any>[]> => {
     const usuario = await buscarUsuario(id);
+    if (isNaN(pagina) || pagina < 0) pagina = 0;
     if (!usuario || usuario.nivelPublico >= 1 || usuario.disponibilidad >= 2) throw { message: "User not found", code: 404 }
     const lista = seguidos ?
         await Intermediario.find({ sujeto: id, verbo: "sigue" }).skip(pagina * tamagnoPagina).limit(tamagnoPagina) :
@@ -310,13 +311,17 @@ export const verSeguimientosUsuario = async (id: string, pagina = 0, seguidos = 
  * Realiza una busqueda de usuarios, teniendo en cuenta su nickname y su nombre, ordenado por seguidores
  * @param consulta texto a buscar
  * @param pagina valor de paginado en caso de haber muchas coincidencias
+ * @param orden 0 = por relevancia, 1 = alfabeticamente segun el nombre, 2 = aleatorio
  * @returns array con los usuarios encontrados
  */
-export const buscarUsuarios = async (consulta: string, pagina = 0): Promise<Record<string, any>[]> => {
+export const buscarUsuarios = async (consulta: string, pagina = 0, orden = 0): Promise<Record<string, any>[]> => {
     const db = getDB();
-    const usuariosEncontrados = await db.select({ id: usuarios.id, urlFoto: usuarios.urlFoto, nickname: usuarios.nickname })
+    const posiblesOrdenes = [desc(usuarios.cantidadSeguidores), (desc(usuarios.nombre), desc(usuarios.nickname)), sql`RANDOM()`];
+    if (isNaN(orden) || orden < 0 || orden >= posiblesOrdenes.length) orden = 0;
+    if (isNaN(pagina) || pagina < 0) pagina = 0;
+    const usuariosEncontrados = await db.select({ id: usuarios.id, nombre: usuarios.nombre, urlFoto: usuarios.urlFoto, nickname: usuarios.nickname, cantidadSeguidores: usuarios.cantidadSeguidores })
         .from(usuarios).where(or(ilike(usuarios.nickname, `%${consulta}%`), ilike(usuarios.nombre, `%${consulta}%`)))
-        .orderBy(desc(usuarios.cantidadSeguidores)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
+        .orderBy(posiblesOrdenes[orden]).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     if (!usuariosEncontrados.length) throw { message: "No entry found for this query", code: 404 }
     return usuariosEncontrados.map((e) => {
         return formatearUsuarioMiniatura(e);

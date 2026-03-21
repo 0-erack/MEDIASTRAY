@@ -1,10 +1,8 @@
-import express from 'express';
-import { Request as ExpressRequest, Response as ExpressResponse } from "express";
-import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
-import { crearUsuario, loginUsuario, editarUsuario, borrarUsuario, alterarSeguidores, logoutUsuario, verUsuario } from '../controllers/usuarioController.js';
-import { redisGet } from '../connections/redis.js';
-import { exito, fallo, falloInterno, manejadorRuta } from './respuesta.js';
+import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
+import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, verUsuario } from '../controllers/usuarioController.js';
+import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
+import { exito, fallo, falloInterno, manejadorRuta } from './respuesta.js';
 
 const routerPriv = express.Router();
 
@@ -89,7 +87,7 @@ routerPriv.delete("/user", autenticarTokenApi, autenticarTokenSesion, async (req
 //Usuario A sigue a usuario B, se crea el registro en mongodb y se altera la cantidad de seguidores en el usuario B, requiere follow +1 o -1 para seguir o desseguir (si es posible) (id_b, cantidad)
 routerPriv.post("/user/follow", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        let cantidad = Number.isInteger(req.body?.cantidad ?? 0) ? Math.sign(req.body?.cantidad) : 0;
+        let cantidad = Math.sign(req.body?.cantidad) ?? 0;
         if (cantidad != 0 && await alterarSeguidores(req.datosSesion!.id, req.body.id_b, cantidad)) {
             return res.json(exito("User followed/unfollowed successfully", undefined, 201));
         } else {

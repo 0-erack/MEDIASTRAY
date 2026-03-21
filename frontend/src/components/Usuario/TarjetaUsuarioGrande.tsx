@@ -10,6 +10,7 @@ import EnlaceFuncion from '../Elements/EnlaceFuncion';
 import MarkdownDisplay from '../Elements/MarkdownDisplay';
 import Titulo from '../Elements/Titulo';
 import FormularioEditarPerfil from '../Forms/FormularioEditarPerfil';
+import Icono from '../Principal/Icono';
 
 interface TarjetaUsuarioGrandeProps {
   usuario: Record<string, any>;
@@ -73,7 +74,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
 
   return (
     <div className="tarjeta-usuario-grande">
-        <Titulo>{(soyYo ? (traduccion("titulosHtml", "saludo") + ", " ) : '') + usuario.nombre}</Titulo>
+        <Titulo><Icono numero={1} color="var(--color-resaltado)" /> {(soyYo ? (traduccion("titulosHtml", "saludo") + ", " ) : '') + usuario.nombre}</Titulo>
 
         <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className='h-auto w-[10%] max-w-50 mb-2 border-4 border-resaltado aspect-square object-cover'/>
 
@@ -85,10 +86,10 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
 
         <p><span className='font-black'>{traduccion("formularios", "fechaCreacion")}</span> {fechaCreacion}</p>
 
-        <p><span className='font-black'>{traduccion("formularios", "premium")}</span> {esPremium ? traduccion("palabras", "si") : traduccion("palabras", "no")}</p>
+        <p><span className='font-black'>{traduccion("formularios", "premium")}</span> {esPremium ? (<><Icono numero={7} color='var(--color-especial)' /> {traduccion("palabras", "si")}</>) : (<><Icono numero={10} color='var(--color-principal)' /> {traduccion("palabras", "no")}</>)}</p>
 
-        <p><span className='font-black'>{traduccion("formularios", "seguidores")}</span> {seguidoresSimulados} {(!soyYo && usuarioActual) && (<span>
-          <BotonFuncion funcion={alternarSeguir} titulo={traduccion("botones", siguiendo ? "noSeguir" : "seguir")} />
+        <p><span className='font-black'><Icono numero={2} color='var(--color-principal)' /> {traduccion("formularios", "seguidores")}</span> {seguidoresSimulados} {(!soyYo && usuarioActual) && (<span>
+          <BotonFuncion funcion={alternarSeguir} titulo={traduccion("botones", siguiendo ? "noSeguir" : "seguir")} >{siguiendo ? (<Icono numero={18} color='var(--color-info1)' />) : (<Icono numero={19} color='var(--color-principal)' />)}</BotonFuncion>
           <span>{usuario.nombre} {traduccion("formularios", teSigue ? "teSigue" : "noTeSigue")}</span>
         </span>)}</p>
 

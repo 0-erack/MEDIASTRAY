@@ -184,7 +184,15 @@
                 "urlFoto": "Photo URL",
                 "descripcion": "Description (Markdown format):",
                 "contrasegnaAntigua": "Original password (needed for changing the password, email or nickname):",
-                "correoAntiguo": "Original email for verification:"
+                "correoAntiguo": "Original email for verification:",
+                "activarBusquedaUsuarios": "Search users",
+                "activarBusquedaJuegos": "Search forums",
+                "activarBusquedaForos": "Search games",
+                "busquedaOrden": "Order:",
+                "busquedaOrdenRelevancia": "Relevance",
+                "busquedaOrdenAlfabetica": "Alphabetically",
+                "busquedaOrdenAleatorio": "Random",
+                "pagina": "Page:"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -205,7 +213,15 @@
                 "urlFoto": "URL de la foto",
                 "descripcion": "Descripción (formato Markdown):",
                 "contrasegnaAntigua": "Contraseña original (necesaria para cambiar el correo, la contraseña o el nickname):",
-                "correoAntiguo": "Correo original para verificar:"
+                "correoAntiguo": "Correo original para verificar:",
+                "activarBusquedaUsuarios": "Buscar usuarios",
+                "activarBusquedaJuegos": "Buscar foros",
+                "activarBusquedaForos": "Buscar juegos",
+                "busquedaOrden": "Orden:",
+                "busquedaOrdenRelevancia": "Relevancia",
+                "busquedaOrdenAlfabetica": "Alfabeticamente",
+                "busquedaOrdenAleatorio": "Aleatorio",
+                "pagina": "Página:"
             }
         },
         "errores": {
@@ -227,11 +243,14 @@
                 "nicknameRepetido": "Nickname already in use",
                 "correoRepetido": "Email address already in use",
                 "usuarioNoEncontrado": "User not found",
+                "juegoNoEncontrado": "Game not found",
+                "foroNoEncontrado": "Forum not found",
                 "nopfp": "No user profile photo",
                 "noDescripcion": "No description...",
                 "validacionDescripcion": "Description too long",
                 "noUsuarioDelete": "Couldn't authenticate to delete the user",
-                "genericoSesion": "There was an error loading the session"
+                "genericoSesion": "There was an error loading the session",
+                "noBusqueda": "Oops, we didn't find anything"
             },
             "ES-es": {
                 "sesionExpirada": "La sesión del usuario ha expirado, inicie sesión de nuevo",
@@ -250,11 +269,14 @@
                 "nicknameRepetido": "Nickname ya en uso",
                 "correoRepetido": "Correo ya en uso",
                 "usuarioNoEncontrado": "Usuario no encontrado",
+                "juegoNoEncontrado": "Juego no encontrado",
+                "foroNoEncontrado": "Foro no encontrado",
                 "nopfp": "Sin foto de perfil",
                 "noDescripcion": "Sin descripción...",
                 "validacionDescripcion": "La descripción es muy larga",
                 "noUsuarioDelete": "No se ha podido autenticar para borrar el usuario",
-                "genericoSesion": "Ha habido un error cargando la sesión"
+                "genericoSesion": "Ha habido un error cargando la sesión",
+                "noBusqueda": "Ups, no hemos encontrado nada"
             }
         },
         "titulosHtml": {

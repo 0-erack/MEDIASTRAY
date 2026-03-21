@@ -85,6 +85,25 @@ body {
 form {
 	margin: 10px;
 }
+/*input {
+	background-color: var(--color-fondo-especial-2);
+	color: var(--color-fondo1);
+}*/
+input[type="checkbox"]:hover, select:hover, label:hover {
+	cursor: pointer;
+	border-radius: 0;
+}
+hr {
+	margin: 10px 0;
+}
+input::-webkit-outer-spin-button:not(.controles),
+input::-webkit-inner-spin-button:not(.controles) {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number]:not(.controles) {
+  -moz-appearance: textfield;
+}
 
 .oculto {
   display: hidden;

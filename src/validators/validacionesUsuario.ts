@@ -1,5 +1,5 @@
+import { contrasegna, contrasegnaReposo, correo, cumpleagnos, descripcionUsuario, id, nickname, nombre, timestamp, url } from "../libraries/validaciones.js";
 import { Usuario } from "../types/Usuario.js";
-import { correo, nickname, nombre, contrasegnaReposo, contrasegna, cumpleagnos, url, descripcionUsuario, id, timestamp } from "../libraries/validaciones.js";
 
 /**
  * Valida los datos de creacion de un usuario (preparado para peticiones)
@@ -93,5 +93,5 @@ export const formatearUsuarioPublico = (data:Partial<Usuario>): Record<string, a
  * @param data el usuario crudo
  */
 export const formatearUsuarioMiniatura = (data:Partial<Usuario>): Record<string, any> => {
-    return {id: data.id, nickname: data.nickname, urlPhoto: data.urlFoto}
+    return {id: data.id, name: data.nombre, nickname: data.nickname, urlPhoto: data.urlFoto, followers: data.cantidadSeguidores}
 }

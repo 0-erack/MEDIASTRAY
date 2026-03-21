@@ -5,9 +5,10 @@ interface BotonFuncionProps {
   funcion?: (data?: any) => any | null; 
   hueco?: boolean;
   tipo?: 0 | 1 | 2;
+  children?: React.ReactNode;
 }
 
-function BotonFuncion({cabecera, titulo, funcion, hueco = true, tipo = 0}: BotonFuncionProps) {
+function BotonFuncion({cabecera, titulo, funcion, hueco = true, tipo = 0, children}: BotonFuncionProps) {
   
   const colorClasses = {
     0: { border: 'border-principal', bg: 'bg-principal' },   // normal
@@ -28,6 +29,7 @@ function BotonFuncion({cabecera, titulo, funcion, hueco = true, tipo = 0}: Boton
           funcion?.(e);
         }}
       >
+        {children && (<span className="mr-2 inline-block pt-1">{children}</span>)}
         {titulo}
       </button>
     </span>
