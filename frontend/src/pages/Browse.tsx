@@ -1,11 +1,12 @@
 
+import { memo } from 'react';
 import TripleBuscador from '../components/Busqueda/TripleBuscador';
 import Titulo from '../components/Elements/Titulo';
 import Icono from '../components/Principal/Icono';
 import useIdioma from '../hooks/useIdioma';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
-function Browse() {
+const Browse  = memo(function Browse() {
 
   useTituloDinamico("browse");
   const traduccion = useIdioma();
@@ -16,6 +17,6 @@ function Browse() {
       <TripleBuscador />
     </>
   )
-}
+});
 
 export default Browse;

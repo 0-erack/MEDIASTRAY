@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import useIdioma from '../../hooks/useIdioma';
 import useSesion from '../../hooks/useSesion';
@@ -13,6 +13,10 @@ interface VerUsuarioCompletoProps {
   id: string;
 }
 
+/**
+ * Componente para cargar los datos de un usuario a partir de un id
+ * @param id del usuario
+ */
 function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
 
   const { usuario, premium } = useSesion();
@@ -26,7 +30,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
   const [fallo, setFallo] = useState(false);
   const traduccion = useIdioma();
 
-  const cargaInicial = async () => {
+  const cargaInicial = useCallback(async () => {
     if (!id && !usuario) {
       setFallo(true);
     } else {
@@ -44,7 +48,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
         setUsuarioEsPremium(await verPremium(usuarioAjeno.id));
       }
     }
-  }
+  }, []);
   useEffect(() => {
     cargaInicial();
   }, [id]);

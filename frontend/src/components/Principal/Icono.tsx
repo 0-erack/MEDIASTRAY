@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import atlas from '../../assets/images/iconos.png';
 
 interface IconoProps {
@@ -6,7 +7,13 @@ interface IconoProps {
     color?: string;
 }
 
-function Icono({ numero, tamagno = 8, color = 'var(--color-resaltado)' }: IconoProps) {
+/**
+ * Componente para mostrar un icono del atlas de iconos
+ * @param numero del icono en el atlas
+ * @param tamagno de la imagen
+ * @param color de tinte
+ */
+const Icono = memo(function Icono({ numero, tamagno = 8, color = 'var(--color-resaltado)' }: IconoProps) {
 
     const TAMAGNO = 8;
     const LIMITE = 16;
@@ -37,6 +44,6 @@ function Icono({ numero, tamagno = 8, color = 'var(--color-resaltado)' }: IconoP
         />
         </>
     )
-}
+})
 
 export default Icono;

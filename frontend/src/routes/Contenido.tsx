@@ -1,6 +1,9 @@
 
 import Rutas from './Rutas';
 
+/**
+ * Componente que muestra el contenido de la ruta
+ */
 const Contenido = () => {
 
   return (

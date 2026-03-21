@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Texto from '../Texto';
 
 interface CajaErrorProps {
@@ -8,7 +9,15 @@ interface CajaErrorProps {
   children?: React.ReactNode;
 }
 
-function CajaError({ nivel, enLinea, nombre, texto, children }: CajaErrorProps) {
+/**
+ * Caja sencilla para mostrar un error
+ * @param nivel interno del error
+ * @param enLinea si es inline
+ * @param nombre automatizacion a textosInterfaz.json
+ * @param texto del error
+ * @param children 
+ */
+const CajaError = memo(function CajaError({ nivel, enLinea, nombre, texto, children }: CajaErrorProps) {
 
   return (
     <>
@@ -27,6 +36,6 @@ function CajaError({ nivel, enLinea, nombre, texto, children }: CajaErrorProps) 
         </p>)}
     </>
   )
-}
+})
 
 export default CajaError;

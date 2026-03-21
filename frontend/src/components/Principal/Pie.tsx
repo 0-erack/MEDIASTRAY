@@ -1,10 +1,14 @@
+import { memo } from 'react';
 import logo from '../../assets/images/LogoD.png';
 import useAjustes from '../../hooks/useAjustes';
 import useIdioma from '../../hooks/useIdioma';
 import BotonFuncion from '../Elements/BotonFuncion';
 import Icono from './Icono';
 
-function Pie() {
+/**
+ * El pie de la pagina con algo de informacion
+ */
+const Pie = memo(function Pie() {
   
   const { PUBLIC_URL } = useAjustes();
   const traduccion = useIdioma();
@@ -18,6 +22,6 @@ function Pie() {
         </footer>
     </>
   )
-}
+})
 
 export default Pie;

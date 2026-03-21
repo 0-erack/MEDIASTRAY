@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useCallback, useMemo, useState } from 'react';
 import MensajeFlotante from '../components/Principal/MensajeFlotante';
 interface Mensaje {
   mensaje: string;
@@ -15,32 +15,36 @@ interface MensajesContextType {
 
 export const MensajesContext = createContext<MensajesContextType | null>(null);
 
+/**
+ * Contexto para los mensajes que aparecen en la esquina
+ * @param children
+ */
 const MensajesProviders = ({ children }: { children: ReactNode }) => {
 
   const [mensajesPendientes, setMensajesPendientes] = useState<Mensaje[]>([]);
   const duracionGeneral = 4000;
 
-  const lanzarMensaje = (mensaje: string, tipo = 0) => {
-    const id = self.crypto.randomUUID();
-    setMensajesPendientes((prev) => [...prev, { mensaje, tipo: tipo ?? 0, id }]);
-    mandarQuitar(id);
-  };
-
-  const mandarQuitar = (id: string) => {
+  const mandarQuitar = useCallback((id: string) => {
     setTimeout(() => {
       setMensajesPendientes((prev) => prev.filter((e) => e.id !== id));
     }, duracionGeneral);
-  };
+  }, []);
 
-  const borrarMensajes = () => {
+  const lanzarMensaje = useCallback((mensaje: string, tipo = 0) => {
+    const id = self.crypto.randomUUID();
+    setMensajesPendientes((prev) => [...prev, { mensaje, tipo: tipo ?? 0, id }]);
+    mandarQuitar(id);
+  }, [mandarQuitar]);
+
+  const borrarMensajes = useCallback(() => {
     setMensajesPendientes([]);
-  };
+  }, []);
 
-  const exportaciones: MensajesContextType = { 
+  const exportaciones: MensajesContextType = useMemo(() => ({ 
     lanzarMensaje, 
     mensajesPendientes, 
     borrarMensajes 
-  };
+  }), [lanzarMensaje, mensajesPendientes, borrarMensajes ]);
 
   return (
     <MensajesContext.Provider value={exportaciones}>

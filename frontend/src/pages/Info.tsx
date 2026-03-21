@@ -1,8 +1,9 @@
 
+import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
-function Info() {
+const Info = memo(function Info() {
 
   useTituloDinamico("info");
 
@@ -11,6 +12,6 @@ function Info() {
       <Titulo>info</Titulo>
     </>
   )
-}
+});
 
 export default Info;

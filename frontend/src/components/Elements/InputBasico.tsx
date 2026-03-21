@@ -23,6 +23,23 @@ interface InputBasicoProps {
   opcionesSelect?: Array<Record<string, any>>;
 }
 
+/**
+ * Componenete general para un input en un formulario
+ * @param validador funcion validadora del valor
+ * @param tipo atributo type en el input, tambien puede ser textarea o select
+ * @param mensajeError texto que muestra cuando no es valido
+ * @param placeholder valor de ejemplo
+ * @param estaChecked internamente se usa para la compatibilidad con checkbox
+ * @param markdown si tiene que mostrar un previsualizador de Markdown
+ * @param objetoHook objeto de react-hook-form
+ * @param ancho del input
+ * @param inline si se estiliza como inline
+ * @param iconoA icono que indica al campo
+ * @param iconoB usado para mostrar en checkbox
+ * @param iconoC usado para mostrar en checkbox
+ * @param opcionesSelect array de opciones de input select
+ * @param children 
+ */
 function InputBasico({ validador, nombre, tipo, titulo, valor, mensajeError, placeholder, estaChecked, markdown, objetoHook, ancho, inline, iconoA, iconoB, iconoC, opcionesSelect, children }: InputBasicoProps) {
   const [correcto, setCorrecto] = useState(true);
   const funcionValidadora = validador ?? (() => true);

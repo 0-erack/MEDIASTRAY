@@ -15,6 +15,10 @@ interface FormularioLoginProps {
   enviarPersonalizado?: (data: any) => void; 
 }
 
+/**
+ * Formulario para hacer login
+ * @param enviarPersonalizado funcion alternativa en lugar de llamar a la api
+ */
 function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
 
   const { login, cargando } = useApiUsuarios();

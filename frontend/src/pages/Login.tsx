@@ -1,11 +1,12 @@
 
+import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo.js';
 import FormularioLogin from '../components/Forms/FormularioLogin';
 import Icono from '../components/Principal/Icono.js';
 import Texto from '../components/Texto';
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
-function Login() {
+const Login = memo(function Login() {
 
   useTituloDinamico("login");
 
@@ -15,6 +16,6 @@ function Login() {
       <FormularioLogin />
     </>
   )
-}
+});
 
 export default Login;

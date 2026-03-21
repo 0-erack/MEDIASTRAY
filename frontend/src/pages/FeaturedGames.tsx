@@ -1,8 +1,9 @@
 
+import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
-function FeaturedGames() {
+const FeaturedGames = memo(function FeaturedGames() {
 
   useTituloDinamico("featuredGames");
 
@@ -11,6 +12,6 @@ function FeaturedGames() {
       <Titulo>FeaturedGames</Titulo>
     </>
   )
-}
+});
 
 export default FeaturedGames;

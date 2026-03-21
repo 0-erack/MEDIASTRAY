@@ -1,3 +1,4 @@
+import { memo } from "react";
 import useIdioma from "../../hooks/useIdioma";
 import { Usuario } from "../../types/Usuario";
 import EnlaceFuncion from "../Elements/EnlaceFuncion";
@@ -6,7 +7,11 @@ interface TarjetaUsuarioProps {
     usuario: Partial<Usuario>;
 }
 
-function TarjetaUsuario({usuario}: TarjetaUsuarioProps) {
+/**
+ * Componente para mostrar la miniatura de un usuario
+ * @param usuario datos a mostrar (no hacen falta todos)
+ */
+const TarjetaUsuario = memo(function TarjetaUsuario({usuario}: TarjetaUsuarioProps) {
   
     const traduccion = useIdioma();
 
@@ -26,6 +31,6 @@ function TarjetaUsuario({usuario}: TarjetaUsuarioProps) {
         </span>
     </div>
   );
-}
+})
 
 export default TarjetaUsuario;

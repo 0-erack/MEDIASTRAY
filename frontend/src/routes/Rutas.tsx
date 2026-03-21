@@ -14,7 +14,9 @@ import Register from '../pages/Register';
 import Settings from '../pages/Settings';
 import ViewUser from '../pages/ViewUser';
 
-
+/**
+ * Las distintas rutas de la aplicacion
+ */
 function Rutas() {
 
   return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from 'react-hook-form';
 import useApiUsuarios from "../../hooks/api/useApiUsuarios";
 import useAjustes from "../../hooks/useAjustes";
@@ -20,6 +20,9 @@ interface FormValues {
   pagina: number | string;
 }
 
+/**
+ * Pagina para buscar usuarios, juegos y foros con filtros, orden y paginado
+ */
 function TripleBuscador() {
 
   const formBase: FormValues = { busquedaActual: "", buscarUsuarios: true, buscarJuegos: true, buscarForos: true, orden: 'relevancia', pagina: 0 }
@@ -32,15 +35,20 @@ function TripleBuscador() {
   const [usuariosCargados, setUsuariosCargados] = useState<Array<Partial<Usuario>>>([]);
   const [juegosCargados, setJuegosCargados] = useState([]);
   const [forosCargados, setForosCargados] = useState([]);
+  const opcionesOrden = useMemo(() => [
+    { valor: "0", etiqueta: traduccion("formularios", "busquedaOrdenRelevancia") },
+    { valor: "1", etiqueta: traduccion("formularios", "busquedaOrdenAlfabetica") },
+    { valor: "2", etiqueta: traduccion("formularios", "busquedaOrdenAleatorio") },
+  ], [traduccion]);
 
-  const buscar = async (texto: string) => {
+  const buscar = useCallback(async (texto: string) => {
     if (texto) {
       if (datos.buscarUsuarios) {
         const resultado = await buscarUsuarios(texto, parseInt(datos?.pagina as string) ?? 0, parseInt(datos.orden) ?? 0);
         setUsuariosCargados(resultado.length ? resultado : []);
       }
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (FRECUENCIA_ACTUALIZACION != 0) {
@@ -75,11 +83,7 @@ function TripleBuscador() {
             <InputBasico iconoA={2} inline={true} nombre="buscarUsuarios" titulo={traduccion("formularios", "activarBusquedaUsuarios")} objetoHook={register("buscarUsuarios")} tipo="checkbox" />
             <InputBasico iconoA={3} inline={true} nombre="buscarJuegos" titulo={traduccion("formularios", "activarBusquedaJuegos")} objetoHook={register("buscarJuegos")} tipo="checkbox" />
             <InputBasico iconoA={5} inline={true} nombre="buscarForos" titulo={traduccion("formularios", "activarBusquedaForos")} objetoHook={register("buscarForos")} tipo="checkbox" />
-            <InputBasico iconoA={4} inline={true} nombre="orden" titulo={traduccion("formularios", "busquedaOrden")} objetoHook={register("orden")} tipo="select" opcionesSelect={[
-              { valor: "0", etiqueta: traduccion("formularios", "busquedaOrdenRelevancia") },
-              { valor: "1", etiqueta: traduccion("formularios", "busquedaOrdenAlfabetica") },
-              { valor: "2", etiqueta: traduccion("formularios", "busquedaOrdenAleatorio") },
-            ]} />
+            <InputBasico iconoA={4} inline={true} nombre="orden" titulo={traduccion("formularios", "busquedaOrden")} objetoHook={register("orden")} tipo="select" opcionesSelect={opcionesOrden} />
             {/*//TODO: filtros mas*/}
           </div>
         </form>

@@ -10,6 +10,9 @@ import { cambiarIdiomaHtml } from '../../libraries/accionesIndex';
 import BotonNavegacion from '../Elements/BotonNavegacion';
 import Icono from './Icono';
 
+/**
+ * Cabecera principal de la pagina
+ */
 function Cabecera() {
 
   const { idiomaActual, idiomasAdmitidos, cambiarIdiomaActual, textosInterfazEnlacesCabecera, PUBLIC_URL } = useAjustes();

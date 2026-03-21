@@ -3,6 +3,11 @@ import useIdioma from "../../hooks/useIdioma";
 import EnlaceFuncion from "../Elements/EnlaceFuncion";
 import InputBasico from "../Elements/InputBasico";
 
+/**
+ * Indicador de paginado, se usa con react-hook-form, se puede elegir a mano o usar botones de atajo
+ * @param control usado por ract-hook-form
+ * @param setValue usado por react-hook-form
+ */
 function IndicadorPagina({ control, setValue }: { control: any, setValue: any }) {
     const traduccion = useIdioma();
     const { field } = useController({

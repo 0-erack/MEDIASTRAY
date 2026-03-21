@@ -1,10 +1,11 @@
 
+import { memo } from 'react';
 import BotonFuncion from '../components/Elements/BotonFuncion.js';
 import EnlaceFuncion from '../components/Elements/EnlaceFuncion.js';
 import Titulo from '../components/Elements/Titulo.js';
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
-function Settings() {
+const Settings = memo(function Settings() {
 
   useTituloDinamico("settings");
 
@@ -21,6 +22,6 @@ function Settings() {
       <EnlaceFuncion titulo="asdlfd" funcion={() => {}} />
     </>
   )
-}
+});
 
 export default Settings;

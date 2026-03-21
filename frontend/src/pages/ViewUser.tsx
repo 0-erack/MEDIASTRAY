@@ -1,10 +1,11 @@
 
-import useTituloDinamico from '../hooks/useTituloDinamico.js';
+import { memo } from 'react';
 import { useParams } from 'react-router-dom';
 import VerUsuarioCompleto from '../components/Usuario/VerUsuarioCompleto';
 import useSesion from '../hooks/useSesion.js';
+import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
-function ViewUser() {
+const ViewUser = memo(function ViewUser() {
 
   const { usuario } = useSesion();
   let {id} = useParams();
@@ -16,6 +17,6 @@ function ViewUser() {
       <VerUsuarioCompleto id={id} />
     </>
   )
-}
+});
 
 export default ViewUser;

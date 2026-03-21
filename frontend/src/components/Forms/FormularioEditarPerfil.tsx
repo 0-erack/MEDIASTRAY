@@ -14,6 +14,10 @@ import Icono from '../Principal/Icono';
 import ImgCargando from '../Principal/ImgCargando';
 import Texto from '../Texto';
 
+/**
+ * Formulario para editar el perfil de un usuario
+ * @param usuario datos del usuario originales
+ */
 function FormularioEditarPerfil({usuario}: {usuario: any}) {
 
     const previo = usuario;

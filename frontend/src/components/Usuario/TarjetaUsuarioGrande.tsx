@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import useIdioma from '../../hooks/useIdioma';
@@ -18,6 +18,12 @@ interface TarjetaUsuarioGrandeProps {
   esPremium: boolean;
 }
 
+/**
+ * Componente para mostrar todos los datos de un usuario
+ * @param usuario datos a mostrar
+ * @param soyYo si se renderiza como si ese usuario fuese quien ve el componente
+ * @param esPremium si el usuario seria premium
+ */
 function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrandeProps) {
 
   const { usuario: usuarioActual } = useSesion();
@@ -78,12 +84,12 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
     }
   }
 
-  const cargaInicial = async () => {
+  const cargaInicial = useCallback(async () => {
     if (usuarioActual && !soyYo) {
       setSiguiendo(await verSiguiendo());
       setTeSigue(await verSiguiendo(true));
     }
-  }
+  }, []);
   useEffect(() => {
     cargaInicial();
   }, []);
@@ -119,14 +125,14 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
         {verSeguidores ? (<div>
           <Titulo magnitud={4}>{traduccion("extra", "labelSeguidores")}</Titulo>
           <span className='border border-principal p-2'>
-            {seguidores.length ? seguidores.map((e) => (<span key={e.id}><EnlaceFuncion key={e.id} titulo={e.nickname} funcion={"/user/" + e.nickname} />{" "}</span>)) : (<span>{traduccion("errores", "noSeguidores")}</span>)}
+            {seguidores.length ? seguidores.map((e) => (<span key={e.id}><EnlaceFuncion color={1} key={e.id} titulo={e.nickname} funcion={"/user/" + e.nickname} />{" "}</span>)) : (<span>{traduccion("errores", "noSeguidores")}</span>)}
           </span>
         </div>) : (<><EnlaceFuncion color={1} titulo={traduccion("botones", "verSeguidores")} funcion={() => consultarSeguimientos(true)} /> {" "}</>)}
       </>) : ('')}
       {verSeguidos ? (<div className='mb-4'>
         <Titulo magnitud={4}>{traduccion("extra", "labelSeguidos")}</Titulo>
         <span className='border border-principal p-2'>
-          {seguidos.length ? seguidos.map((e) => (<span key={e.id}><EnlaceFuncion key={e.id} titulo={e.nickname} funcion={"/user/" + e.nickname} />{" "}</span>)) : (<span>{traduccion("errores", "noSeguidos")}</span>)}
+          {seguidos.length ? seguidos.map((e) => (<span key={e.id}><EnlaceFuncion color={1} key={e.id} titulo={e.nickname} funcion={"/user/" + e.nickname} />{" "}</span>)) : (<span>{traduccion("errores", "noSeguidos")}</span>)}
         </span>
       </div>) : (<EnlaceFuncion color={1} titulo={traduccion("botones", "verSeguidos")} funcion={() => consultarSeguimientos(false)} />)}
 

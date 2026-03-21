@@ -1,8 +1,9 @@
 
+import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
-function FeaturedForums() {
+const FeaturedForums = memo(function FeaturedForums() {
 
   useTituloDinamico("featuredForums");
 
@@ -11,6 +12,6 @@ function FeaturedForums() {
       <Titulo>FeaturedForums</Titulo>
     </>
   )
-}
+});
 
 export default FeaturedForums;

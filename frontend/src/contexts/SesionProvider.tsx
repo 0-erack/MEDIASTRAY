@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import useAjustes from "../hooks/useAjustes";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { peticionBasica } from "../libraries/peticiones";
@@ -20,6 +20,10 @@ interface SesionContextType {
 
 export const SesionContext = createContext<SesionContextType | null>(null);
 
+/**
+ * Contexto para los datos relacionados con los usuarios
+ * @param children
+ */
 export const SesionProvider = ({ children }: { children: ReactNode }) => {
 
     const [tokenSesionActual, setTokenSesionActual] = useState<string | null>("");
@@ -31,7 +35,7 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
     const [bloqueado, setBloqueado] = useState<boolean>(false);
     const [premium, setPremium] = useState<boolean>(false);
 
-    const inicio = async () => {
+    const inicio = useCallback(async () => {
         try {
             const tokenFromLS: string | null = await leerLS("tokenSesionActual");
             setTokenSesionActual(tokenFromLS ?? '');
@@ -69,9 +73,9 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
             await logout();
             //lanzarMensaje(useIdioma("errores", "genericoSesion"), 2);
         }
-    }
+    }, []);
 
-    const logout = async (conPeticion = false) => {
+    const logout = useCallback(async (conPeticion = false) => {
         await borrarLS("tokenSesionActual");
         setUsuarioActual(false);
         setTokenSesionActual(null);
@@ -80,9 +84,9 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
         setFallo(false);
         setPremium(false);
         if (conPeticion) await peticionBasica(API_URL + "/user/logout", {"X-auth-api": API_KEY,"X-auth-session": tokenSesionActual ?? ''}, "DELETE", undefined, tokenSesionActual + "");
-    }
+    }, []);
 
-    const cambiarUsuarioActual = async (usuario: Partial<Usuario>) => {
+    const cambiarUsuarioActual = useCallback(async (usuario: Partial<Usuario>) => {
         if (validarUsuarioLocal(usuario)) {
             setUsuarioActual(usuario);
             return true;
@@ -90,28 +94,31 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
             setFallo({ error: true, code: "user-non-validable" });
             return false;
         }
-    }
+    }, []);
 
-    const actualizarEstadoPremium = async (id: string, token: string) => {
+    const actualizarEstadoPremium = useCallback(async (id: string, token: string) => {
         const datosPremium = await peticionBasica(API_URL + "/user/premium/" + id, {"X-auth-api": API_KEY,"X-auth-session": token ?? ''}, "GET", undefined, token + "");
         setPremium(datosPremium?.data ? true : false);
-    }
+    }, []);
 
-    const cambiarTokenSesionActual = async (token: string) => {
+    const cambiarTokenSesionActual = useCallback(async (token: string) => {
         if (token) {
             setTokenSesionActual(token);
             await guardarLS("tokenSesionActual", token);
             return true;
         }
         return false;
-    }
+    }, []);
 
     useEffect(() => {
         inicio();
     }, []);
 
+    const exportaciones = useMemo(() => ({actualizarEstadoPremium, premium, usuario: usuarioActual, tokenSesionActual, logout, cambiarUsuarioActual, cambiarTokenSesionActual, fallo, esAdmin, bloqueado}), 
+        [usuarioActual, tokenSesionActual, fallo, esAdmin, bloqueado, premium, logout, cambiarUsuarioActual, actualizarEstadoPremium, cambiarTokenSesionActual]);
+
     return (
-        <SesionContext.Provider value={{ actualizarEstadoPremium, premium, usuario: usuarioActual, tokenSesionActual, logout, cambiarUsuarioActual, cambiarTokenSesionActual, fallo, esAdmin, bloqueado }}>
+        <SesionContext.Provider value={exportaciones}>
             {((usuarioActual && typeof usuarioActual === 'object' && 'id' in usuarioActual) || usuarioActual === false) && (<>
                 {children}
                 {/*JSON.stringify(usuarioActual)*/}{/*JSON.stringify(premium)*/}

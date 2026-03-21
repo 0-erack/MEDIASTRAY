@@ -17,6 +17,10 @@ interface FormularioRegisterProps {
   enviarPersonalizado?: (data: any) => void; 
 }
 
+/**
+ * Formulario para registrarse como usuario
+ * @param enviarPersonalizado funcion alternativa en lugar de llamar a la api
+ */
 function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
 
   const { register, cargando, error, resetEstados } = useApiUsuarios();

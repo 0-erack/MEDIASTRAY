@@ -3,6 +3,8 @@
     overflow: scroll;
     z-index: 999;
     margin: 7px;
+    /*height: 1vh;
+    overflow: hidden;*/
 }
 .mensaje-flotante p::before {content: " ●  ";}
 .mensaje-flotante {

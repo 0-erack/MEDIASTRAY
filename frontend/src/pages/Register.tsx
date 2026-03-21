@@ -1,11 +1,12 @@
 
+import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
 import FormularioRegister from '../components/Forms/FormularioRegister';
 import Icono from '../components/Principal/Icono';
 import Texto from '../components/Texto';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
-function Register() {
+const Register = memo(function Register() {
 
   useTituloDinamico("register");
 
@@ -15,6 +16,6 @@ function Register() {
       <FormularioRegister />
     </>
   )
-}
+});
 
 export default Register;

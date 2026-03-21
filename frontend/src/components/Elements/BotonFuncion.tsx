@@ -1,3 +1,4 @@
+import { memo } from "react";
 
 interface BotonFuncionProps {
   cabecera?: string|null;
@@ -8,7 +9,16 @@ interface BotonFuncionProps {
   children?: React.ReactNode;
 }
 
-function BotonFuncion({cabecera, titulo, funcion, hueco = true, tipo = 0, children}: BotonFuncionProps) {
+/**
+ * Boton sencillo que llama a una funcion
+ * @param cabecera si se estiliza como en la cabecera
+ * @param titulo texto del boton
+ * @param funcion a ejecutar
+ * @param hueco si se estiliza sin fondo
+ * @param tipo que estilo usara
+ * @param children
+ */
+const BotonFuncion = memo(function BotonFuncion({cabecera, titulo, funcion, hueco = true, tipo = 0, children}: BotonFuncionProps) {
   
   const colorClasses = {
     0: { border: 'border-principal', bg: 'bg-principal' },   // normal
@@ -34,6 +44,6 @@ function BotonFuncion({cabecera, titulo, funcion, hueco = true, tipo = 0, childr
       </button>
     </span>
   );
-}
+})
 
 export default BotonFuncion;

@@ -1,8 +1,9 @@
 
+import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
-function Premium() {
+const Premium = memo(function Premium() {
 
   useTituloDinamico("premium");
 
@@ -11,6 +12,6 @@ function Premium() {
       <Titulo magnitud={1}>Premium</Titulo>
     </>
   )
-}
+});
 
 export default Premium;

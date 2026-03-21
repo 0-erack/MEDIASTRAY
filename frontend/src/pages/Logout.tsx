@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useIdioma from '../hooks/useIdioma';
 import useMensajes from '../hooks/useMensajes';
@@ -12,12 +12,12 @@ function Logout() {
   let hecho = false;
   const mensajeLogout = useIdioma()("mensajes", "logout");
 
-  const cerrarSesion = async () => {
+  const cerrarSesion = useCallback(async () => {
     if (!hecho) lanzarMensaje(mensajeLogout, 3);
     await logout(true);
     navegar("/");
     hecho = true;
-  }
+  }, []);
 
   useEffect(() => {
     cerrarSesion();
