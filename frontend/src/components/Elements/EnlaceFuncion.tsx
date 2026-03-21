@@ -15,7 +15,7 @@ function EnlaceFuncion({ cabecera, titulo, funcion, color = 0, subrallado = true
   const esUrl = esEnlace && funcion.startsWith("http");
 
   return (
-    <span className={`${cabecera ? "enlace-cabecera" : ""} enlace-funcion hover:text-resaltado ${['text-resaltado', 'text-principal'][color ?? 0]} ${subrallado ? 'underline' : ''} cursor-pointer fuente2 hover:text-principal`}>
+    <span className={`${cabecera ? "enlace-cabecera" : ""} enlace-funcion pr-2 hover:text-resaltado ${['text-resaltado', 'text-principal'][color ?? 0]} ${subrallado ? 'underline' : ''} cursor-pointer fuente2 hover:text-principal`}>
       <a href={esUrl ? funcion : ""} onClick={(e) => {
         e.preventDefault();
         if (typeof funcion === 'string') {

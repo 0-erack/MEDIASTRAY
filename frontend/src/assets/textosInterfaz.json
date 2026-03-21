@@ -112,7 +112,9 @@
                 "reset": "Reset",
                 "eliminarCuenta1": "Delete account",
                 "eliminarCuenta2": "DELETE ACCOUNT...",
-                "logout": "Log out..."
+                "logout": "Log out...",
+                "verSeguidores": "See followers...",
+                "verSeguidos": "See followed..."
             },
             "ES-es": {
                 "irInicio": "Volver al icorreoRepetidonicio",
@@ -125,7 +127,9 @@
                 "reset": "Reiniciar",
                 "eliminarCuenta1": "Eliminar la cuenta",
                 "eliminarCuenta2": "ELIMINAR LA CUENTA...",
-                "logout": "Cerrar sesión..."
+                "logout": "Cerrar sesión...",
+                "verSeguidores": "Ver seguidores...",
+                "verSeguidos": "Ver seguidos..."
             }
         },
         "titulos": {
@@ -250,7 +254,9 @@
                 "validacionDescripcion": "Description too long",
                 "noUsuarioDelete": "Couldn't authenticate to delete the user",
                 "genericoSesion": "There was an error loading the session",
-                "noBusqueda": "Oops, we didn't find anything"
+                "noBusqueda": "Oops, we didn't find anything",
+                "noSeguidos": "User doesn't follow anyone",
+                "noSeguidores": "User doesn't have any followers"
             },
             "ES-es": {
                 "sesionExpirada": "La sesión del usuario ha expirado, inicie sesión de nuevo",
@@ -276,7 +282,9 @@
                 "validacionDescripcion": "La descripción es muy larga",
                 "noUsuarioDelete": "No se ha podido autenticar para borrar el usuario",
                 "genericoSesion": "Ha habido un error cargando la sesión",
-                "noBusqueda": "Ups, no hemos encontrado nada"
+                "noBusqueda": "Ups, no hemos encontrado nada",
+                "noSeguidos": "Este usuario no sigue a nadie",
+                "noSeguidores": "Este usuario no tiene seguidores"
             }
         },
         "titulosHtml": {
@@ -317,6 +325,16 @@
             "ES-es": {
                 "si": "Sí",
                 "no": "No"
+            }
+        },
+        "extra": {
+            "EN-us": {
+                "labelSeguidos": "Followed:",
+                "labelSeguidores": "Followers:"
+            },
+            "ES-es": {
+                "labelSeguidos": "Seguidos:",
+                "labelSeguidores": "Seguidores:"
             }
         },
         "mensajes": {

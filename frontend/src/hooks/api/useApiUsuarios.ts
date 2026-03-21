@@ -126,12 +126,21 @@ const useApiUsuarios = () => {
         }
     }
 
+    const verSeguimientos = async (seguidores: boolean, id: string, pagina = 0):Promise<Array<Record<string, any>>> => {
+        try {
+            const resultado = await peticionGenerica(API_URL + `/user/follow/${seguidores ? 'followersList' : 'followingsList'}/${id}?page=${pagina}`, "GET");
+            return resultado?.data?.results ?? [];
+        } catch (error) {
+            return [];
+        }
+    }
+
     const resetEstados = () => {
         setCargando(false);
         setError(false)
     }
 
-    return { cargando, error, peticionGenerica, login, buscar, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario, verPremium };
+    return { cargando, error, peticionGenerica, verSeguimientos, login, buscar, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario, verPremium };
 };
 
 export default useApiUsuarios;

@@ -301,6 +301,7 @@ export const verSeguimientosUsuario = async (id: string, pagina = 0, seguidos = 
     const lista = seguidos ?
         await Intermediario.find({ sujeto: id, verbo: "sigue" }).skip(pagina * tamagnoPagina).limit(tamagnoPagina) :
         await Intermediario.find({ predicado: id, verbo: "sigue" }).skip(pagina * tamagnoPagina).limit(tamagnoPagina);
+    //TODO: devolver toda la info de los usuarios
     if (!lista.length) throw { message: "No entry found for this query", code: 404 }
     return lista.map((e) => {
         return { id: seguidos ? e.predicado : e.sujeto, nickname: seguidos ? e.extra.nicknameB ?? '' : e.extra.nicknameA ?? '' }
