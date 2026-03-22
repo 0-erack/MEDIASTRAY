@@ -9,7 +9,7 @@ const ImgCargando = memo(function ImgCargando() {
   
   return (
     <>
-        <img className="cargando" src={gifCagrando} alt={"..."} />
+        <img className="cargando m-auto p-2" src={gifCagrando} alt={"..."} />
     </>
   )
 })
