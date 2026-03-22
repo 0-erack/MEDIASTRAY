@@ -1,8 +1,13 @@
+//Funciones para manejar datos con Redis
+
 import { createClient } from 'redis';
 
 let cliente:any = null; //Conexión reusable a Redis
 
-//Establecer la conexión a Redis
+/**
+ * Establecer la conexión a Redis
+ * @returns resultado de la operacion
+ */
 export const getConexion = async ():Promise<any> => {
     if (!cliente) {
         try {
@@ -22,7 +27,13 @@ export const getConexion = async ():Promise<any> => {
     return cliente;
 }
 
-//Establecer un valor en Redis
+/**
+ * Establecer un valor en Redis
+ * @param clave clave en la base de datos
+ * @param valor valor a guardar
+ * @param ttl milisegundos de caducidad
+ * @returns true si todo ha ido bien
+ */
 export const redisSet = async (clave:string, valor:string, ttl?:number):Promise<boolean> => {
     if (!cliente) await getConexion();
     try {
@@ -34,7 +45,11 @@ export const redisSet = async (clave:string, valor:string, ttl?:number):Promise<
     }
 }
 
-//Leer un valor de Redis
+/**
+ * Leer un valor de Redis
+ * @param clave a buscar
+ * @returns el valor de eesa clave o null si no existe o ha habido algun error
+ */
 export const redisGet = async (clave:string):Promise<string|null> => {
     if (!cliente) await getConexion();
     try {
@@ -45,7 +60,11 @@ export const redisGet = async (clave:string):Promise<string|null> => {
     }
 }
 
-//Borrar un registro en redis manualmente
+/**
+ * Borrar un registro en redis manualmente
+ * @param clave registro a borrar
+ * @returns true si se ha borrado correctamente y existia
+ */
 export const redisDelete = async (clave:string):Promise<boolean> => {
     if (!cliente) await getConexion();
     try {
@@ -57,9 +76,10 @@ export const redisDelete = async (clave:string):Promise<boolean> => {
     }
 }
 
-//getConexion();
-
-//Devuelve la conexión para hacer operaciones personalizadas
+/**
+ * Devuelve la conexión para hacer operaciones personalizadas
+ * @returns objeto de conexion a Redis
+ */
 export const getCliente = async ():Promise<any> => {
     if (!cliente) await getConexion();
     try {
@@ -69,3 +89,5 @@ export const getCliente = async ():Promise<any> => {
         return null;
     }
 }
+
+//getConexion();

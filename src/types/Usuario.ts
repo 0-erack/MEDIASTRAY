@@ -1,3 +1,4 @@
+//Entidad de usuario dentro de la aplicacion
 export type Usuario = {
     id: string;
     nickname: string;

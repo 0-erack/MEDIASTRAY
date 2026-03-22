@@ -1,14 +1,16 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import { getConexionMongoose } from './src/connections/mongodb.js';
-import { abrirServidorMetricas } from './src/servidorMetricas.js';
-import apiRoutes from "./src/routes/apiRoutes.js";
-import apiRoutesPriv from "./src/routes/apiRoutesPriv.js";
-import apiRoutesAdmin from "./src/routes/apiRoutesAdmin.js";
-import path from 'path';
-import { iniciarServicioLogs } from './src/connections/logs.js';
-import { fileURLToPath } from 'url'
+//El mas absoluto inicio de la aplicacion (backend)
+
 import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { iniciarServicioLogs } from './src/connections/logs.js';
+import { getConexionMongoose } from './src/connections/mongodb.js';
+import apiRoutes from "./src/routes/apiRoutes.js";
+import apiRoutesAdmin from "./src/routes/apiRoutesAdmin.js";
+import apiRoutesPriv from "./src/routes/apiRoutesPriv.js";
+import { abrirServidorMetricas } from './src/servidorMetricas.js';
 import { hacerTestsConexiones } from './src/tests/tests.js';
 
 const __filename = fileURLToPath(import.meta.url);

@@ -1,3 +1,5 @@
+//Aqui estan todas las funciones que marcan como se validan los datos en la aplicacion, reciben el dato y devuelven true si es valido
+
 import { z } from "zod";
 
 const idSchema = z.string().uuid();

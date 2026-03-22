@@ -1,7 +1,13 @@
+//Funciones relacionadas con el manejo de archivos
+
 import fs from 'fs/promises';
 import path from 'path';
 
-//Comprueba que un archivo exista, y sea un archivo
+/**
+ * Comprueba que un archivo exista, y sea un archivo
+ * @param ruta del archivo
+ * @returns true si existe
+ */
 export const archivoExiste = async (ruta: string): Promise<boolean> => {
     try {
         await fs.access(ruta);
@@ -11,7 +17,14 @@ export const archivoExiste = async (ruta: string): Promise<boolean> => {
     }
 }
 
-//Escribe un archivo con x contenido, en una ruta, con un nombre. Se debe saber si es de texto o no. Si ya existe lo reemplaza, y crea las carpetas necesarias para la ruta
+/**
+ * Escribe un archivo con x contenido, en una ruta, con un nombre. Se debe saber si es de texto o no. Si ya existe lo reemplaza, y crea las carpetas necesarias para la ruta
+ * @param contenido contenido del archivo
+ * @param ruta ruta del archivo
+ * @param nombre nombre del archivo
+ * @param esTexto si es un archivo de texto
+ * @returns true si todo ha ido bien
+ */
 export const escribirArchivo = async (contenido:any, ruta:string, nombre:string, esTexto:boolean = false):Promise<boolean> => {
     try {
         await fs.mkdir(ruta, {recursive:true});
@@ -28,7 +41,13 @@ export const escribirArchivo = async (contenido:any, ruta:string, nombre:string,
     }
 }
 
-//Agnade nuevas lineas en un archivo
+/**
+ * Agnade nuevas lineas en un archivo
+ * @param lineas contenido nuevo
+ * @param ruta donde esta el archivo
+ * @param nombre del archivo
+ * @returns true si todo ha ido bien
+ */
 export const agnadirEnArchivo = async (lineas:any, ruta:string, nombre:string):Promise<boolean> => {
     try {
         await fs.appendFile(path.join(ruta, nombre), lineas + "\n", 'utf8');
@@ -39,7 +58,12 @@ export const agnadirEnArchivo = async (lineas:any, ruta:string, nombre:string):P
     }
 }
 
-//Devuelve el contenido de un archivo a partir de la ruta. Se debe saber si es de texto o no. Si no existe o no es legible no devuelve nada
+/**
+ * Devuelve el contenido de un archivo a partir de la ruta. Se debe saber si es de texto o no. Si no existe o no es legible no devuelve nada
+ * @param rutaMasNombre ruta y nombre del archivo a leer
+ * @param esTexto si es un archivo de texto
+ * @returns contenido del archivo
+ */
 export const leerArchivo = async (rutaMasNombre:string, esTexto:boolean):Promise<string|null> => {
     try {
         let contenido:any = "";
@@ -55,7 +79,11 @@ export const leerArchivo = async (rutaMasNombre:string, esTexto:boolean):Promise
     }
 }
 
-//Borra un archivo a partir de una ruta si existe
+/**
+ * Borra un archivo a partir de una ruta si existe
+ * @param rutaMasNombre ruta y nombre del archivo
+ * @returns true si el archivo se ha borrado correctamente
+ */
 export const borrarArchivo = async (rutaMasNombre:string):Promise<boolean> => {
     try {
         const esCarpeta = await fs.stat(rutaMasNombre).then(stats => stats.isDirectory());

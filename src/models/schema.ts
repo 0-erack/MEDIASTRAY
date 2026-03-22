@@ -1,6 +1,9 @@
-import { pgTable, varchar, integer, boolean, text, foreignKey } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+//Entidades en la base de datos sql, las de Mongo se manejan en otro archivo
 
+import { relations } from "drizzle-orm";
+import { boolean, integer, pgTable, varchar } from "drizzle-orm/pg-core";
+
+//Usuarios generales de la aplicacion
 export const usuarios = pgTable("usuarios", {
   id: varchar("id", { length: 36 }).primaryKey(), //Identificador
   nickname: varchar("nickname", { length: 16 }).unique().notNull(), //Nombre identificador
@@ -19,6 +22,7 @@ export const usuarios = pgTable("usuarios", {
   nivelAcceso: integer("nivelAcceso").default(0), //Permisos permisisvos: 0 normal, 1 panel de administracion, 2 full admin (no controla desde interfaz), 3 moderador
 });
 
+//Juegos guardados y sus datos
 export const juegos = pgTable("juegos", {
   id: varchar("id", { length: 36 }).primaryKey(), //Identificador
   titulo: varchar("titulo", { length: 63 }).unique().notNull(), //Titulo del juego
@@ -41,6 +45,7 @@ export const juegos = pgTable("juegos", {
   edad: integer("edad").default(0), //Edad minima para jugar el juego
 });
 
+//Foros existentes y sus datos principales
 export const foros = pgTable("foros", {
   id: varchar("id", { length: 36 }).primaryKey(), //Identificador
   titulo: varchar("titulo", { length: 63 }).unique().notNull(), //Titulo del foro
@@ -55,6 +60,7 @@ export const foros = pgTable("foros", {
   juegoAsociado: varchar("juego_asociado", { length: 36 }), //FK? juego asociado
 });
 
+//Relaciones entre las entidades, consultar mejor el diagrama uml
 
 export const usuariosRelations = relations(usuarios, ({ many }) => ({
   juegos: many(juegos),

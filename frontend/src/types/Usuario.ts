@@ -1,3 +1,4 @@
+//Datos que un usuario deberia tener
 export type Usuario = {
     id: string;
     nickname: string;

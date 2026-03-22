@@ -1,3 +1,5 @@
+//Funciones de formateo y validacion de los usuarios
+
 import { contrasegna, contrasegnaReposo, correo, cumpleagnos, descripcionUsuario, id, nickname, nombre, timestamp, url } from "../libraries/validaciones.js";
 import { Usuario } from "../types/Usuario.js";
 

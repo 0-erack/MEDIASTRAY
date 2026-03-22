@@ -1,3 +1,5 @@
+//Funciones de formateo de las respuestas de la api
+
 //Respuesta exitosa de la API
 export const exito = (mensaje:string = '', datos:any = undefined, codigo:number = 200):Record<string,any> => {
     return {ok: true, data: datos, message: mensaje, code: codigo};

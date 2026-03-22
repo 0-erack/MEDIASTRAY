@@ -4,12 +4,24 @@ import { deApiAUsuario, deUsuarioAApi } from "../../validators/validacionesUsuar
 import useAjustes from "../useAjustes";
 import useSesion from "../useSesion";
 
+/**
+ * Hook para las peticiones a la api en relacion a los usuarios
+ * @returns funciones
+ */
 const useApiUsuarios = () => {
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState<boolean|object>(false);
     const { API_URL, API_KEY } = useAjustes();
     const { cambiarTokenSesionActual, cambiarUsuarioActual, logout, tokenSesionActual, usuario, actualizarEstadoPremium } = useSesion();
 
+    /**
+     * Funcion de peticion generica usando los tokens necesarios
+     * @param url a donde hacer la peticion
+     * @param verbo que metodo http tendra
+     * @param body el body en formato json
+     * @param headersExtra nuevos headers ademas de los que ya se agnaden por defecto
+     * @returns resultado de la peticion, normalmente estara en resultado.data, este objeto tambien devuelve el codigo http resultante, o algun mensaje para dar contexto
+     */
     const peticionGenerica = async (url:string, verbo = "GET", body?:Record<string, any>, headersExtra:Record<string, any> = {}):Promise<any> => {
         await setCargando(true);
         await setError(false);
@@ -25,6 +37,11 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Inicia sesion en la aplicacion usando el endpoint, tambien actualiza los valores actuales de usuario y token
+     * @param objetoLogin objeto con los datos del formulario de iniciar sesion
+     * @returns resultado para saber si es correcto
+     */
     const login = async (objetoLogin:Record<string, any>):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/user/login", "POST", {credentials: { password: objetoLogin.contrasegna, identification: objetoLogin.identificacion}});
@@ -39,6 +56,11 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Crear un nuevo usuario y iniciar sesion con este
+     * @param objetoRegister datos del formulario de registro
+     * @returns resultado con la peticion, con los datos del usuario creado y el token
+     */
     const register = async (objetoRegister:Record<string, any>):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/user/create", "POST", { user: { ...(deUsuarioAApi(objetoRegister)), birthdate: Date.parse(objetoRegister?.cumpleagnos) + "" } });
@@ -53,6 +75,11 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Devuelve los datos publicos de un usuario
+     * @param id usuario a consultar
+     * @returns datos del usuario
+     */
     const verUsuario = async (id:string):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/user/" + (id ?? ''), "GET");
@@ -63,6 +90,12 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Comprueba si un usuario sigue a otro, en caso de duda (o que dicha informacion sea privada), constara como que no lo sigue o que el usuario no existe
+     * @param id1 usuario que sigue
+     * @param id2 usuario seguido
+     * @returns datos de la consulta (normalmente booleano en caso de que no haya un error)
+     */
     const verSeguir = async (id1:string, id2:string):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + `/user/follow/${id1}/${id2}`, "GET");
@@ -72,6 +105,12 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Sigue a un usuario con el usuario actual
+     * @param id usuario a seguir
+     * @param cantidad -1 = dejar de seguir, 0 = consultar estado actual, 1 = seguir
+     * @returns resultado de la peticion
+     */
     const seguir = async (id:string, cantidad:number):Promise<any> => {
         try {
             let cantidadCorrecta = cantidad;
@@ -84,6 +123,11 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Edita el usuario actual, lo que tambien provoca un nuevo inicio de sesion y cambio de token
+     * @param datosNuevos datos del formulario de edicion, los datos que no esten presentes no cambiaran (algunos son obligatorios para cambiar otros, mejor explicado en el backend)
+     * @returns datos de la peticion, con el usuario con los datos actualizados
+     */
     const editarUsuario = async (datosNuevos:Record<string, any>):Promise<any> => {
         try {
             datosNuevos = limpiarVaciosStrings(datosNuevos);
@@ -98,6 +142,11 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Borra el usuario actual
+     * @param contrasegna paso extra para seguridad
+     * @returns resultado de la peticion
+     */
     const borrarUsuario = async (contrasegna:string):Promise<any> => {
         try {
             const resultado = await peticionGenerica(API_URL + "/user", "DELETE", {password: contrasegna});
@@ -108,6 +157,11 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Consultar si un usuario es premium
+     * @param id usuario a consultar
+     * @returns true si lo es, false si no o si hay dudas
+     */
     const verPremium = async (id:string):Promise<boolean> => {
         try {
             const resultado = await peticionGenerica(API_URL + `/user/premium/${id}`, "GET");
@@ -117,6 +171,13 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Buscar usuarios en base a un texto
+     * @param consulta texto de busqueda
+     * @param pagina pagina en la que buscar
+     * @param orden tipo de orden, 0 = relevancia, 1 = alfabeticamente, 2 = aleatorio
+     * @returns datos del resultado, con el array de usuarios encontrados
+     */
     const buscar = async (consulta:string, pagina = 0, orden = 0):Promise<Array<Record<string, any>>> => {
         try {
             const resultado = await peticionGenerica(API_URL + `/user/search/${consulta}?page=${pagina}&order=${orden}`, "GET");
@@ -126,6 +187,13 @@ const useApiUsuarios = () => {
         }
     }
 
+    /**
+     * Ver los seguidos/seguidores de un usuario
+     * @param seguidores true para ver los seguidores, false para los seguidos
+     * @param id usuario a consultar
+     * @param pagina en que pagina se busca
+     * @returns array con los nickname y los id de los usuarios
+     */
     const verSeguimientos = async (seguidores: boolean, id: string, pagina = 0):Promise<Array<Record<string, any>>> => {
         try {
             const resultado = await peticionGenerica(API_URL + `/user/follow/${seguidores ? 'followersList' : 'followingsList'}/${id}?page=${pagina}`, "GET");

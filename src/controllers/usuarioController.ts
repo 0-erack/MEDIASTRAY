@@ -1,3 +1,5 @@
+//Funciones relacionadas con el manejo de usuarios
+
 import bcrypt from 'bcrypt';
 import { desc, eq, ilike, inArray, or, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
@@ -81,7 +83,7 @@ export const crearUsuario = async (datos: Record<string, any>): Promise<Record<s
 /**
  * Hacer login con el usuario, requiere en el body (credentials): contrasegna, identificacion (su correo o nickname). Devuelve un token de sesion valido por 4 horas y los datos del usuario
  * @param datosLogin identificacion para el login
- * @returns datos del usuairo y token de sesion
+ * @returns datos del usuario y token de sesion
  */
 export const loginUsuario = async (datosLogin: Record<string, any>): Promise<Record<string, any>> => {
     if (!validarLoginUsuario(datosLogin)) throw { message: "Invalid user data", code: 422 }

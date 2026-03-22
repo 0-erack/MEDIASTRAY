@@ -1,3 +1,5 @@
+//Rutas abiertas al publico para la cuales no se necesita el token de la api
+
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { alterarSeguidores, buscarUsuarios, usuarioTienePremium, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { hacerTestsConexiones } from '../tests/tests.js';

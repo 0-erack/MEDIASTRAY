@@ -1,7 +1,9 @@
+//Middlewares para las rutas y otras funciones de autenticacion y seguridad
+
 import bcrypt from 'bcrypt';
 import { verSesionToken } from "../controllers/sessionController.js";
-import { fallo } from './respuesta.js';
 import { usuarioEsAdmin } from '../controllers/usuarioController.js';
+import { fallo } from './respuesta.js';
 
 
 //Para requerir el token de la api en el header X-auth-api

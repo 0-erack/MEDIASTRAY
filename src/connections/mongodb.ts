@@ -1,12 +1,16 @@
+//Funciones relacionadas con Mongodb
+
 import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
-import { Intermediario, Comentario } from '../models/schemaMongo.js';
 //import { inicializarMongo } from './base/init.js';
 
 let cliente: any = null; //Conexión reusable a Mongodb
 let conectado = false;
 
-//Recibe la conexión de Mongodb
+/**
+ * Recibe la conexión de Mongodb
+ * @returns objeto de conexion
+ */
 export const getConexion = async (): Promise<any> => {
     if (!cliente) {
         try {
@@ -27,7 +31,12 @@ export const getConexion = async (): Promise<any> => {
     return cliente;
 }
 
-//Inserta un json en Mongodb en una colección
+/**
+ * Inserta un json en Mongodb en una colección
+ * @param collectionNombre nombre de la coleccion a la que insertar
+ * @param data datos en json
+ * @returns el resultado o true si todo ha ido bien
+ */
 export const mongoSet = async (collectionNombre: string, data: Record<string, any>): Promise<boolean | object> => {
     if (!cliente) await getConexion();
     try {
@@ -42,7 +51,13 @@ export const mongoSet = async (collectionNombre: string, data: Record<string, an
     }
 }
 
-//Devuelve los elementos que coincidan con el json en la coleccion
+/**
+ * Devuelve los elementos que coincidan con el json en la coleccion
+ * @param collectionNombre nombre de la colecion en la que buscar
+ * @param consulta objeto json para buscar
+ * @param multiple si se esperan varios resultados
+ * @returns resultados de la consulta
+ */
 export const mongoGet = async (collectionNombre: string, consulta: Record<string, any>, multiple = false): Promise<object | Record<string, any> | any> => {
     if (!cliente) await getConexion();
     try {
@@ -57,7 +72,13 @@ export const mongoGet = async (collectionNombre: string, consulta: Record<string
     }
 }
 
-//Borra el elemento que coincida con el json en la coleccion
+/**
+ * Borra el elemento que coincida con el json en la coleccion
+ * @param collectionNombre coleccion en la que borrar
+ * @param consulta objeto json para buscar el objeto
+ * @param multiple si se van a borrar mas de uno
+ * @returns el resultado o true si todo ha ido bien
+ */
 export const mongoDelete = async (collectionNombre: string, consulta: Record<string, any>, multiple: boolean = false): Promise<any> => {
     if (!cliente) await getConexion();
     try {
@@ -72,7 +93,10 @@ export const mongoDelete = async (collectionNombre: string, consulta: Record<str
     }
 }
 
-//Devuelve la conexión para hacer operaciones personalizadas
+/**
+ * Devuelve la conexión para hacer operaciones personalizadas
+ * @returns objeto de cliente
+ */
 export const getCliente = async (): Promise<any> => {
     if (!cliente) await getConexion();
     try {
@@ -83,7 +107,12 @@ export const getCliente = async (): Promise<any> => {
     }
 }
 
-export const getConexionMongoose = async (): Promise<mongoose.Connection | null> => {    if (!conectado) {
+/**
+ * Devuelve el objeto db de Mongoose para operaciones mas complejas
+ * @returns objeto de cliente de Mongoose
+ */
+export const getConexionMongoose = async (): Promise<mongoose.Connection | null> => {    
+    if (!conectado) {
         try {
             const uri = process.env.MONGODB_URI ?? '';
             const dbName = process.env.MONGODB_DATABASE ?? 'base';
@@ -107,7 +136,6 @@ export const getConexionMongoose = async (): Promise<mongoose.Connection | null>
     }
     return mongoose.connection;
 }
-
 export const getMongoose = async () => {
     if (!conectado) await getConexionMongoose();
     return mongoose;

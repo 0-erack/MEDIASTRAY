@@ -1,7 +1,12 @@
-// 1. We type the elements as specific HTML types or null
+//Funciones que permiten hacer operaciones sobre el index.html con el dom
+
 let etiquetaTitulo: HTMLElement | null = null;
 let etiquetaIcono: HTMLLinkElement | null = null;
 
+/**
+ * Cambiar el titulo de la pestagna
+ * @param nuevoTitulo texto a poner en su lugar
+ */
 const cambiarTitulo = (nuevoTitulo: string): void => {
     if (!etiquetaTitulo) {
         etiquetaTitulo = document.getElementById("head-titulo");
@@ -11,6 +16,10 @@ const cambiarTitulo = (nuevoTitulo: string): void => {
     }
 }
 
+/**
+ * Cambiar el icono de la pestagna
+ * @param nuevoIcono ruta del icono
+ */
 const cambiarIcono = (nuevoIcono: string): void => {
     if (!etiquetaIcono) {
         etiquetaIcono = document.getElementById("head-icono") as HTMLLinkElement;
@@ -20,6 +29,10 @@ const cambiarIcono = (nuevoIcono: string): void => {
     }
 }
 
+/**
+ * Cambiar el atributo lang de la etiqueta html
+ * @param nuevoIdioma valor nuevo ya formateado, seria el texto que representa al idioma
+ */
 const cambiarIdiomaHtml = (nuevoIdioma: string): void => {
     const htmlElement = document.querySelector("html");
     if (htmlElement) {
@@ -27,4 +40,4 @@ const cambiarIdiomaHtml = (nuevoIdioma: string): void => {
     }
 }
 
-export { cambiarIdiomaHtml, cambiarTitulo, cambiarIcono };
+export { cambiarIcono, cambiarIdiomaHtml, cambiarTitulo };

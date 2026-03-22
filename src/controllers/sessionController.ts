@@ -1,5 +1,7 @@
+//Funciones relacionadas con las sesiones
+
 import jwt from 'jsonwebtoken';
-import { redisDelete, redisSet, redisGet } from '../connections/redis.js';
+import { redisDelete, redisGet, redisSet } from '../connections/redis.js';
 
 /**
  * Crea una nueva sesion a partir del id de un usuario

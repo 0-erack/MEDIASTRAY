@@ -1,13 +1,17 @@
-import { Client, Pool } from 'pg';
-import { leerArchivo } from './archivos.js';
+//Funciones relacionadas con Postgres
+
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { Client, Pool } from 'pg';
 import * as schema from '../models/schema.js';
 
 let cliente:any = null; //Conexión reusable a Postgresql (para su correcto funcionamiento requiere haberse usado un par de veces antes, se hace en los tests)
 let db: any = null;
 let pool: Pool | null = null;
 
-//Recibir la conexión de Postgresql
+/**
+ * Recibir la conexión de Postgresql
+ * @returns objeto de conexion
+ */
 export const getConexion = async ():Promise<any> => {
     if (!cliente) {
         try {
@@ -37,7 +41,12 @@ export const getConexion = async ():Promise<any> => {
     return cliente;
 }
 
-//Ejecuta una consulta sql sanitizándola y devuelve el posible resultado (parametros para el prepare y evitar inyección sql)
+/**
+ * Ejecuta una consulta sql sanitizándola y devuelve el posible resultado (parametros para el prepare y evitar inyección sql)
+ * @param consulta consulta sql a ejecutar
+ * @param parametros parametros para reemplazar en la consulta sanitizada
+ * @returns array con los resultados
+ */
 export const consulta = async (consulta:string, parametros:Array<any> = []):Promise<Array<any>> => {
     if (!cliente || !sigueConectado()) await getConexion();
     try {
@@ -51,7 +60,10 @@ export const consulta = async (consulta:string, parametros:Array<any> = []):Prom
     }
 }
 
-//Devuelve la conexión para hacer operaciones personalizadas
+/**
+ * Devuelve la conexión para hacer operaciones personalizadas
+ * @returns objeto de conexion
+ */
 export const getCliente = async ():Promise<any> => {
     if (!cliente) await getConexion();
     try {
@@ -62,7 +74,10 @@ export const getCliente = async ():Promise<any> => {
     }
 }
 
-//Devuelve false si falla hacer el ping a la base de datos.
+/**
+ * Devuelve false si falla hacer el ping a la base de datos
+ * @returns true si sigue conectado
+ */
 const sigueConectado = async ():Promise<boolean> => {
     if (!cliente) await getConexion();
     try {
@@ -76,7 +91,10 @@ const sigueConectado = async ():Promise<boolean> => {
     }
 }
 
-//Especial para Drizzle
+/**
+ * Especial para Drizzle, devuelve el objeto db para hacer operaciones con el orm
+ * @returns objeto de conexion de Drizzle orm
+ */
 export const getDB = () => {
     if (!db) {
         if (!pool) {

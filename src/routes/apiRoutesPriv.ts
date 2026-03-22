@@ -1,3 +1,5 @@
+//Rutas ocultas para las cuales se necesita el token de la api
+
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, verUsuario } from '../controllers/usuarioController.js';
