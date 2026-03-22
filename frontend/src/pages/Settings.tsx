@@ -5,6 +5,9 @@ import EnlaceFuncion from '../components/Elements/EnlaceFuncion.js';
 import Titulo from '../components/Elements/Titulo.js';
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
+/**
+ * Pagina de ajustes varios
+ */
 const Settings = memo(function Settings() {
 
   useTituloDinamico("settings");

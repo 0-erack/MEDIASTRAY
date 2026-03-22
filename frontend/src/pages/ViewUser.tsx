@@ -5,6 +5,9 @@ import VerUsuarioCompleto from '../components/Usuario/VerUsuarioCompleto';
 import useSesion from '../hooks/useSesion.js';
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
+/**
+ * Pagina para ver un usuario
+ */
 const ViewUser = memo(function ViewUser() {
 
   const { usuario } = useSesion();

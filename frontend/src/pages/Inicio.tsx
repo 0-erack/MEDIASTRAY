@@ -6,6 +6,9 @@ import useAjustes from '../hooks/useAjustes';
 import useMensajes from '../hooks/useMensajes';
 import { cambiarTitulo } from '../libraries/accionesIndex';
 
+/**
+ * Pagina de inicio
+ */
 function Inicio() {
 
     const { lanzarMensaje } = useMensajes();

@@ -6,6 +6,9 @@ import Icono from '../components/Principal/Icono.js';
 import Texto from '../components/Texto';
 import useTituloDinamico from '../hooks/useTituloDinamico.js';
 
+/**
+ * Pagina de iniciar sesion
+ */
 const Login = memo(function Login() {
 
   useTituloDinamico("login");

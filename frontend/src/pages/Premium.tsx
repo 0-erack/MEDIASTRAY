@@ -3,6 +3,9 @@ import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
+/**
+ * Pagina para comprar la cuenta premium
+ */
 const Premium = memo(function Premium() {
 
   useTituloDinamico("premium");

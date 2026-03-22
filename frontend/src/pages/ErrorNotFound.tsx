@@ -5,6 +5,9 @@ import Titulo from '../components/Elements/Titulo';
 import Texto from '../components/Texto';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
+/**
+ * Pagina de error 404
+ */
 const ErrorNotFound = memo(function ErrorNotFound() {
 
   useTituloDinamico("errorNotFound");

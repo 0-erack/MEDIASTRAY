@@ -3,6 +3,9 @@ import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
+/**
+ * Pagina juegos populares
+ */
 const FeaturedGames = memo(function FeaturedGames() {
 
   useTituloDinamico("featuredGames");

@@ -42,6 +42,9 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
   const [seguidos, setSeguidos] = useState<Array<Record<string, any>>>([]);
   const [seguidores, setSeguidores] = useState<Array<Record<string, any>>>([]);
 
+  /**
+   * Funcionalidad para el boton de seguir
+   */
   const alternarSeguir = async () => {
     if (soyYo || !usuarioActual) return false;
     if (siguiendo) {
@@ -61,6 +64,11 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
     }
   }
 
+  /**
+   * Funcion para saber si se sigue al usuario o el usuario sigue al usuario actual
+   * @param deVuelta en que orden funciona el seguimiento
+   * @returns si le sigue o no
+   */
   const verSiguiendo = async (deVuelta?: boolean): Promise<boolean> => {
     if (soyYo || !usuarioActual) return false;
     if (deVuelta) {
@@ -72,6 +80,10 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
     }
   }
 
+  /**
+   * Establece la lista de nicknames de los usuarios seguidos/seguidores
+   * @param seguidores en que orden funciona el seguimiento
+   */
   const consultarSeguimientos = async (seguidores: boolean) => {
     if (seguidores) {
       setVerSeguidores(true);

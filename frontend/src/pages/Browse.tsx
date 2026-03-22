@@ -6,6 +6,9 @@ import Icono from '../components/Principal/Icono';
 import useIdioma from '../hooks/useIdioma';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
+/**
+ * Pagina para buscar
+ */
 const Browse  = memo(function Browse() {
 
   useTituloDinamico("browse");

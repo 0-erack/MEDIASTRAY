@@ -27,19 +27,31 @@ export const AjustesContext = createContext<AjustesContextType | null>(null);
  */
 const AjustesProvider = ({ children }: { children: ReactNode }) => {
 
+  //Url de la api
   const API_URL = import.meta.env.VITE_API_URL ?? ((window as any).process?.env?.REACT_APP_API_URL ?? "/api");
+  //Url de recursos publicos
   const PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL ?? ((window as any).process?.env?.REACT_APP_PUBLIC_URL ?? "/public");
+  //Url de los recursos de los juegos
   const GAMES_URL = import.meta.env.VITE_GAMES_URL ?? ((window as any).process?.env?.REACT_APP_GAMES_URL ?? "/games");
+  //Clave para acceder a las rutas escondidas de la api
   const API_KEY = import.meta.env.VITE_API_KEY ?? ((window as any).process?.env?.REACT_APP_API_KEY ?? "");
+  //Tamagno en el paginado
   const TAMAGNO_PAGINA = import.meta.env.VITE_TAMAGNO_PAGINA ?? ((window as any).process?.env?.REACT_APP_TAMAGNO_PAGINA ?? "50");
+  //Milisegundos de intervalo de actualizacion en algunas llamadas a la api
   const FRECUENCIA_ACTUALIZACION = import.meta.env.VITE_FRECUENCIA_ACTUALIZACION ?? ((window as any).process?.env?.REACT_APP_FRECUENCIA_ACTUALIZACION ?? 1000);
 
+  //Texto indicador con el idioma que esta actualmente elegido
   const [idiomaActual, setIdiomaActual] = useState("");
+  //Idiomas admitidos en la pagina, estan representados en textosInterfaz.json
   const idiomasAdmitidos = ["EN-us", "ES-es", "ZH-ch"];
+  //Posible informacion de error relacionada con este contexto
   const [fallo, setFallo] = useState<any>(false);
   const { leerLS, guardarLS } = useLocalStorage();
   const { lanzarMensaje } = useMensajes();
 
+  /**
+   * Inicio absoluto de la aplicacion
+   */
   const inicio = useCallback(async () => {
     try {
       await guardarLS("API_URL", API_URL);
@@ -59,6 +71,10 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  /**
+   * Cambia el idioma actual de la aplicacion
+   * @param nuevo texto indicador del idioma
+   */
   const cambiarIdiomaActual = useCallback(async (nuevo: string) => {
     if (idiomasAdmitidos.find((e) => e === nuevo)) {
       setIdiomaActual(nuevo);

@@ -41,12 +41,19 @@ function TripleBuscador() {
     { valor: "2", etiqueta: traduccion("formularios", "busquedaOrdenAleatorio") },
   ], [traduccion]);
 
+  /**
+   * Actualiza la busqueda actual usando la api en base a un texto de busqueda
+   * @param texto a buscar
+   */
   const buscar = useCallback(async (texto: string) => {
     if (texto) {
       if (datos.buscarUsuarios) {
         const resultado = await buscarUsuarios(texto, parseInt(datos?.pagina as string) ?? 0, parseInt(datos.orden) ?? 0);
         setUsuariosCargados(resultado.length ? resultado : []);
       }
+
+
+
     }
   }, []);
 

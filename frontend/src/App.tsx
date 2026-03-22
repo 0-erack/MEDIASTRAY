@@ -1,4 +1,3 @@
-import './App.css';
 import Cabecera from './components/Principal/Cabecera';
 import Pie from './components/Principal/Pie';
 import AjustesProvider from './contexts/AjustesProvider';
@@ -7,8 +6,8 @@ import { SesionProvider } from './contexts/SesionProvider';
 import Contenido from './routes/Contenido';
 
 function App() {
-
-
+  
+  //Layout principal de la pagina
   return (
     <>
       <MensajesProviders>

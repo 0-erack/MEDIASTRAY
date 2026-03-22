@@ -4,6 +4,9 @@ import useIdioma from '../hooks/useIdioma';
 import useMensajes from '../hooks/useMensajes';
 import useSesion from '../hooks/useSesion';
 
+/**
+ * Pagina sin contenido que cierra sesion y redirige
+ */
 function Logout() {
 
   const { logout } = useSesion();
