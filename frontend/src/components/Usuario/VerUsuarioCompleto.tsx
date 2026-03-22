@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import useIdioma from '../../hooks/useIdioma';
 import useSesion from '../../hooks/useSesion';
@@ -30,7 +30,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
   const [fallo, setFallo] = useState(false);
   const traduccion = useIdioma();
 
-  const cargaInicial = useCallback(async () => {
+  const cargaInicial = async () => {
     if (!id && !usuario) {
       setFallo(true);
     } else {
@@ -48,7 +48,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
         setUsuarioEsPremium(await verPremium(usuarioAjeno.id));
       }
     }
-  }, []);
+  }
   useEffect(() => {
     cargaInicial();
   }, [id]);

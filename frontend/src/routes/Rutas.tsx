@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ImgCargando from '../components/Principal/ImgCargando';
+const ViewUser = lazy(() => import('../pages/ViewUser'));
 const Browse = lazy(() => import('../pages/Browse'));
 const ErrorNotFound = lazy(() => import('../pages/ErrorNotFound'));
 const FeaturedForums = lazy(() => import('../pages/FeaturedForums'));
@@ -13,7 +14,6 @@ const Logout = lazy(() => import('../pages/Logout'));
 const Premium = lazy(() => import('../pages/Premium'));
 const Register = lazy(() => import('../pages/Register'));
 const Settings = lazy(() => import('../pages/Settings'));
-const ViewUser = lazy(() => import('../pages/ViewUser'));
 
 /**
  * Las distintas rutas de la aplicacion

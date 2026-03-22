@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from 'react-hook-form';
 import useApiUsuarios from "../../hooks/api/useApiUsuarios";
 import useAjustes from "../../hooks/useAjustes";
@@ -25,7 +25,7 @@ interface FormValues {
  */
 function TripleBuscador() {
 
-  const formBase: FormValues = { busquedaActual: "", buscarUsuarios: true, buscarJuegos: true, buscarForos: true, orden: 'relevancia', pagina: 0 }
+  const formBase: FormValues = { busquedaActual: "", buscarUsuarios: true, buscarJuegos: true, buscarForos: true, orden: '0', pagina: 0 }
   const traduccion = useIdioma();
   const { register, handleSubmit, control, watch, formState: { errors }, setValue } = useForm<FormValues>({ defaultValues: formBase });
   const datos = watch() /*useState<FormValues>(formBase);*/
@@ -45,17 +45,14 @@ function TripleBuscador() {
    * Actualiza la busqueda actual usando la api en base a un texto de busqueda
    * @param texto a buscar
    */
-  const buscar = useCallback(async (texto: string) => {
+  const buscar = async (texto: string) => {
     if (texto) {
       if (datos.buscarUsuarios) {
         const resultado = await buscarUsuarios(texto, parseInt(datos?.pagina as string) ?? 0, parseInt(datos.orden) ?? 0);
         setUsuariosCargados(resultado.length ? resultado : []);
       }
-
-
-
     }
-  }, []);
+  }
 
   useEffect(() => {
     if (FRECUENCIA_ACTUALIZACION != 0) {

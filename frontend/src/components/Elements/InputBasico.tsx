@@ -58,7 +58,7 @@ function InputBasico({ validador, nombre, tipo, titulo, valor, mensajeError, pla
         defaultValue={"0"}
       >
         {placeholder && <option value="" disabled>{placeholder}</option>}
-        {opcionesSelect?.map((opcion, ) => (
+        {opcionesSelect?.map((opcion) => (
           <option key={opcion.valor} value={opcion.valor}>
             {opcion.etiqueta}
           </option>
