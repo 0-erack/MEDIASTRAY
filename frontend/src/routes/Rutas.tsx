@@ -31,7 +31,7 @@ function Rutas() {
         <Route path="/featuredGames" element={<FeaturedGames />} />
         <Route path="/browse" element={<Browse />} />
         <Route path="/featuredForums" element={<FeaturedForums />} />
-        <Route path="/premium" element={<Premium />} />
+        <Route path="/magna" element={<Premium />} />
         <Route path="/docs">
           <Route index element={<InicioDocumentacion />} />
 

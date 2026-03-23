@@ -263,6 +263,10 @@ export const alterarPremiumUsuario = async (id: string, fechaCaducidad: string):
     return resultado ? true : false;
 }
 
+export const renovarPremium = async (id: string, meses: number, objetoPago: Record<string, any>): Promise<boolean> => {
+    
+}
+
 /**
  * Altera la cantidad de seguidores de un usuario (en su registro sql), si la cantidad es 0 devuelve si el usuario a sigue al b sin alterar nada
  * @param idA usuario que sigue

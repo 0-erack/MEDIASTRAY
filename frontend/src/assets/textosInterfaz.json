@@ -23,8 +23,8 @@
                     "numeroIcono": 8
                 },
                 {
-                    "direccion": "/premium",
-                    "titulo": "Premium",
+                    "direccion": "/magna",
+                    "titulo": "Magna",
                     "numeroIcono": 7
                 },
                 {
@@ -60,8 +60,8 @@
                     "numeroIcono": 8
                 },
                 {
-                    "direccion": "/premium",
-                    "titulo": "Premium",
+                    "direccion": "/magna",
+                    "titulo": "Magna",
                     "numeroIcono": 7
                 },
                 {
@@ -143,7 +143,8 @@
                 "browse": "Browse anything",
                 "parteUsuarios": "Users",
                 "parteJuegos": "Games",
-                "parteForos": "Forums"
+                "parteForos": "Forums",
+                "presentacionMagna": "MAGNA"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -155,7 +156,8 @@
                 "browse": "Busca lo que sea",
                 "parteUsuarios": "Usuarios",
                 "parteJuegos": "Juegos",
-                "parteForos": "Foros"
+                "parteForos": "Foros",
+                "presentacionMagna": "MAGNA"
             }
         },
         "parrafos": {
@@ -179,14 +181,14 @@
                 "nombre": "User name:",
                 "cumpleagnos": "Birth date:",
                 "fechaCreacion": "Creation date:",
-                "premium": "Premium:",
-                "premiumCaducidad": "Premium expitation date:",
+                "premium": "Magna:",
+                "premiumCaducidad": "Magna expitation date:",
                 "seguidores": "Followers:",
                 "teSigue": "follows you",
                 "noTeSigue": "doesn't follow you",
                 "cambiarContrasegna": "Change password",
                 "urlFoto": "Photo URL",
-                "descripcion": "Description (Markdown format):",
+                "descripcion": "Description (Markdown format will be rendered if user has Magna account):",
                 "contrasegnaAntigua": "Original password (needed for changing the password, email or nickname):",
                 "correoAntiguo": "Original email for verification:",
                 "activarBusquedaUsuarios": "Search users",
@@ -208,14 +210,14 @@
                 "nombre": "Nombre de usuario:",
                 "cumpleagnos": "Fecha de nacimiento:",
                 "fechaCreacion": "Fecha de creación:",
-                "premium": "Premium:",
-                "premiumCaducidad": "Fecha de caducidad del premium",
+                "premium": "Magna:",
+                "premiumCaducidad": "Fecha de caducidad de Magna",
                 "seguidores": "Seguidores:",
                 "teSigue": "te sigue",
                 "noTeSigue": "no te sigue",
                 "cambiarContrasegna": "Cambiar contraseña",
                 "urlFoto": "URL de la foto",
-                "descripcion": "Descripción (formato Markdown):",
+                "descripcion": "Descripción (se renderizará en formato Markdown si el usuario es una cuenta Magna):",
                 "contrasegnaAntigua": "Contraseña original (necesaria para cambiar el correo, la contraseña o el nickname):",
                 "correoAntiguo": "Correo original para verificar:",
                 "activarBusquedaUsuarios": "Buscar usuarios",
@@ -296,7 +298,7 @@
                 "info": "Info",
                 "inicioDocumentacion": "Documentation",
                 "login": "Log in",
-                "premium": "PREMIUM",
+                "premium": "MAGNA",
                 "register": "Register",
                 "settings": "Settings",
                 "viewUser": "User",
@@ -311,7 +313,7 @@
                 "info": "Información",
                 "inicioDocumentacion": "Documentación",
                 "login": "Iniciar sesión",
-                "premium": "PREMIUM",
+                "premium": "MAGNA",
                 "register": "Registrarse",
                 "settings": "Ajustes",
                 "viewUser": "Usuario"

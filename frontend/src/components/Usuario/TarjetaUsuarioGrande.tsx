@@ -117,11 +117,11 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
     <div className="tarjeta-usuario-grande">
       <Titulo><Icono numero={1} color="var(--color-resaltado)" /> {(soyYo ? (traduccion("titulosHtml", "saludo") + ", ") : '') + usuario.nombre}</Titulo>
 
-      <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className='h-auto w-[10%] max-w-50 mb-2 border-4 border-resaltado aspect-square object-cover' />
+      <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className={`h-auto w-[10%] max-w-50 mb-2 border-4 ${esPremium ? 'border-info1' : 'border-resaltado'} aspect-square object-cover`} />
 
       <p>{"( "}{usuario.nickname}{" ) "}{soyYo && (<span className='fuente2'>{usuario.correo}</span>)}</p>
 
-      <div className='my-2'><div>{usuario.descripcion?.length ? (<MarkdownDisplay text={usuario.descripcion} />) : traduccion("errores", "noDescripcion")}</div></div>
+      <div className='my-2'><div>{usuario.descripcion?.length ? (esPremium ? (<MarkdownDisplay text={usuario.descripcion} />) : (<div className='overflow-y-scroll w-auto border border-principal p-2 bg-fondo-especial-1' style={{maxHeight: '400px'}}>{usuario.descripcion}</div>)) : traduccion("errores", "noDescripcion")}</div></div>
 
       {soyYo && (<p><span className='font-black'>{traduccion("formularios", "cumpleagnos")}</span> {fechaCumpleagnos}</p>)}
 

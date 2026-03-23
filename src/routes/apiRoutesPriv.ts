@@ -2,7 +2,7 @@
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
-import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, verUsuario } from '../controllers/usuarioController.js';
+import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, renovarPremium, verUsuario } from '../controllers/usuarioController.js';
 import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
 import { exito, fallo, falloInterno, manejadorRuta } from './respuesta.js';
 
@@ -94,6 +94,18 @@ routerPriv.post("/user/follow", autenticarTokenApi, autenticarTokenSesion, async
             return res.json(exito("User followed/unfollowed successfully", undefined, 201));
         } else {
             return res.status(409).json(fallo("Couldn't perform action (follow)", null, 409));
+        }
+    });
+});
+
+//Renovar el premium del usuario x meses, esto deriva en el proceso de compra tambien, requiere los datos de pago y la cantidad de meses
+routerPriv.post("/premium/renew", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const resultado = await renovarPremium(req.datosSesion!.id, 0, req.body?.payment ?? {});
+        if (resultado) {
+            return res.json(exito("Premium renewed succesfully"));
+        } else {
+            return res.status(409).json(fallo("Couldn't renew premium", null, 402));
         }
     });
 });
