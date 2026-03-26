@@ -8,6 +8,7 @@ import { inputDateATimestamp } from '../../libraries/extraFechas';
 import { contrasegna as validarContrasegna, correo as validarCorreo, cumpleagnos as validarCumpleagnos, nickname as validarNickname, nombre as validarNombre } from '../../libraries/validacionesBackend';
 import BotonFuncion from '../Elements/BotonFuncion';
 import CajaError from '../Elements/CajaError';
+import EnlaceFuncion from '../Elements/EnlaceFuncion';
 import InputBasico from '../Elements/InputBasico';
 import Icono from '../Principal/Icono';
 import ImgCargando from '../Principal/ImgCargando';
@@ -106,7 +107,8 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
         <InputBasico nombre="contrasegna2" titulo={<Texto tipo="formularios" nombre="contrasegna2" />} valor={objetoRegister.contrasegna2} tipo={objetoRegister.verContrasegna ? "text" : "password"} placeholder="········" />
         <InputBasico nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoRegister.verContrasegna} tipo="checkbox" />
         <BotonFuncion titulo={<Texto tipo="botones" nombre="crearCuenta" />} funcion={enviar} hueco={false} tipo={1} ><Icono numero={16} color='var(--color-fondo1)' /></BotonFuncion>
-        <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} tipo={2} ><Icono numero={10} color='var(--color-error)' /></BotonFuncion>
+        <BotonFuncion titulo={<Texto tipo="botones" nombre="reset" />} funcion={reset} tipo={2} ><Icono numero={10} color='var(--color-error)' /></BotonFuncion><br />
+        <EnlaceFuncion titulo={traduccion("formularios", "preguntaLogin")} funcion="/login" />
         <CajaError texto={errorFormulario ?? ''} nivel="input" />
         {cargando && (<ImgCargando />)}
       </form>

@@ -198,7 +198,9 @@
                 "busquedaOrdenRelevancia": "Relevance",
                 "busquedaOrdenAlfabetica": "Alphabetically",
                 "busquedaOrdenAleatorio": "Random",
-                "pagina": "Page:"
+                "pagina": "Page:",
+                "preguntaLogin": "Already have an account? Log in",
+                "preguntaRegister": "Don't have an account? Create one"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -227,7 +229,9 @@
                 "busquedaOrdenRelevancia": "Relevancia",
                 "busquedaOrdenAlfabetica": "Alfabeticamente",
                 "busquedaOrdenAleatorio": "Aleatorio",
-                "pagina": "Página:"
+                "pagina": "Página:",
+                "preguntaLogin": "¿Ya tienes una cuenta? Inicia sesión",
+                "preguntaRegister": "¿No tienes una cuenta? Regístrate"
             }
         },
         "errores": {

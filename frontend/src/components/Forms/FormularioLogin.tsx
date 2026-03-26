@@ -6,6 +6,7 @@ import useMensajes from '../../hooks/useMensajes';
 import { contrasegna as validarContrasegna, identificacion as validarIdentificacion } from '../../libraries/validacionesBackend';
 import BotonFuncion from '../Elements/BotonFuncion';
 import CajaError from '../Elements/CajaError';
+import EnlaceFuncion from '../Elements/EnlaceFuncion';
 import InputBasico from '../Elements/InputBasico';
 import Icono from '../Principal/Icono';
 import ImgCargando from '../Principal/ImgCargando';
@@ -80,7 +81,9 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
         <InputBasico iconoA={13} nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoLogin.verContrasegna} tipo="checkbox" />
         <BotonFuncion titulo={<Texto tipo="botones" nombre="iniciarSesion" />} funcion={enviar} hueco={false} ><Icono numero={15} color='var(--color-fondo1)' /></BotonFuncion>
         <CajaError texto={errorFormulario ?? ''} nivel="input" />
+        <EnlaceFuncion titulo={traduccion("formularios", "preguntaRegister")} funcion="/register" />
       </form>)}
+
     </div>
   )
 }

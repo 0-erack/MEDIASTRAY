@@ -5,6 +5,7 @@ import { desc, eq, ilike, inArray, or, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { agnadirLog } from '../connections/logs.js';
 import { mongoDelete, mongoGet, mongoSet } from '../connections/mongodb.js';
+import { procesarPago } from '../connections/pagos.js';
 import { getDB } from '../connections/postgresql.js';
 import { contrasegna as validarContrasegna } from '../libraries/validaciones.js';
 import { usuarios } from '../models/schema.js';
@@ -125,7 +126,7 @@ export const editarUsuario = async (nuevos: Record<string, any>, id: string): Pr
     if (usuarioPrevio.disponibilidad >= 2) throw { message: "User has not allowed login edit credentials nor profile", code: 403 };
     let edicionAutenticada = false; //Hace referencia a si la peticion esta autorizada para editar datos sensibles
     //Solo se pide la contrasegna original si se va a cambiar a otra distinta
-    if (datosNuevos.contrasegnaAntigua != undefined) { 
+    if (datosNuevos.contrasegnaAntigua != undefined) {
         const contrasegnaCoincide = await autenticarContrasegnaUsuario(datosNuevos.contrasegnaAntigua, usuarioPrevio.contrasegna!);
         if (contrasegnaCoincide) {
             edicionAutenticada = true;
@@ -250,10 +251,26 @@ export const alterarVisibilidadUsuario = async (nuevoValor: number, id: string):
 }
 
 /**
+ * Consulta si un usuario es premium o no, mirando si la fecha actual esta antes de la fecha de caducidad
+ * @param id usuario a consultar
+ * @returns si es premium o no
+ */
+export const usuarioTienePremium = async (id: string, devolverFecha = false): Promise<boolean|Record<string, any>> => {
+    const db = getDB();
+    const usuario = await db.select({ premium: usuarios.premium }).from(usuarios).where(eq(usuarios.id, id)).limit(1);
+    if (!usuario.length) return false;
+    let fecha: any = Number(usuario[0].premium);
+    if (isNaN(fecha)) return false;
+    fecha = new Date(fecha);
+    if (isNaN(fecha.getTime())) return false;
+    return devolverFecha ? {active: fecha > new Date(), date: Date.parse(fecha) + ""} : fecha > new Date();
+}
+
+/**
  * Renueva el premium de un usuario estableciendo la fecha de caducidad
- * @param id usuario a a fectar
+ * @param id usuario a a actualizar
  * @param fechaCaducidad timestamp con la nueva fecha de caducidad del premium
- * @returns 
+ * @returns si se ha actualizado correctamente
  */
 export const alterarPremiumUsuario = async (id: string, fechaCaducidad: string): Promise<boolean> => {
     const db = getDB();
@@ -263,8 +280,28 @@ export const alterarPremiumUsuario = async (id: string, fechaCaducidad: string):
     return resultado ? true : false;
 }
 
+/**
+ * Renueva el premium de un usuario x meses validando y ejecutando el pago, si ya tenia premium se agregan los meses a la fecha anterior
+ * @param id usuario a actualizar
+ * @param meses cantidad de meses agregados
+ * @param objetoPago objeto con los datos del pago //TODO: pagos no implementados actualmente
+ * @returns si se ha actualizado correctamente
+ */
 export const renovarPremium = async (id: string, meses: number, objetoPago: Record<string, any>): Promise<boolean> => {
-    
+    if (meses < 0) throw { message: "Invalid data", code: 409 };
+    const pagoCorrecto = await procesarPago(objetoPago);
+    if (!pagoCorrecto) throw { message: "Payment failed", code: 402 };
+    const usuario = await buscarUsuario(id);
+    if (!usuario) throw { message: "User not found", code: 404 };
+    let hoy = new Date();
+    const previoPremium = await usuarioTienePremium(id);
+    if (previoPremium) {
+        const fecha: any = Number(usuario.premium);
+        hoy = new Date(fecha);
+        console.log(hoy);
+    }
+    hoy.setMonth(hoy.getMonth() + meses);
+    return await alterarPremiumUsuario(id, hoy.getTime() + "");
 }
 
 /**
@@ -333,22 +370,6 @@ export const buscarUsuarios = async (consulta: string, pagina = 0, orden = 0): P
     return usuariosEncontrados.map((e) => {
         return formatearUsuarioMiniatura(e);
     });
-}
-
-/**
- * Consulta si un usuario es premium o no, mirando si la fecha actual esta antes de la fecha de caducidad
- * @param id usuario a consultar
- * @returns si es premium o no
- */
-export const usuarioTienePremium = async (id: string): Promise<boolean> => {
-    const db = getDB();
-    const usuario = await db.select({ premium: usuarios.premium }).from(usuarios).where(eq(usuarios.id, id)).limit(1);
-    if (!usuario.length) return false;
-    let fecha: any = Number(usuario[0].premium);
-    if (isNaN(fecha)) return false;
-    fecha = new Date(fecha);
-    if (isNaN(fecha.getTime())) return false;
-    return fecha > new Date();
 }
 
 /**

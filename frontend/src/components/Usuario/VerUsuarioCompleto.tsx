@@ -45,7 +45,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
           return;
         }
         setUsuarioCargado({...usuarioAjeno, correo: "", contrasegna: "", cumpleagnos: "", disponibilidad: "", premiumExpirationDate: undefined});
-        setUsuarioEsPremium(await verPremium(usuarioAjeno.id));
+        setUsuarioEsPremium((await verPremium(usuarioAjeno.id))?.active ?? false);
       }
     }
   }

@@ -57,7 +57,7 @@ router.get("/user/follow/:id_a/:id_b", async (req: ExpressRequest<{ id_a: string
 router.get("/user/premium/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         if (!req.params?.id) return res.status(404).json(fallo("User not found", null, 404));
-        const premium = await usuarioTienePremium(req.params.id);
+        const premium = await usuarioTienePremium(req.params.id, true);
         return res.json(exito("Premium state", premium));
     });
 });

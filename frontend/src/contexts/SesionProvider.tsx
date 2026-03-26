@@ -98,7 +98,7 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
 
     const actualizarEstadoPremium = useCallback(async (id: string, token: string) => {
         const datosPremium = await peticionBasica(API_URL + "/user/premium/" + id, {"X-auth-api": API_KEY,"X-auth-session": token ?? ''}, "GET", undefined, token + "");
-        setPremium(datosPremium?.data ? true : false);
+        setPremium(datosPremium?.data?.active ? true : false);
     }, []);
 
     const cambiarTokenSesionActual = useCallback(async (token: string) => {

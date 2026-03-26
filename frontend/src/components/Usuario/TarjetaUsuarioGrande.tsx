@@ -127,7 +127,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
 
       <p><span className='font-black'>{traduccion("formularios", "fechaCreacion")}</span> {fechaCreacion}</p>
 
-      <p><span className='font-black'>{traduccion("formularios", "premium")}</span> {esPremium ? (<><Icono numero={7} color='var(--color-especial)' /> {traduccion("palabras", "si")}</>) : (<><Icono numero={10} color='var(--color-principal)' /> {traduccion("palabras", "no")}</>)}</p>
+      <p><span className='font-black'>{traduccion("formularios", "premium")}</span> {esPremium ? (<><Icono numero={7} color='var(--color-info1)' /> {traduccion("palabras", "si")}</>) : (<><Icono numero={10} color='var(--color-principal)' /> {traduccion("palabras", "no")}</>)}</p>
 
       <p><span className='font-black'><Icono numero={2} color='var(--color-principal)' /> {traduccion("formularios", "seguidores")}</span> {seguidoresSimulados} {(!soyYo && usuarioActual) && (<span>
         <BotonFuncion funcion={alternarSeguir} titulo={traduccion("botones", siguiendo ? "noSeguir" : "seguir")} >{siguiendo ? (<Icono numero={18} color='var(--color-info1)' />) : (<Icono numero={19} color='var(--color-principal)' />)}</BotonFuncion>

@@ -162,12 +162,12 @@ const useApiUsuarios = () => {
      * @param id usuario a consultar
      * @returns true si lo es, false si no o si hay dudas
      */
-    const verPremium = async (id:string):Promise<boolean> => {
+    const verPremium = async (id:string):Promise<Record<string, any>> => {
         try {
             const resultado = await peticionGenerica(API_URL + `/user/premium/${id}`, "GET");
             return resultado?.data ?? false;
         } catch (error) {
-            return false;
+            return {active: false};
         }
     }
 

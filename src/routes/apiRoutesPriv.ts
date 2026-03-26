@@ -101,7 +101,7 @@ routerPriv.post("/user/follow", autenticarTokenApi, autenticarTokenSesion, async
 //Renovar el premium del usuario x meses, esto deriva en el proceso de compra tambien, requiere los datos de pago y la cantidad de meses
 routerPriv.post("/premium/renew", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const resultado = await renovarPremium(req.datosSesion!.id, 0, req.body?.payment ?? {});
+        const resultado = await renovarPremium(req.datosSesion!.id, req.body?.months ?? -1, req.body?.payment ?? {});
         if (resultado) {
             return res.json(exito("Premium renewed succesfully"));
         } else {
