@@ -11,7 +11,7 @@ import useSesion from "../useSesion";
 const useApiUsuarios = () => {
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState<boolean|object>(false);
-    const { API_URL, API_KEY } = useAjustes();
+    const { API_URL, API_KEY, idiomaActual } = useAjustes();
     const { cambiarTokenSesionActual, cambiarUsuarioActual, logout, tokenSesionActual, usuario, actualizarEstadoPremium } = useSesion();
 
     /**
@@ -123,6 +123,17 @@ const useApiUsuarios = () => {
         }
     }
 
+    const renovarPremium = async (cantidadMeses: number, datosTarjeta: Record<string, any>): Promise<boolean> => {
+        try {
+            const localizacion = idiomaActual;
+            if (cantidadMeses <= 0) return false;
+            const resultado = await peticionGenerica(API_URL + "/premium/renew", "POST", {months: cantidadMeses, location: localizacion, payment: datosTarjeta});
+            return resultado.ok ? true : false;
+        } catch (error) {
+            return false;
+        }
+    }
+
     /**
      * Edita el usuario actual, lo que tambien provoca un nuevo inicio de sesion y cambio de token
      * @param datosNuevos datos del formulario de edicion, los datos que no esten presentes no cambiaran (algunos son obligatorios para cambiar otros, mejor explicado en el backend)
@@ -208,7 +219,7 @@ const useApiUsuarios = () => {
         setError(false)
     }
 
-    return { cargando, error, peticionGenerica, verSeguimientos, login, buscar, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario, verPremium };
+    return { cargando, error, peticionGenerica, verSeguimientos, login, buscar, register, verUsuario, resetEstados, verSeguir, seguir, borrarUsuario, editarUsuario, verPremium, renovarPremium };
 };
 
 export default useApiUsuarios;

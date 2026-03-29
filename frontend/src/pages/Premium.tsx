@@ -22,7 +22,8 @@ const Premium = function Premium() {
   const { verPremium } = useApiUsuarios();
   const navegar = useNavigate();
   const botonPrincipal = () => (usuario ? (<>
-          {tiempoRestante ? (<p>{traduccion("extra", "labelCaducidad")} {timestampAFecha(tiempoRestante)}</p>) : (<BotonFuncion tipo={3} hueco={false} titulo={traduccion("botones", "irComprarPremium")} funcion={() => navegar("/renewMagna")} />)}
+          {tiempoRestante ? (<p>{traduccion("extra", "labelCaducidad")} {timestampAFecha(tiempoRestante)} <BotonFuncion tipo={3} hueco={false} titulo={traduccion("botones", "irComprarPremiumMas")} funcion={() => navegar("/renewMagna")} /></p>) 
+          : (<BotonFuncion tipo={3} hueco={false} titulo={traduccion("botones", "irComprarPremium")} funcion={() => navegar("/renewMagna")} />)}
         </>) : (<>
           <BotonFuncion tipo={1} titulo={traduccion("botones", "iniciarSesion")} funcion={() => navegar("/login")} />
           <BotonFuncion tipo={1} titulo={traduccion("botones", "crearCuenta")} funcion={() => navegar("/register")} />
@@ -30,8 +31,8 @@ const Premium = function Premium() {
 
   const verFechaCaducidad = async () => {
     const resultado = await verPremium((typeof usuario === 'object' && usuario) ? usuario!.id! : '');
-    if (!resultado || !resultado.ok || !resultado?.data?.active) location.reload(); //En caso de que haya expirado y el frontend diga que es premium pero el backend no
-    setTiempoRestante(resultado.data.date);
+    if (!resultado || !resultado?.active) (()=>{})()// location.reload(); //En caso de que haya expirado y el frontend diga que es premium pero el backend no
+    setTiempoRestante(resultado.date);
   }
   useEffect(() => {
     if (premium) verFechaCaducidad();
@@ -39,43 +40,59 @@ const Premium = function Premium() {
 
   return (
     <>
-      <div className='text-center bg-fondo2 p-5'>
+      <div className='text-center bg-fondo2 p-5 mt-4'>
         <span className='text-resaltado'><Titulo magnitud={1}>{traduccion("titulos", "presentacionMagna")}</Titulo></span>
         <Icono tamagno={32} numero={18} color='var(--color-info1)' />{"\ \ \ "}<Icono tamagno={32} numero={7} color='var(--color-info1)' />{"\ \ \ "}<Icono tamagno={32} numero={21} color='var(--color-info1)' />
         <p className='mb-5'>{traduccion("parrafos", "textoPremium1")}</p>
         {botonPrincipal()}
         <Titulo magnitud={3} >{traduccion("titulos", "mejorasPremium")}</Titulo>
-        {/*//TODO: revisar mejoras y poner imagenes*/}
-        <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-15 flex border-5 border-info1 m-5 text-lg gap-3 justify-between items-stretch'>
+        {/*//TODO: revisar mejoras y poner imagenes y hacer cambios segun region*/}
+        <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-10 flex border-5 border-info1 m-5 text-lg gap-3 justify-between items-stretch'>
           <div>
             <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium2")}</Titulo>
             <p className='m-5'>{traduccion("parrafos", "textoPremium3")}</p>
           </div>
           <div className='border border-info1 h-full w-64'></div>
         </div>
-        <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-15 flex border-5 border-info1 m-5 text-lg gap-3 justify-between items-stretch'>
+        <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-10 flex border-5 border-info1 m-5 text-lg gap-3 justify-between items-stretch'>
           <div className='border border-info1 h-full w-64'></div>
           <div>
             <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium4")}</Titulo>
             <p className='m-5'>{traduccion("parrafos", "textoPremium5")}</p>
           </div>
         </div>
-        <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-15 flex border-5 border-info1 m-5 text-lg gap-3 justify-between items-stretch'>
+        <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-10 flex border-5 border-info1 m-5 text-lg gap-3 justify-between items-stretch'>
           <div>
             <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium6")}</Titulo>
             <p className='m-5'>{traduccion("parrafos", "textoPremium7")}</p>
           </div>
           <div className='border border-info1 h-full w-64'></div>
         </div>
-        <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-15 flex border-5 border-info1 m-5 text-lg gap-3 justify-between items-stretch'>
+        <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-5 flex border-5 border-info1 m-5 text-lg gap-3 justify-between items-stretch'>
           <div className='border border-info1 h-full w-64'></div>
           <div>
             <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium8")}</Titulo>
             <p className='m-5'>{traduccion("parrafos", "textoPremium9")}</p>
           </div>
         </div>
-        PLANES
 
+        {/*Convendria mejorar el sistema de precios, pero los pagos no han sido implementados*/}
+        <Titulo magnitud={3}>{traduccion("titulos", "precios")}</Titulo>
+        <div className='flex text-center justify-center mb-5 sm:gap-10 gap-2'>
+          <div className='border-2 border-info1 bg-fondo-especial-1 p-2'>
+            <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium10")}</Titulo>
+            <p className='font-black text-resaltado'>{traduccion("dinero", "premium1Mes")}</p>
+          </div>
+          <div className='border-2 border-info1 bg-fondo-especial-1 p-2'>
+            <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium11")}</Titulo>
+            <p className='font-black text-resaltado'>{traduccion("dinero", "premium6Meses")}</p>
+          </div>
+          <div className='border-2 border-info1 bg-fondo-especial-1 p-2'>
+            <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium12")}</Titulo>
+            <p className='font-black text-resaltado'>{traduccion("dinero", "premium1Agno")}</p>
+          </div>
+        </div>
+        <p>{traduccion("parrafos", "textoPremium13")}</p>
 
         {botonPrincipal()}
       </div>

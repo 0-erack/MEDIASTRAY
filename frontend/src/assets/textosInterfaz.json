@@ -115,7 +115,9 @@
                 "logout": "Log out...",
                 "verSeguidores": "See followers...",
                 "verSeguidos": "See followed...",
-                "irComprarPremium": "Buy MAGNA"
+                "irComprarPremium": "Buy MAGNA",
+                "irComprarPremiumMas": "Add MAGNA months",
+                "comprar": "Buy..."
             },
             "ES-es": {
                 "irInicio": "Volver al icorreoRepetidonicio",
@@ -131,7 +133,9 @@
                 "logout": "Cerrar sesión...",
                 "verSeguidores": "Ver seguidores...",
                 "verSeguidos": "Ver seguidos...",
-                "irComprarPremium": "Comprar MAGNA"
+                "irComprarPremium": "Comprar MAGNA",
+                "irComprarPremiumMas": "Añadir meses de MAGNA",
+                "comprar": "Comprar..."
             }
         },
         "titulos": {
@@ -147,7 +151,9 @@
                 "parteJuegos": "Games",
                 "parteForos": "Forums",
                 "presentacionMagna": "MAGNA Account",
-                "mejorasPremium": "Advantages of MAGNA"
+                "mejorasPremium": "Advantages of MAGNA",
+                "precios": "Prices",
+                "comprarMeses": "Buy MAGNA months"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -161,7 +167,9 @@
                 "parteJuegos": "Juegos",
                 "parteForos": "Foros",
                 "presentacionMagna": "Cuenta MAGNA",
-                "mejorasPremium": "Ventajas de MAGNA"
+                "mejorasPremium": "Ventajas de MAGNA",
+                "precios": "Precios",
+                "comprarMeses": "Comprar meses de MAGNA"
             }
         },
         "parrafos": {
@@ -175,8 +183,13 @@
                 "textoPremium5": "Level up the file uploading size limit when publishing games, and so on with exclusive customization features. It also increases weight limit for our save data on games",
                 "textoPremium6": "Power the capacity of your games",
                 "textoPremium7": "You will be able to configurate achievements, customized pages and stablish a price for your games",
-                "textoPremium8": "¡And more!",
-                "textoPremium9": "Priority technicla support, higher priority reports, better luck when appearing on recommendations, and an official badge and access to new features"
+                "textoPremium8": "And more!",
+                "textoPremium9": "Priority technicla support, higher priority reports, better luck when appearing on recommendations, and an official badge and access to new features",
+                "textoPremium10": "One month",
+                "textoPremium11": "6 months",
+                "textoPremium12": "One year",
+                "textoPremium13": "All the mentioned advantages are always included on MAGNA at any plan",
+                "textoPremium14": "If you already had a MAGNA account, the expiration date will be postponed the amount of months you buy, if you didn't you will get MAGNA privileges for that many months. The prices of each months package may vary depending on time and region"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -189,7 +202,13 @@
                 "textoPremium6": "Potenciar las capacidades de tus juegos",
                 "textoPremium7": "Podrás configurar logros, páginas personalizadas, y establecer un precio por tus juegos",
                 "textoPremium8": "¡Y más!",
-                "textoPremium9": "Soporte técnico prioritario, reportes de alta prioridad y mejor suerte para aparecer en las recomendaciones, así como una insignia oficial y acceso a nuevas características"
+                "textoPremium9": "Soporte técnico prioritario, reportes de alta prioridad y mejor suerte para aparecer en las recomendaciones, así como una insignia oficial y acceso a nuevas características",
+                "textoPremium10": "Un mes",
+                "textoPremium11": "6 meses",
+                "textoPremium12": "Un año",
+                "textoPremium13": "Todas las ventajas mencionadas están siempre incluidas en MAGNA en cualquier plan",
+                "textoPremium14": "Si ya tenías una cuenta MAGNA, la fecha de caducidad se pospondrá la cantidad de meses que compres, si ya la tenías tendrás los privilegios de MAGNA por esos meses. Los precios de cada paquete de meses podrían variar con el tiempo y la región"
+
             }
         },
         "formularios": {
@@ -284,7 +303,8 @@
                 "genericoSesion": "There was an error loading the session",
                 "noBusqueda": "Oops, we didn't find anything",
                 "noSeguidos": "User doesn't follow anyone",
-                "noSeguidores": "User doesn't have any followers"
+                "noSeguidores": "User doesn't have any followers",
+                "errorCompra": "There was an unexcepted error with your purchase"
             },
             "ES-es": {
                 "sesionExpirada": "La sesión del usuario ha expirado, inicie sesión de nuevo",
@@ -312,7 +332,8 @@
                 "genericoSesion": "Ha habido un error cargando la sesión",
                 "noBusqueda": "Ups, no hemos encontrado nada",
                 "noSeguidos": "Este usuario no sigue a nadie",
-                "noSeguidores": "Este usuario no tiene seguidores"
+                "noSeguidores": "Este usuario no tiene seguidores",
+                "errorCompra": "Ha habido un error inesperado con su compra"
             }
         },
         "titulosHtml": {
@@ -361,12 +382,16 @@
             "EN-us": {
                 "labelSeguidos": "Followed:",
                 "labelSeguidores": "Followers:",
-                "labelCaducidad": "Expiration date:"
+                "labelCaducidad": "Expiration date:",
+                "labelCantidad": "Amount:",
+                "indicadorPago": "Credit/debit card data"
             },
             "ES-es": {
                 "labelSeguidos": "Seguidos:",
                 "labelSeguidores": "Seguidores:",
-                "labelCaducidad": "Fecha de caducidad:"
+                "labelCaducidad": "Fecha de caducidad:",
+                "labelCantidad": "Cantidad:",
+                "indicadorPago": "Datos de la tarjeta de crédito/débito"
             }
         },
         "mensajes": {
@@ -395,6 +420,20 @@
                 "seguirUsuario": "Seguiste a este usuario",
                 "noSeguirUsuario": "Ya no sigues a este usuario",
                 "logout": "Sesión cerrada..."
+            }
+        },
+        "dinero": {
+            "EN-us": {
+                "premium1Mes": "$ 4.59",
+                "premium6Meses": "$ 22.99",
+                "premium1Agno": "$ 51.79",
+                "moneda": "$"
+            },
+            "ES-es": {
+                "premium1Mes": "3,99 €",
+                "premium6Meses": "19,99 €",
+                "premium1Agno": "44,99 €",
+                "moneda": "€"
             }
         }
     }
