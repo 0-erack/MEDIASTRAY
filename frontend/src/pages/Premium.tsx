@@ -6,6 +6,7 @@ import Titulo from '../components/Elements/Titulo';
 import Icono from '../components/Principal/Icono';
 import useApiUsuarios from '../hooks/api/useApiUsuarios';
 import useIdioma from '../hooks/useIdioma';
+import useMensajes from '../hooks/useMensajes';
 import useSesion from '../hooks/useSesion';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 import { timestampAFecha } from '../libraries/extraFechas';
@@ -21,6 +22,7 @@ const Premium = function Premium() {
   useTituloDinamico("MAGNA");
   const { verPremium } = useApiUsuarios();
   const navegar = useNavigate();
+  const { lanzarMensaje } = useMensajes();
   const botonPrincipal = () => (usuario ? (<>
     {tiempoRestante ? (<p>{traduccion("extra", "labelCaducidad")} {timestampAFecha(tiempoRestante)} <BotonFuncion tipo={3} hueco={false} titulo={traduccion("botones", "irComprarPremiumMas")} funcion={() => navegar("/renewMagna")} /></p>)
       : (<BotonFuncion tipo={3} hueco={false} titulo={traduccion("botones", "irComprarPremium")} funcion={() => navegar("/renewMagna")} />)}
@@ -31,7 +33,11 @@ const Premium = function Premium() {
 
   const verFechaCaducidad = async () => {
     const resultado = await verPremium((typeof usuario === 'object' && usuario) ? usuario!.id! : '');
-    if (!resultado || !resultado?.active) (() => { })()// location.reload(); //En caso de que haya expirado y el frontend diga que es premium pero el backend no
+    if (!resultado || !resultado?.active) { //En caso de que haya expirado y el frontend diga que es premium pero el backend no
+      location.reload();
+      lanzarMensaje(traduccion("mensajes", "premiumExpirado"), 2);
+      return;
+    }
     setTiempoRestante(resultado.date);
   }
   useEffect(() => {

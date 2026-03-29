@@ -153,7 +153,11 @@
                 "presentacionMagna": "MAGNA Account",
                 "mejorasPremium": "Advantages of MAGNA",
                 "precios": "Prices",
-                "comprarMeses": "Buy MAGNA months"
+                "comprarMeses": "Buy MAGNA months",
+                "inicio": "The online gaming open-source platform for players and developers",
+                "juegoDiario": "Daily game",
+                "juegosDestacados": "Featured games",
+                "forosDestacados": "Featured forums"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -169,7 +173,11 @@
                 "presentacionMagna": "Cuenta MAGNA",
                 "mejorasPremium": "Ventajas de MAGNA",
                 "precios": "Precios",
-                "comprarMeses": "Comprar meses de MAGNA"
+                "comprarMeses": "Comprar meses de MAGNA",
+                "inicio": "La plataforma open-source olnine para jugadores y desarrolladores",
+                "juegoDiario": "Juego diario",
+                "juegosDestacados": "Juegos destacados",
+                "forosDestacados": "Foros destacados"
             }
         },
         "parrafos": {
@@ -230,7 +238,7 @@
                 "noTeSigue": "doesn't follow you",
                 "cambiarContrasegna": "Change password",
                 "urlFoto": "Photo URL",
-                "descripcion": "Description (Markdown format will be rendered if user has Magna account):",
+                "descripcion": "Description (Markdown format will be rendered to the public only if user has Magna account):",
                 "contrasegnaAntigua": "Original password (needed for changing the password, email or nickname):",
                 "correoAntiguo": "Original email for verification:",
                 "activarBusquedaUsuarios": "Search users",
@@ -261,7 +269,7 @@
                 "noTeSigue": "no te sigue",
                 "cambiarContrasegna": "Cambiar contraseña",
                 "urlFoto": "URL de la foto",
-                "descripcion": "Descripción (se renderizará en formato Markdown si el usuario es una cuenta Magna):",
+                "descripcion": "Descripción (se renderizará en formato Markdown al público solo si el usuario es una cuenta Magna):",
                 "contrasegnaAntigua": "Contraseña original (necesaria para cambiar el correo, la contraseña o el nickname):",
                 "correoAntiguo": "Correo original para verificar:",
                 "activarBusquedaUsuarios": "Buscar usuarios",
@@ -407,7 +415,9 @@
                 "borrarUsuario": "User deleted...",
                 "seguirUsuario": "User followed",
                 "noSeguirUsuario": "User unfollowed",
-                "logout": "Logged out..."
+                "logout": "Logged out...",
+                "renovadoPremium": "MAGNA renewed!",
+                "premiumExpirado": "MAGNA expired..."
             },
             "ES-es": {
                 "loginBien": "Sesión iniciada correctamente!",
@@ -420,7 +430,9 @@
                 "borrarUsuario": "Usuario borrado...",
                 "seguirUsuario": "Seguiste a este usuario",
                 "noSeguirUsuario": "Ya no sigues a este usuario",
-                "logout": "Sesión cerrada..."
+                "logout": "Sesión cerrada...",
+                "renovadoPremium": "¡MAGNA renovado!",
+                "premiumExpirado": "MAGNA expiró..."
             }
         },
         "dinero": {

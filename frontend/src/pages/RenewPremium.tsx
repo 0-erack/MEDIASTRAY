@@ -7,6 +7,7 @@ import Titulo from '../components/Elements/Titulo';
 import useApiUsuarios from '../hooks/api/useApiUsuarios';
 import useAjustes from '../hooks/useAjustes';
 import useIdioma from '../hooks/useIdioma';
+import useMensajes from '../hooks/useMensajes';
 import useSesion from '../hooks/useSesion';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
@@ -25,12 +26,14 @@ const RenewPremium = memo(function RenewPremium() {
   const [datosTarjeta, setDatosTarjeta] = useState<Record<string, any>>({});
   const { renovarPremium } = useApiUsuarios();
   const [error, setError] = useState(false);
+  const { lanzarMensaje } = useMensajes();
 
   const comprarPremium = async () => {
     const resultado = await renovarPremium(cantidadMeses, datosTarjeta);
     if (resultado) {
       navegar("/user");
       location.reload();
+      lanzarMensaje(traduccion("mensajes", "renovadoPremium"), 4);
       return;
     }
     setError(true);

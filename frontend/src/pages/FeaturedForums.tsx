@@ -1,6 +1,7 @@
 
 import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
+import useIdioma from '../hooks/useIdioma';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
 /**
@@ -9,10 +10,12 @@ import useTituloDinamico from '../hooks/useTituloDinamico';
 const FeaturedForums = memo(function FeaturedForums() {
 
   useTituloDinamico("featuredForums");
+  const traduccion = useIdioma();
 
   return (
     <>
-      <Titulo>FeaturedForums</Titulo>
+      <Titulo>{traduccion("titulos", "forosDestacados")}</Titulo>
+      
     </>
   )
 });

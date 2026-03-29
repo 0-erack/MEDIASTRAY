@@ -1,6 +1,7 @@
 
 import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
+import useIdioma from '../hooks/useIdioma';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
 /**
@@ -9,10 +10,12 @@ import useTituloDinamico from '../hooks/useTituloDinamico';
 const FeaturedGames = memo(function FeaturedGames() {
 
   useTituloDinamico("featuredGames");
+  const traduccion = useIdioma();
 
   return (
     <>
-      <Titulo>FeaturedGames</Titulo>
+      <Titulo>{traduccion("titulos", "juegosDestacados")}</Titulo>
+
     </>
   )
 });
