@@ -189,7 +189,8 @@
                 "textoPremium11": "6 months",
                 "textoPremium12": "One year",
                 "textoPremium13": "All the mentioned advantages are always included on MAGNA at any plan",
-                "textoPremium14": "If you already had a MAGNA account, the expiration date will be postponed the amount of months you buy, if you didn't you will get MAGNA privileges for that many months. The prices of each months package may vary depending on time and region"
+                "textoPremium14": "If you already had a MAGNA account, the expiration date will be postponed the amount of months you buy, if you didn't you will get MAGNA privileges for that many months. The prices of each months package may vary depending on time and region",
+                "textoLegal1": "Terms & conditions apply"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -207,8 +208,8 @@
                 "textoPremium11": "6 meses",
                 "textoPremium12": "Un año",
                 "textoPremium13": "Todas las ventajas mencionadas están siempre incluidas en MAGNA en cualquier plan",
-                "textoPremium14": "Si ya tenías una cuenta MAGNA, la fecha de caducidad se pospondrá la cantidad de meses que compres, si ya la tenías tendrás los privilegios de MAGNA por esos meses. Los precios de cada paquete de meses podrían variar con el tiempo y la región"
-
+                "textoPremium14": "Si ya tenías una cuenta MAGNA, la fecha de caducidad se pospondrá la cantidad de meses que compres, si ya la tenías tendrás los privilegios de MAGNA por esos meses. Los precios de cada paquete de meses podrían variar con el tiempo y la región",
+                "textoLegal1": "Se aplican los términos y condiciones"
             }
         },
         "formularios": {

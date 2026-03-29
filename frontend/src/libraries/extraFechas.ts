@@ -30,7 +30,7 @@ export const inputDateATimestamp = (fecha: string): string => {
  */
 export const timestampAFecha = (timestamp:string):string => {
     //if (typeof timestamp !== "string" && typeof timestamp !== "number") return "";
-    return new Date(Number(timestamp)).toLocaleDateString();
+    return new Date(Number(timestamp)).toLocaleDateString('en-CA'); //Formato canadiense/japones porque es YYYY/MM/DD
 }
 
 /**
