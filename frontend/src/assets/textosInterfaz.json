@@ -114,7 +114,8 @@
                 "eliminarCuenta2": "DELETE ACCOUNT...",
                 "logout": "Log out...",
                 "verSeguidores": "See followers...",
-                "verSeguidos": "See followed..."
+                "verSeguidos": "See followed...",
+                "irComprarPremium": "Buy MAGNA"
             },
             "ES-es": {
                 "irInicio": "Volver al icorreoRepetidonicio",
@@ -129,7 +130,8 @@
                 "eliminarCuenta2": "ELIMINAR LA CUENTA...",
                 "logout": "Cerrar sesión...",
                 "verSeguidores": "Ver seguidores...",
-                "verSeguidos": "Ver seguidos..."
+                "verSeguidos": "Ver seguidos...",
+                "irComprarPremium": "Comprar MAGNA"
             }
         },
         "titulos": {
@@ -144,7 +146,8 @@
                 "parteUsuarios": "Users",
                 "parteJuegos": "Games",
                 "parteForos": "Forums",
-                "presentacionMagna": "MAGNA"
+                "presentacionMagna": "MAGNA Account",
+                "mejorasPremium": "Advantages of MAGNA"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -157,17 +160,36 @@
                 "parteUsuarios": "Usuarios",
                 "parteJuegos": "Juegos",
                 "parteForos": "Foros",
-                "presentacionMagna": "MAGNA"
+                "presentacionMagna": "Cuenta MAGNA",
+                "mejorasPremium": "Ventajas de MAGNA"
             }
         },
         "parrafos": {
             "EN-us": {
                 "error404Explicacion": "Site not found :(",
-                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> "
+                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> ",
+                "textoPremium1": "Unlock new limits and possibilities in MEDIASTRAY with your new MAGNA account!",
+                "textoPremium2": "Texts in Markdown format",
+                "textoPremium3": "Type in Markdown format, advanced stylizing in the profile description, your comments and in your published games",
+                "textoPremium4": "Better benefits",
+                "textoPremium5": "Level up the file uploading size limit when publishing games, and so on with exclusive customization features. It also increases weight limit for our save data on games",
+                "textoPremium6": "Power the capacity of your games",
+                "textoPremium7": "You will be able to configurate achievements, customized pages and stablish a price for your games",
+                "textoPremium8": "¡And more!",
+                "textoPremium9": "Priority technicla support, higher priority reports, better luck when appearing on recommendations, and an official badge and access to new features"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
-                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> "
+                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> ",
+                "textoPremium1": "¡Desbloquea nuevos límites y posibilidades en MEDIASTRAY con tu nueva cuenta MAGNA!",
+                "textoPremium2": "Textos en formato Markdown",
+                "textoPremium3": "Escribe en formato Markdown, estilizado avanzado la descripción del perfil, en tus comentarios y en los juegos que publiques",
+                "textoPremium4": "Mejores prestaciones",
+                "textoPremium5": "Aumenta el límite de subida de archivos a la hora de publicar juegos, así como opciones exclusivas de personalización. También aumenta el límite de peso de las partidas guardadas",
+                "textoPremium6": "Potenciar las capacidades de tus juegos",
+                "textoPremium7": "Podrás configurar logros, páginas personalizadas, y establecer un precio por tus juegos",
+                "textoPremium8": "¡Y más!",
+                "textoPremium9": "Soporte técnico prioritario, reportes de alta prioridad y mejor suerte para aparecer en las recomendaciones, así como una insignia oficial y acceso a nuevas características"
             }
         },
         "formularios": {
@@ -306,7 +328,8 @@
                 "register": "Register",
                 "settings": "Settings",
                 "viewUser": "User",
-                "saludo": "Hello"
+                "saludo": "Hello",
+                "renovar": "Renew MAGNA"
             },
             "ES-es": {
                 "saludo": "Hola",
@@ -320,7 +343,8 @@
                 "premium": "MAGNA",
                 "register": "Registrarse",
                 "settings": "Ajustes",
-                "viewUser": "Usuario"
+                "viewUser": "Usuario",
+                "renovar": "Renovar MAGNA"
             }
         },
         "palabras": {
@@ -336,11 +360,13 @@
         "extra": {
             "EN-us": {
                 "labelSeguidos": "Followed:",
-                "labelSeguidores": "Followers:"
+                "labelSeguidores": "Followers:",
+                "labelCaducidad": "Expiration date:"
             },
             "ES-es": {
                 "labelSeguidos": "Seguidos:",
-                "labelSeguidores": "Seguidores:"
+                "labelSeguidores": "Seguidores:",
+                "labelCaducidad": "Fecha de caducidad:"
             }
         },
         "mensajes": {

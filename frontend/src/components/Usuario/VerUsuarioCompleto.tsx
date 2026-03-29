@@ -31,6 +31,7 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
   const traduccion = useIdioma();
 
   const cargaInicial = async () => {
+    setSoyYo(false);
     if (!id && !usuario) {
       setFallo(true);
     } else {

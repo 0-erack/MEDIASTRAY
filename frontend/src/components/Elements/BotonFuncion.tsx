@@ -5,7 +5,7 @@ interface BotonFuncionProps {
   titulo: string|null|React.ReactNode;
   funcion?: (data?: any) => any | null; 
   hueco?: boolean;
-  tipo?: 0 | 1 | 2;
+  tipo?: 0 | 1 | 2 | 3;
   children?: React.ReactNode;
 }
 
@@ -24,6 +24,7 @@ const BotonFuncion = memo(function BotonFuncion({cabecera, titulo, funcion, huec
     0: { border: 'border-principal', bg: 'bg-principal' },   // normal
     1: { border: 'border-resaltado', bg: 'bg-resaltado' },   // resaltado
     2: { border: 'border-error', bg: 'bg-error' },           // rojo
+    3: { border: 'border-info1', bg: 'bg-info1' }            // premium
   };
 
   const currentStyles = colorClasses[tipo as keyof typeof colorClasses] || colorClasses[0];

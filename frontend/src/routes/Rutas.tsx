@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ImgCargando from '../components/Principal/ImgCargando';
+import RenewPremium from '../pages/RenewPremium';
 const ViewUser = lazy(() => import('../pages/ViewUser'));
 const Browse = lazy(() => import('../pages/Browse'));
 const ErrorNotFound = lazy(() => import('../pages/ErrorNotFound'));
@@ -32,6 +33,7 @@ function Rutas() {
         <Route path="/browse" element={<Browse />} />
         <Route path="/featuredForums" element={<FeaturedForums />} />
         <Route path="/magna" element={<Premium />} />
+        <Route path="/renewMagna" element={<RenewPremium />} />
         <Route path="/docs">
           <Route index element={<InicioDocumentacion />} />
 
