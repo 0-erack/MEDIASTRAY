@@ -111,4 +111,20 @@ routerPriv.post("/premium/renew", autenticarTokenApi, autenticarTokenSesion, asy
 });
 
 
+
+
+
+
+
+//Crear un nuevo juego asociado a ese usuario
+routerPriv.post("/game/create", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        
+    });
+});
+
+
+
+
+
 export default routerPriv;

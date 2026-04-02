@@ -117,7 +117,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
     <div className="tarjeta-usuario-grande">
       <Titulo><Icono numero={1} color="var(--color-resaltado)" /> {(soyYo ? (traduccion("titulosHtml", "saludo") + ", ") : '') + usuario.nombre}</Titulo>
 
-      <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className={`h-auto w-[10%] max-w-50 mb-2 border-4 ${esPremium ? 'border-info1' : 'border-resaltado'} aspect-square object-cover`} />
+      <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className={`h-auto w-[10%] min-w-20 max-w-50 mb-2 border-4 ${esPremium ? 'border-info1' : 'border-resaltado'} aspect-square object-cover`} />
 
       <p>{"( "}{usuario.nickname}{" ) "}{soyYo && (<span className='fuente2'>{usuario.correo}</span>)}</p>
 

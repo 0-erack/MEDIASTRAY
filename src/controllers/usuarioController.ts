@@ -89,7 +89,7 @@ export const crearUsuario = async (datos: Record<string, any>): Promise<Record<s
 export const loginUsuario = async (datosLogin: Record<string, any>): Promise<Record<string, any>> => {
     if (!validarLoginUsuario(datosLogin)) throw { message: "Invalid user data", code: 422 }
     const db = getDB();
-    const elUsuario = await db.select().from(usuarios).where(or(eq(usuarios.nickname, datosLogin.identification), eq(usuarios.correo, datosLogin.identification))).limit(1);
+    const elUsuario = await db.select().from(usuarios).where(or(eq(usuarios.nickname, datosLogin.identification.trim()), eq(usuarios.correo, datosLogin.identification.trim()))).limit(1);
     if (!elUsuario[0]?.id) throw { message: "User not found", code: 404 }
     const contrasegnaCoincide = await autenticarContrasegnaUsuario(datosLogin.password, elUsuario[0].contrasegna);
     if (!elUsuario[0] || !contrasegnaCoincide) throw { message: "Invalid credentials", code: 403 };
@@ -360,6 +360,7 @@ export const verSeguimientosUsuario = async (id: string, pagina = 0, seguidos = 
  */
 export const buscarUsuarios = async (consulta: string, pagina = 0, orden = 0): Promise<Record<string, any>[]> => {
     const db = getDB();
+    consulta = consulta.trim();
     const posiblesOrdenes = [desc(usuarios.cantidadSeguidores), (desc(usuarios.nombre), desc(usuarios.nickname)), sql`RANDOM()`];
     if (isNaN(orden) || orden < 0 || orden >= posiblesOrdenes.length) orden = 0;
     if (isNaN(pagina) || pagina < 0) pagina = 0;

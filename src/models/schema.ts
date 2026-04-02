@@ -25,24 +25,29 @@ export const usuarios = pgTable("usuarios", {
 //Juegos guardados y sus datos
 export const juegos = pgTable("juegos", {
   id: varchar("id", { length: 36 }).primaryKey(), //Identificador
-  titulo: varchar("titulo", { length: 63 }).unique().notNull(), //Titulo del juego
+  titulo: varchar("titulo", { length: 64 }).unique().notNull(), //Titulo del juego
   //Url de las portadas en distinta resolucion
-  urlPortada1: varchar("url_portada1", { length: 256 }).default("/public/coverless1.png"),
-  urlPortada2: varchar("url_portada2", { length: 256 }).default("/public/coverless2.png"),
-  urlPortada3: varchar("url_portada3", { length: 256 }).default("/public/coverless3.png"),
-  publico: boolean("publico").default(true), //Si esta publicado
-  versionactual: varchar("versionactual", { length: 16 }).default("1.0.0"), //Ultima version
+  urlPortada1: varchar("urlPortada1", { length: 256 }).default("/public/coverless1.png"), //Pequegno
+  urlPortada2: varchar("urlPortada2", { length: 256 }).default("/public/coverless2.png"), //Vertical
+  urlPortada3: varchar("urlPortada3", { length: 256 }).default("/public/coverless3.png"), //Grande
+  publico: boolean("publico").default(true), //Si esta publicado (indexado)
+  versionActual: varchar("versionactual", { length: 16 }).default("1.0.0"), //Ultima version
   fechaCreacion: varchar("fechaCreacion", { length: 16 }), //Fecha en la que se creo
-  fechaUltima: varchar("fecha_ultima", { length: 16 }), //Ultima fecha en la que se edito el juego
+  fechaUltima: varchar("fechaUltima", { length: 16 }), //Ultima fecha en la que se edito el juego
   descripcion: varchar("descripcion", { length: 1024 }).default(""), //Descripcion en markdown (alternativamente cambia en los archivos html)
+  descripcionCorta: varchar("descripcionCorta", { length: 127 }), //Descripcion mas corta para el engagement
   idCreador: varchar("id_creador", { length: 36 }).notNull().references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador
-  tokenAdministracion: varchar("token_administracion", { length: 32 }), //Token actual para administracion y edicion
-  //TODO logros builds savedatas extensiones paginas
+  tokenJuego: varchar("tokenJuego", { length: 32 }), //Token actual para la api de juegos
   generos: varchar("generos", { length: 255 }), //Generos separados por comas
+  tags: varchar("generos", { length: 255 }), //Tags separados por comas
   idiomas: varchar("idiomas", { length: 255 }), //Idiomas separados por comas
+  avisos: varchar("avisos", {length: 255}), //Avisos antes de jugar al juego
   cantidadSeguidores: integer("cantidadSeguidores").default(0), //Cantidad de seguidores actual
-  cantidadLikes: integer("cantidad_likes").default(0), //Cantidad de likes actual
   edad: integer("edad").default(0), //Edad minima para jugar el juego
+  cantidadJugadores: integer("cantidadJugadores").default(0), //Cantidad de jugadores (no anonimos) que lo han jugado, tambien contaria como vistos ya que se aumenta cuando se entra en su pagina
+  cantidadComentarios: integer("cantidadComentarios").default(0), //Cantidad de comentarios del juego, para rendimiento
+  precio: varchar("precio", { length: 20 }).default("0.00"), //Precio del juego (solo para usuarios premium de momento) (string porque tambien almacena la moneda)
+  //TODO: logros builds savedatas extensiones paginas
 });
 
 //Foros existentes y sus datos principales
