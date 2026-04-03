@@ -1,6 +1,7 @@
 //Rutas abiertas al publico para la cuales no se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import { verJuego } from '../controllers/juegoController.js';
 import { alterarSeguidores, buscarUsuarios, usuarioTienePremium, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { hacerTestsConexiones } from '../tests/tests.js';
 import { exito, fallo, manejadorRuta } from './respuesta.js';
@@ -62,7 +63,7 @@ router.get("/user/premium/:id", async (req: ExpressRequest<{ id: string; }>, res
     });
 });
 
-//Devuelve los datos públicos base de un usuario
+//Devuelve los datos publicos base de un usuario
 router.get("/user/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         if (!req.params?.id) return res.status(404).json(fallo("User not found", null, 404));
@@ -72,6 +73,22 @@ router.get("/user/:id", async (req: ExpressRequest<{ id: string; }>, res: Expres
     });
 });
 
+
+
+
+
+
+
+
+//Devuelve los datos publicos base de un juego
+router.get("/game/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const usuario = await verJuego(req.params?.id) ?? false;
+        if (!usuario) return res.status(404).json(fallo("Game not found", null, 404));
+        return res.json(exito("Game found", usuario));
+    });
+});
 
 
 if (process.env.NODE_ENV === "DEVELOPMENT") router.get('/test', async (req, res) => { //Re-ejecutar los tests

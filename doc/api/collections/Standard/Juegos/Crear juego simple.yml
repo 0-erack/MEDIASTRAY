@@ -1,7 +1,7 @@
 info:
-  name: Crear juego
+  name: Crear juego simple
   type: http
-  seq: 17
+  seq: 4
 
 http:
   method: POST
@@ -20,20 +20,8 @@ http:
     data: |-
       {
         "game": {
-          "title": "el juego 1",
-          "cover1": "http://imagenes.com/1",
-          "cover2": "http://imagenes.com/2",
-          "cover3": "http://imagenes.com/3",
-          "public": true,
-          "version": "v1.0.0",
-          "description": "adlfhasdfdhsfasfd",
-          "shortDescription": "aksdfh",
-          "genres": ["aa", "bb", "cc"],
-          "tags": ["aa", "bb", "cc"],
-          "languages": ["ES-es", "EN-us"],
-          "warnings": [],
-          "price": "3.00 €",
-          "age": 3
+          "title": "el juego 2",
+          "public": false
         }
       }
   auth:

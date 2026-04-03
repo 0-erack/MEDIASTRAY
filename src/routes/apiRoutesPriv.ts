@@ -1,6 +1,7 @@
 //Rutas ocultas para las cuales se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarJuego, verJuego } from '../controllers/juegoController.js';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, renovarPremium, verUsuario } from '../controllers/usuarioController.js';
 import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
@@ -105,7 +106,7 @@ routerPriv.post("/premium/renew", autenticarTokenApi, autenticarTokenSesion, asy
         if (resultado) {
             return res.json(exito("Premium renewed succesfully"));
         } else {
-            return res.status(409).json(fallo("Couldn't renew premium", null, 402));
+            return res.status(402).json(fallo("Couldn't renew premium", null, 402));
         }
     });
 });
@@ -119,12 +120,66 @@ routerPriv.post("/premium/renew", autenticarTokenApi, autenticarTokenSesion, asy
 //Crear un nuevo juego asociado a ese usuario
 routerPriv.post("/game/create", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        
+        const juego = await crearJuego(req.body.game, req.datosSesion!.id);
+        if (juego) {
+            return res.json(exito("Game created succesfully", {game: juego}));
+        } else {
+            return res.status(409).json(fallo("Couldn't create game", null, 409));
+        }
     });
 });
 
+//Buscar un juego, en este caso al requerir autenticacion puede ver los datos de un juego oculto del propio usuario si era suyo, asi como aumentar la estadistica de cantidad de jugadores
+routerPriv.get("/game/personal/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const juego = await verJuego(req.params.id, false, req.datosSesion!.id);
+        if (juego) {
+            return res.json(exito("Game found", {game: juego}));
+        } else {
+            return res.status(404).json(fallo("Couldn't find game", null, 404));
+        }
+    });
+});
 
+//Borrar un juego y todo lo que eso implica
+routerPriv.delete("/game/delete/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const resultado = await borrarJuego(req.params.id, req.body?.password, req.datosSesion!.id);
+        if (resultado) {
+            return res.json(exito("Game deleted..."));
+        } else {
+            return res.status(404).json(fallo("Couldn't delete game or invalid credentials", null, 404));
+        }
+    });
+});
 
+//Publicar o des-publicar un juego
+routerPriv.patch("/game/index/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const resultado = await cambiarIndexacionJuego(req.params.id, req.body?.state, req.datosSesion!.id);
+        if (resultado) {
+            return res.json(exito("Game settings changed"));
+        } else {
+            return res.status(404).json(fallo("Couldn't change game settings or invalid credentials", null, 404));
+        }
+    });
+});
+
+//Editar un juego a modo de patch
+routerPriv.patch("/game/edit/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const resultado = await editarJuego(req.body?.newData, req.params.id, req.datosSesion!.id);
+        if (resultado) {
+            return res.json(exito("Game settings changed", {game: resultado}));
+        } else {
+            return res.status(404).json(fallo("Couldn't change game settings or invalid credentials", null, 404));
+        }
+    });
+});
 
 
 export default routerPriv;

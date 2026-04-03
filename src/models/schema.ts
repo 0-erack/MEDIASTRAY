@@ -37,16 +37,16 @@ export const juegos = pgTable("juegos", {
   descripcion: varchar("descripcion", { length: 1024 }).default(""), //Descripcion en markdown (alternativamente cambia en los archivos html)
   descripcionCorta: varchar("descripcionCorta", { length: 127 }), //Descripcion mas corta para el engagement
   idCreador: varchar("id_creador", { length: 36 }).notNull().references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador
-  tokenJuego: varchar("tokenJuego", { length: 32 }), //Token actual para la api de juegos
+  tokenJuego: varchar("tokenJuego", { length: 300 }), //Token actual para la api de juegos
   generos: varchar("generos", { length: 255 }), //Generos separados por comas
-  tags: varchar("generos", { length: 255 }), //Tags separados por comas
+  tags: varchar("tags", { length: 255 }), //Tags separados por comas
   idiomas: varchar("idiomas", { length: 255 }), //Idiomas separados por comas
   avisos: varchar("avisos", {length: 255}), //Avisos antes de jugar al juego
   cantidadSeguidores: integer("cantidadSeguidores").default(0), //Cantidad de seguidores actual
   edad: integer("edad").default(0), //Edad minima para jugar el juego
   cantidadJugadores: integer("cantidadJugadores").default(0), //Cantidad de jugadores (no anonimos) que lo han jugado, tambien contaria como vistos ya que se aumenta cuando se entra en su pagina
   cantidadComentarios: integer("cantidadComentarios").default(0), //Cantidad de comentarios del juego, para rendimiento
-  precio: varchar("precio", { length: 20 }).default("0.00"), //Precio del juego (solo para usuarios premium de momento) (string porque tambien almacena la moneda)
+  precio: varchar("precio", { length: 20 }).default(""), //Precio del juego (solo para usuarios premium de momento) (string porque tambien almacena la moneda)
   //TODO: logros builds savedatas extensiones paginas
 });
 

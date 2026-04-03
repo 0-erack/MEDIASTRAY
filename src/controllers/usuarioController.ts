@@ -21,7 +21,7 @@ import { cerrarSesion, crearSesion } from './sessionController.js';
  * @param id el id a buscar
  * @returns el usuario encontrado, o null si no se ha encontrado
  */
-const buscarUsuario = async (id: string): Promise<Usuario | null> => {
+export const buscarUsuario = async (id: string): Promise<Usuario | null> => {
     const db = getDB();
     const usuarioPrevio = await db.select().from(usuarios).where(eq(usuarios.id, id)).limit(1);
     const usuario = usuarioPrevio[0] as Usuario;

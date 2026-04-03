@@ -1,11 +1,11 @@
 info:
-  name: Crear juego
+  name: Editar juego complejo
   type: http
-  seq: 17
+  seq: 7
 
 http:
-  method: POST
-  url: "{{url_backend}}/game/create"
+  method: PATCH
+  url: "{{url_backend}}/game/edit/2a953d43-2e23-47ba-981f-05fd5f98d902"
   headers:
     - name: Content-Type
       value: application/json
@@ -19,12 +19,11 @@ http:
     type: json
     data: |-
       {
-        "game": {
-          "title": "el juego 1",
+        "newData": {
+          "title": "el juego 1 ee ee e e",
           "cover1": "http://imagenes.com/1",
           "cover2": "http://imagenes.com/2",
           "cover3": "http://imagenes.com/3",
-          "public": true,
           "version": "v1.0.0",
           "description": "adlfhasdfdhsfasfd",
           "shortDescription": "aksdfh",

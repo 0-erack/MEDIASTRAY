@@ -50,3 +50,24 @@ export const verSesionUsuario = async (id:string):Promise<Record<string, any>|nu
     return await verSesionToken(await redisGet("SESSION-TOKEN-" + id) ?? '');
 }
 
+/**
+ * Crea un token para la administracion y api de un juego
+ * @param id el juego
+ * @param idCreador su creador
+ * @param datosExtra informacion extra
+ * @returns el token de hasta 300 caracteres
+ */
+export const crearTokenJuego = async (id:string, idCreador:string, datosExtra = {}):Promise<string|null> => {
+    const token = await jwt.sign({ id, idCreador, datosExtra: datosExtra ?? null, entropia: Math.random()*(Math.random()*10) }, process.env.JWT_SECRET, { algorithm: 'HS256' });
+    return token;
+}
+
+/**
+ * Ver los datos de un token de juego para verificarlo
+ * @param token el token de juego
+ * @returns objeto json con los datos
+ */
+export const comprobarTokenJuego = async (token: string): Promise<Record<string, any>> => {
+    const datos = await jwt.verify(token, process.env.JWT_SECRET);
+    return datos ?? null;
+}
