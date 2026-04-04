@@ -1,6 +1,6 @@
 //Funciones de formateo y validacion de los juegos
 
-import { comalista, descripcionCortaJuego, descripcionJuego, id, precio, timestamp, tituloJuego, url, version } from "../libraries/validaciones.js";
+import { comalista, descripcionCortaJuego, descripcionJuego, id, precio, subtituloAdicionJuego, timestamp, tituloJuego, url, version } from "../libraries/validaciones.js";
 import { Juego } from "../types/Juego.js";
 //import { Usuario } from "../types/Usuario.js";
 
@@ -125,4 +125,43 @@ export const formatearJuegoMiniatura = (data:Partial<Juego>): Record<string, any
     if (typeof data.tags == "string") data.tags = data.tags!.split(",").filter(Boolean).map(e => e?.trim());
     if (typeof data.generos == "string") data.generos = data.generos!.split(",").filter(Boolean).map(e => e?.trim());
     return {id: data.id, owner: data.idCreador, followers: data.cantidadSeguidores, players: data.cantidadJugadores, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags}
+}
+
+/**
+ * Valida los datos de una adicion de juego entrante
+ * @param data una sola adicion tal cual llega por la api y tal cual se guardaria en la base de datos
+ * @returns true si es correcta
+ */
+export const validarAdicionJuego = (data: any): boolean => {
+    if (typeof data !== "object" || typeof data.datos !== "object" || typeof data.datos.url !== "string" || typeof data.datos.subtitulo !== "string" || typeof data.tipo !== "string" || data._id || data.id || data.juego_asociado) return false;
+    if (!url(data.datos.url) || !subtituloAdicionJuego(data.datos.subtitulo)) return false;
+    switch (data.tipo) {
+        case "trailer": 
+            if (data.datos.iframe != undefined && (typeof data.datos.iframe === "string" && data.datos.iframe.length < 430)) return false;
+            break;
+        case "pagina": 
+            if (data.datos.icono != undefined && !url(data.datos.icono)) return false;
+            break;
+        case "ost": 
+            if (data.datos.portadaDisco != undefined && !url(data.datos.portadaDisco)) return false;
+            break;
+        case "imagenes": 
+            
+            break;
+        case "requerimientos": 
+            
+            break;
+        case "eventos": 
+            
+            break;
+        case "texto": 
+            
+            break;
+        case "mencion": 
+            
+            break;        
+        default: 
+            return false;
+    }
+    return true;
 }

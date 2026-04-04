@@ -7,7 +7,7 @@ const nicknameSchema = z.string().min(4).max(15).regex(/^[a-zA-Z0-9._\-|]+$/);
 const nombreSchema = z.string().min(5).max(100);
 const correoSchema = z.string().email();
 const timestampSchema = z.string().regex(/^-?\d{1,15}$/);
-const urlPattern = /^(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}(?::\d{1,5})?\b(?:[-a-zA-Z0-9()@:%_+.~#?&\/=]*))/;
+const urlPattern = /^(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,512}\.[a-zA-Z0-9()]{1,6}(?::\d{1,5})?\b(?:[-a-zA-Z0-9()@:%_+.~#?&\/=]*))/;
 const versionPattern = /^(?=.*\d).{1,16}$/;
 const comalistaPattern = /^[a-z0-9]+(?:,[a-z0-9]+)*$/;
 const precioPattern = /^(?:[^0-9]+\d+[.,]\d{2}[^0-9]*|\d+[.,]\d{2}[^0-9]+)$/;
@@ -53,7 +53,7 @@ export const cumpleagnos = (data:string):boolean => {
 export const tituloJuego = (data: unknown): data is string => tituloJuegoSchema.safeParse(data).success;
 
 //Valida la descripcion de un juego
-export const descripcionJuego = (data: unknown): data is string => z.string().max(1023).safeParse(data).success;
+export const descripcionJuego = (data: unknown): data is string => z.string().max(8191).safeParse(data).success;
 
 //Valida la descripcion corta de un juego
 export const descripcionCortaJuego = (data: unknown): data is string => z.string().max(127).safeParse(data).success;
@@ -66,3 +66,6 @@ export const comalista = (data: unknown): data is string => z.string().refine(va
 
 //Valida el texto de un precio
 export const precio = (data: unknown): data is string => z.string().refine(val => precioPattern.test(val) || val === "").safeParse(data).success;
+
+//Valida el texto general de una adicion a un juego
+export const subtituloAdicionJuego = (data: unknown): data is string => z.string().max(16).safeParse(data).success;

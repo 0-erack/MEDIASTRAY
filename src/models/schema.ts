@@ -27,14 +27,14 @@ export const juegos = pgTable("juegos", {
   id: varchar("id", { length: 36 }).primaryKey(), //Identificador
   titulo: varchar("titulo", { length: 64 }).unique().notNull(), //Titulo del juego
   //Url de las portadas en distinta resolucion
-  urlPortada1: varchar("urlPortada1", { length: 256 }).default("/public/coverless1.png"), //Pequegno
-  urlPortada2: varchar("urlPortada2", { length: 256 }).default("/public/coverless2.png"), //Vertical
-  urlPortada3: varchar("urlPortada3", { length: 256 }).default("/public/coverless3.png"), //Grande
+  urlPortada1: varchar("urlPortada1", { length: 512 }).default("/public/coverless1.png"), //Pequegno (460x215px)
+  urlPortada2: varchar("urlPortada2", { length: 512 }).default("/public/coverless2.png"), //Vertical (600x900px)
+  urlPortada3: varchar("urlPortada3", { length: 512 }).default("/public/coverless3.png"), //Grande (1920x1080px)
   publico: boolean("publico").default(true), //Si esta publicado (indexado)
   versionActual: varchar("versionactual", { length: 16 }).default("1.0.0"), //Ultima version
   fechaCreacion: varchar("fechaCreacion", { length: 16 }), //Fecha en la que se creo
   fechaUltima: varchar("fechaUltima", { length: 16 }), //Ultima fecha en la que se edito el juego
-  descripcion: varchar("descripcion", { length: 1024 }).default(""), //Descripcion en markdown (alternativamente cambia en los archivos html)
+  descripcion: varchar("descripcion", { length: 8192 }).default(""), //Descripcion en markdown (alternativamente cambia en los archivos html)
   descripcionCorta: varchar("descripcionCorta", { length: 127 }), //Descripcion mas corta para el engagement
   idCreador: varchar("id_creador", { length: 36 }).notNull().references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador
   tokenJuego: varchar("tokenJuego", { length: 300 }), //Token actual para la api de juegos

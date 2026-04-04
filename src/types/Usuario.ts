@@ -15,4 +15,5 @@ export type Usuario = {
     cantidadSeguidores: number;
     nivelPublico: number;
     nivelAcceso: number;
+    adiciones: Array<Record<string, any>> | null;
 }

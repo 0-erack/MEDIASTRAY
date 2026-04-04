@@ -123,3 +123,8 @@
 .markdown del {
     text-decoration: line-through;
 }
+
+.markdown img {
+  max-width: 80%;
+  height: auto;
+}

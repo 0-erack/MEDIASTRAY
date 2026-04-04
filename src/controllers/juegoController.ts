@@ -8,7 +8,7 @@ import { getDB } from "../connections/postgresql.js";
 import { juegos, usuarios } from '../models/schema.js';
 import { autenticarContrasegnaUsuario } from "../routes/autenticaciones.js";
 import { Juego } from "../types/Juego.js";
-import { formatearJuegoMiniatura, formatearJuegoPrivado, formatearJuegoPublico, validarCreacionJuego, validarEdicionJuego } from "../validators/validacionesJuego.js";
+import { formatearJuegoMiniatura, formatearJuegoPrivado, formatearJuegoPublico, validarAdicionJuego, validarCreacionJuego, validarEdicionJuego } from "../validators/validacionesJuego.js";
 import { crearTokenJuego } from "./sessionController.js";
 import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
 
@@ -91,6 +91,16 @@ export const verJuego = async (id: string, miniatura = false, idVisor = ""): Pro
         }
     }
     if (miniatura) return formatearJuegoMiniatura(juego);
+
+
+
+
+
+
+
+
+
+
     return idVisor === juego.idCreador ? formatearJuegoPrivado(juego) : formatearJuegoPublico(juego);
 }
 
@@ -173,4 +183,24 @@ export const editarJuego = async (nuevos: Record<string, any>, id: string, idDue
     return formatearJuegoPublico(juegoFinal);
 }
 
-//ver juego diario, ver juegos destacados, buscar juegos, token, archivos
+/**
+ * Borra las adiciones anteriores de un juego y pone solo las nuevas a modo de put
+ * @param adiciones array con las nuevas adiciones
+ * @param id juego a modificar
+ * @param idDuegno para comprobar quien hace la operacion
+ * @returns si todo ha ido bien devuelve las adiciones
+ */
+export const editarAdicionesJuego = async (adiciones: Array<Record<string, any>>, id: string, idDuegno: string): Promise<Array<Record<string, any>> | null> => {
+    adiciones.forEach((e, i) => {
+        if (!validarAdicionJuego(e)) throw { message: "This addition is invalid: " + i, code: 409, data: i }
+    });
+    const juego = await buscarJuego(id);
+    if (!juego) throw { message: "Game not found", code: 404 }
+    if (juego.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
+    const db = getDB();
+
+
+    return [];
+}
+
+//ver juego diario, ver juegos destacados, buscar juegos, token, archivos y encrustacion, compras y biblioteca
