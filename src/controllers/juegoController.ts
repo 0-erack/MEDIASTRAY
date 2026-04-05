@@ -3,7 +3,7 @@
 import { eq, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from 'uuid';
 import { agnadirLog } from "../connections/logs.js";
-import { mongoGet, mongoSet } from "../connections/mongodb.js";
+import { mongoDelete, mongoGet, mongoSet } from "../connections/mongodb.js";
 import { getDB } from "../connections/postgresql.js";
 import { juegos, usuarios } from '../models/schema.js';
 import { autenticarContrasegnaUsuario } from "../routes/autenticaciones.js";
@@ -191,16 +191,19 @@ export const editarJuego = async (nuevos: Record<string, any>, id: string, idDue
  * @returns si todo ha ido bien devuelve las adiciones
  */
 export const editarAdicionesJuego = async (adiciones: Array<Record<string, any>>, id: string, idDuegno: string): Promise<Array<Record<string, any>> | null> => {
-    adiciones.forEach((e, i) => {
-        if (!validarAdicionJuego(e)) throw { message: "This addition is invalid: " + i, code: 409, data: i }
+    const esPremium = await usuarioTienePremium(idDuegno);
+    adiciones = adiciones.map((e, i) => {
+        if (!validarAdicionJuego(e) || (e.tipo === "imagenes" && e.imagenes > 10 && !esPremium)) throw { message: "This addition is invalid: " + i, code: 409, data: i }
+        e.juego = id;
+        e.id = uuidv4(); 
+        return e;
     });
     const juego = await buscarJuego(id);
     if (!juego) throw { message: "Game not found", code: 404 }
     if (juego.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
-    const db = getDB();
-
-
-    return [];
+    const borrado = await mongoDelete("adicionJuego", {juego: id}, true);
+    const nuevos = adiciones.length ? (await mongoSet("adicionJuego", adiciones, true)) : true;
+    return borrado && nuevos ? adiciones : null;
+    //TESTEAR BIEN Y PEDIR DATOS EN INGLES
 }
-
-//ver juego diario, ver juegos destacados, buscar juegos, token, archivos y encrustacion, compras y biblioteca
+//ver juegos de un usuario, ver juego diario, ver juegos destacados, buscar juegos, token, archivos y encrustacion, compras y biblioteca

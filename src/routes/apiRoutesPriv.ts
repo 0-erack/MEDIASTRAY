@@ -1,7 +1,7 @@
 //Rutas ocultas para las cuales se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarJuego, verJuego } from '../controllers/juegoController.js';
+import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, verJuego } from '../controllers/juegoController.js';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, renovarPremium, verUsuario } from '../controllers/usuarioController.js';
 import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
@@ -177,6 +177,19 @@ routerPriv.patch("/game/edit/:id", autenticarTokenApi, autenticarTokenSesion, as
             return res.json(exito("Game settings changed", {game: resultado}));
         } else {
             return res.status(404).json(fallo("Couldn't change game settings or invalid credentials", null, 404));
+        }
+    });
+});
+
+//Establecer las adiciones a un juego (borra las que ya estaban)
+routerPriv.put("/game/additions/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const resultado = await editarAdicionesJuego(req.body?.additions, req.params.id, req.datosSesion!.id);
+        if (resultado) {
+            return res.json(exito("Game additions setted", {current: resultado}));
+        } else {
+            return res.status(409).json(fallo("There was an error changing the additions of the game", null, 409));
         }
     });
 });

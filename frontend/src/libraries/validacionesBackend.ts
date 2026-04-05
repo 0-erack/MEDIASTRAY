@@ -66,3 +66,6 @@ export const comalista = (data: unknown): data is string => z.string().refine(va
 
 //Valida el texto de un precio
 export const precio = (data: unknown): data is string => z.string().refine(val => precioPattern.test(val) || val === "").safeParse(data).success;
+
+//Valida el texto general de una adicion a un juego
+export const subtituloAdicionJuego = (data: unknown): data is string => z.string().max(16).safeParse(data).success;

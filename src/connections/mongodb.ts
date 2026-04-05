@@ -37,13 +37,18 @@ export const getConexion = async (): Promise<any> => {
  * @param data datos en json
  * @returns el resultado o true si todo ha ido bien
  */
-export const mongoSet = async (collectionNombre: string, data: Record<string, any>): Promise<boolean | object> => {
+export const mongoSet = async (collectionNombre: string, data: Record<string, any>|Array<Record<string, any>>, multiple = false): Promise<boolean | object> => {
     if (!cliente) await getConexion();
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base');
         const collection = db.collection(collectionNombre);
-        const result = await collection.insertOne(data);
-        return result ?? true;
+        if (multiple) {
+             const result = await collection.insertMany(data);
+            return result ?? true;
+        } else {
+            const result = await collection.insertOne(data);
+            return result ?? true;
+        }
     } catch (error) {
         //cliente = null; getConexion();
         console.error(error);
