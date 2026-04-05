@@ -1,6 +1,6 @@
 //Funciones de formateo y validacion de los juegos
 
-import { comalista, descripcionCortaJuego, descripcionJuego, id, precio, subtituloAdicionJuego, timestamp, tituloJuego, url, version } from "../libraries/validaciones.js";
+import { comalista, descripcionCortaJuego, descripcionJuego, id, nickname, precio, subtituloAdicionJuego, timestamp, tituloJuego, url, version } from "../libraries/validaciones.js";
 import { Juego } from "../types/Juego.js";
 //import { Usuario } from "../types/Usuario.js";
 
@@ -146,19 +146,20 @@ export const validarAdicionJuego = (data: any): boolean => {
             if (data.datos.portadaDisco != undefined && !url(data.datos.portadaDisco)) return false;
             break;
         case "imagenes": 
-            
+            if (!Array.isArray(data.imagenes) || data.imagenes.length > 32 || !data.imagenes.length || !data.imagenes || !data.imagenes.every(url)) return false;
             break;
         case "requerimientos": 
-            
+            if (typeof data.specs !== "string" || !data.specs.length || data.specs.length > 1024) return false;
             break;
         case "eventos": 
-            
+            if (data.imagen != undefined && !url(data.imagen)) return false;
+            if (typeof data.info !== "string" || !data.info.length || data.info.length > 128) return false;
             break;
         case "texto": 
-            
+            if (typeof data.texto !== "string" || !data.texto.length || data.texto.length > 64) return false;
             break;
         case "mencion": 
-            
+            if (!nickname(data.nickname)) return false;
             break;        
         default: 
             return false;

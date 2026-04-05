@@ -18,7 +18,7 @@ const IntermediarioSchema = new Schema({
 const AdicionJuegoSchema = new Schema({
     id: { type: String, required: true },
     juego: { type: String, required: true }, //Juego al que hace referencia
-    tipo: { type: String, required: true }, //Tipo de adicion: trailer (datos.iframe para youtube), pagina (usado para agregar la pagina del juego o cualquier enlace, data.icono para url del icono del enlace), ost (datos.portadaDisco para la imagen del ost), imagenes (datos.imagenes array de hasta 10/30 con url de imagenes), requerimientos (data.specs con el texto de los requerimientos en el formato que quiera el usuario), eventos (data.info para el texto, data.imagen para la url de la imagen del evento), texto (campo de texto simple, data.texto), mencion (data.nickname para id de un usuario)
+    tipo: { type: String, required: true }, //Tipo de adicion: trailer (datos.iframe para youtube), pagina (usado para agregar la pagina del juego o cualquier enlace, data.icono para url del icono del enlace), ost (datos.portadaDisco para la imagen del ost), imagenes (datos.imagenes array de hasta 10/32 con url de imagenes), requerimientos (data.specs con el texto de los requerimientos en el formato que quiera el usuario), eventos (data.info para el texto, data.imagen para la url de la imagen del evento), texto (campo de texto simple, data.texto), mencion (data.nickname para id de un usuario)
     datos: { type: Object, default: {url: "", subtitulo: ""} } //Datos de la adicion, siempre tendra una url pero se pueden poner mas cosas dependiendo del tipo
 },{
     collection: 'adicionJuego',
