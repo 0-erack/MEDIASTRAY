@@ -152,11 +152,12 @@ export const cambiarIndexacionJuego = async (id: string, estado: boolean, idDueg
     if (!juego) throw { message: "Game not found", code: 404 }
     if (juego.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
     const db = getDB();
-    const resultado = await db.update(juegos).set({ publico: estado }).where(eq(juegos.id, id));
+    const resultado = await db.update(juegos).set(estado ? { publico: estado } : {publico: estado/*, cantidadComentarios: 0, cantidadJugadores: 0, cantidadSeguidores: 0*/}).where(eq(juegos.id, id));
     if (!resultado) throw { message: "Couldn't change game settings", code: 500 }
     //TODO: deshabilitacion en cascada si termina en false
     if (estado == false) {
-
+        await AdicionJuego.deleteMany({ game: id });
+        await Intermediario.deleteMany({ predicado: id });
     }
     agnadirLog("backend.log", "Game changed indexed " + id);
     return true;
