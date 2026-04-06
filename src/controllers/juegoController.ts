@@ -1,11 +1,14 @@
 //Funciones relacionadas con el manejo de juegos
 
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from 'uuid';
 import { agnadirLog } from "../connections/logs.js";
-import { mongoDelete, mongoGet, mongoSet } from "../connections/mongodb.js";
+import { mongoDelete, mongoSet } from "../connections/mongodb.js";
 import { getDB } from "../connections/postgresql.js";
+import { redisGet, redisSet } from "../connections/redis.js";
+import { hashStringToInt, lunesMadrugada } from "../libraries/miscelanea.js";
 import { juegos, usuarios } from '../models/schema.js';
+import { AdicionJuego, Intermediario } from "../models/schemaMongo.js";
 import { autenticarContrasegnaUsuario } from "../routes/autenticaciones.js";
 import { Juego } from "../types/Juego.js";
 import { formatearJuegoMiniatura, formatearJuegoPrivado, formatearJuegoPublico, validarAdicionJuego, validarCreacionJuego, validarEdicionJuego } from "../validators/validacionesJuego.js";
@@ -32,8 +35,9 @@ const buscarJuego = async (id: string): Promise<Juego | null> => {
  */
 const buscarAdicionesJuego = async (id: string): Promise<Array<Record<string, any>> | null> => {
     if (!id) return null;
-    const adiciones = await mongoGet("adicionJuego", {game: id}, true);
-    return adiciones.map((e) => {return {...e, _id: undefined, game: undefined}}) ?? null;
+    //const adiciones = await mongoGet("adicionJuego", {game: id}, true);
+    const adiciones = await AdicionJuego.find({ game: id });
+    return adiciones.map((e) => { return { ...e, _id: undefined, game: undefined } }) ?? null;
 }
 
 //Tamagno de pagina estandar para las consultas
@@ -94,7 +98,8 @@ export const verJuego = async (id: string, miniatura = false, idVisor = "", adic
     const juego = await buscarJuego(id);
     if (!juego || (idVisor !== juego.idCreador && !juego.publico)) throw { message: "Game not found", code: 404 }
     if (idVisor && !miniatura) {
-        const yaVisto = await mongoGet("intermediario", { sujeto: idVisor, verbo: "juega", predicado: id });
+        //const yaVisto = await mongoGet("intermediario", { sujeto: idVisor, verbo: "juega", predicado: id });
+        const yaVisto = await Intermediario.findOne({ sujeto: idVisor, verbo: "juega", predicado: id });
         if (!yaVisto?.id) {
             await mongoSet("intermediario", { id: uuidv4(), sujeto: idVisor, verbo: "juega", predicado: id });
             const db = getDB();
@@ -127,8 +132,10 @@ export const borrarJuego = async (id: string, contrasegnaDuegno: string, idDuegn
     const db = getDB();
     const resultado = await db.delete(juegos).where(eq(juegos.id, id)).returning({ id: juegos.id });
     if (!resultado && !resultado?.length) throw { message: "Couldn't delete game", code: 500 }
-    await mongoDelete("adicionJuego", {game: id}, true);
-    await mongoDelete("intermediario", {predicado: id}, true);
+    //await mongoDelete("adicionJuego", {game: id}, true);
+    await AdicionJuego.deleteMany({ game: id });
+    //await mongoDelete("intermediario", {predicado: id}, true);
+    await Intermediario.deleteMany({ predicado: id });
     //TODO: borrado en cascada
     return true;
 }
@@ -145,7 +152,7 @@ export const cambiarIndexacionJuego = async (id: string, estado: boolean, idDueg
     if (!juego) throw { message: "Game not found", code: 404 }
     if (juego.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
     const db = getDB();
-    const resultado = await db.update(juegos).set({publico: estado}).where(eq(juegos.id, id));
+    const resultado = await db.update(juegos).set({ publico: estado }).where(eq(juegos.id, id));
     if (!resultado) throw { message: "Couldn't change game settings", code: 500 }
     //TODO: deshabilitacion en cascada si termina en false
     if (estado == false) {
@@ -162,7 +169,7 @@ export const editarJuego = async (nuevos: Record<string, any>, id: string, idDue
     if (juegoPrevio.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
     const db = getDB();
     if (datosNuevos.titulo && datosNuevos.titulo != juegoPrevio.titulo) {
-         const tituloExiste = await db.select({ id: juegos.id }).from(juegos).where(eq(juegos.titulo, datosNuevos.titulo!)).limit(1);
+        const tituloExiste = await db.select({ id: juegos.id }).from(juegos).where(eq(juegos.titulo, datosNuevos.titulo!)).limit(1);
         if (tituloExiste[0]) throw { message: "Title already in use", code: 409, data: { doubleTitle: true } };
     }
     if (datosNuevos.precio) {
@@ -183,7 +190,7 @@ export const editarJuego = async (nuevos: Record<string, any>, id: string, idDue
         avisos: datosNuevos.avisos ?? juegoPrevio.avisos,
         edad: datosNuevos.edad ?? juegoPrevio.edad,
         precio: datosNuevos.precio ?? juegoPrevio.precio
-    }).where(eq(juegos.id, id)).returning({id: usuarios.id});
+    }).where(eq(juegos.id, id)).returning({ id: usuarios.id });
     const juegoFinal = await buscarJuego(id);
     if (!juegoFinal || !edicion || !edicion.length) throw { message: "Couldn't edit game", code: 500 }
     agnadirLog("db.log", "Game editted via update JUEGOS " + id);
@@ -203,17 +210,21 @@ export const editarAdicionesJuego = async (adiciones: Array<Record<string, any>>
     adiciones = adiciones.map((e, i) => {
         if (!validarAdicionJuego(e) || (e.type === "imagenes" && e.data.images.length > 10 && !esPremium) || (i > 10 && !esPremium) || i > 32) throw { message: "This addition(s) is/are invalid: " + i, code: 409, data: i }
         e.game = id;
-        e.id = uuidv4(); 
+        e.id = uuidv4();
         return e;
     });
     const juego = await buscarJuego(id);
     if (!juego) throw { message: "Game not found", code: 404 }
     if (juego.idCreador !== idDuegno) throw { message: "Can't alter game", code: 401 }
-    const borrado = await mongoDelete("adicionJuego", {game: id}, true);
-    
-    const nuevos = adiciones.length ? (await mongoSet("adicionJuego", adiciones.map((e) => {return {
-        id: e.id, game: e.game, type: e.type, url: e.url ?? undefined, subtitle: e.subtitle ?? undefined, data: 
-            {iframe: e.data?.iframe ?? undefined, icon: e.data?.icon ?? undefined, cover: e.data?.cover ?? undefined, images: e.data?.images ?? undefined, specs: e.data?.specs ?? undefined, info: e.data?.info ?? undefined, image: e.data?.image ?? undefined, text: e.data?.text ?? undefined, nickname: e.data?.nickname ?? undefined}}}), true)) : true;
+    //const borrado = await mongoDelete("adicionJuego", {game: id}, true);
+    const borrado = await AdicionJuego.deleteMany({ game: id });
+
+    const nuevos = adiciones.length ? (await mongoSet("adicionJuego", adiciones.map((e) => {
+        return {
+            id: e.id, game: e.game, type: e.type, url: e.url ?? undefined, subtitle: e.subtitle ?? undefined, data:
+                { iframe: e.data?.iframe ?? undefined, icon: e.data?.icon ?? undefined, cover: e.data?.cover ?? undefined, images: e.data?.images ?? undefined, specs: e.data?.specs ?? undefined, info: e.data?.info ?? undefined, image: e.data?.image ?? undefined, text: e.data?.text ?? undefined, nickname: e.data?.nickname ?? undefined }
+        }
+    }), true)) : true;
     return borrado && nuevos ? adiciones : null;
 }
 
@@ -224,7 +235,7 @@ export const editarAdicionesJuego = async (adiciones: Array<Record<string, any>>
  * @param pagina pagina en la que buscar
  * @returns array con los juegos de ese usuario
  */
-export const verJuegosUsuario = async (id: string, idVisor: string|null, pagina = 0): Promise<Array<Partial<Juego>> | null> => {
+export const verJuegosUsuario = async (id: string, idVisor: string | null, pagina = 0): Promise<Array<Partial<Juego>> | null> => {
     const usuario = await buscarUsuario(id);
     if (!usuario || usuario.nivelPublico === 2) throw { message: "User not found", code: 404 }
     const db = getDB();
@@ -233,7 +244,7 @@ export const verJuegosUsuario = async (id: string, idVisor: string|null, pagina 
     if (id === idVisor) {
         juegosUsuario = await db.select().from(juegos).where(eq(juegos.idCreador, id)).orderBy(desc(juegos.cantidadJugadores)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     } else {
-        juegosUsuario = await db.select().from(juegos).where(and(eq(juegos.idCreador, id), eq(juegos.publico, true))).orderBy(desc(juegos.cantidadJugadores)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);   
+        juegosUsuario = await db.select().from(juegos).where(and(eq(juegos.idCreador, id), eq(juegos.publico, true))).orderBy(desc(juegos.cantidadJugadores)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     }
     if (!juegosUsuario || !juegosUsuario.length) throw { message: "Games not found", code: 404 }
     return juegosUsuario?.map(formatearJuegoMiniatura) ?? null;
@@ -252,14 +263,15 @@ export const seguirJuego = async (id: string, idSeguidor: string, cantidad = 0):
     const juego = await buscarJuego(id);
     if (!juego || !juego.publico) throw { message: "Game not found", code: 404 }
     if (juego.idCreador === idSeguidor) throw { message: "Can't follow your own game", code: 409 }
-    const yaLeSigue = await mongoGet("intermediario", { sujeto: idSeguidor, verbo: "sigue", predicado: id }) ?? false;
+    //const yaLeSigue = await mongoGet("intermediario", { sujeto: idSeguidor, verbo: "sigue", predicado: id }) ?? false;
+    const yaLeSigue = await Intermediario.findOne({ sujeto: idSeguidor, verbo: "sigue", predicado: id }) ?? null;
     if (cantidad == 0) {
-        return yaLeSigue.id ? true : false;
+        return yaLeSigue?.id ? true : false;
     } else {
-        if (cantidad > 0 && yaLeSigue.id) return false;
+        if (cantidad > 0 && yaLeSigue?.id) return false;
         if (cantidad < 0 && !yaLeSigue?.id) return false;
-        if (cantidad < 0) await mongoDelete("intermediario", {sujeto: idSeguidor, verbo: "sigue", predicado: id}, true);
-        if (cantidad > 0) await mongoSet("intermediario", {id: uuidv4(), sujeto: idSeguidor, verbo: "sigue", predicado: id});
+        if (cantidad < 0) await mongoDelete("intermediario", { sujeto: idSeguidor, verbo: "sigue", predicado: id }, true);
+        if (cantidad > 0) await mongoSet("intermediario", { id: uuidv4(), sujeto: idSeguidor, verbo: "sigue", predicado: id, extra: { juego: true } });
         const db = getDB();
         const resultado = await db.update(juegos).set({ cantidadSeguidores: sql`${juegos.cantidadSeguidores} + ${cantidad}` }).where(eq(juegos.id, id)).returning({ id: juegos.id });
         return resultado.length ? true : false;
@@ -276,9 +288,106 @@ export const verJuegosSeguidos = async (id: string, pagina = 0): Promise<Array<P
     const usuario = await buscarUsuario(id);
     if (!usuario || usuario.nivelPublico === 2) throw { message: "User not found", code: 404 }
     if (isNaN(pagina) || pagina < 0) pagina = 0;
-
+    const seguidos = await Intermediario.find({ sujeto: id, verbo: "sigue", extra: { juego: true } }).skip(pagina * tamagnoPagina).limit(tamagnoPagina);
+    if (!seguidos?.length) throw { message: "No entry found for this query", code: 404 }
+    const lista = seguidos.map((e) => e.predicado);
     const db = getDB();
+    const juegosSeguidos = await db.select().from(juegos).where(inArray(juegos.id, lista)).orderBy(desc(juegos.cantidadSeguidores)).limit(tamagnoPagina);
+    if (!juegosSeguidos || !juegosSeguidos?.length) throw { message: "No entry found for this query", code: 404 }
+    return juegosSeguidos.map(formatearJuegoMiniatura);
 }
 
-//usar mongoose
-//ver juego diario, ver juegos destacados, buscar juegos, token, archivos y encrustacion, compras y biblioteca
+/**
+ * Ver el juego diario o semanal en base a un algoritmo, intenta ayudar a los juegos menos conocidos para darles la oportunidad
+ * @param semanal si se pide el semanal, si no lo que se da es el diario
+ * @returns Juego escogido
+ */
+export const verJuegoTemporada = async (semanal = true): Promise<Record<string, any> | null> => {
+    //Se guarda en redis la fecha de la proxima vez que hay que recalcular, si aun no hace falta devuelve el juego en cache, y si no lo recalcula
+    //Al recalcular se establece una nueva fecha proxima y se elige un juego aleatorio de los top mas populares usando como seed la fecha de hoy
+    //El algoritmo diario ayuda a juegos no tan reconocidos a darse a la luz, y el semanal es un poco mas elitista, pero nunca se mostraran los juegos mas populares
+    //En un futuro se podria agnadir uno mensual, o incluso goty
+    const ahora = Date.now();
+    if (semanal) {
+        const juegoActualizado = await redisGet("juegoSemanalUltimaFecha");
+        if (!juegoActualizado || ahora >= Number(juegoActualizado)) {
+            await redisSet("juegoSemanalUltimaFecha", (lunesMadrugada() + ""));
+            const db = getDB();
+            let candidatos = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(100);
+            if (!candidatos || !candidatos?.length) return null;
+            if (candidatos.length > 80) candidatos = candidatos.slice(60);
+            const seed = hashStringToInt(new Date().toISOString().split('T')[0]);
+            const elegido = candidatos[seed % candidatos.length];
+            await redisSet("juegoSemanalActual", JSON.stringify(elegido));
+            return formatearJuegoPublico(elegido);
+        } else {
+            const juego = JSON.parse(await redisGet("juegoSemanalActual") ?? '');
+            return formatearJuegoPublico(juego) ?? null;
+        }
+    } else {
+        const juegoActualizado = await redisGet("juegoDiarioUltimaFecha");
+        if (!juegoActualizado || ahora >= Number(juegoActualizado)) {
+            await redisSet("juegoDiarioUltimaFecha", (new Date()).setHours(24, 0, 0, 0) + "");
+            const db = getDB();
+            let candidatos = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(200);
+            if (!candidatos || !candidatos?.length) return null;
+            if (candidatos.length > 180) candidatos = candidatos.slice(140);
+            const seed = hashStringToInt(new Date().toISOString().split('T')[0]);
+            const elegido = candidatos[seed % candidatos.length];
+            await redisSet("juegoDiarioActual", JSON.stringify(elegido));
+            return formatearJuegoPublico(elegido);
+        } else {
+            const juego = JSON.parse(await redisGet("juegoDiarioActual") ?? '');
+            return formatearJuegoPublico(juego) ?? null;
+        }
+    }
+}
+
+/**
+ * Ver los juegos destacados en base a cierto criterio, se actualizan cada dia y se cachean las primeras 5 paginas, se actualizan diariamente
+ * @param pagina donde mirar
+ * @returns array con los juegos de la consulta
+ */
+const PAGINAS_CACHEADAS = 5;
+export const verJuegosDestacados = async (pagina = 0): Promise<Array<Partial<Juego>> | null> => {
+    if (isNaN(pagina) || pagina < 0) pagina = 0;
+    const ahora = Date.now();
+    const juegoActualizado = await redisGet("juegosDestacadosUltimaFecha");
+    if (!juegoActualizado || ahora >= Number(juegoActualizado)) { //Toca recalcular los juegos destacados
+        const db = getDB();
+        await redisSet("juegosDestacadosUltimaFecha", (new Date()).setHours(24, 0, 0, 0) + "");
+        let juegosCachear = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(tamagnoPagina * PAGINAS_CACHEADAS)
+        if (!juegosCachear || !juegosCachear?.length) return null;
+        juegosCachear = juegosCachear.map(formatearJuegoMiniatura);
+        for (let i=0;i<PAGINAS_CACHEADAS;i++) {
+            await redisSet("juegosDestacados-" + i, JSON.stringify(juegosCachear.slice(tamagnoPagina * i, tamagnoPagina * (i + 1))));
+        }
+    }
+    if (pagina < PAGINAS_CACHEADAS) return JSON.parse(await redisGet("juegosDestacados-" + pagina) ?? '') ?? null;
+    const db = getDB();
+    const juegosConsulta = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
+    if (!juegosConsulta || !juegosConsulta?.length) return null;
+    return juegosConsulta.map(formatearJuegoMiniatura);
+}
+
+/**
+ * Realiza una busqueda de juegos en base a un texto, admitiendo criterios de ordenanza, paginado y teniendo en cuenta el titulo, la description corta, los generos y las tags
+ * @param consulta texto a buscar
+ * @param pagina valor de paginado en caso de haber muchas coincidencias
+ * @param orden 0 = por relevancia, 1 = alfabeticamente segun el nombre, 2 = aleatorio
+ * @returns array con los juegos encontrados
+ */
+export const buscarJuegos = async (consulta: string, pagina = 0, orden = 0): Promise<Record<string, any>[]> => {
+    const db = getDB();
+    consulta = consulta.trim();
+    const posiblesOrdenes = [desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`), asc(juegos.titulo), sql`RANDOM()`];
+    if (isNaN(orden) || orden < 0 || orden >= posiblesOrdenes.length) orden = 0;
+    if (isNaN(pagina) || pagina < 0) pagina = 0;
+    const juegosEncontrados = await db.select().from(juegos)
+        .where(and(eq(juegos.publico, true), or(ilike(juegos.titulo, `%${consulta}%`), ilike(juegos.descripcionCorta, `%${consulta}%`), ilike(juegos.generos, `%${consulta}%`), ilike(juegos.tags, `%${consulta}%`))))
+        .orderBy(posiblesOrdenes[orden]).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
+    if (!juegosEncontrados || !juegosEncontrados?.length)throw { message: "No entry found for this query", code: 404 }
+    return juegosEncontrados.map(formatearJuegoMiniatura);
+}
+
+//optimizar select(), no formatear aqui, buscar juegos, token, archivos y encrustacion, compras y biblioteca

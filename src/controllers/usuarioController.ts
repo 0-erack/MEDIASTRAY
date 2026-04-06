@@ -1,14 +1,14 @@
 //Funciones relacionadas con el manejo de usuarios
 
 import bcrypt from 'bcrypt';
-import { desc, eq, ilike, inArray, or, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, ilike, inArray, ne, or, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { agnadirLog } from '../connections/logs.js';
 import { mongoDelete, mongoGet, mongoSet } from '../connections/mongodb.js';
 import { procesarPago } from '../connections/pagos.js';
 import { getDB } from '../connections/postgresql.js';
 import { contrasegna as validarContrasegna } from '../libraries/validaciones.js';
-import { usuarios } from '../models/schema.js';
+import { juegos, usuarios } from '../models/schema.js';
 import { Intermediario } from '../models/schemaMongo.js';
 import { autenticarContrasegnaUsuario } from '../routes/autenticaciones.js';
 import { Usuario } from '../types/Usuario.js';
@@ -42,7 +42,9 @@ const cascadaUsuario = async (id: string): Promise<boolean> => {
         await db.update(usuarios).set({ cantidadSeguidores: sql`${usuarios.cantidadSeguidores} - 1` }).where(inArray(usuarios.id, ids));
         await Intermediario.deleteMany({ sujeto: id });
         await Intermediario.deleteMany({ predicado: id });
-        //TODO: restar 1 a los juegos seguidos
+        let juegosSeguidos = await Intermediario.find({ sujeto: id, verbo: "sigue", extra: {juego: true} }) as any;
+        if (juegosSeguidos && juegosSeguidos.length) juegosSeguidos = juegosSeguidos.map((e) => e.predicado);
+        await db.update(juegos).set({cantidadSeguidores: sql`${juegos.cantidadSeguidores} - 1`}).where(inArray(juegos.id, juegosSeguidos ?? []));
         return true;
     } catch (e) { return false }
 }
@@ -299,7 +301,6 @@ export const renovarPremium = async (id: string, meses: number, objetoPago: Reco
     if (previoPremium) {
         const fecha: any = Number(usuario.premium);
         hoy = new Date(fecha);
-        console.log(hoy);
     }
     hoy.setMonth(hoy.getMonth() + meses);
     return await alterarPremiumUsuario(id, hoy.getTime() + "");
@@ -362,16 +363,14 @@ export const verSeguimientosUsuario = async (id: string, pagina = 0, seguidos = 
 export const buscarUsuarios = async (consulta: string, pagina = 0, orden = 0): Promise<Record<string, any>[]> => {
     const db = getDB();
     consulta = consulta.trim();
-    const posiblesOrdenes = [desc(usuarios.cantidadSeguidores), (desc(usuarios.nombre), desc(usuarios.nickname)), sql`RANDOM()`];
+    const posiblesOrdenes = [desc(usuarios.cantidadSeguidores), (asc(usuarios.nombre), asc(usuarios.nickname)), sql`RANDOM()`];
     if (isNaN(orden) || orden < 0 || orden >= posiblesOrdenes.length) orden = 0;
     if (isNaN(pagina) || pagina < 0) pagina = 0;
     const usuariosEncontrados = await db.select({ id: usuarios.id, nombre: usuarios.nombre, urlFoto: usuarios.urlFoto, nickname: usuarios.nickname, cantidadSeguidores: usuarios.cantidadSeguidores })
-        .from(usuarios).where(or(ilike(usuarios.nickname, `%${consulta}%`), ilike(usuarios.nombre, `%${consulta}%`)))
+        .from(usuarios).where(and(ne(usuarios.nivelPublico, 2), or(ilike(usuarios.nickname, `%${consulta}%`), ilike(usuarios.nombre, `%${consulta}%`))))
         .orderBy(posiblesOrdenes[orden]).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     if (!usuariosEncontrados.length) throw { message: "No entry found for this query", code: 404 }
-    return usuariosEncontrados.map((e) => {
-        return formatearUsuarioMiniatura(e);
-    });
+    return usuariosEncontrados.map(formatearUsuarioMiniatura);
 }
 
 /**

@@ -1,11 +1,11 @@
 info:
-  name: Seguir juego
+  name: Buscar juegos
   type: http
-  seq: 12
+  seq: 17
 
 http:
-  method: POST
-  url: "{{url_backend}}/game/follow"
+  method: GET
+  url: "{{url_backend}}/game/search/juego?page=0&order=2"
   headers:
     - name: Content-Type
       value: application/json
@@ -15,13 +15,16 @@ http:
       value: "{{session_token}}"
     - name: X-auth-api
       value: "{{api_token}}"
+  params:
+    - name: page
+      value: "0"
+      type: query
+    - name: order
+      value: "2"
+      type: query
   body:
     type: json
-    data: |-
-      {
-        "id": "bf7aaf66-9dd3-4394-aae7-5d750ce37153",
-        "quantity": 1
-      }
+    data: ""
   auth:
     type: bearer
     token: "{{session_token}}"

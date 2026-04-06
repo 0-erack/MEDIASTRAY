@@ -1,11 +1,11 @@
 info:
-  name: Seguir juego
+  name: Ver juego semanal
   type: http
-  seq: 12
+  seq: 16
 
 http:
-  method: POST
-  url: "{{url_backend}}/game/follow"
+  method: GET
+  url: "{{url_backend}}/game/weekly"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,11 +17,7 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: |-
-      {
-        "id": "bf7aaf66-9dd3-4394-aae7-5d750ce37153",
-        "quantity": 1
-      }
+    data: ""
   auth:
     type: bearer
     token: "{{session_token}}"

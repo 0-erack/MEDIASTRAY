@@ -1,7 +1,7 @@
 //Rutas ocultas para las cuales se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, seguirJuego, verJuego, verJuegosUsuario } from '../controllers/juegoController.js';
+import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, seguirJuego, verJuego, verJuegosSeguidos, verJuegosUsuario } from '../controllers/juegoController.js';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, renovarPremium, verUsuario } from '../controllers/usuarioController.js';
 import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
@@ -214,6 +214,16 @@ routerPriv.post("/game/follow", autenticarTokenApi, autenticarTokenSesion, async
         } else {
             return res.status(409).json(fallo("There was an error following/unfollowing the game", null, 409));
         }
+    });
+});
+
+//Ver los juegos seguidos por el usuario actual
+routerPriv.get("/game/followed", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const pagina = parseInt(req.query.page as string) ?? 0;
+        const resultado = await verJuegosSeguidos(req.datosSesion!.id, pagina);
+        if (!resultado || !resultado?.length) return res.status(404).json(fallo("Followed games not found", null, 404));
+        return res.json(exito("Game follow information", resultado));
     });
 });
 

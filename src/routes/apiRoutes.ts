@@ -1,7 +1,7 @@
 //Rutas abiertas al publico para la cuales no se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { verJuego, verJuegosUsuario } from '../controllers/juegoController.js';
+import { buscarJuegos, verJuego, verJuegosDestacados, verJuegosUsuario, verJuegoTemporada } from '../controllers/juegoController.js';
 import { alterarSeguidores, buscarUsuarios, usuarioTienePremium, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { hacerTestsConexiones } from '../tests/tests.js';
 import { exito, fallo, manejadorRuta } from './respuesta.js';
@@ -88,7 +88,43 @@ router.get("/user/:id", async (req: ExpressRequest<{ id: string; }>, res: Expres
 
 
 
+//Devuelve el juego diario
+router.get("/game/daily", async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const juego = await verJuegoTemporada(false);
+        if (!juego) return res.status(404).json(fallo("Game not found", null, 404));
+        return res.json(exito("Game found", {game: juego}));
+    });
+});
 
+//Devuelve el juego semanal
+router.get("/game/weekly", async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const juego = await verJuegoTemporada(true);
+        if (!juego) return res.status(404).json(fallo("Game not found", null, 404));
+        return res.json(exito("Game found", {game: juego}));
+    });
+});
+
+//Devuelve el juego semanal
+router.get("/game/featured", async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const pagina = parseInt(req.query.page as string) ?? 0;
+        const juegos = await verJuegosDestacados(pagina);
+        if (!juegos || !juegos?.length) return res.status(404).json(fallo("Games not found", null, 404));
+        return res.json(exito("Games found", {games: juegos}));
+    });
+});
+
+//Busqueda de juegos por texto, usar ! para que salgan todos
+router.get("/game/search/:query", async (req: ExpressRequest<{ query: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const pagina = parseInt(req.query.page as string) ?? 0;
+        const orden = parseInt(req.query.order as string) ?? 0;
+        const resultado = await buscarJuegos(req.params?.query === "!" ? '' : req.params?.query, pagina, orden);
+        return res.json(exito("Games found", {results: resultado, amount: resultado.length}));
+    });
+});
 
 //Devuelve los datos publicos base de un juego
 router.get("/game/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
