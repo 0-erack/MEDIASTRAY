@@ -100,7 +100,7 @@ export const formatearJuegoPublico = (data:Partial<Juego>): Record<string, any> 
     if (typeof data.tags == "string") data.tags = data.tags!.split(",").filter(Boolean).map(e => e?.trim());
     if (typeof data.idiomas == "string") data.idiomas = data.idiomas!.split(",").filter(Boolean).map(e => e?.trim());
     if (typeof data.generos == "string") data.generos = data.generos!.split(",").filter(Boolean).map(e => e?.trim());
-    return {id: data.id, owner: data.idCreador, age: data.edad, publishDate: data.fechaCreacion, updateDate: data.fechaUltima, followers: data.cantidadSeguidores, players: data.cantidadJugadores, comments: data.cantidadComentarios, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, cover3: data.urlPortada3, version: data.versionActual, description: data.descripcion, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags, languages: data.idiomas, warnings: data.avisos}
+    return {id: data.id, owner: data.idCreador, age: data.edad, additions: data.adiciones, publishDate: data.fechaCreacion, updateDate: data.fechaUltima, followers: data.cantidadSeguidores, players: data.cantidadJugadores, comments: data.cantidadComentarios, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, cover3: data.urlPortada3, version: data.versionActual, description: data.descripcion, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags, languages: data.idiomas, warnings: data.avisos}
 }
 
 /**
@@ -113,7 +113,7 @@ export const formatearJuegoPrivado = (data:Partial<Juego>): Record<string, any> 
     if (typeof data.tags == "string") data.tags = data.tags!.split(",").filter(Boolean).map(e => e?.trim());
     if (typeof data.idiomas == "string") data.idiomas = data.idiomas!.split(",").filter(Boolean).map(e => e?.trim());
     if (typeof data.generos == "string") data.generos = data.generos!.split(",").filter(Boolean).map(e => e?.trim());
-    return {token: data.tokenJuego, id: data.id, owner: data.idCreador, age: data.edad, publishDate: data.fechaCreacion, updateDate: data.fechaUltima, followers: data.cantidadSeguidores, players: data.cantidadJugadores, comments: data.cantidadComentarios, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, cover3: data.urlPortada3, version: data.versionActual, description: data.descripcion, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags, languages: data.idiomas, warnings: data.avisos}
+    return {token: data.tokenJuego, public: data.publico, additions: data.adiciones, id: data.id, owner: data.idCreador, age: data.edad, publishDate: data.fechaCreacion, updateDate: data.fechaUltima, followers: data.cantidadSeguidores, players: data.cantidadJugadores, comments: data.cantidadComentarios, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, cover3: data.urlPortada3, version: data.versionActual, description: data.descripcion, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags, languages: data.idiomas, warnings: data.avisos}
 }
 
 /**
@@ -124,7 +124,7 @@ export const formatearJuegoPrivado = (data:Partial<Juego>): Record<string, any> 
 export const formatearJuegoMiniatura = (data:Partial<Juego>): Record<string, any> => {
     if (typeof data.tags == "string") data.tags = data.tags!.split(",").filter(Boolean).map(e => e?.trim());
     if (typeof data.generos == "string") data.generos = data.generos!.split(",").filter(Boolean).map(e => e?.trim());
-    return {id: data.id, owner: data.idCreador, followers: data.cantidadSeguidores, players: data.cantidadJugadores, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags}
+    return {id: data.id, additions: data.adiciones, owner: data.idCreador, followers: data.cantidadSeguidores, players: data.cantidadJugadores, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags}
 }
 
 /**
@@ -133,11 +133,11 @@ export const formatearJuegoMiniatura = (data:Partial<Juego>): Record<string, any
  * @returns true si es correcta
  */
 export const validarAdicionJuego = (data: any): boolean => {
-    if (typeof data !== "object" || typeof data.data !== "object" || typeof data.data.url !== "string" || typeof data.data.subtitle !== "string" || typeof data.type !== "string" || data._id || data.id || data.game) return false;
-    if (!url(data.data.url) || !subtituloAdicionJuego(data.data.subtitle)) return false;
+    if (typeof data !== "object" || typeof data.data !== "object" || typeof data.type !== "string" || data._id || data.id || data.game) return false;
+    if ((data.url != undefined && !url(data.url)) || (data.subtitle != undefined && !subtituloAdicionJuego(data.subtitle))) return false;
     switch (data.type) {
         case "trailer": 
-            if (data.data.iframe != undefined && (typeof data.data.iframe === "string" && data.data.iframe.length < 430)) return false;
+            if (data.data.iframe != undefined && (typeof data.data.iframe !== "string" || data.data.iframe.length > 430)) return false;
             break;
         case "site": 
             if (data.data.icon != undefined && !url(data.data.icon)) return false;
@@ -146,20 +146,20 @@ export const validarAdicionJuego = (data: any): boolean => {
             if (data.data.cover != undefined && !url(data.data.cover)) return false;
             break;
         case "images": 
-            if (!Array.isArray(data.images) || data.images.length > 32 || !data.images.length || !data.images || !data.images.every(url)) return false;
+            if (!Array.isArray(data.data.images) || data.data.images.length > 32 || !data.data.images.length || !data.data.images.every(url)) return false;
             break;
         case "requirements": 
-            if (typeof data.specs !== "string" || !data.specs.length || data.specs.length > 1024) return false;
+            if (typeof data.data.specs !== "string" || !data.data.specs.length || data.data.specs.length > 1024) return false;
             break;
         case "event": 
-            if (data.image != undefined && !url(data.image)) return false;
-            if (typeof data.info !== "string" || !data.info.length || data.info.length > 128) return false;
+            if (data.data.image != undefined && !url(data.data.image)) return false;
+            if (typeof data.data.info !== "string" || !data.data.info.length || data.data.info.length > 128) return false;
             break;
         case "text": 
-            if (typeof data.text !== "string" || !data.text.length || data.text.length > 64) return false;
+            if (typeof data.data.text !== "string" || !data.data.text.length || data.data.text.length > 64) return false;
             break;
         case "mention": 
-            if (!nickname(data.nickname)) return false;
+            if (!nickname(data.data.nickname)) return false;
             break;        
         default: 
             return false;

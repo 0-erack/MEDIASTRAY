@@ -1,11 +1,11 @@
 info:
-  name: Ver juego personalmente
+  name: Ver juegos de usuario
   type: http
-  seq: 2
+  seq: 10
 
 http:
   method: GET
-  url: "{{url_backend}}/game/personal/90831008-d233-4186-8304-4e15fbcc47e9"
+  url: "{{url_backend}}/user/games/d3ff85f6-03a8-4d4c-96a2-c86f288fa712?page=0"
   headers:
     - name: Content-Type
       value: application/json
@@ -15,6 +15,10 @@ http:
       value: "{{session_token}}"
     - name: X-auth-api
       value: "{{api_token}}"
+  params:
+    - name: page
+      value: "0"
+      type: query
   body:
     type: json
     data: ""

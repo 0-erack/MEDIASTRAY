@@ -1,7 +1,7 @@
 //Rutas ocultas para las cuales se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, verJuego } from '../controllers/juegoController.js';
+import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, seguirJuego, verJuego, verJuegosUsuario } from '../controllers/juegoController.js';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, renovarPremium, verUsuario } from '../controllers/usuarioController.js';
 import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
@@ -90,7 +90,7 @@ routerPriv.delete("/user", autenticarTokenApi, autenticarTokenSesion, async (req
 //Usuario A sigue a usuario B, se crea el registro en mongodb y se altera la cantidad de seguidores en el usuario B, requiere follow +1 o -1 para seguir o desseguir (si es posible) (id_b, cantidad)
 routerPriv.post("/user/follow", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        let cantidad = Math.sign(req.body?.cantidad) ?? 0;
+        let cantidad = Math.sign(req.body?.quantity) ?? 0;
         if (cantidad != 0 && await alterarSeguidores(req.datosSesion!.id, req.body.id_b, cantidad)) {
             return res.json(exito("User followed/unfollowed successfully", undefined, 201));
         } else {
@@ -139,6 +139,16 @@ routerPriv.get("/game/personal/:id", autenticarTokenApi, autenticarTokenSesion, 
         } else {
             return res.status(404).json(fallo("Couldn't find game", null, 404));
         }
+    });
+});
+
+//Devuelve todos los juegos de ese usuario
+routerPriv.get("/game/my", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const pagina = parseInt(req.query.page as string) ?? 0;
+        const juegos = await verJuegosUsuario(req.datosSesion!.id, req.datosSesion!.id, pagina);
+        if (!juegos) return res.status(404).json(fallo("Games not found", null, 404));
+        return res.json(exito("Own games", {games: juegos}));
     });
 });
 
@@ -191,6 +201,28 @@ routerPriv.put("/game/additions/:id", autenticarTokenApi, autenticarTokenSesion,
         } else {
             return res.status(409).json(fallo("There was an error changing the additions of the game", null, 409));
         }
+    });
+});
+
+//El usuario actual sigue un juego
+routerPriv.post("/game/follow", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const cantidad = Math.sign(req.body?.quantity) ?? 0;
+        const resultado = await seguirJuego(req.body?.id, req.datosSesion!.id, cantidad);
+        if (resultado) {
+            return res.json(exito("Game followed/unfollowed", resultado));
+        } else {
+            return res.status(409).json(fallo("There was an error following/unfollowing the game", null, 409));
+        }
+    });
+});
+
+//Ver si el usuario sigue un juego
+routerPriv.get("/game/follow/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const resultado = await seguirJuego(req.params?.id, req.datosSesion!.id, 0);
+        return res.json(exito("Game follow information", resultado ?? false));
     });
 });
 

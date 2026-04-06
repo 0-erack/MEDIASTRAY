@@ -1,7 +1,7 @@
 //Rutas abiertas al publico para la cuales no se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { verJuego } from '../controllers/juegoController.js';
+import { verJuego, verJuegosUsuario } from '../controllers/juegoController.js';
 import { alterarSeguidores, buscarUsuarios, usuarioTienePremium, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { hacerTestsConexiones } from '../tests/tests.js';
 import { exito, fallo, manejadorRuta } from './respuesta.js';
@@ -60,6 +60,17 @@ router.get("/user/premium/:id", async (req: ExpressRequest<{ id: string; }>, res
         if (!req.params?.id) return res.status(404).json(fallo("User not found", null, 404));
         const premium = await usuarioTienePremium(req.params.id, true);
         return res.json(exito("Premium state", premium));
+    });
+});
+
+//Devuelve los juegos de un usuario
+router.get("/user/games/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const pagina = parseInt(req.query.page as string) ?? 0;
+        if (!req.params?.id) return res.status(404).json(fallo("User not found", null, 404));
+        const juegos = await verJuegosUsuario(req.params.id, null, pagina);
+        if (!juegos) return res.status(404).json(fallo("Games not found", null, 404));
+        return res.json(exito("Games by user", {games: juegos}));
     });
 });
 

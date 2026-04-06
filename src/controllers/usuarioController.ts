@@ -42,6 +42,7 @@ const cascadaUsuario = async (id: string): Promise<boolean> => {
         await db.update(usuarios).set({ cantidadSeguidores: sql`${usuarios.cantidadSeguidores} - 1` }).where(inArray(usuarios.id, ids));
         await Intermediario.deleteMany({ sujeto: id });
         await Intermediario.deleteMany({ predicado: id });
+        //TODO: restar 1 a los juegos seguidos
         return true;
     } catch (e) { return false }
 }

@@ -14,7 +14,7 @@ let conectado = false;
 export const getConexion = async (): Promise<any> => {
     if (!cliente) {
         try {
-            cliente = new MongoClient(process.env.MONGODB_URI ?? '');
+            cliente = new MongoClient(process.env.MONGODB_URI ?? '', {ignoreUndefined: true});
             await cliente.connect();
             //inicializarMongo(cliente);
             cliente.on("close", () => {
@@ -68,7 +68,7 @@ export const mongoGet = async (collectionNombre: string, consulta: Record<string
     try {
         const db = cliente.db(process.env.MONGODB_DATABASE ?? 'base')//.toArray();
         const collection = db.collection(collectionNombre);
-        const result = multiple ? await collection.find(consulta) : await collection.findOne(consulta);
+        const result = multiple ? await collection.find(consulta).toArray() : await collection.findOne(consulta);
         return result;
     } catch (error) {
         //cliente = null; getConexion();

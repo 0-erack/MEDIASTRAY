@@ -29,6 +29,8 @@ const AdicionJuegoSchema = new Schema({
         mention (data.nickname para id de un usuario)
     */
     type: { type: String, required: true }, 
+    subtitle: { type: String, required: false }, //Texto de la adicion
+    url: { type: String, required: false }, //URL de la adicion
     data: { type: Object, default: {url: "", subtitle: ""} } //Datos de la adicion, siempre tendra una url pero se pueden poner mas cosas dependiendo del tipo
 },{
     collection: 'adicionJuego',
