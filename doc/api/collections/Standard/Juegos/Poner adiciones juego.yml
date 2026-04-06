@@ -5,7 +5,7 @@ info:
 
 http:
   method: PUT
-  url: "{{url_backend}}/game/additions/e152f104-9187-4a35-a873-59d5f849aa68"
+  url: "{{url_backend}}/game/additions/daf93c2c-b146-45d4-9d2e-da07baf98c4b"
   headers:
     - name: Content-Type
       value: application/json
@@ -20,7 +20,87 @@ http:
     data: |-
       {
         "additions": [
-          
+          {
+            "type": "trailer",
+            "subtitle": "trailer salida",
+            "url": "https://videos.com/2",
+            "data": {
+              "iframe": "<iframe>aa</iframe>"
+            }
+          },
+          {
+            "type": "site",
+            "subtitle": "pagina oficial",
+            "url": "https://pagina.com",
+            "data": {
+              
+            }
+          },
+          {
+            "type": "site",
+            "subtitle": "red social",
+            "url": "https://redsocial.com/23",
+            "data": {
+              "icon": "https://iconos.com/1.png"
+            }
+          },
+          {
+            "type": "ost",
+            "subtitle": "soundtrack",
+            "url": "https://musica.com/34",
+            "data": {
+              "cover": "https://musica.com/34/cover.png"
+            }
+          },
+          {
+            "type": "images",
+            "subtitle": "",
+            "url": "",
+            "data": {
+              "images": ["http://img.com/1.png", "http://img.com/2.png"]
+            }
+          },
+          {
+            "type": "requirements",
+            "subtitle": "para pc",
+            "url": "https://info.com/2",
+            "data": {
+              "specs": "soiudf oasiudf usdfpasd"
+            }
+          },
+          {
+            "type": "event",
+            "subtitle": "evento nose",
+            "url": "https://eventos.com/3",
+            "data": {
+              "info": "aosd8ifaosdf",
+              "image": "http://imagenes.com/3.png"
+            }
+          },
+          {
+            "type": "text",
+            "subtitle": "cosas 1",
+            "url": "https://eventose.com/3",
+            "data": {
+              "text": "asdifsdlof"
+            }
+          },
+          {
+            "type": "text",
+            "subtitle": "cosas 2",
+            "url": "https://eventose.com/3",
+            "data": {
+              "text": "aldskfjhsdf"
+            }
+          },
+          {
+            "type": "mention",
+            "subtitle": "agradecimientos",
+            "url": "https://gente.com/3",
+            "data": {
+              "nickname": "holaque1"
+            }
+          }
         ]
       }
   auth:

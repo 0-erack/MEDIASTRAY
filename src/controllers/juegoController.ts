@@ -25,6 +25,11 @@ const buscarJuego = async (id: string): Promise<Juego | null> => {
     return juego;
 }
 
+const buscarAdicionesJuego = async (id: string): Promise<Array<Record<string, any>> | null> => {
+    if (!id) return null;
+    return await mongoGet("adicionJuego", {game: id}, true);
+}
+
 //Tamagno de pagina estandar para las consultas
 const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 50;
 
@@ -79,7 +84,7 @@ export const crearJuego = async (datosCreacion: Record<string, any>, idCreador):
  * @param idVisor el id del usuario que lo ve, usado para determinar que datos se muestran
  * @returns los datos del juego
  */
-export const verJuego = async (id: string, miniatura = false, idVisor = ""): Promise<Partial<Juego>> => {
+export const verJuego = async (id: string, miniatura = false, idVisor = "", adiciones = false): Promise<Partial<Juego>> => {
     const juego = await buscarJuego(id);
     if (!juego || (idVisor !== juego.idCreador && !juego.publico)) throw { message: "Game not found", code: 404 }
     if (idVisor && !miniatura) {
@@ -100,7 +105,7 @@ export const verJuego = async (id: string, miniatura = false, idVisor = ""): Pro
 
 
 
-
+    if (adiciones) juego.adiciones = await buscarAdicionesJuego(juego.id);
     return idVisor === juego.idCreador ? formatearJuegoPrivado(juego) : formatearJuegoPublico(juego);
 }
 
@@ -191,19 +196,20 @@ export const editarJuego = async (nuevos: Record<string, any>, id: string, idDue
  * @returns si todo ha ido bien devuelve las adiciones
  */
 export const editarAdicionesJuego = async (adiciones: Array<Record<string, any>>, id: string, idDuegno: string): Promise<Array<Record<string, any>> | null> => {
-    const esPremium = await usuarioTienePremium(idDuegno);
+    const esPremium = await usuarioTienePremium(idDuegno); //Ser premium permite pasar de 10 a 30 adiciones, similar con las imagenes
+    console.log(adiciones);
     adiciones = adiciones.map((e, i) => {
-        if (!validarAdicionJuego(e) || (e.tipo === "imagenes" && e.imagenes > 10 && !esPremium)) throw { message: "This addition is invalid: " + i, code: 409, data: i }
-        e.juego = id;
+        if (!validarAdicionJuego(e) || (e.type === "imagenes" && e.data.images > 10 && !esPremium) || (i > 10 && !esPremium) || i > 32) throw { message: "This addition(s) is/are invalid: " + i, code: 409, data: i }
+        e.game = id;
         e.id = uuidv4(); 
         return e;
     });
     const juego = await buscarJuego(id);
     if (!juego) throw { message: "Game not found", code: 404 }
-    if (juego.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
-    const borrado = await mongoDelete("adicionJuego", {juego: id}, true);
-    const nuevos = adiciones.length ? (await mongoSet("adicionJuego", adiciones, true)) : true;
+    if (juego.idCreador !== idDuegno) throw { message: "Can't alter game", code: 401 }
+    const borrado = await mongoDelete("adicionJuego", {game: id}, true);
+    const nuevos = adiciones.length ? (await mongoSet("adicionJuego", adiciones.map((e) => {e.id, e.game, e.type, e.data?.iframe, e.data?.icon, e.data?.cover, e.data?.images, e.data?.specs, e.data?.info, e.data?.image, e.data?.text, e.data?.nickname}), true)) : true;
     return borrado && nuevos ? adiciones : null;
-    //TESTEAR BIEN Y PEDIR DATOS EN INGLES
+    //TESTEAR BIEN ESTABLECER Y LEER
 }
-//ver juegos de un usuario, ver juego diario, ver juegos destacados, buscar juegos, token, archivos y encrustacion, compras y biblioteca
+//ver juegos de un usuario, seguir y ver seguir juego, ver juego diario, ver juegos destacados, buscar juegos, token, archivos y encrustacion, compras y biblioteca

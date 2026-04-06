@@ -24,4 +24,5 @@ export type Juego = {
     cantidadJugadores: number;
     cantidadComentarios: number;
     precio: string | null; // | number
+    adiciones: Array<Record<string, any>> | null;
 }

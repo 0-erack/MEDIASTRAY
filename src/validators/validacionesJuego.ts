@@ -133,32 +133,32 @@ export const formatearJuegoMiniatura = (data:Partial<Juego>): Record<string, any
  * @returns true si es correcta
  */
 export const validarAdicionJuego = (data: any): boolean => {
-    if (typeof data !== "object" || typeof data.datos !== "object" || typeof data.datos.url !== "string" || typeof data.datos.subtitulo !== "string" || typeof data.tipo !== "string" || data._id || data.id || data.juego_asociado) return false;
-    if (!url(data.datos.url) || !subtituloAdicionJuego(data.datos.subtitulo)) return false;
-    switch (data.tipo) {
+    if (typeof data !== "object" || typeof data.data !== "object" || typeof data.data.url !== "string" || typeof data.data.subtitle !== "string" || typeof data.type !== "string" || data._id || data.id || data.game) return false;
+    if (!url(data.data.url) || !subtituloAdicionJuego(data.data.subtitle)) return false;
+    switch (data.type) {
         case "trailer": 
-            if (data.datos.iframe != undefined && (typeof data.datos.iframe === "string" && data.datos.iframe.length < 430)) return false;
+            if (data.data.iframe != undefined && (typeof data.data.iframe === "string" && data.data.iframe.length < 430)) return false;
             break;
-        case "pagina": 
-            if (data.datos.icono != undefined && !url(data.datos.icono)) return false;
+        case "site": 
+            if (data.data.icon != undefined && !url(data.data.icon)) return false;
             break;
         case "ost": 
-            if (data.datos.portadaDisco != undefined && !url(data.datos.portadaDisco)) return false;
+            if (data.data.cover != undefined && !url(data.data.cover)) return false;
             break;
-        case "imagenes": 
-            if (!Array.isArray(data.imagenes) || data.imagenes.length > 32 || !data.imagenes.length || !data.imagenes || !data.imagenes.every(url)) return false;
+        case "images": 
+            if (!Array.isArray(data.images) || data.images.length > 32 || !data.images.length || !data.images || !data.images.every(url)) return false;
             break;
-        case "requerimientos": 
+        case "requirements": 
             if (typeof data.specs !== "string" || !data.specs.length || data.specs.length > 1024) return false;
             break;
-        case "eventos": 
-            if (data.imagen != undefined && !url(data.imagen)) return false;
+        case "event": 
+            if (data.image != undefined && !url(data.image)) return false;
             if (typeof data.info !== "string" || !data.info.length || data.info.length > 128) return false;
             break;
-        case "texto": 
-            if (typeof data.texto !== "string" || !data.texto.length || data.texto.length > 64) return false;
+        case "text": 
+            if (typeof data.text !== "string" || !data.text.length || data.text.length > 64) return false;
             break;
-        case "mencion": 
+        case "mention": 
             if (!nickname(data.nickname)) return false;
             break;        
         default: 

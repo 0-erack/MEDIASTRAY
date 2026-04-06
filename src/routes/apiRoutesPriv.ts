@@ -133,7 +133,7 @@ routerPriv.post("/game/create", autenticarTokenApi, autenticarTokenSesion, async
 routerPriv.get("/game/personal/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
-        const juego = await verJuego(req.params.id, false, req.datosSesion!.id);
+        const juego = await verJuego(req.params.id, false, req.datosSesion!.id, true);
         if (juego) {
             return res.json(exito("Game found", {game: juego}));
         } else {

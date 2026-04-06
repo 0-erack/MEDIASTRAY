@@ -79,12 +79,11 @@ router.get("/user/:id", async (req: ExpressRequest<{ id: string; }>, res: Expres
 
 
 
-
 //Devuelve los datos publicos base de un juego
 router.get("/game/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
-        const usuario = await verJuego(req.params?.id) ?? false;
+        const usuario = await verJuego(req.params?.id, false, undefined, true) ?? false;
         if (!usuario) return res.status(404).json(fallo("Game not found", null, 404));
         return res.json(exito("Game found", usuario));
     });
