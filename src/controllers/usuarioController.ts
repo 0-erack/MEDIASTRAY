@@ -383,3 +383,5 @@ export const usuarioEsAdmin = async (id: string): Promise<boolean> => {
     if (!usuario) return false;
     return usuario.nivelAcceso >= 1 && usuario.disponibilidad < 2;//&& usuario.nivelPublico < 2;
 }
+
+//TODO: privilegios de admin, o un panel para estos

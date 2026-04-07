@@ -23,7 +23,6 @@
     "@capacitor/filesystem": "^8.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.2.1",
-    "apollo-client": "^2.6.10",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.2",

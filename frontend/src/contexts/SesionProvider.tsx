@@ -26,14 +26,14 @@ export const SesionContext = createContext<SesionContextType | null>(null);
  */
 export const SesionProvider = ({ children }: { children: ReactNode }) => {
 
-    const [tokenSesionActual, setTokenSesionActual] = useState<string | null>("");
-    const [usuarioActual, setUsuarioActual] = useState<Partial<Usuario> | null | boolean>(null);
+    const [tokenSesionActual, setTokenSesionActual] = useState<string | null>(""); //Token de sesion que se usara en las peticiones
+    const [usuarioActual, setUsuarioActual] = useState<Partial<Usuario> | null | boolean>(null); //Objeto con el usuario actual, o null si no hay
     const { leerLS, guardarLS, borrarLS } = useLocalStorage();
     const [fallo, setFallo] = useState<any>(false);
     const { API_KEY, API_URL } = useAjustes();
-    const [esAdmin, setEsAdmin] = useState<boolean>(false);
-    const [bloqueado, setBloqueado] = useState<boolean>(false);
-    const [premium, setPremium] = useState<boolean>(false);
+    const [esAdmin, setEsAdmin] = useState<boolean>(false); //Guarda si el usuario actual es admin
+    const [bloqueado, setBloqueado] = useState<boolean>(false); //Guarda si el usuario actual tiene un bloqueo
+    const [premium, setPremium] = useState<boolean>(false); //Guarda si el usuario actual es premium
 
     const inicio = useCallback(async () => {
         try {
