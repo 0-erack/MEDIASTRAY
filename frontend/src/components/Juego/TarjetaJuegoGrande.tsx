@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import useApiJuegos from "../../hooks/api/useApiJuegos";
 import useApiUsuarios from "../../hooks/api/useApiUsuarios";
 import useIdioma from "../../hooks/useIdioma";
+import useMensajes from "../../hooks/useMensajes";
 import useSesion from "../../hooks/useSesion";
 import useTituloDinamico from "../../hooks/useTituloDinamico";
 import { timestampAFecha } from "../../libraries/extraFechas";
@@ -35,19 +36,22 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
   const { verPremium, verUsuario } = useApiUsuarios();
   const { verSiguiendoJuego, seguirJuego } = useApiJuegos();
   const [usuarioCreador, setUsuarioCreador] = useState<Partial<Usuario> | null>(null);
+  const { lanzarMensaje } = useMensajes();
   useTituloDinamico("", juego.titulo);
+  
 
   const alternarSeguir = async () => {
     const resultado = await seguirJuego(juego.id, siguiendo ? -1 : 1);
     if (resultado) {
-      setSiguiendo(!siguiendo);
+      lanzarMensaje(traduccion("mensajes", siguiendo ? "noSeguirJuego" : "seguirJuego"), siguiendo ? 3 : 1);
       juego.cantidadSeguidores += siguiendo ? -1 : 1;
+      setSiguiendo(!siguiendo);
     }
   }
 
-  const filtrarAdiciones = (tipo: string): Array<Record<string, any>> => {
-    if (!juego?.adiciones) return [];
-    return juego.adiciones.filter((e: Record<string, any>) => e?.type as string === tipo) ?? [];
+  const filtrarAdiciones = (tipo: string, negativo = false, personalizadas: Array<Record<string, any>> = []): Array<Record<string, any>> => {
+    if (!juego?.adiciones && !personalizadas.length) return [];
+    return (personalizadas.length ? personalizadas : juego.adiciones).filter((e: Record<string, any>) => negativo ? e?.type as string !== tipo : e?.type as string === tipo) ?? [];
   }
 
   const cargaInicial = useCallback(async () => {
@@ -101,12 +105,13 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           );
         })}
         {filtrarAdiciones("images").map((e, i) => {
-          return (<div key={i} className="border border-principal p-2 h-80 overflow-auto flex flex-col">
-            <p className="font-bold mb-2">{e.subtitle}</p>
-            {e?.url && (<EnlaceFuncion funcion={e.url} titulo={e.url} />)}
-            {e.data.images.map((ee: string, ii: number) => {
-              return (<img src={ee} key={ii} className="object-cover relative z-100 m-4" />)
+          return (<div key={i} className="border border-principal p-2 h-80 flex flex-col">
+            <EnlaceFuncion funcion={e.url} titulo={e.subtitle ?? e.url} color={1} />
+            <div className="flex overflow-auto">
+              {e.data.images.map((ee: string, ii: number) => {
+              return (<img src={ee} key={ii} className="object-cover relative z-100 m-4 h-[210px] w-auto object-contain" />)
             })}
+            </div>
           </div>);
         })}
       </div>
@@ -118,43 +123,35 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           <div><Icono numero={5} color="var(--color-principal)" /> {traduccion("extra", "labelComentarios")} <strong>{juego.cantidadComentarios}</strong></div>
         </div>
         <div className="text-left">
-          <div>{traduccion("formularios", "fechaCreacion")} {timestampAFecha(juego.fechaCreacion)}</div>
-          <div>{traduccion("formularios", "fechaActualizacion")} {timestampAFecha(juego.fechaUltima ?? juego.fechaCreacion)}</div>
-          {juego.versionActual && (<div>{traduccion("formularios", "versionActual")} {juego.versionActual}</div>)}
-          {juego.edad != 0 && <div>{traduccion("formularios", "edadMinima")} {juego.edad}</div>}
+          <div>{traduccion("formularios", "fechaCreacion")} <strong>{timestampAFecha(juego.fechaCreacion)}</strong></div>
+          <div>{traduccion("formularios", "fechaActualizacion")} <strong>{timestampAFecha(juego.fechaUltima ?? juego.fechaCreacion)}</strong></div>
+          {juego.versionActual && (<div>{traduccion("formularios", "versionActual")} <strong>{juego.versionActual}</strong></div>)}
+          {juego.edad != 0 && <div>{traduccion("formularios", "edadMinima")} <strong>{juego.edad}</strong></div>}
         </div>
         <div className="ml-0 lg:ml-5 text-left">
-          {juego.generos?.length != 0 && (<p>{traduccion("formularios", "listaGeneros")} {juego.generos.join(", ")}</p>)}
-          {juego.tags?.length != 0 && (<p>{traduccion("formularios", "listaTags")} {juego.tags.join(", ")}</p>)}
-          {juego.avisos?.length != 0 && (<p>{traduccion("formularios", "listaAvisos")} {juego.avisos.join(", ")}</p>)}
-          {juego.idiomas?.length != 0 && (<p>{traduccion("formularios", "listaIdiomas")} {juego.idiomas.join(", ")}</p>)}
+          {juego.generos?.length != 0 && (<p>{traduccion("formularios", "listaGeneros")} <strong>{juego?.generos?.map((e:string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
+          {juego.tags?.length != 0 && (<p>{traduccion("formularios", "listaTags")} <strong>{juego?.tags?.map((e:string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
+          {juego.avisos?.length != 0 && (<p>{traduccion("formularios", "listaAvisos")} <strong>{juego?.avisos?.join(", ")}</strong></p>)}
+          {juego.idiomas?.length != 0 && (<p>{traduccion("formularios", "listaIdiomas")} <strong>{juego?.idiomas?.join(", ")}</strong></p>)}
         </div>
         <div className="ml-0 sm:ml-5">
           REPORTAR
         </div>
       </div>
-      <div>
-        ADICIONES
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      <div className="grid lg:grid-cols-4 grid-cols-2 gap-2 w-full p-1">
+        {filtrarAdiciones("images", true, filtrarAdiciones("trailer", true)).map((e, i) => {
+          return (<div key={i} className="border flex border-principal p-1">
+            <div>
+              {e?.subtitle && (<p className="font-bold mb-2">{e.subtitle}</p>)}
+              {e?.url && (<EnlaceFuncion funcion={e.url} titulo={traduccion("botones", "textoEnlaceAdicion_" + e.type) ?? e.url} color={1} />)}
+              {e.type === "requirements" && (<p>{e.data.specs}</p>)}
+              {e.type === "text" && (<p>{e.data.text}</p>)}
+              {e.type === "event" && (<p>{e.data.info}</p>)}
+              {e.type === "mention" && (<p><EnlaceFuncion funcion={"/user/" + e.data.nickname} titulo={e.data.nickname} color={1} /></p>)}
+            </div>
+            <img src={e.data.icon ?? e.data.cover ?? e.data.image} className="ml-auto max-h-20 max-w-20" />
+          </div>)
+        })}
       </div>
       <div>
         COMENTARIOS

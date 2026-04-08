@@ -129,7 +129,15 @@
                 "irComprarPremiumMas": "Add MAGNA months",
                 "comprar": "Buy...",
                 "jugar": "Play",
-                "editarJuego": "Edit game"
+                "editarJuego": "Edit game",
+                "textoEnlaceAdicion_trailer": "Trailer",
+                "textoEnlaceAdicion_images": "Screenshots",
+                "textoEnlaceAdicion_site": "Website",
+                "textoEnlaceAdicion_ost": "OST",
+                "textoEnlaceAdicion_requirements": "Requirements",
+                "textoEnlaceAdicion_event": "Event",
+                "textoEnlaceAdicion_text": "Text",
+                "textoEnlaceAdicion_mention": "User mention"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -149,7 +157,15 @@
                 "irComprarPremiumMas": "Añadir meses de MAGNA",
                 "comprar": "Comprar...",
                 "jugar": "Jugar",
-                "editarJuego": "Editar juego"
+                "editarJuego": "Editar juego",
+                "textoEnlaceAdicion_trailer": "Trailer",
+                "textoEnlaceAdicion_images": "Capturas",
+                "textoEnlaceAdicion_site": "Página web",
+                "textoEnlaceAdicion_ost": "OST",
+                "textoEnlaceAdicion_requirements": "Requisitos",
+                "textoEnlaceAdicion_event": "Evento",
+                "textoEnlaceAdicion_text": "Texto",
+                "textoEnlaceAdicion_mention": "Mención de usuario"
             }
         },
         "titulos": {
@@ -171,7 +187,8 @@
                 "inicio": "The online gaming open-source platform for players and developers",
                 "juegoDiario": "Daily game",
                 "juegosDestacados": "Featured games",
-                "forosDestacados": "Featured forums"
+                "forosDestacados": "Featured forums",
+                "crearJuego": "Create game"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -191,7 +208,8 @@
                 "inicio": "La plataforma open-source olnine para jugadores y desarrolladores",
                 "juegoDiario": "Juego diario",
                 "juegosDestacados": "Juegos destacados",
-                "forosDestacados": "Foros destacados"
+                "forosDestacados": "Foros destacados",
+                "crearJuego": "Crear juego"
             }
         },
         "parrafos": {
@@ -212,7 +230,8 @@
                 "textoPremium12": "One year",
                 "textoPremium13": "All the mentioned advantages are always included on MAGNA at any plan",
                 "textoPremium14": "If you already had a MAGNA account, the expiration date will be postponed the amount of months you buy, if you didn't you will get MAGNA privileges for that many months. The prices of each months package may vary depending on time and region",
-                "textoLegal1": "Terms & conditions apply"
+                "textoLegal1": "Terms & conditions apply",
+                "tipBuscador": "Tip: search a tag or a genre to filter games"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -231,7 +250,8 @@
                 "textoPremium12": "Un año",
                 "textoPremium13": "Todas las ventajas mencionadas están siempre incluidas en MAGNA en cualquier plan",
                 "textoPremium14": "Si ya tenías una cuenta MAGNA, la fecha de caducidad se pospondrá la cantidad de meses que compres, si ya la tenías tendrás los privilegios de MAGNA por esos meses. Los precios de cada paquete de meses podrían variar con el tiempo y la región",
-                "textoLegal1": "Se aplican los términos y condiciones"
+                "textoLegal1": "Se aplican los términos y condiciones",
+                "tipBuscador": "Tip: busca un tag o un género para filtrar juegos"
             }
         },
         "formularios": {
@@ -451,6 +471,8 @@
                 "borrarUsuario": "User deleted...",
                 "seguirUsuario": "User followed",
                 "noSeguirUsuario": "User unfollowed",
+                "seguirJuego": "Game followed",
+                "noSeguirJuego": "Game unfollowed",
                 "logout": "Logged out...",
                 "renovadoPremium": "MAGNA renewed!",
                 "premiumExpirado": "MAGNA expired..."
@@ -463,6 +485,8 @@
                 "registrarBien": "Te damos la bienvenida a MEDIASTRAY!",
                 "editarUsuarioBien": "Usuario editado correctamente!",
                 "editarUsuarioMal": "No se pudo editar el usuario",
+                "seguirJuego": "Seguiste a este juego",
+                "noSeguirJuego": "Ya no sigues a este juego",
                 "borrarUsuario": "Usuario borrado...",
                 "seguirUsuario": "Seguiste a este usuario",
                 "noSeguirUsuario": "Ya no sigues a este usuario",

@@ -1,5 +1,6 @@
 
 import { memo } from 'react';
+import { useParams } from 'react-router-dom';
 import TripleBuscador from '../components/Busqueda/TripleBuscador';
 import Titulo from '../components/Elements/Titulo';
 import Icono from '../components/Principal/Icono';
@@ -13,11 +14,12 @@ const Browse  = memo(function Browse() {
 
   useTituloDinamico("browse");
   const traduccion = useIdioma();
+  const { query } = useParams();
 
   return (
     <>
       <Titulo><Icono numero={4} color="var(--color-resaltado)" /> {traduccion("titulos", "browse")}</Titulo>
-      <TripleBuscador />
+      <TripleBuscador inicial={query ?? ''} />
     </>
   )
 });

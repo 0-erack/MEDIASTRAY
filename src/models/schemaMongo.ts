@@ -20,9 +20,9 @@ const AdicionJuegoSchema = new Schema({
     game: { type: String, required: true }, //Juego al que hace referencia
     /*Tipo de adicion: 
         trailer (data.iframe para youtube), 
+        images (data.images array de hasta 10/32 con url de imagenes), 
         site (usado para agregar la pagina del juego o cualquier enlace, data.icon para url del icono del enlace), 
         ost (data.cover para la imagen del ost), 
-        images (data.images array de hasta 10/32 con url de imagenes), 
         requirements (data.specs con el texto de los requerimientos en el formato que quiera el usuario), 
         event (data.info para el texto, data.image para la url de la imagen del evento), 
         text (campo de texto simple, data.text), 

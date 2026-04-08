@@ -22,10 +22,11 @@ interface FormValues {
 
 /**
  * Pagina para buscar usuarios, juegos y foros con filtros, orden y paginado
+ * @param inicial texto inicial en el buscador
  */
-function TripleBuscador() {
+function TripleBuscador({inicial}: {inicial: string}) {
 
-  const formBase: FormValues = { busquedaActual: "", buscarUsuarios: true, buscarJuegos: true, buscarForos: true, orden: '0', pagina: 0 }
+  const formBase: FormValues = { busquedaActual: inicial ?? "", buscarUsuarios: true, buscarJuegos: true, buscarForos: true, orden: '0', pagina: 0 }
   const traduccion = useIdioma();
   const { register, handleSubmit, control, watch, formState: { errors }, setValue } = useForm<FormValues>({ defaultValues: formBase });
   const datos = watch() /*useState<FormValues>(formBase);*/
@@ -92,13 +93,14 @@ function TripleBuscador() {
           </div>
         </form>
       </div>
+      <p>{traduccion("parrafos", "tipBuscador")}</p>
       <hr />
       <div className="sm:flex w-full items-start gap-5 h-full">
         {datos.buscarUsuarios && (
           <div className="flex-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
             <Titulo magnitud={3}><Icono numero={1} color="var(--color-principal)" /> {traduccion("titulos", "parteUsuarios")}</Titulo>
             {usuariosCargados.length ? (<>
-              {usuariosCargados.map((e) => (<TarjetaUsuario key={e.id} usuario={e} />))}
+              {usuariosCargados.map((e) => (<TarjetaUsuario key={e.id} usuario={e} destacado={false} />))}
             </>) : (<p>{traduccion("errores", "usuarioNoEncontrado")}</p>)}
           </div>
         )}
