@@ -38,7 +38,7 @@ export const validarJuegoLocal = (data:any): boolean => {
  * @returns datos del juego en formato api
  */
 export const deApiAJuego = (data:Record<string, any>):Partial<Juego> => {
-    return {id: data.id, fechaCreacion: data.publishDate, descripcion: data.description, titulo: data.title, publico: data.public, tokenJuego: data.token, adiciones: data.additions, idCreador: data.owner, edad: data.age, fechaUltima: data.updateDate, cantidadSeguidores: data.followers, cantidadJugadoers: data.players, cantidadComentarios: data.comments, urlPortada1: data.cover1, urlPortada2: data.cover2, urlPortada3: data.cover3, versionActual: data.version, descripcionCorta: data.shortDescription, precio: data.price, generos: data.genres, tags: data.tags, idiomas: data.languages, avisos: data.warnings}
+    return {id: data.id, fechaCreacion: data.publishDate, descripcion: data.description, titulo: data.title, publico: data.public, tokenJuego: data.token, adiciones: data.additions, idCreador: data.owner, edad: data.age, fechaUltima: data.updateDate, cantidadSeguidores: data.followers, cantidadJugadores: data.players, cantidadComentarios: data.comments, urlPortada1: data.cover1, urlPortada2: data.cover2, urlPortada3: data.cover3, versionActual: data.version, descripcionCorta: data.shortDescription, precio: data.price, generos: data.genres, tags: data.tags, idiomas: data.languages, avisos: data.warnings}
 }
 
 /**

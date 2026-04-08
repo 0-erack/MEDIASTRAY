@@ -4,6 +4,7 @@ import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import useIdioma from '../../hooks/useIdioma';
 import useMensajes from '../../hooks/useMensajes';
 import useSesion from '../../hooks/useSesion';
+import useTituloDinamico from '../../hooks/useTituloDinamico';
 import { timestampAFecha } from '../../libraries/extraFechas';
 import BotonFuncion from '../Elements/BotonFuncion';
 import EnlaceFuncion from '../Elements/EnlaceFuncion';
@@ -41,6 +42,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
   const [verSeguidos, setVerSeguidos] = useState(false);
   const [seguidos, setSeguidos] = useState<Array<Record<string, any>>>([]);
   const [seguidores, setSeguidores] = useState<Array<Record<string, any>>>([]);
+  useTituloDinamico("", usuario.nickname);
 
   /**
    * Funcionalidad para el boton de seguir

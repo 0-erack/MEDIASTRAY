@@ -5,7 +5,7 @@ info:
 
 http:
   method: PATCH
-  url: "{{url_backend}}/game/edit/bf7aaf66-9dd3-4394-aae7-5d750ce37153"
+  url: "{{url_backend}}/game/edit/bc6c3b55-c89d-4249-b2ca-18643c7eb87e"
   headers:
     - name: Content-Type
       value: application/json
@@ -20,8 +20,10 @@ http:
     data: |-
       {
         "newData": {
-          "description": "ggj",
-          "shortDescription": "ggj"
+          "description": "ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ",
+          "shortDescription": "ggj",
+          "age": 0,
+          "cover3": "http://localhost:8510/public/2Q2.png"
         }
       }
   auth:

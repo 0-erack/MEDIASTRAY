@@ -18,27 +18,42 @@ interface EnlaceFuncionProps {
  * @param subrallado si tiene underline
  */
 const EnlaceFuncion = memo(function EnlaceFuncion({ cabecera, titulo, funcion, color = 0, subrallado = true }: EnlaceFuncionProps) {
-
   const navegar = useNavigate();
   const esEnlace = typeof funcion === 'string';
   const esUrl = esEnlace && funcion.startsWith("http");
 
+  const hrefTarget = typeof funcion === 'string' ? funcion : undefined;
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+      return; 
+    }
+
+    if (typeof funcion === 'string') {
+      e.preventDefault();
+      if (esUrl) {
+        window.location.href = funcion;
+      } else {
+        navegar(funcion);
+      }
+    } else if (typeof funcion === 'function') {
+      e.preventDefault();
+      try { funcion(); } catch (err) { console.error(err); }
+    }
+  };
+
   return (
-    <span className={`${cabecera ? "enlace-cabecera" : ""} enlace-funcion pr-2 hover:text-resaltado ${['text-resaltado', 'text-principal'][color ?? 0]} ${subrallado ? 'underline' : ''} cursor-pointer fuente2 hover:text-principal`}>
-      <a href={esUrl ? funcion : ""} onClick={(e) => {
-        e.preventDefault();
-        if (typeof funcion === 'string') {
-          if (esUrl) {
-            window.location.href = funcion;
-          } else {
-            navegar(funcion);
-          }
-        } else {
-          try { (funcion as Function)() } catch (e) { e }
-        }
-      }}>{titulo ?? ""}</a>
+    <span className={`${cabecera ? "enlace-cabecera" : ""} enlace-funcion pr-2 hover:text-resaltado ${['text-resaltado', 'text-principal', 'text-info1'][color ?? 0]} ${subrallado ? 'underline' : ''} cursor-pointer fuente2 hover:text-principal`}>
+      <a 
+        href={hrefTarget} 
+        onClick={handleClick}
+        target={esUrl ? "_blank" : undefined}
+        rel={esUrl ? "noopener noreferrer" : undefined}
+      >
+        {titulo ?? ""}
+      </a>
     </span>
-  )
-})
+  );
+});
 
 export default EnlaceFuncion;

@@ -5,7 +5,7 @@ info:
 
 http:
   method: PUT
-  url: "{{url_backend}}/game/additions/90831008-d233-4186-8304-4e15fbcc47e9"
+  url: "{{url_backend}}/game/additions/bc6c3b55-c89d-4249-b2ca-18643c7eb87e"
   headers:
     - name: Content-Type
       value: application/json
@@ -23,9 +23,9 @@ http:
           {
             "type": "trailer",
             "subtitle": "trailer salida",
-            "url": "https://videos.com/2",
+            "url": "https://www.w3schools.com/html/mov_bbb.mp4",
             "data": {
-              "iframe": "<iframe>aa</iframe>"
+              "iframe": "<iframe width='560' height='315' src='https://www.youtube.com/embed/AWZUa6lghIY?si=QMMiyBdzh5f9LjLV' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>"
             }
           },
           {
@@ -41,7 +41,7 @@ http:
             "subtitle": "red social",
             "url": "https://redsocial.com/23",
             "data": {
-              "icon": "https://iconos.com/1.png"
+              "icon": "http://localhost:8520/public/nopfp.png"
             }
           },
           {
@@ -49,15 +49,15 @@ http:
             "subtitle": "soundtrack",
             "url": "https://musica.com/34",
             "data": {
-              "cover": "https://musica.com/34/cover.png"
+              "cover": "http://localhost:8520/public/nopfp.png"
             }
           },
           {
             "type": "images",
-            "subtitle": "",
-            "url": "",
+            "subtitle": "carrusel 1",
+            "url": "http://hola.com",
             "data": {
-              "images": ["http://img.com/1.png", "http://img.com/2.png"]
+              "images": ["https://www.w3schools.com/html/pic_trulli.jpg", "https://www.w3schools.com/html/img_girl.jpg", "https://www.w3schools.com/html/img_chania.jpg"]
             }
           },
           {
@@ -74,7 +74,7 @@ http:
             "url": "https://eventos.com/3",
             "data": {
               "info": "aosd8ifaosdf",
-              "image": "http://imagenes.com/3.png"
+              "image": "http://localhost:8520/public/nopfp.png"
             }
           },
           {
@@ -88,7 +88,6 @@ http:
           {
             "type": "text",
             "subtitle": "cosas 2",
-            "url": "https://eventose.com/3",
             "data": {
               "text": "aldskfjhsdf"
             }

@@ -21,19 +21,19 @@ http:
       {
         "game": {
           "title": "el juego 1",
-          "cover1": "http://imagenes.com/1",
-          "cover2": "http://imagenes.com/2",
-          "cover3": "http://imagenes.com/3",
+          "cover1": "https://placehold.co/460x215",
+          "cover2": "https://placehold.co/600x900",
+          "cover3": "http://localhost:8510/public/2Q2.png",
           "public": true,
           "version": "v1.0.0",
-          "description": "adlfhasdfdhsfasfd",
-          "shortDescription": "aksdfh",
-          "genres": ["aa", "bb", "cc"],
-          "tags": ["aa", "bb", "cc"],
+          "description": "## titulo \n adl asdf asd flaskdjfh lah adl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lah",
+          "shortDescription": "aksdfh asdf hasd fhasdj fghaksjdgf asdjhfg h",
+          "genres": ["aaaa", "bbbb", "cccc"],
+          "tags": ["dddd", "eeee", "ffff"],
           "languages": ["ES-es", "EN-us"],
-          "warnings": [],
+          "warnings": ["peligro"],
           "price": "3.00 €",
-          "age": 3
+          "age": 0
         }
       }
   auth:

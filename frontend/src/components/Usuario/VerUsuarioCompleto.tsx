@@ -57,10 +57,10 @@ function VerUsuarioCompleto({ id }: VerUsuarioCompletoProps) {
   return (
     <>
       {idBuscar ? (<div>
-        {(fallo || error) ? (<>
+        {(fallo || error) ? (<div className='text-center p-4'>
           <CajaError nombre="usuarioNoEncontrado" />
           <EnlaceFuncion titulo={traduccion("botones", "irInicio")} funcion="/" />
-        </>) : (<div>
+        </div>) : (<div>
           {(usuarioCargado && !cargando) ? (<div className="ver-usuario">
             <TarjetaUsuarioGrande usuario={usuarioCargado} soyYo={soyYo} esPremium={usuarioEsPremium} />
           </div>) : (<ImgCargando />)}

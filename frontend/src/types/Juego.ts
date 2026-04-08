@@ -21,7 +21,7 @@ export type Juego = {
     idiomas: string|Array<string>;
     cantidadSeguidores: number;
     edad: number|null;
-    cantidadJugadoers: number;
+    cantidadJugadores: number;
     cantidadComentarios: number;
     precio: string|null;
     adiciones: Array<any>|null;

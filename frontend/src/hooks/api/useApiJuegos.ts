@@ -67,12 +67,50 @@ const useApiJuegos = () => {
         }
     }
 
+    /**
+     * Comprueba si se esta siguiendo un juego
+     * @param id juego a consultar
+     * @returns true si se sigue
+     */
+    const verSiguiendoJuego = async (id: string): Promise<boolean> => {
+        try {
+            if (!usuario) return false;
+            const resultado = await peticionGenerica(API_URL + "/game/follow/" + id, "GET");
+            if (resultado.ok) return resultado.data ? true : false;
+            return false;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    /**
+     * Sigue o deja de seguir un juego
+     * @param id juego a seguir/no seguir
+     * @param cantidad -1 para dejar de seguir, 1 para seguir
+     * @returns true si todo ha ido bien
+     */
+    const seguirJuego = async (id: string, cantidad: number): Promise<boolean> => {
+        try {
+            if (!usuario) return false;
+            let cantidadCorrecta = cantidad;
+            if (cantidadCorrecta > 1) cantidadCorrecta = 1;
+            if (cantidadCorrecta < -1) cantidadCorrecta = -1;
+            const resultado = await peticionGenerica(API_URL + "/game/follow", "POST", {id, quantity: cantidadCorrecta});
+            if (resultado.ok) return true;
+            return false;
+        } catch (error) {
+            return false;
+        }
+    }
+
+
+
     const resetEstados = () => {
         setCargando(false);
         setError(false)
     }
 
-    return { cargando, error, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos };
+    return { cargando, error, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
 };
 
 export default useApiJuegos;

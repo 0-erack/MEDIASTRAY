@@ -3,6 +3,7 @@ import useApiJuegos from "../../hooks/api/useApiJuegos";
 import useIdioma from "../../hooks/useIdioma";
 import useJuegos from "../../hooks/useJuegos";
 import useSesion from "../../hooks/useSesion";
+import { esMayorEdad } from "../../libraries/extraFechas";
 import { Juego } from "../../types/Juego";
 import CajaError from "../Elements/CajaError";
 import EnlaceFuncion from "../Elements/EnlaceFuncion";
@@ -26,6 +27,7 @@ const VerJuegoCompleto = ({ id }: VerJuegoCompletoProps) => {
     const traduccion = useIdioma();
     const { agregarJuegoLocal, misJuegos } = useJuegos();
     const { verJuego, cargando, error } = useApiJuegos();
+    const errorNoEdad = () => (<div className="text-center">{" +" + juegoCargado!.edad} <CajaError nombre="edadInsuficiente" /> <EnlaceFuncion titulo={traduccion("botones", "irInicio")} funcion="/" /></div>);
 
     const cargaInicial = async () => {
         setEsMio(false);
@@ -59,12 +61,22 @@ const VerJuegoCompleto = ({ id }: VerJuegoCompletoProps) => {
     return (
         <>
             {id ? (<div>
-                {(fallo || error) ? (<>
+                {(fallo || error) ? (<div className="text-center">
                     <CajaError nombre="juegoNoEncontrado" />
                     <EnlaceFuncion titulo={traduccion("botones", "irInicio")} funcion="/" />
-                </>) : (<div>
-                    {(juegoCargado && !cargando) ? (<div className="ver-usuario">
-                        <TarjetaJuegoGrande juego={juegoCargado} esMio={esMio} />
+                </div>) : (<div>
+                    {(juegoCargado && !cargando) ? (<div className="ver-juego">
+
+                        {(usuario && typeof usuario === "object" && "cumpleagnos" in usuario) ? 
+                            (juegoCargado.edad ? 
+                                (esMayorEdad(usuario?.cumpleagnos as string, juegoCargado.edad ?? 0) ? 
+                                    (<TarjetaJuegoGrande juego={juegoCargado} esMio={esMio} />) 
+                                    : (errorNoEdad())) 
+                                : (<TarjetaJuegoGrande juego={juegoCargado} esMio={esMio} />)) 
+                            : (juegoCargado.edad 
+                                ? (errorNoEdad()) 
+                                : (<TarjetaJuegoGrande juego={juegoCargado} esMio={esMio} />))}
+
                     </div>) : (<ImgCargando />)}
                 </div>)}
             </div>) : (<CajaError nombre="juegoNoEncontrado" />)}

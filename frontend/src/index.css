@@ -55,6 +55,11 @@
 	--color-info2: #7de62b;
 }
 
+iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .fuente3 {
 	font-family: "Datatype", monospace !important;
   	font-stretch: normal;

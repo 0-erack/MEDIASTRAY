@@ -127,10 +127,12 @@
                 "verSeguidos": "See followed...",
                 "irComprarPremium": "Buy MAGNA",
                 "irComprarPremiumMas": "Add MAGNA months",
-                "comprar": "Buy..."
+                "comprar": "Buy...",
+                "jugar": "Play",
+                "editarJuego": "Edit game"
             },
             "ES-es": {
-                "irInicio": "Volver al icorreoRepetidonicio",
+                "irInicio": "Volver al inicio",
                 "inicio": "Inicio",
                 "iniciarSesion": "Iniciar sesión",
                 "crearCuenta": "Crear cuenta",
@@ -145,7 +147,9 @@
                 "verSeguidos": "Ver seguidos...",
                 "irComprarPremium": "Comprar MAGNA",
                 "irComprarPremiumMas": "Añadir meses de MAGNA",
-                "comprar": "Comprar..."
+                "comprar": "Comprar...",
+                "jugar": "Jugar",
+                "editarJuego": "Editar juego"
             }
         },
         "titulos": {
@@ -241,6 +245,8 @@
                 "nombre": "User name:",
                 "cumpleagnos": "Birth date:",
                 "fechaCreacion": "Creation date:",
+                "fechaActualizacion": "Date of last update:",
+                "versionActual": "Current version:",
                 "premium": "Magna:",
                 "premiumCaducidad": "Magna expitation date:",
                 "seguidores": "Followers:",
@@ -260,7 +266,12 @@
                 "busquedaOrdenAleatorio": "Random",
                 "pagina": "Page:",
                 "preguntaLogin": "Already have an account? Log in",
-                "preguntaRegister": "Don't have an account? Create one"
+                "preguntaRegister": "Don't have an account? Create one",
+                "listaIdiomas": "Languages:",
+                "edadMinima": "Minimum age:",
+                "listaGeneros": "Genres:",
+                "listaTags": "Tags:",
+                "listaAvisos": "Warnings:"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -272,6 +283,8 @@
                 "nombre": "Nombre de usuario:",
                 "cumpleagnos": "Fecha de nacimiento:",
                 "fechaCreacion": "Fecha de creación:",
+                "fechaActualizacion": "Última actualización:",
+                "versionActual": "Versión actual:",
                 "premium": "Magna:",
                 "premiumCaducidad": "Fecha de caducidad de Magna",
                 "seguidores": "Seguidores:",
@@ -291,7 +304,12 @@
                 "busquedaOrdenAleatorio": "Aleatorio",
                 "pagina": "Página:",
                 "preguntaLogin": "¿Ya tienes una cuenta? Inicia sesión",
-                "preguntaRegister": "¿No tienes una cuenta? Regístrate"
+                "preguntaRegister": "¿No tienes una cuenta? Regístrate",
+                "listaIdiomas": "Idiomas:",
+                "edadMinima": "Edad mínima:",
+                "listaGeneros": "Géneros:",
+                "listaTags": "Tags:",
+                "listaAvisos": "Avisos:"
             }
         },
         "errores": {
@@ -323,7 +341,8 @@
                 "noBusqueda": "Oops, we didn't find anything",
                 "noSeguidos": "User doesn't follow anyone",
                 "noSeguidores": "User doesn't have any followers",
-                "errorCompra": "There was an unexcepted error with your purchase"
+                "errorCompra": "There was an unexcepted error with your purchase",
+                "edadInsuficiente": "You don't have the required age to perform this action"
             },
             "ES-es": {
                 "sesionExpirada": "La sesión del usuario ha expirado, inicie sesión de nuevo",
@@ -352,7 +371,8 @@
                 "noBusqueda": "Ups, no hemos encontrado nada",
                 "noSeguidos": "Este usuario no sigue a nadie",
                 "noSeguidores": "Este usuario no tiene seguidores",
-                "errorCompra": "Ha habido un error inesperado con su compra"
+                "errorCompra": "Ha habido un error inesperado con su compra",
+                "edadInsuficiente": "No tienes la edad suficiente para realizar esta acción"
             }
         },
         "titulosHtml": {
@@ -403,6 +423,8 @@
             "EN-us": {
                 "labelSeguidos": "Followed:",
                 "labelSeguidores": "Followers:",
+                "labelJugadores": "Players:",
+                "labelComentarios": "Comments:",
                 "labelCaducidad": "Expiration date:",
                 "labelCantidad": "Amount:",
                 "indicadorPago": "Credit/debit card data"
@@ -410,6 +432,8 @@
             "ES-es": {
                 "labelSeguidos": "Seguidos:",
                 "labelSeguidores": "Seguidores:",
+                "labelJugadores": "Jugadores:",
+                "labelComentarios": "Comentarios:",
                 "labelCaducidad": "Fecha de caducidad:",
                 "labelCantidad": "Cantidad:",
                 "indicadorPago": "Datos de la tarjeta de crédito/débito"

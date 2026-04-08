@@ -36,8 +36,8 @@ const buscarJuego = async (id: string): Promise<Juego | null> => {
 const buscarAdicionesJuego = async (id: string): Promise<Array<Record<string, any>> | null> => {
     if (!id) return null;
     //const adiciones = await mongoGet("adicionJuego", {game: id}, true);
-    const adiciones = await AdicionJuego.find({ game: id });
-    return adiciones.map((e) => { return { ...e, _id: undefined, game: undefined } }) ?? null;
+    const adiciones = await AdicionJuego.find({ game: id }).lean();
+    return adiciones.map((e) => { return { ...e, game: undefined, _id: undefined } }) ?? null;
 }
 
 //Tamagno de pagina estandar para las consultas

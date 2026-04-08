@@ -135,7 +135,7 @@ routerPriv.get("/game/personal/:id", autenticarTokenApi, autenticarTokenSesion, 
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const juego = await verJuego(req.params.id, false, req.datosSesion!.id, true);
         if (juego) {
-            return res.json(exito("Game found", {juego}));
+            return res.json(exito("Game found", {...juego}));
         } else {
             return res.status(404).json(fallo("Couldn't find game", null, 404));
         }
