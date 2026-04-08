@@ -135,7 +135,7 @@ routerPriv.get("/game/personal/:id", autenticarTokenApi, autenticarTokenSesion, 
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const juego = await verJuego(req.params.id, false, req.datosSesion!.id, true);
         if (juego) {
-            return res.json(exito("Game found", {game: juego}));
+            return res.json(exito("Game found", {juego}));
         } else {
             return res.status(404).json(fallo("Couldn't find game", null, 404));
         }
@@ -146,7 +146,7 @@ routerPriv.get("/game/personal/:id", autenticarTokenApi, autenticarTokenSesion, 
 routerPriv.get("/game/my", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         const pagina = parseInt(req.query.page as string) ?? 0;
-        const juegos = await verJuegosUsuario(req.datosSesion!.id, req.datosSesion!.id, pagina);
+        const juegos = await verJuegosUsuario(req.datosSesion!.id, req.datosSesion!.id, req.query?.all ? -1 : pagina);
         if (!juegos) return res.status(404).json(fallo("Games not found", null, 404));
         return res.json(exito("Own games", {games: juegos}));
     });
@@ -184,7 +184,7 @@ routerPriv.patch("/game/edit/:id", autenticarTokenApi, autenticarTokenSesion, as
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const resultado = await editarJuego(req.body?.newData, req.params.id, req.datosSesion!.id);
         if (resultado) {
-            return res.json(exito("Game settings changed", {game: resultado}));
+            return res.json(exito("Game settings changed", {resultado}));
         } else {
             return res.status(404).json(fallo("Couldn't change game settings or invalid credentials", null, 404));
         }

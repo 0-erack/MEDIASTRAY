@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import useApiJuegos from '../hooks/api/useApiJuegos';
 import useSesion from '../hooks/useSesion';
 import { Juego } from '../types/Juego';
 import { validarJuegoLocal } from '../validators/validacionesJuego';
@@ -7,9 +8,9 @@ import { validarJuegoLocal } from '../validators/validacionesJuego';
 interface JuegosProviderType {
   fallo: any;
   misJuegos: Array<Partial<Juego>>;
-  actualizarBackend: () => Promise<void>;
+  actualizarBackend: (usuarioActivo: boolean) => Promise<void>;
   borrarJuegoLocal: (id: string) => boolean;
-  agregarJuegoLocal: (juego: Juego) => boolean;
+  agregarJuegoLocal: (juego: Record<string, any>) => boolean;
   editarJuegoLocal: (id: string, juego: Juego) => boolean;
 }
 
@@ -26,14 +27,16 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
   const [misJuegos, setMisJuegos] = useState<Array<Partial<Juego>>>([]);
   const [fallo, setFallo] = useState<any>(false);
   const { usuario } = useSesion();
+  const { verTodosMisJuegos } = useApiJuegos();
 
   /**
    * Descargar todos los juegos del usuario del backend desde 0
    */
-  const actualizarBackend = useCallback(async () => {
+  const actualizarBackend = useCallback(async (usuarioActivo: boolean) => {
     setMisJuegos([]);
-    if (usuario) { //Solo se pueden tener juegos teniendo la sesion iniciada
-
+    if (usuarioActivo) { //Solo se pueden tener juegos teniendo la sesion iniciada
+      const resultado = await verTodosMisJuegos();
+      setMisJuegos(resultado ?? []);
     }
   }, []);
 
@@ -54,7 +57,7 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
    * @param juego el juego a agregar
    * @returns true si realmente ha pasado algo
    */
-  const agregarJuegoLocal = useCallback((juego: Juego): boolean => {
+  const agregarJuegoLocal = useCallback((juego: Record<string, any>): boolean => {
     if (!validarJuegoLocal(juego)) return false;
     if (misJuegos.filter((e) => e.id === juego.id).length) return false;
     setMisJuegos([...misJuegos, juego]);
@@ -72,12 +75,12 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
     return borrarJuegoLocal(id) ? agregarJuegoLocal(juego) : false;
   }, []);
 
-  const inicio = useCallback(async () => {
-    await actualizarBackend();
+  const inicio = useCallback(async (elUsuario: any) => {
+    await actualizarBackend(elUsuario ? true : false);
   }, []);
   useEffect(() => {
-    inicio();
-  }, []);
+    inicio(usuario);
+  }, [usuario]);
 
   const exportaciones = useMemo(() => ({
     fallo, misJuegos, borrarJuegoLocal, actualizarBackend, agregarJuegoLocal, editarJuegoLocal

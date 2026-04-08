@@ -89,6 +89,11 @@
                         "direccion": "/logout",
                         "titulo": "Log out",
                         "numeroIcono": 10
+                    },
+                    {
+                        "direccion": "/createGame",
+                        "titulo": "Publish new game",
+                        "numeroIcono": 21
                     }
                 ],
                 "ES-es": [
@@ -96,6 +101,11 @@
                         "direccion": "/logout",
                         "titulo": "Cerrar sesión",
                         "numeroIcono": 10
+                    },
+                    {
+                        "direccion": "/createGame",
+                        "titulo": "Publicar un juego",
+                        "numeroIcono": 21
                     }
                 ]
             }
@@ -359,7 +369,8 @@
                 "settings": "Settings",
                 "viewUser": "User",
                 "saludo": "Hello",
-                "renovar": "Renew MAGNA"
+                "renovar": "Renew MAGNA",
+                "createGame": "Create game"
             },
             "ES-es": {
                 "saludo": "Hola",
@@ -374,7 +385,8 @@
                 "register": "Registrarse",
                 "settings": "Ajustes",
                 "viewUser": "Usuario",
-                "renovar": "Renovar MAGNA"
+                "renovar": "Renovar MAGNA",
+                "createGame": "Crear juego"
             }
         },
         "palabras": {

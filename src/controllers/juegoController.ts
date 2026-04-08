@@ -240,15 +240,17 @@ export const verJuegosUsuario = async (id: string, idVisor: string | null, pagin
     const usuario = await buscarUsuario(id);
     if (!usuario || usuario.nivelPublico === 2) throw { message: "User not found", code: 404 }
     const db = getDB();
-    if (isNaN(pagina) || pagina < 0) pagina = 0;
+    if (isNaN(pagina) || pagina < -1) pagina = 0;
     let juegosUsuario;
     if (id === idVisor) {
-        juegosUsuario = await db.select().from(juegos).where(eq(juegos.idCreador, id)).orderBy(desc(juegos.cantidadJugadores)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
+        //Si pagina es -1 devuelve todos, solo disponible para el propio usuario
+        juegosUsuario = pagina == -1 ? await db.select().from(juegos).where(eq(juegos.idCreador, id)).orderBy(desc(juegos.cantidadJugadores))
+            : await db.select().from(juegos).where(eq(juegos.idCreador, id)).orderBy(desc(juegos.cantidadJugadores)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     } else {
         juegosUsuario = await db.select().from(juegos).where(and(eq(juegos.idCreador, id), eq(juegos.publico, true))).orderBy(desc(juegos.cantidadJugadores)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     }
     if (!juegosUsuario || !juegosUsuario.length) throw { message: "Games not found", code: 404 }
-    return juegosUsuario?.map(formatearJuegoMiniatura) ?? null;
+    return juegosUsuario?.map(pagina == -1 ? formatearJuegoPublico : formatearJuegoMiniatura) ?? null;
 }
 
 /**

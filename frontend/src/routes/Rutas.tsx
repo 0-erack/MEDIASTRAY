@@ -1,7 +1,9 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ImgCargando from '../components/Principal/ImgCargando';
-import RenewPremium from '../pages/RenewPremium';
+const ViewGame = lazy(() => import('../pages/ViewGame'));
+const RenewPremium = lazy(() => import('../pages/RenewPremium'));
+const CreateGame = lazy(() => import('../pages/CreateGame'));
 const ViewUser = lazy(() => import('../pages/ViewUser'));
 const Browse = lazy(() => import('../pages/Browse'));
 const ErrorNotFound = lazy(() => import('../pages/ErrorNotFound'));
@@ -42,6 +44,8 @@ function Rutas() {
         <Route path="/user/:id" element={<ViewUser />} />
         <Route path="/user" element={<ViewUser />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/game/:id" element={<ViewGame />} />
+        <Route path="/createGame" element={<CreateGame />} />
         <Route path="/error" element={<ErrorNotFound />} />
         <Route path="/*" element={<ErrorNotFound />} />
       </Routes>
