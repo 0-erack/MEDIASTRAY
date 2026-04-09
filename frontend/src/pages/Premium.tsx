@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import BotonFuncion from '../components/Elements/BotonFuncion';
 import Titulo from '../components/Elements/Titulo';
 import Icono from '../components/Principal/Icono';

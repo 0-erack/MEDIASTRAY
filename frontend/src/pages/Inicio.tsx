@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import logoC from '../assets/images/LogoC.png';
 import BotonFuncion from '../components/Elements/BotonFuncion';
 import Titulo from '../components/Elements/Titulo';

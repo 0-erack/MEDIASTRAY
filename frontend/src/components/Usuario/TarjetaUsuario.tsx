@@ -5,7 +5,7 @@ import EnlaceFuncion from "../Elements/EnlaceFuncion";
 
 interface TarjetaUsuarioProps {
     usuario: Partial<Usuario>;
-    destacado: true|false|undefined;
+    destacado?: true|false|undefined;
 }
 
 /**

@@ -291,7 +291,11 @@
                 "edadMinima": "Minimum age:",
                 "listaGeneros": "Genres:",
                 "listaTags": "Tags:",
-                "listaAvisos": "Warnings:"
+                "listaAvisos": "Warnings:",
+                "tituloJuego": "Title",
+                "urlPortada1": "Game cover URL 1 (460x215px)",
+                "urlPortada2": "Game cover URL 2 (600x900px)",
+                "urlPortada3": "Game cover URL 3 (1920x1080px)"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -329,7 +333,11 @@
                 "edadMinima": "Edad mínima:",
                 "listaGeneros": "Géneros:",
                 "listaTags": "Tags:",
-                "listaAvisos": "Avisos:"
+                "listaAvisos": "Avisos:",
+                "tituloJuego": "Título",
+                "urlPortada1": "URL de la portada 1 (460x215px)",
+                "urlPortada2": "URL de la portada 2 (600x900px)",
+                "urlPortada3": "URL de la portada 3 (1920x1080px)"
             }
         },
         "errores": {
@@ -362,7 +370,10 @@
                 "noSeguidos": "User doesn't follow anyone",
                 "noSeguidores": "User doesn't have any followers",
                 "errorCompra": "There was an unexcepted error with your purchase",
-                "edadInsuficiente": "You don't have the required age to perform this action"
+                "edadInsuficiente": "You don't have the required age to perform this action",
+                "estaPropiedadObligatoria": "This field is required",
+                "validacionTituloJuego": "The title must have between 3 and 63 characters and be unique",
+                "validacionVersion": "The version's tag must have less than 16 characters and be formed by digits and letters"
             },
             "ES-es": {
                 "sesionExpirada": "La sesión del usuario ha expirado, inicie sesión de nuevo",
@@ -392,7 +403,10 @@
                 "noSeguidos": "Este usuario no sigue a nadie",
                 "noSeguidores": "Este usuario no tiene seguidores",
                 "errorCompra": "Ha habido un error inesperado con su compra",
-                "edadInsuficiente": "No tienes la edad suficiente para realizar esta acción"
+                "edadInsuficiente": "No tienes la edad suficiente para realizar esta acción",
+                "estaPropiedadObligatoria": "Este campo es obligatorio",
+                "validacionTituloJuego": "El título debe tener entre 3 y 63 carácteres y ser único",
+                "validacionVersion": "El texto de la versión debe tener menos de 16 carácteres y estar conformado por letras y dígitos"
             }
         },
         "titulosHtml": {

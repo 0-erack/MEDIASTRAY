@@ -109,7 +109,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
             <EnlaceFuncion funcion={e.url} titulo={e.subtitle ?? e.url} color={1} />
             <div className="flex overflow-auto">
               {e.data.images.map((ee: string, ii: number) => {
-              return (<img src={ee} key={ii} className="object-cover relative z-100 m-4 h-[210px] w-auto object-contain" />)
+              return (<img src={ee} key={ii} className="object-cover relative z-100 m-4 h-[220px] w-auto object-contain" />)
             })}
             </div>
           </div>);

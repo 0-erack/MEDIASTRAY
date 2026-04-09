@@ -1,6 +1,6 @@
 
 import { memo, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import BotonFuncion from '../components/Elements/BotonFuncion';
 import CajaError from '../components/Elements/CajaError';
 import Titulo from '../components/Elements/Titulo';
@@ -40,6 +40,7 @@ const RenewPremium = memo(function RenewPremium() {
   }
 
   useEffect(() => {
+    setDatosTarjeta({});
     if (!usuario) navegar("/login");
   }, []);
   useEffect(() => {

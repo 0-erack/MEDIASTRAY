@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import useIdioma from '../../hooks/useIdioma';
 import useMensajes from '../../hooks/useMensajes';
