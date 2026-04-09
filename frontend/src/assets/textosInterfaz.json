@@ -137,7 +137,8 @@
                 "textoEnlaceAdicion_requirements": "Requirements",
                 "textoEnlaceAdicion_event": "Event",
                 "textoEnlaceAdicion_text": "Text",
-                "textoEnlaceAdicion_mention": "User mention"
+                "textoEnlaceAdicion_mention": "User mention",
+                "publicarJuego": "Create game"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -165,7 +166,8 @@
                 "textoEnlaceAdicion_requirements": "Requisitos",
                 "textoEnlaceAdicion_event": "Evento",
                 "textoEnlaceAdicion_text": "Texto",
-                "textoEnlaceAdicion_mention": "Mención de usuario"
+                "textoEnlaceAdicion_mention": "Mención de usuario",
+                "publicarJuego": "Crear juego"
             }
         },
         "titulos": {
@@ -231,7 +233,9 @@
                 "textoPremium13": "All the mentioned advantages are always included on MAGNA at any plan",
                 "textoPremium14": "If you already had a MAGNA account, the expiration date will be postponed the amount of months you buy, if you didn't you will get MAGNA privileges for that many months. The prices of each months package may vary depending on time and region",
                 "textoLegal1": "Terms & conditions apply",
-                "tipBuscador": "Tip: search a tag or a genre to filter games"
+                "tipBuscador": "Tip: search a tag or a genre to filter games",
+                "tipCreacionJuego1": "Fields you set on blank will be erased.",
+                "tipCreacionJuego2": "Fields marked with (*) are required. Have also into account that the game will be uploaded as private, you will be able to publish it once it's created, as well as adding game files and some extra info."
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -251,7 +255,9 @@
                 "textoPremium13": "Todas las ventajas mencionadas están siempre incluidas en MAGNA en cualquier plan",
                 "textoPremium14": "Si ya tenías una cuenta MAGNA, la fecha de caducidad se pospondrá la cantidad de meses que compres, si ya la tenías tendrás los privilegios de MAGNA por esos meses. Los precios de cada paquete de meses podrían variar con el tiempo y la región",
                 "textoLegal1": "Se aplican los términos y condiciones",
-                "tipBuscador": "Tip: busca un tag o un género para filtrar juegos"
+                "tipBuscador": "Tip: busca un tag o un género para filtrar juegos",
+                "tipCreacionJuego1": "Los campos que dejes en blanco serán borrados.",
+                "tipCreacionJuego2": "Los campos marcados con (*) son obligatorios. Ten en cuenta también que el juego se subirá como privado, podrás establecerlo como público una vez se haya creado, así como añadir los archivos del juego y alguna información extra."
             }
         },
         "formularios": {
@@ -295,7 +301,14 @@
                 "tituloJuego": "Title",
                 "urlPortada1": "Game cover URL 1 (460x215px)",
                 "urlPortada2": "Game cover URL 2 (600x900px)",
-                "urlPortada3": "Game cover URL 3 (1920x1080px)"
+                "urlPortada3": "Game cover URL 3 (1920x1080px)",
+                "descripcionCorta": "Short description",
+                "edad": "Minimum age (0 for unrestricted)",
+                "precio": "Price (only for MAGNA users, empty for free game)",
+                "tags": "Tags separated by comma or space (look at what other games usually put as tags)",
+                "generos": "Genres separated by comma or space (look at what other games usually put as genres)",
+                "avisos": "Warnings for the people that want to play the game",
+                "idiomas": "Available languages of the game, please follow the placeholder's format to avoid conflicts"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -337,11 +350,19 @@
                 "tituloJuego": "Título",
                 "urlPortada1": "URL de la portada 1 (460x215px)",
                 "urlPortada2": "URL de la portada 2 (600x900px)",
-                "urlPortada3": "URL de la portada 3 (1920x1080px)"
+                "urlPortada3": "URL de la portada 3 (1920x1080px)",
+                "descripcionCorta": "Descripción corta",
+                "edad": "Edad mínima (0 para no restringido)",
+                "precio": "Precio (solo para cuentas MAGNA, en blanco para juego gratis)",
+                "tags": "Tags separadas por coma o espacio (descubre lo que otros juegos suelen poner como tags)",
+                "generos": "Géneros separados por coma o espacio (descubre lo que otros juegos suelen poner como géneros)",
+                "avisos": "Avisos para las personas que quieran jugar el juego",
+                "idiomas": "Idiomas disponibles en el juego, por favor siga el formato del ejemplo para evitar conflictos"
             }
         },
         "errores": {
             "EN-us": {
+                "genericoFormulario": "One or many fields are not valid, check them",
                 "sesionExpirada": "User session expired, log in again",
                 "malaContrasegna": "There was an error with the password, check it",
                 "error": "There was an error",
@@ -373,9 +394,18 @@
                 "edadInsuficiente": "You don't have the required age to perform this action",
                 "estaPropiedadObligatoria": "This field is required",
                 "validacionTituloJuego": "The title must have between 3 and 63 characters and be unique",
-                "validacionVersion": "The version's tag must have less than 16 characters and be formed by digits and letters"
+                "validacionVersion": "The version's tag must have less than 16 characters and be formed by digits and letters",
+                "descripcionCorta": "The short description must have less than 127 characters",
+                "validacionEdad": "You must enter 0 or the minimum required age to play",
+                "validacionPrecio": "You must enter a valid decimal price tag, currency symbol included",
+                "validacionTags": "Tags must be single words separated by comma, there is a limit in the number of tags. Avoid the combined use of commas and spaces",
+                "validacionGeneros": "Genres must be single words separated by comma, there is a limit in the number of genres. Avoid the combined use of commas and spaces",
+                "validacionAvisos": "Warnings must be single words separated by comma, there is a limit in the number of warnings. Avoid the combined use of commas and spaces",
+                "validacionIdiomas": "Languages must be single words separated by comma, there is a limit in the number of languages. Avoid the combined use of commas and spaces",
+                "errorFormularioJuego": "Some of the game data is not correct (or there was a server error)"
             },
             "ES-es": {
+                "genericoFormulario": "Uno o varios campos no son válidos, compruébalos",
                 "sesionExpirada": "La sesión del usuario ha expirado, inicie sesión de nuevo",
                 "malaContrasegna": "Ha habido un error con la contraseña, revísala",
                 "error": "Ha habido un error",
@@ -406,7 +436,15 @@
                 "edadInsuficiente": "No tienes la edad suficiente para realizar esta acción",
                 "estaPropiedadObligatoria": "Este campo es obligatorio",
                 "validacionTituloJuego": "El título debe tener entre 3 y 63 carácteres y ser único",
-                "validacionVersion": "El texto de la versión debe tener menos de 16 carácteres y estar conformado por letras y dígitos"
+                "validacionVersion": "El texto de la versión debe tener menos de 16 carácteres y estar conformado por letras y dígitos",
+                "descripcionCorta": "La descripción corta de un juego debe tener menos de 127 carácteres",
+                "validacionEdad": "Debes introducir 0 o la edad mínima requerida para jugar",
+                "validacionPrecio": "Debes introducir una etiqueta de precio decimal válida, con el símbolo de la moneda",
+                "validacionTags": "Los tags deben ser palabras únicas separadas por coma, hay un límite para el número de tags. Evite el uso combinado de comas y espacios",
+                "validacionGeneros": "Los géneros deben ser palabras únicas separadas por coma, hay un límite para el número de géneros. Evite el uso combinado de comas y espacios",
+                "validacionAvisos": "Los avisos deben ser palabras únicas separadas por coma, hay un límite para el número de avisos. Evite el uso combinado de comas y espacios",
+                "validacionIdiomas": "Los idiomas deben seguir el ejemplo mostrado y separarse por coma, hay un límite para el número de idiomas. Evite el uso combinado de comas y espacios",
+                "errorFormularioJuego": "Algunos de los datos del juego no son válidos (o a lo mejor ha habido un error de servidor)"
             }
         },
         "titulosHtml": {
@@ -489,7 +527,8 @@
                 "noSeguirJuego": "Game unfollowed",
                 "logout": "Logged out...",
                 "renovadoPremium": "MAGNA renewed!",
-                "premiumExpirado": "MAGNA expired..."
+                "premiumExpirado": "MAGNA expired...",
+                "exitoCrearJuego": "Game created succesfully!"
             },
             "ES-es": {
                 "loginBien": "Sesión iniciada correctamente!",
@@ -506,7 +545,8 @@
                 "noSeguirUsuario": "Ya no sigues a este usuario",
                 "logout": "Sesión cerrada...",
                 "renovadoPremium": "¡MAGNA renovado!",
-                "premiumExpirado": "MAGNA expiró..."
+                "premiumExpirado": "MAGNA expiró...",
+                "exitoCrearJuego": "Juego creado correctamente!"
             }
         },
         "dinero": {

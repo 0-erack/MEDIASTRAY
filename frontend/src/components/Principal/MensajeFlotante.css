@@ -1,5 +1,5 @@
 .zona-mensajes {
-    position:absolute; /*posicionar*/
+    position:fixed; /*posicionar*/
     overflow: scroll;
     z-index: 999;
     margin: 7px;

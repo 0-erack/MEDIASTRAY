@@ -29,3 +29,10 @@ export const identificacionFalsa = ():string => {
 export const nombreFalso = ():string => {
     return datosFalsos.nombres[Math.floor(Math.random() * datosFalsos.nombres.length)];
 }
+
+/**
+ * @returns un titulo de juego falso
+ */
+export const tituloJuegoFalso = ():string => {
+    return datosFalsos.titulosJuegos[Math.floor(Math.random() * datosFalsos.titulosJuegos.length)];
+}

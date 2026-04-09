@@ -10,9 +10,20 @@
         "yangmail@mial.go"
     ],
     "nombres": [
-        "yang mei",
-        "el poyito",
-        "juegos ejemplo",
-        "my game long name"
+        "Yang Mei",
+        "El poyito",
+        "Juegos ejemplo"
+        
+    ],
+    "titulosJuegos": [
+        "My game long name",
+        "Teeworlds",
+        "DDNet",
+        "Super Tux Kart",
+        "Super Tux",
+        "IPPG",
+        "IPPG2",
+        "Overname",
+        "Serial haste"
     ]
 }

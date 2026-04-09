@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { peticionBasica } from "../../libraries/peticiones";
-import { deApiAJuego } from "../../validators/validacionesJuego";
+import { Juego } from "../../types/Juego";
+import { deApiAJuego, deJuegoAApi } from "../../validators/validacionesJuego";
 import useAjustes from "../useAjustes";
 import useSesion from "../useSesion";
 
@@ -103,14 +104,44 @@ const useApiJuegos = () => {
         }
     }
 
+    /**
+     * Crear un juego nuevo que sea del usuario actual
+     * @param juego datos del juego nuevo
+     * @returns juego nuevo devuelto por la api, o null
+     */
+    const crearJuego = async (juego: Partial<Juego>): Promise<Partial<Juego>|null> => {
+        try {
+            if (!usuario) return null;
+            const resultado = await peticionGenerica(API_URL + "/game/create", "POST", {game: deJuegoAApi(juego)});
+            if (!resultado.ok) return null;
+            return deApiAJuego(resultado.data.game);
+        } catch (error) {
+            return null;
+        }
+    }
 
+    /**
+     * Edita un juego existente que sea del usuario actual
+     * @param juego datos nuevos del juego
+     * @returns juego nuevo devuelto por la api, o null
+     */
+    const editarJuego = async (id: string, juego: Partial<Juego>): Promise<Partial<Juego>|null> => {
+        try {
+            if (!usuario || !id) return null;
+            const resultado = await peticionGenerica(API_URL + "/game/edit/" + id, "PATCH", {newData: deJuegoAApi(juego)});
+            if (!resultado.ok) return null;
+            return deApiAJuego(resultado.data.game);
+        } catch (error) {
+            return null;
+        }
+    }
 
     const resetEstados = () => {
         setCargando(false);
         setError(false)
     }
 
-    return { cargando, error, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
+    return { cargando, error, crearJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
 };
 
 export default useApiJuegos;

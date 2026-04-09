@@ -11,6 +11,7 @@ import BotonFuncion from "../Elements/BotonFuncion";
 import EnlaceFuncion from "../Elements/EnlaceFuncion";
 import MarkdownDisplay from "../Elements/MarkdownDisplay";
 import Titulo from "../Elements/Titulo";
+import FormularioJuego from "../Forms/FormularioJuego";
 import Icono from "../Principal/Icono";
 import TarjetaUsuario from "../Usuario/TarjetaUsuario";
 import FondoPortadaJuego from "./FondoPortadaJuego";
@@ -79,6 +80,9 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         </BotonFuncion>)}
         {juego.precio && (<Titulo magnitud={3}>{juego.precio}</Titulo>)}
       </div>
+      {editando && (<div className="border-2 border-principal p-2 m-4">
+        <FormularioJuego juegoEditar={juego} />
+      </div>)}
       {jugando && (<div className="w-full h-max min-h-[600px] bg-black my-5 z-1000">
         JUGAR
       </div>)}
@@ -129,10 +133,10 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           {juego.edad != 0 && <div>{traduccion("formularios", "edadMinima")} <strong>{juego.edad}</strong></div>}
         </div>
         <div className="ml-0 lg:ml-5 text-left">
-          {juego.generos?.length != 0 && (<p>{traduccion("formularios", "listaGeneros")} <strong>{juego?.generos?.map((e:string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
-          {juego.tags?.length != 0 && (<p>{traduccion("formularios", "listaTags")} <strong>{juego?.tags?.map((e:string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
-          {juego.avisos?.length != 0 && (<p>{traduccion("formularios", "listaAvisos")} <strong>{juego?.avisos?.join(", ")}</strong></p>)}
-          {juego.idiomas?.length != 0 && (<p>{traduccion("formularios", "listaIdiomas")} <strong>{juego?.idiomas?.join(", ")}</strong></p>)}
+          {(juego.generos && juego.generos?.length != 0) && (<p>{traduccion("formularios", "listaGeneros")} <strong>{juego?.generos?.map((e:string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
+          {(juego.tags && juego.tags?.length != 0) && (<p>{traduccion("formularios", "listaTags")} <strong>{juego?.tags?.map((e:string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
+          {(juego.avisos && juego.avisos?.length != 0) && (<p>{traduccion("formularios", "listaAvisos")} <strong>{juego?.avisos?.join(", ")}</strong></p>)}
+          {(juego.idiomas && juego.idiomas?.length != 0) && (<p>{traduccion("formularios", "listaIdiomas")} <strong>{juego?.idiomas?.join(", ")}</strong></p>)}
         </div>
         <div className="ml-0 sm:ml-5">
           REPORTAR

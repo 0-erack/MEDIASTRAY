@@ -184,7 +184,7 @@ routerPriv.patch("/game/edit/:id", autenticarTokenApi, autenticarTokenSesion, as
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const resultado = await editarJuego(req.body?.newData, req.params.id, req.datosSesion!.id);
         if (resultado) {
-            return res.json(exito("Game settings changed", {resultado}));
+            return res.json(exito("Game settings changed", {game: resultado}));
         } else {
             return res.status(404).json(fallo("Couldn't change game settings or invalid credentials", null, 404));
         }
