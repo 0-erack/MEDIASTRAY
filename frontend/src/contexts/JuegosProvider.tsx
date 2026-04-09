@@ -11,7 +11,7 @@ interface JuegosProviderType {
   actualizarBackend: (usuarioActivo: boolean) => Promise<void>;
   borrarJuegoLocal: (id: string) => boolean;
   agregarJuegoLocal: (juego: Record<string, any>) => boolean;
-  editarJuegoLocal: (id: string, juego: Juego) => boolean;
+  editarJuegoLocal: (id: string, juego: Partial<Juego>) => boolean;
 }
 
 export const JuegosContext = createContext<JuegosProviderType | null>(null);
@@ -36,6 +36,7 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
     setMisJuegos([]);
     if (usuarioActivo) { //Solo se pueden tener juegos teniendo la sesion iniciada
       const resultado = await verTodosMisJuegos();
+      console.log(resultado);
       setMisJuegos(resultado ?? []);
     }
   }, []);
@@ -70,7 +71,7 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
    * @param juego datos del nuevo juego, debe de ser un juego entero valido (similar a metodo put)
    * @returns true si realmente ha pasado algo
    */
-  const editarJuegoLocal = useCallback((id: string, juego: Juego): boolean => {
+  const editarJuegoLocal = useCallback((id: string, juego: Partial<Juego>): boolean => {
     if (!validarJuegoLocal(juego)) return false;
     return borrarJuegoLocal(id) ? agregarJuegoLocal(juego) : false;
   }, []);

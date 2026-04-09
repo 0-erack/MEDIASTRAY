@@ -100,7 +100,7 @@ export const formatearJuegoPublico = (data:Partial<Juego>): Record<string, any> 
     if (typeof data.tags == "string") data.tags = data.tags!.split(",").filter(Boolean).map(e => e?.trim());
     if (typeof data.idiomas == "string") data.idiomas = data.idiomas!.split(",").filter(Boolean).map(e => e?.trim());
     if (typeof data.generos == "string") data.generos = data.generos!.split(",").filter(Boolean).map(e => e?.trim());
-    return {id: data.id, owner: data.idCreador, age: data.edad, additions: data.adiciones, publishDate: data.fechaCreacion, updateDate: data.fechaUltima, followers: data.cantidadSeguidores, players: data.cantidadJugadores, comments: data.cantidadComentarios, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, cover3: data.urlPortada3, version: data.versionActual, description: data.descripcion, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags, languages: data.idiomas, warnings: data.avisos}
+    return {id: data.id, public: data.publico, owner: data.idCreador, age: data.edad, additions: data.adiciones, publishDate: data.fechaCreacion, updateDate: data.fechaUltima, followers: data.cantidadSeguidores, players: data.cantidadJugadores, comments: data.cantidadComentarios, title: data.titulo, cover1: data.urlPortada1, cover2: data.urlPortada2, cover3: data.urlPortada3, version: data.versionActual, description: data.descripcion, shortDescription: data.descripcionCorta, price: data.precio, genres: data.generos, tags: data.tags, languages: data.idiomas, warnings: data.avisos}
 }
 
 /**

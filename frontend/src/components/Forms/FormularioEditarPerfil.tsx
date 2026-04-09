@@ -139,6 +139,7 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
                 {!quiereEliminar ? (<BotonFuncion titulo={<Texto tipo="botones" nombre="eliminarCuenta1" />} funcion={() => {setQuiereEliminar(true)}} tipo={2} hueco={false} ><Icono numero={10} color="var(--color-fondo1)" /></BotonFuncion>) : (<div className='border border-error'>
                     <InputBasico inline={true} nombre="correoEliminar" titulo={<Texto tipo="formularios" nombre="correoAntiguo" />} valor={objetoPatch.correoEliminar} tipo="text" placeholder="" />
                     <InputBasico nombre="contrasegnaEliminar" titulo={<Texto tipo="formularios" nombre="contrasegnaAntigua" />} valor={objetoPatch.contrasegnaEliminar} tipo="password" placeholder="········" />
+                    <CajaError>{traduccion("parrafos", "avisoCatastrofe1")}</CajaError>
                     <BotonFuncion titulo={<Texto tipo="botones" nombre="eliminarCuenta2" />} funcion={enviarEliminarCuenta} tipo={2} hueco={false} ><Icono numero={10} color="var(--color-fondo1)" /></BotonFuncion>
                 </div>)}
                 <CajaError texto={errorFormulario ?? ''} nivel="input" />

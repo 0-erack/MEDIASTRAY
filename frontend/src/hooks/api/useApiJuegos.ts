@@ -122,6 +122,7 @@ const useApiJuegos = () => {
 
     /**
      * Edita un juego existente que sea del usuario actual
+     * @param id juego a editar
      * @param juego datos nuevos del juego
      * @returns juego nuevo devuelto por la api, o null
      */
@@ -136,12 +137,46 @@ const useApiJuegos = () => {
         }
     }
 
+    /**
+     * Borra un juego existente que sea del usuario actual
+     * @param id juego a borrar
+     * @param contrasegna paso adicional de seguridad
+     * @returns true si todo ha ido bien
+     */
+    const borrarJuego = async (id: string, contrasegna: string): Promise<boolean> => {
+        try {
+            if (!usuario || !id) return false;
+            const resultado = await peticionGenerica(API_URL + "/game/delete/" + id, "DELETE", {password: contrasegna});
+            if (resultado.ok) return true;
+            return false;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    /**
+     * Cambia el atributo publico de un juego
+     * @param id juego a cambiar
+     * @param estado como deberia acabar
+     * @returns true si todo ha ido bien
+     */
+    const editarPublicoJuego = async (id: string, estado: boolean): Promise<boolean> => {
+        try {
+            if (!usuario || !id) return false;
+            const resultado = await peticionGenerica(API_URL + "/game/index/" + id, "PATCH", {state: estado});
+            if (resultado.ok) return true;
+            return false;
+        } catch (error) {
+            return false;
+        }
+    }
+
     const resetEstados = () => {
         setCargando(false);
         setError(false)
     }
 
-    return { cargando, error, crearJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
+    return { cargando, error, editarPublicoJuego, crearJuego, borrarJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
 };
 
 export default useApiJuegos;

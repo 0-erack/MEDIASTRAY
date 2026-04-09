@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import useApiJuegos from "../../hooks/api/useApiJuegos";
 import useIdioma from "../../hooks/useIdioma";
+import useJuegos from "../../hooks/useJuegos";
 import useMensajes from "../../hooks/useMensajes";
 import useSesion from "../../hooks/useSesion";
 import { tituloJuegoFalso } from "../../libraries/datosFalsos";
@@ -14,6 +15,7 @@ import CajaError from "../Elements/CajaError";
 import InputBasico from "../Elements/InputBasico";
 import Icono from "../Principal/Icono";
 import ImgCargando from "../Principal/ImgCargando";
+import FormularioAdiciones from "./FormularioAdiciones";
 
 interface FormValues {
   titulo?: string | null;
@@ -49,25 +51,42 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
     ? { ...juegoEditar, tags: tagsMostrables, generos: generosMostrables, avisos: avisosMostrables, idiomas: idiomasMostrables, titulo: juegoEditar.titulo ?? "", descripcion: juegoEditar.descripcion ?? "", descripcionCorta: juegoEditar.descripcionCorta ?? "", precio: juegoEditar.precio ?? "0", edad: juegoEditar.edad ?? 0, }
     : { titulo: "", edad: 0, versionActual: "v1.0.0", tags: "", generos: "", avisos: "", idiomas: "" };
   const traduccion = useIdioma();
-  const { register, handleSubmit, control, watch, formState: { errors }, setValue, reset } = useForm<FormValues>({ defaultValues: formBase, mode: 'onChange' });
+  const { register, watch, formState: { errors }, reset } = useForm<FormValues>({ defaultValues: formBase, mode: 'onChange' });
   const datos = watch();
   const tituloFalsoPlaceholder = useMemo(() => tituloJuegoFalso(), []);
   const [errorFormulario, setErrorFormulario] = useState("");
   const { lanzarMensaje } = useMensajes();
   const { premium } = useSesion();
-  const { cargando, crearJuego, editarJuego } = useApiJuegos();
+  const { cargando, crearJuego, editarJuego, borrarJuego, editarPublicoJuego } = useApiJuegos();
   const navegar = useNavigate();
+  const { borrarJuegoLocal, agregarJuegoLocal, editarJuegoLocal } = useJuegos();
+  const [intencionBorrar, setIntencionBorrar] = useState(false);
+  const [contrasegnaBorrar, setContrasegnaBorrar] = useState("");
+  const [errorBorrarJuego, setErrorBorrarJuego] = useState("");
+  const [editandoAdiciones, setEditandoAdiciones] = useState(false);
 
+  /**
+   * Formatea una comalista a un formato normal
+   * @param comalista texto base en crudo
+   * @returns comalista formateada
+   */
   const normalizarComalista = (comalista: string): string => {
     const normalizado = comalista.trim().toLowerCase().replaceAll(" ", ",").replaceAll(".", ",").replaceAll(";", ",");
     return [...new Set(normalizado.split(","))].join(",");
   }
 
+  /**
+   * Reinicia el formulario a los datos iniciales
+   */
   const resetForm = () => {
     setErrorFormulario("");
     reset(formBase);
   }
 
+  /**
+   * Validar los datos actuales del juego
+   * @returns true si son validos
+   */
   const validarTodo = (): boolean => {
     return tituloJuego(datos.titulo)
       && (datos.urlPortada1 != undefined && url(datos.urlPortada1))
@@ -84,28 +103,82 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
       && (datos.edad != undefined && (datos.edad >= 0 && datos.edad < 50));
   }
 
+  /**
+   * Enviar a editar/crear el juego
+   */
   const enviar = async () => {
     if (validarTodo()) {
       setErrorFormulario("");
-      const datosEnviar = {...limpiarVaciosStrings(datos), publico: false, precio: premium ? datos.precio : undefined, adiciones: undefined, tags: datos.tags ? normalizarComalista(datos.tags).split(",") : undefined, avisos: datos.avisos ? normalizarComalista(datos.avisos).split(",") : undefined, idiomas: datos.idiomas ? normalizarComalista(datos.idiomas).split(",") : undefined, generos: datos.generos ? normalizarComalista(datos.generos).split(",") : undefined}
+      const datosEnviar = { ...limpiarVaciosStrings(datos), publico: false, precio: premium ? datos.precio : undefined, adiciones: undefined, tags: datos.tags ? normalizarComalista(datos.tags).split(",") : undefined, avisos: datos.avisos ? normalizarComalista(datos.avisos).split(",") : undefined, idiomas: datos.idiomas ? normalizarComalista(datos.idiomas).split(",") : undefined, generos: datos.generos ? normalizarComalista(datos.generos).split(",") : undefined }
       const resultado = juegoEditar ? await editarJuego(juegoEditar.id ?? '', datosEnviar) : await crearJuego(datosEnviar);
       if (!resultado) {
         lanzarMensaje(traduccion("errores", "errorFormularioJuego"), 2);
         setErrorFormulario(traduccion("errores", "errorFormularioJuego"));
       } else {
         lanzarMensaje(traduccion("mensajes", "exitoCrearJuego"), 1);
-        navegar("/game/" + resultado.id);
         resetForm();
-        if (juegoEditar) location.reload();
+        if (juegoEditar) {
+          editarJuegoLocal(resultado.id ?? '', resultado);
+          location.reload();
+        } else {
+          agregarJuegoLocal(resultado);
+          navegar("/game/" + resultado.id);
+        }
       }
     } else {
+      lanzarMensaje(traduccion("errores", "errorBorrarJuego"), 2);
+      setErrorFormulario(traduccion("errores", "errorBorrarJuego"));
+    }
+  }
+
+  /**
+   * Manda a borrar el juego actual
+   */
+  const borrarJuegoBoton = async () => {
+    if (!juegoEditar || !intencionBorrar) return;
+    const resultado = await borrarJuego(juegoEditar.id ?? '', contrasegnaBorrar);
+    if (resultado) {
+      lanzarMensaje(traduccion("mensajes", "exitoBorrarJuego"), 3);
+      setErrorBorrarJuego("");
+      borrarJuegoLocal(juegoEditar.id ?? '');
+      navegar("/user");
+    } else {
       lanzarMensaje(traduccion("errores", "errorFormularioJuego"), 2);
-      setErrorFormulario(traduccion("errores", "genericoFormulario"));
+      setErrorBorrarJuego(traduccion("errores", "genericoFormulario"));
+    }
+  }
+
+  /**
+   * Alterna el estado publico de un juego
+   */
+  const alternarPublico = async () => {
+    if (!juegoEditar) return;
+    const nuevoEstado = juegoEditar?.publico ? false : true;
+    const resultado = await editarPublicoJuego(juegoEditar.id ?? '', nuevoEstado);
+    if (resultado) {
+      lanzarMensaje(traduccion("mensajes", "exitoCambiarPublicoJuego"), 3);
+      editarJuegoLocal(juegoEditar.id ?? '', {...juegoEditar, publico: nuevoEstado});
+      location.reload();
+    } else {
+      lanzarMensaje(traduccion("errores", "error"), 2);
     }
   }
 
   return (
     <div>
+      {juegoEditar && (<>
+        {editandoAdiciones ? (<>
+          <FormularioAdiciones id={juegoEditar?.id ?? ''} adicionesPrevias={juegoEditar?.adiciones ?? []} />
+          <br />
+        </>) : (<BotonFuncion titulo={traduccion("botones", "editarAdiciones")} funcion={() => setEditandoAdiciones(true)} tipo={0} ><Icono numero={8} color='var(--color-principal)' /></BotonFuncion>)}
+        <BotonFuncion titulo={traduccion("botones", juegoEditar.publico ? "hacerPrivado" : "hacerPublico")} funcion={alternarPublico} tipo={0} ><Icono numero={9} color='var(--color-principal)' /></BotonFuncion>
+        {intencionBorrar ? (<form onChange={(e: React.SyntheticEvent) => { setContrasegnaBorrar((e.target as HTMLInputElement).value) }}>
+          <CajaError>{traduccion("parrafos", "avisoCatastrofe1")}</CajaError>
+          <InputBasico placeholder="········" titulo={traduccion("formularios", "contrasegnaBorrarJuego")} nombre="contrasegna" ancho='30px' tipo="password" mensajeError={errorBorrarJuego ?? ''} valor={contrasegnaBorrar} />
+          <BotonFuncion titulo={traduccion("botones", "borrarJuego").toUpperCase()} funcion={borrarJuegoBoton} hueco={false} tipo={2} ><Icono numero={10} color='var(--color-fondo1)' /></BotonFuncion>
+        </form>)
+          : (<BotonFuncion titulo={traduccion("botones", "borrarJuego")} funcion={() => setIntencionBorrar(true)} tipo={2} ><Icono numero={10} color='var(--color-error)' /></BotonFuncion>)}
+      </>)}
       <p>{juegoEditar ? traduccion("parrafos", "tipCreacionJuego1") : traduccion("parrafos", "tipCreacionJuego2")}</p>
       <form className="w-full lg:w-[60%] pr-10 lg:pr-0">
         <span>

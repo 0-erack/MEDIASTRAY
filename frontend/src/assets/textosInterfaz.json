@@ -138,7 +138,11 @@
                 "textoEnlaceAdicion_event": "Event",
                 "textoEnlaceAdicion_text": "Text",
                 "textoEnlaceAdicion_mention": "User mention",
-                "publicarJuego": "Create game"
+                "publicarJuego": "Create game",
+                "borrarJuego": "Delete game...",
+                "hacerPublico": "Make public",
+                "hacerPrivado": "Make private",
+                "editarAdiciones": "Edit extra info"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -167,7 +171,11 @@
                 "textoEnlaceAdicion_event": "Evento",
                 "textoEnlaceAdicion_text": "Texto",
                 "textoEnlaceAdicion_mention": "Mención de usuario",
-                "publicarJuego": "Crear juego"
+                "publicarJuego": "Crear juego",
+                "borrarJuego": "Borrar juego...",
+                "hacerPublico": "Hacer público",
+                "hacerPrivado": "Hacer privado",
+                "editarAdiciones": "Editar información extra"
             }
         },
         "titulos": {
@@ -235,7 +243,8 @@
                 "textoLegal1": "Terms & conditions apply",
                 "tipBuscador": "Tip: search a tag or a genre to filter games",
                 "tipCreacionJuego1": "Fields you set on blank will be erased.",
-                "tipCreacionJuego2": "Fields marked with (*) are required. Have also into account that the game will be uploaded as private, you will be able to publish it once it's created, as well as adding game files and some extra info."
+                "tipCreacionJuego2": "Fields marked with (*) are required. Have also into account that the game will be uploaded as private, you will be able to publish it once it's created, as well as adding game files and some extra info.",
+                "avisoCatastrofe1": "This action will may lead to CATASTROPHIC consequences (cascade delete)"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -257,7 +266,8 @@
                 "textoLegal1": "Se aplican los términos y condiciones",
                 "tipBuscador": "Tip: busca un tag o un género para filtrar juegos",
                 "tipCreacionJuego1": "Los campos que dejes en blanco serán borrados.",
-                "tipCreacionJuego2": "Los campos marcados con (*) son obligatorios. Ten en cuenta también que el juego se subirá como privado, podrás establecerlo como público una vez se haya creado, así como añadir los archivos del juego y alguna información extra."
+                "tipCreacionJuego2": "Los campos marcados con (*) son obligatorios. Ten en cuenta también que el juego se subirá como privado, podrás establecerlo como público una vez se haya creado, así como añadir los archivos del juego y alguna información extra.",
+                "avisoCatastrofe1": "Esta acción podría llevar a consecuencias CATASTRÓFICAS (borrado en cascada)"
             }
         },
         "formularios": {
@@ -308,7 +318,8 @@
                 "tags": "Tags separated by comma or space (look at what other games usually put as tags)",
                 "generos": "Genres separated by comma or space (look at what other games usually put as genres)",
                 "avisos": "Warnings for the people that want to play the game",
-                "idiomas": "Available languages of the game, please follow the placeholder's format to avoid conflicts"
+                "idiomas": "Available languages of the game, please follow the placeholder's format to avoid conflicts",
+                "contrasegnaBorrarJuego": "Password (required for deleting the game)"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -357,7 +368,8 @@
                 "tags": "Tags separadas por coma o espacio (descubre lo que otros juegos suelen poner como tags)",
                 "generos": "Géneros separados por coma o espacio (descubre lo que otros juegos suelen poner como géneros)",
                 "avisos": "Avisos para las personas que quieran jugar el juego",
-                "idiomas": "Idiomas disponibles en el juego, por favor siga el formato del ejemplo para evitar conflictos"
+                "idiomas": "Idiomas disponibles en el juego, por favor siga el formato del ejemplo para evitar conflictos",
+                "contrasegnaBorrarJuego": "Contraseña (necesaria para borrar el juego)"
             }
         },
         "errores": {
@@ -402,7 +414,8 @@
                 "validacionGeneros": "Genres must be single words separated by comma, there is a limit in the number of genres. Avoid the combined use of commas and spaces",
                 "validacionAvisos": "Warnings must be single words separated by comma, there is a limit in the number of warnings. Avoid the combined use of commas and spaces",
                 "validacionIdiomas": "Languages must be single words separated by comma, there is a limit in the number of languages. Avoid the combined use of commas and spaces",
-                "errorFormularioJuego": "Some of the game data is not correct (or there was a server error)"
+                "errorFormularioJuego": "Some of the game data is not correct (or there was a server error)",
+                "errorBorrarJuego": "Couldn't delete game, authentication failed or there was an error"
             },
             "ES-es": {
                 "genericoFormulario": "Uno o varios campos no son válidos, compruébalos",
@@ -444,7 +457,8 @@
                 "validacionGeneros": "Los géneros deben ser palabras únicas separadas por coma, hay un límite para el número de géneros. Evite el uso combinado de comas y espacios",
                 "validacionAvisos": "Los avisos deben ser palabras únicas separadas por coma, hay un límite para el número de avisos. Evite el uso combinado de comas y espacios",
                 "validacionIdiomas": "Los idiomas deben seguir el ejemplo mostrado y separarse por coma, hay un límite para el número de idiomas. Evite el uso combinado de comas y espacios",
-                "errorFormularioJuego": "Algunos de los datos del juego no son válidos (o a lo mejor ha habido un error de servidor)"
+                "errorFormularioJuego": "Algunos de los datos del juego no son válidos (o a lo mejor ha habido un error de servidor)",
+                "errorBorrarJuego": "No se ha podido borrar el juego, la autenticación ha fallado o ha habido un error en el servidor"
             }
         },
         "titulosHtml": {
@@ -528,7 +542,9 @@
                 "logout": "Logged out...",
                 "renovadoPremium": "MAGNA renewed!",
                 "premiumExpirado": "MAGNA expired...",
-                "exitoCrearJuego": "Game created succesfully!"
+                "exitoCrearJuego": "Game created succesfully!",
+                "exitoBorrarJuego": "Game deleted succesfully...",
+                "exitoCambiarPublicoJuego": "Game's public state changed succesfully"
             },
             "ES-es": {
                 "loginBien": "Sesión iniciada correctamente!",
@@ -546,7 +562,9 @@
                 "logout": "Sesión cerrada...",
                 "renovadoPremium": "¡MAGNA renovado!",
                 "premiumExpirado": "MAGNA expiró...",
-                "exitoCrearJuego": "Juego creado correctamente!"
+                "exitoCrearJuego": "Juego creado correctamente!",
+                "exitoBorrarJuego": "Juego borrado correctamente...",
+                "exitoCambiarPublicoJuego": "El estado público del juego ha sido cambiado correctamente"
             }
         },
         "dinero": {
