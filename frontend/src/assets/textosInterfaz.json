@@ -142,7 +142,10 @@
                 "borrarJuego": "Delete game...",
                 "hacerPublico": "Make public",
                 "hacerPrivado": "Make private",
-                "editarAdiciones": "Edit extra info"
+                "editarAdiciones": "Edit extra info",
+                "eliminar": "Delete",
+                "guardar": "Save",
+                "agnadir": "Add"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -175,7 +178,10 @@
                 "borrarJuego": "Borrar juego...",
                 "hacerPublico": "Hacer público",
                 "hacerPrivado": "Hacer privado",
-                "editarAdiciones": "Editar información extra"
+                "editarAdiciones": "Editar información extra",
+                "eliminar": "Eliminar",
+                "guardar": "Guardar",
+                "agnadir": "Añadir"
             }
         },
         "titulos": {
@@ -244,7 +250,9 @@
                 "tipBuscador": "Tip: search a tag or a genre to filter games",
                 "tipCreacionJuego1": "Fields you set on blank will be erased.",
                 "tipCreacionJuego2": "Fields marked with (*) are required. Have also into account that the game will be uploaded as private, you will be able to publish it once it's created, as well as adding game files and some extra info.",
-                "avisoCatastrofe1": "This action will may lead to CATASTROPHIC consequences (cascade delete)"
+                "avisoCatastrofe1": "This action will may lead to CATASTROPHIC consequences (cascade delete)",
+                "explicarAdiciones1": "Additions are attachable pieces of information that you can add to your game, try to add one and see all the possibilities (regular users can have up to 10 per game, MAGNA users can have up to 30).",
+                "explicarAdiciones2": "Have into account that only the additions that remain here will be the ones displayed in your game, deleting one here will do so in your game."
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -267,7 +275,9 @@
                 "tipBuscador": "Tip: busca un tag o un género para filtrar juegos",
                 "tipCreacionJuego1": "Los campos que dejes en blanco serán borrados.",
                 "tipCreacionJuego2": "Los campos marcados con (*) son obligatorios. Ten en cuenta también que el juego se subirá como privado, podrás establecerlo como público una vez se haya creado, así como añadir los archivos del juego y alguna información extra.",
-                "avisoCatastrofe1": "Esta acción podría llevar a consecuencias CATASTRÓFICAS (borrado en cascada)"
+                "avisoCatastrofe1": "Esta acción podría llevar a consecuencias CATASTRÓFICAS (borrado en cascada)",
+                "explicarAdiciones1": "Las adiciones son piezas de información acoplables que puedes añadir a tu juego, prueba a añadir una para ver todas las posibilidades (los usuarios normales pueden tener hasta 10 por juego, los usuarios con MAGNA pueden hasta 30).",
+                "explicarAdiciones2": "Ten en cuenta que solo se mostrarán en la página del juego las adiciones que aparezcan aquí, borrar una también lo hará del juego original."
             }
         },
         "formularios": {
@@ -319,7 +329,27 @@
                 "generos": "Genres separated by comma or space (look at what other games usually put as genres)",
                 "avisos": "Warnings for the people that want to play the game",
                 "idiomas": "Available languages of the game, please follow the placeholder's format to avoid conflicts",
-                "contrasegnaBorrarJuego": "Password (required for deleting the game)"
+                "contrasegnaBorrarJuego": "Password (required for deleting the game)",
+                "pantallaEditarAdiciones": "Edit additions",
+                "adicionSubtitulo": "Display subtitle",
+                "adicionUrl": "URL (its use may depend on the type)",
+                "tipoAdicion_trailer": "Trailer or video",
+                "tipoAdicion_images": "Image carousel",
+                "tipoAdicion_site": "Website",
+                "tipoAdicion_ost": "OST",
+                "tipoAdicion_requirements": "Hardware specs",
+                "tipoAdicion_event": "Event",
+                "tipoAdicion_text": "Generic text",
+                "tipoAdicion_mention": "User mention",
+                "adicionTipo": "Addition type",
+                "adicionIframe": "Iframe (or otherwise, the url will be used as video url)",
+                "adicionIcon": "Custom icon (URL)",
+                "adicionCover": "OST cover (URL)",
+                "adicionSpecs": "Hardware requirements (in the format you want)",
+                "adicionText": "Custom text",
+                "adicionMention": "Nickname of a Mediastray's user",
+                "adicionImagenEvento": "Image of the event (URL)",
+                "adicionInfoEvento": "Info about the event"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -369,7 +399,27 @@
                 "generos": "Géneros separados por coma o espacio (descubre lo que otros juegos suelen poner como géneros)",
                 "avisos": "Avisos para las personas que quieran jugar el juego",
                 "idiomas": "Idiomas disponibles en el juego, por favor siga el formato del ejemplo para evitar conflictos",
-                "contrasegnaBorrarJuego": "Contraseña (necesaria para borrar el juego)"
+                "contrasegnaBorrarJuego": "Contraseña (necesaria para borrar el juego)",
+                "pantallaEditarAdiciones": "Editar adiciones",
+                "adicionSubtitulo": "Mostrar subtítulo",
+                "adicionUrl": "URL (su uso podría depender del tipo)",
+                "tipoAdicion_trailer": "Trailer o vídeo",
+                "tipoAdicion_images": "Carrusel de imágenes",
+                "tipoAdicion_site": "Sitio web",
+                "tipoAdicion_ost": "OST",
+                "tipoAdicion_requirements": "Requisitos de hardware",
+                "tipoAdicion_event": "Evento",
+                "tipoAdicion_text": "Texto generico",
+                "tipoAdicion_mention": "Mención a usuario",
+                "adicionTipo": "Tipo de adición",
+                "adicionIframe": "Iframe (o si no, se usará como url del video la url de la adición)",
+                "adicionIcon": "Icono personalizado (URL)",
+                "adicionCover": "Portada del OST (URL)",
+                "adicionSpecs": "Requisitos de hardware (en el formato que sea)",
+                "adicionText": "Texto personalizado",
+                "adicionMention": "Nickname de un usuario de mediastray",
+                "adicionImagenEvento": "Imagen del evento (URL)",
+                "adicionInfoEvento": "Información sobre el evento"
             }
         },
         "errores": {
@@ -415,13 +465,16 @@
                 "validacionAvisos": "Warnings must be single words separated by comma, there is a limit in the number of warnings. Avoid the combined use of commas and spaces",
                 "validacionIdiomas": "Languages must be single words separated by comma, there is a limit in the number of languages. Avoid the combined use of commas and spaces",
                 "errorFormularioJuego": "Some of the game data is not correct (or there was a server error)",
-                "errorBorrarJuego": "Couldn't delete game, authentication failed or there was an error"
+                "errorBorrarJuego": "Couldn't delete game, authentication failed or there was an error",
+                "validacionSubtituloAdicion": "The subtitle must have less than 32 characters",
+                "muyLargo": "Data too long"
             },
             "ES-es": {
                 "genericoFormulario": "Uno o varios campos no son válidos, compruébalos",
                 "sesionExpirada": "La sesión del usuario ha expirado, inicie sesión de nuevo",
                 "malaContrasegna": "Ha habido un error con la contraseña, revísala",
                 "error": "Ha habido un error",
+                "validacionUrl": "Introduzca una URL válida",
                 "noLogin": "No se ha podido iniciar sesión, comprueba que la contraseña y la identificación sean correctas",
                 "noRegister": "No se ha podido crear el usuario, ha habido un error, comprueba todos los campos",
                 "noUsuarioEdit": "No se ha podido editar el usuario, ha habido un error, comprueba todos los campos",
@@ -458,7 +511,9 @@
                 "validacionAvisos": "Los avisos deben ser palabras únicas separadas por coma, hay un límite para el número de avisos. Evite el uso combinado de comas y espacios",
                 "validacionIdiomas": "Los idiomas deben seguir el ejemplo mostrado y separarse por coma, hay un límite para el número de idiomas. Evite el uso combinado de comas y espacios",
                 "errorFormularioJuego": "Algunos de los datos del juego no son válidos (o a lo mejor ha habido un error de servidor)",
-                "errorBorrarJuego": "No se ha podido borrar el juego, la autenticación ha fallado o ha habido un error en el servidor"
+                "errorBorrarJuego": "No se ha podido borrar el juego, la autenticación ha fallado o ha habido un error en el servidor",
+                "validacionSubtituloAdicion": "El subtítulo debe tener menos de 32 carácteres",
+                "muyLargo": "Demasiados datos"
             }
         },
         "titulosHtml": {

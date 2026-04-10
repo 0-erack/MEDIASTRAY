@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import useApiJuegos from "../../hooks/api/useApiJuegos";
@@ -43,13 +43,14 @@ interface FormularioJuegoProps {
  */
 function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
 
-  const tagsMostrables = Array.isArray(juegoEditar?.tags) ? juegoEditar.tags.join(',') : (juegoEditar?.tags || "");
-  const generosMostrables = Array.isArray(juegoEditar?.generos) ? juegoEditar.generos.join(',') : (juegoEditar?.generos || "");
-  const avisosMostrables = Array.isArray(juegoEditar?.avisos) ? juegoEditar.avisos.join(',') : (juegoEditar?.avisos || "");
-  const idiomasMostrables = Array.isArray(juegoEditar?.idiomas) ? juegoEditar.idiomas.join(',') : (juegoEditar?.idiomas || "");
-  const formBase: FormValues = juegoEditar
+  const tagsMostrables = useMemo(() => Array.isArray(juegoEditar?.tags) ? juegoEditar.tags.join(',') : (juegoEditar?.tags || ""), [juegoEditar?.tags]);
+  const generosMostrables = useMemo(() => Array.isArray(juegoEditar?.generos) ? juegoEditar.generos.join(',') : (juegoEditar?.generos || ""), [juegoEditar?.generos]);
+  const avisosMostrables = useMemo(() => Array.isArray(juegoEditar?.avisos) ? juegoEditar.avisos.join(',') : (juegoEditar?.avisos || ""), [juegoEditar?.avisos]);
+  const idiomasMostrables = useMemo(() => Array.isArray(juegoEditar?.idiomas) ? juegoEditar.idiomas.join(',') : (juegoEditar?.idiomas || ""), [juegoEditar?.idiomas]);
+  const formBase: FormValues = useMemo(()=> juegoEditar
     ? { ...juegoEditar, tags: tagsMostrables, generos: generosMostrables, avisos: avisosMostrables, idiomas: idiomasMostrables, titulo: juegoEditar.titulo ?? "", descripcion: juegoEditar.descripcion ?? "", descripcionCorta: juegoEditar.descripcionCorta ?? "", precio: juegoEditar.precio ?? "0", edad: juegoEditar.edad ?? 0, }
-    : { titulo: "", edad: 0, versionActual: "v1.0.0", tags: "", generos: "", avisos: "", idiomas: "" };
+    : { titulo: "", edad: 0, versionActual: "v1.0.0", tags: "", generos: "", avisos: "", idiomas: "" },
+      [juegoEditar, tagsMostrables, generosMostrables, avisosMostrables, idiomasMostrables]);
   const traduccion = useIdioma();
   const { register, watch, formState: { errors }, reset } = useForm<FormValues>({ defaultValues: formBase, mode: 'onChange' });
   const datos = watch();
@@ -70,18 +71,18 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
    * @param comalista texto base en crudo
    * @returns comalista formateada
    */
-  const normalizarComalista = (comalista: string): string => {
+  const normalizarComalista = useCallback((comalista: string): string => {
     const normalizado = comalista.trim().toLowerCase().replaceAll(" ", ",").replaceAll(".", ",").replaceAll(";", ",");
     return [...new Set(normalizado.split(","))].join(",");
-  }
+  }, []);
 
   /**
    * Reinicia el formulario a los datos iniciales
    */
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setErrorFormulario("");
     reset(formBase);
-  }
+  }, [formBase]);
 
   /**
    * Validar los datos actuales del juego
@@ -106,7 +107,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
   /**
    * Enviar a editar/crear el juego
    */
-  const enviar = async () => {
+  const enviar = useCallback(async () => {
     if (validarTodo()) {
       setErrorFormulario("");
       const datosEnviar = { ...limpiarVaciosStrings(datos), publico: false, precio: premium ? datos.precio : undefined, adiciones: undefined, tags: datos.tags ? normalizarComalista(datos.tags).split(",") : undefined, avisos: datos.avisos ? normalizarComalista(datos.avisos).split(",") : undefined, idiomas: datos.idiomas ? normalizarComalista(datos.idiomas).split(",") : undefined, generos: datos.generos ? normalizarComalista(datos.generos).split(",") : undefined }
@@ -126,15 +127,15 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
         }
       }
     } else {
-      lanzarMensaje(traduccion("errores", "errorBorrarJuego"), 2);
-      setErrorFormulario(traduccion("errores", "errorBorrarJuego"));
+      lanzarMensaje(traduccion("errores", "errorFormularioJuego"), 2);
+      setErrorFormulario(traduccion("errores", "errorFormularioJuego"));
     }
-  }
+  }, [datos, premium, juegoEditar, traduccion]);
 
   /**
    * Manda a borrar el juego actual
    */
-  const borrarJuegoBoton = async () => {
+  const borrarJuegoBoton = useCallback(async () => {
     if (!juegoEditar || !intencionBorrar) return;
     const resultado = await borrarJuego(juegoEditar.id ?? '', contrasegnaBorrar);
     if (resultado) {
@@ -146,12 +147,12 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
       lanzarMensaje(traduccion("errores", "errorFormularioJuego"), 2);
       setErrorBorrarJuego(traduccion("errores", "genericoFormulario"));
     }
-  }
+  }, [juegoEditar, intencionBorrar, contrasegnaBorrar, traduccion]);
 
   /**
    * Alterna el estado publico de un juego
    */
-  const alternarPublico = async () => {
+  const alternarPublico = useCallback(async () => {
     if (!juegoEditar) return;
     const nuevoEstado = juegoEditar?.publico ? false : true;
     const resultado = await editarPublicoJuego(juegoEditar.id ?? '', nuevoEstado);
@@ -162,7 +163,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
     } else {
       lanzarMensaje(traduccion("errores", "error"), 2);
     }
-  }
+  }, [juegoEditar, traduccion]);
 
   return (
     <div>
@@ -171,7 +172,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
           <FormularioAdiciones id={juegoEditar?.id ?? ''} adicionesPrevias={juegoEditar?.adiciones ?? []} />
           <br />
         </>) : (<BotonFuncion titulo={traduccion("botones", "editarAdiciones")} funcion={() => setEditandoAdiciones(true)} tipo={0} ><Icono numero={8} color='var(--color-principal)' /></BotonFuncion>)}
-        <BotonFuncion titulo={traduccion("botones", juegoEditar.publico ? "hacerPrivado" : "hacerPublico")} funcion={alternarPublico} tipo={0} ><Icono numero={9} color='var(--color-principal)' /></BotonFuncion>
+        <BotonFuncion titulo={traduccion("botones", juegoEditar.publico ? "hacerPrivado" : "hacerPublico")} funcion={alternarPublico} tipo={0} ><Icono numero={juegoEditar.publico ? 14 : 13} color='var(--color-principal)' /></BotonFuncion>
         {intencionBorrar ? (<form onChange={(e: React.SyntheticEvent) => { setContrasegnaBorrar((e.target as HTMLInputElement).value) }}>
           <CajaError>{traduccion("parrafos", "avisoCatastrofe1")}</CajaError>
           <InputBasico placeholder="········" titulo={traduccion("formularios", "contrasegnaBorrarJuego")} nombre="contrasegna" ancho='30px' tipo="password" mensajeError={errorBorrarJuego ?? ''} valor={contrasegnaBorrar} />
@@ -183,58 +184,58 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
       <form className="w-full lg:w-[60%] pr-10 lg:pr-0">
         <span>
           <InputBasico placeholder={tituloFalsoPlaceholder} titulo={(juegoEditar ? "" : "(*) ") + traduccion("formularios", "tituloJuego")} nombre="titulo" ancho='full' tipo="text" validador={tituloJuego} objetoHook={register("titulo", { required: traduccion("errores", "estaPropiedadObligatoria"), minLength: { value: 3, message: traduccion("errores", "validacionTituloJuego") } })} mensajeError={errors?.titulo?.message ?? ''} />
-          {errors.titulo && <p className='text-error'>{errors.titulo.message}</p>}
+          {errors.titulo && <CajaError>{errors.titulo.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="https://coversforgames.com/images/1/460x215" titulo={traduccion("formularios", "urlPortada1")} nombre="urlPortada1" ancho='full' tipo="text" validador={(v) => !v || url(v)} objetoHook={register("urlPortada1", { validate: (v) => !v || url(v) || traduccion("errores", "validacionUrl") })} mensajeError={errors?.urlPortada1?.message ?? ''} />
           <img src={datos.urlPortada1 ?? "/public/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada1 ? 'w-[460px] h-[215px]' : 'hidden'}`} />
-          {errors.urlPortada1 && <p className='text-error'>{errors.urlPortada1.message}</p>}
+          {errors.urlPortada1 && <CajaError>{errors.urlPortada1.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="https://coversforgames.com/images/1/600x900" titulo={traduccion("formularios", "urlPortada2")} nombre="urlPortada2" ancho='full' tipo="text" validador={(v) => !v || url(v)} objetoHook={register("urlPortada2", { validate: (v) => !v || url(v) || traduccion("errores", "validacionUrl") })} mensajeError={errors?.urlPortada2?.message ?? ''} />
           <img src={datos.urlPortada2 ?? "/public/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada2 ? 'w-[300px] h-[450px]' : 'hidden'}`} />
-          {errors.urlPortada2 && <p className='text-error'>{errors.urlPortada2.message}</p>}
+          {errors.urlPortada2 && <CajaError>{errors.urlPortada2.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="https://coversforgames.com/images/1/1920x1080" titulo={traduccion("formularios", "urlPortada3")} nombre="urlPortada3" ancho='full' tipo="text" validador={(v) => !v || url(v)} objetoHook={register("urlPortada3", { validate: (v) => !v || url(v) || traduccion("errores", "validacionUrl") })} mensajeError={errors?.urlPortada3?.message ?? ''} />
           <img src={datos.urlPortada3 ?? "/public/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada3 ? 'w-[480px] h-[270px]' : 'hidden'}`} />
-          {errors.urlPortada3 && <p className='text-error'>{errors.urlPortada3.message}</p>}
+          {errors.urlPortada3 && <CajaError>{errors.urlPortada3.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="v1.0.0" titulo={traduccion("formularios", "versionActual")} nombre="versionActual" ancho='full' tipo="text" validador={(v) => !v || version(v)} objetoHook={register("versionActual", { validate: (v) => !v || version(v) || traduccion("errores", "validacionVersion") })} mensajeError={errors?.versionActual?.message ?? ''} />
-          {errors.versionActual && <p className='text-error'>{errors.versionActual.message}</p>}
+          {errors.versionActual && <CajaError>{errors.versionActual.message}</CajaError>}
         </span>
         <span>
           <InputBasico titulo={traduccion("formularios", "descripcionCorta")} nombre="descripcionCorta" ancho='full' tipo="textarea" validador={(v) => !v || descripcionCortaJuego(v)} objetoHook={register("descripcionCorta", { validate: (v) => !v || descripcionCortaJuego(v) || traduccion("errores", "descripcionCorta") })} mensajeError={errors?.descripcionCorta?.message ?? ''} />
-          {errors.descripcionCorta && <p className='text-error'>{errors.descripcionCorta.message}</p>}
+          {errors.descripcionCorta && <CajaError>{errors.descripcionCorta.message}</CajaError>}
         </span>
         <span>
           <InputBasico markdown={premium} valor={datos.descripcion} titulo={traduccion("formularios", "descripcion")} nombre="descripcion" ancho='full' tipo="textarea" validador={(v) => !v || descripcionJuego(v)} objetoHook={register("descripcion", { validate: (v) => !v || descripcionJuego(v) || traduccion("errores", "descripcion") })} mensajeError={errors?.descripcion?.message ?? ''} />
-          {errors.descripcion && <p className='text-error'>{errors.descripcion.message}</p>}
+          {errors.descripcion && <CajaError>{errors.descripcion.message}</CajaError>}
         </span>
         <span>
           <InputBasico titulo={traduccion("formularios", "edad")} nombre="edad" ancho='10px' tipo="number" validador={(v) => !v || (Number.isInteger(Number(v)) && Number(v) >= 0 && Number(v) < 50)} objetoHook={register("edad", { min: { value: 0, message: traduccion("errores", "validacionEdad") }, max: { value: 49, message: traduccion("errores", "validacionEdad") }, validate: (v) => !v || (Number.isInteger(Number(v)) && Number(v) >= 0 && Number(v) < 50) || traduccion("errores", "validacionEdad") })} mensajeError={errors?.edad?.message ?? ''} />
-          {errors.edad && <p className='text-error'>{errors.edad.message}</p>}
+          {errors.edad && <CajaError>{errors.edad.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="short,retro,terror,free2play,multiplayer,indie,story,etc" titulo={traduccion("formularios", "tags")} nombre="tags" ancho='full' tipo="text" validador={(v) => !v || comalista(normalizarComalista(v))} objetoHook={register("tags", { validate: (v) => !v || comalista(normalizarComalista(v)) || traduccion("errores", "validacionTags") })} mensajeError={errors?.tags?.message ?? ''} />
-          {errors.tags && <p className='text-error'>{errors.tags.message}</p>}
+          {errors.tags && <CajaError>{errors.tags.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="rpg,platformer,shooter,visualnovel,strategy,puzzles,etc" titulo={traduccion("formularios", "generos")} nombre="generos" ancho='full' tipo="text" validador={(v) => !v || comalista(normalizarComalista(v))} objetoHook={register("generos", { validate: (v) => !v || comalista(normalizarComalista(v)) || traduccion("errores", "validacionGeneros") })} mensajeError={errors?.generos?.message ?? ''} />
-          {errors.generos && <p className='text-error'>{errors.generos.message}</p>}
+          {errors.generos && <CajaError>{errors.generos.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="jumpscares,violence,epilepsy,gore,nudity,drugs,etc" titulo={traduccion("formularios", "avisos")} nombre="avisos" ancho='full' tipo="text" validador={(v) => !v || comalista(normalizarComalista(v))} objetoHook={register("avisos", { validate: (v) => !v || comalista(normalizarComalista(v)) || traduccion("errores", "validacionAvisos") })} mensajeError={errors?.avisos?.message ?? ''} />
-          {errors.avisos && <p className='text-error'>{errors.avisos.message}</p>}
+          {errors.avisos && <CajaError>{errors.avisos.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="ES-es,ZH-cn,EN-us,HI-in,ES-es,FR-fr,BN-bd,PT-br,RU-ru,PL-pl,IT-it,AR-eg,DE-de,TR-tr,etc" titulo={traduccion("formularios", "idiomas")} nombre="idiomas" ancho='full' tipo="text" validador={(v) => !v || comalista(normalizarComalista(v))} objetoHook={register("idiomas", { validate: (v) => !v || comalista(normalizarComalista(v)) || traduccion("errores", "validacionIdiomas") })} mensajeError={errors?.idiomas?.message ?? ''} />
-          {errors.idiomas && <p className='text-error'>{errors.idiomas.message}</p>}
+          {errors.idiomas && <CajaError>{errors.idiomas.message}</CajaError>}
         </span>
         {premium && (<span>
           <InputBasico placeholder="3.99€" titulo={traduccion("formularios", "precio")} nombre="precio" ancho='10px' tipo="text" validador={(v) => !v || precio(v)} objetoHook={register("precio", { validate: (v) => !v || precio(v) || traduccion("errores", "validacionPrecio") })} mensajeError={errors?.precio?.message ?? ''} />
-          {errors.precio && <p className='text-error'>{errors.precio.message}</p>}
+          {errors.precio && <CajaError>{errors.precio.message}</CajaError>}
         </span>)}
         <CajaError texto={errorFormulario ?? ''} nivel="input" />
         <BotonFuncion titulo={traduccion("botones", juegoEditar ? "editarJuego" : "publicarJuego")} funcion={enviar} tipo={1} hueco={false} ><Icono numero={juegoEditar ? 9 : 16} color='var(--color-fondo1)' /></BotonFuncion>

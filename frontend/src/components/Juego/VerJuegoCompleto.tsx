@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useApiJuegos from "../../hooks/api/useApiJuegos";
 import useIdioma from "../../hooks/useIdioma";
 import useJuegos from "../../hooks/useJuegos";
@@ -27,7 +27,7 @@ const VerJuegoCompleto = ({ id }: VerJuegoCompletoProps) => {
     const traduccion = useIdioma();
     const { agregarJuegoLocal, misJuegos } = useJuegos();
     const { verJuego, cargando, error } = useApiJuegos();
-    const errorNoEdad = () => (<div className="text-center">{" +" + juegoCargado!.edad} <CajaError nombre="edadInsuficiente" /> <EnlaceFuncion titulo={traduccion("botones", "irInicio")} funcion="/" /></div>);
+    const errorNoEdad = useCallback(() => (<div className="text-center">{" +" + juegoCargado!.edad} <CajaError nombre="edadInsuficiente" /> <EnlaceFuncion titulo={traduccion("botones", "irInicio")} funcion="/" /></div>), [juegoCargado, traduccion]);
 
     const cargaInicial = async () => {
         setEsMio(false);

@@ -40,20 +40,19 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
   const { lanzarMensaje } = useMensajes();
   useTituloDinamico("", juego.titulo);
   
-
-  const alternarSeguir = async () => {
+  const alternarSeguir = useCallback(async () => {
     const resultado = await seguirJuego(juego.id, siguiendo ? -1 : 1);
     if (resultado) {
       lanzarMensaje(traduccion("mensajes", siguiendo ? "noSeguirJuego" : "seguirJuego"), siguiendo ? 3 : 1);
       juego.cantidadSeguidores += siguiendo ? -1 : 1;
       setSiguiendo(!siguiendo);
     }
-  }
+  }, [siguiendo, juego.id, traduccion]);
 
-  const filtrarAdiciones = (tipo: string, negativo = false, personalizadas: Array<Record<string, any>> = []): Array<Record<string, any>> => {
+  const filtrarAdiciones = useCallback((tipo: string, negativo = false, personalizadas: Array<Record<string, any>> = []): Array<Record<string, any>> => {
     if (!juego?.adiciones && !personalizadas.length) return [];
     return (personalizadas.length ? personalizadas : juego.adiciones).filter((e: Record<string, any>) => negativo ? e?.type as string !== tipo : e?.type as string === tipo) ?? [];
-  }
+  }, [juego.adiciones]);
 
   const cargaInicial = useCallback(async () => {
     setCreadorEsPremium((await verPremium(juego.idCreador))?.active ?? false);
@@ -75,7 +74,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         {!esMio && usuario && (<BotonFuncion titulo={traduccion("botones", siguiendo ? "noSeguir" : "seguir")} funcion={alternarSeguir} tipo={1}>
           {siguiendo ? (<Icono numero={18} color='var(--color-info1)' />) : (<Icono numero={19} color='var(--color-principal)' />)}
         </BotonFuncion>)}
-        {!jugando && esMio && !editando && (<BotonFuncion titulo={traduccion("botones", "editarJuego")} funcion={() => { setEditando(true) }} tipo={1}>
+        {!jugando && esMio && !editando && (<BotonFuncion titulo={traduccion("botones", "editarJuego")} funcion={() => { setEditando(true) }} tipo={0}>
           <Icono numero={9} color="var(--color-principal)" />
         </BotonFuncion>)}
         {juego.precio && (<Titulo magnitud={3}>{juego.precio}</Titulo>)}
