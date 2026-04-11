@@ -250,7 +250,7 @@ export const verJuegosUsuario = async (id: string, idVisor: string | null, pagin
         juegosUsuario = await db.select().from(juegos).where(and(eq(juegos.idCreador, id), eq(juegos.publico, true))).orderBy(desc(juegos.cantidadJugadores)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     }
     if (!juegosUsuario || !juegosUsuario.length) throw { message: "Games not found", code: 404 }
-    juegosUsuario = await Promise.all(juegosUsuario.map(async (e) => {
+    if (id === idVisor && pagina == -1) juegosUsuario = await Promise.all(juegosUsuario.map(async (e) => {
         const adiciones = await buscarAdicionesJuego(e.id) ?? [];
         return {...e, adiciones}
     })) 

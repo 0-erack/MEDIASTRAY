@@ -24,7 +24,8 @@ const FondoPortadaJuego = memo(function FondoPortadaJuego({ url }: { url: string
         className="w-full h-full opacity-10 scale-110 bg-repeat-y bg-top"
         style={{
           backgroundImage: `url('${url}')`,
-          backgroundSize: '100% 500px'
+          backgroundSize: '100% 500px',
+          imageRendering: "pixelated"
         }}
       ></div>
     </div>

@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import useApiJuegos from "../../hooks/api/useApiJuegos";
+import useAjustes from "../../hooks/useAjustes";
 import useIdioma from "../../hooks/useIdioma";
 import useJuegos from "../../hooks/useJuegos";
 import useMensajes from "../../hooks/useMensajes";
@@ -65,6 +66,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
   const [contrasegnaBorrar, setContrasegnaBorrar] = useState("");
   const [errorBorrarJuego, setErrorBorrarJuego] = useState("");
   const [editandoAdiciones, setEditandoAdiciones] = useState(false);
+  const { PUBLIC_URL } = useAjustes();
 
   /**
    * Formatea una comalista a un formato normal
@@ -188,17 +190,17 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
         </span>
         <span>
           <InputBasico placeholder="https://coversforgames.com/images/1/460x215" titulo={traduccion("formularios", "urlPortada1")} nombre="urlPortada1" ancho='full' tipo="text" validador={(v) => !v || url(v)} objetoHook={register("urlPortada1", { validate: (v) => !v || url(v) || traduccion("errores", "validacionUrl") })} mensajeError={errors?.urlPortada1?.message ?? ''} />
-          <img src={datos.urlPortada1 ?? "/public/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada1 ? 'w-[460px] h-[215px]' : 'hidden'}`} />
+          <img src={datos.urlPortada1 ?? PUBLIC_URL + "/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada1 ? 'w-[460px] h-[215px]' : 'hidden'}`} />
           {errors.urlPortada1 && <CajaError>{errors.urlPortada1.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="https://coversforgames.com/images/1/600x900" titulo={traduccion("formularios", "urlPortada2")} nombre="urlPortada2" ancho='full' tipo="text" validador={(v) => !v || url(v)} objetoHook={register("urlPortada2", { validate: (v) => !v || url(v) || traduccion("errores", "validacionUrl") })} mensajeError={errors?.urlPortada2?.message ?? ''} />
-          <img src={datos.urlPortada2 ?? "/public/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada2 ? 'w-[300px] h-[450px]' : 'hidden'}`} />
+          <img src={datos.urlPortada2 ?? PUBLIC_URL + "/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada2 ? 'w-[300px] h-[450px]' : 'hidden'}`} />
           {errors.urlPortada2 && <CajaError>{errors.urlPortada2.message}</CajaError>}
         </span>
         <span>
           <InputBasico placeholder="https://coversforgames.com/images/1/1920x1080" titulo={traduccion("formularios", "urlPortada3")} nombre="urlPortada3" ancho='full' tipo="text" validador={(v) => !v || url(v)} objetoHook={register("urlPortada3", { validate: (v) => !v || url(v) || traduccion("errores", "validacionUrl") })} mensajeError={errors?.urlPortada3?.message ?? ''} />
-          <img src={datos.urlPortada3 ?? "/public/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada3 ? 'w-[480px] h-[270px]' : 'hidden'}`} />
+          <img src={datos.urlPortada3 ?? PUBLIC_URL + "/coverless1.png"} className={`lg:mb-0 mb-3 mx-auto object-cover relative border border-principal ${datos.urlPortada3 ? 'w-[480px] h-[270px]' : 'hidden'}`} />
           {errors.urlPortada3 && <CajaError>{errors.urlPortada3.message}</CajaError>}
         </span>
         <span>

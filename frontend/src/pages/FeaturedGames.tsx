@@ -1,6 +1,8 @@
 
 import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
+import ListaJuegosDestacados from '../components/Juego/ListaJuegosDestacados';
+import Icono from '../components/Principal/Icono';
 import useIdioma from '../hooks/useIdioma';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
@@ -14,8 +16,9 @@ const FeaturedGames = memo(function FeaturedGames() {
 
   return (
     <>
-      <Titulo>{traduccion("titulos", "juegosDestacados")}</Titulo>
-
+      <Titulo><Icono color='var(--color-principal)' numero={3} tamagno={16} /> {traduccion("titulos", "juegosDestacados")}</Titulo>
+      <p>{traduccion("parrafos", "explicarDestacados")}</p>
+      <ListaJuegosDestacados infinito={false} />
     </>
   )
 });

@@ -188,12 +188,92 @@ const useApiJuegos = () => {
         }
     }
 
+    /**
+     * Busca los juegos de un usuario
+     * @param id usuario a consultar
+     * @param pagina en que pagina buscar (de 50 en 50)
+     * @returns los juegos en formato miniatura
+     */
+    const buscarJuegosUsuario = async (id: string, pagina = 0): Promise<Array<Partial<Juego>>|null> => {
+        try {
+            if (!id) return null;
+            const resultado = await peticionGenerica(API_URL + `/user/games/${id}?page=${pagina ?? '0'}`, "GET");
+            if (resultado.ok) return resultado.data.games.map(deApiAJuego);
+            return null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    /**
+     * Busca los juegos que sigue el usuario
+     * @param pagina en que pagina buscar (de 50 en 50)
+     * @returns los juegos en formato miniatura
+     */
+    const buscarJuegosSeguidos = async (pagina = 0): Promise<Array<Partial<Juego>>> => {
+        try {
+            if (!usuario) return [];
+            const resultado = await peticionGenerica(API_URL + `/game/followed?page=${pagina}`, "GET");
+            if (resultado.ok) return resultado.data.map(deApiAJuego);
+            return [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    /**
+     * Busca los juegos a partir de un texto
+     * @param busqueda texto de busqueda
+     * @param pagina en la cual buscar
+     * @param order tipo de orden, definido por el backend
+     * @returns los juegos en formato miniatura
+     */
+    const buscar = async (busqueda: string, pagina = 0, order = 0): Promise<Array<Record<string, any>>> => {
+        try {
+            const resultado = await peticionGenerica(API_URL + `/game/search/${busqueda}?page=${pagina}&order=${order}`, "GET");
+            if (resultado.ok) return resultado.data.results.map(deApiAJuego);
+            return [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    /**
+     * Busca el juego semanal o diario actual
+     * @param semanal true para ver el semanal y no el diario
+     * @returns el juego en formato miniatura
+     */
+    const verJuegoTemporal = async (semanal = false): Promise<Partial<Juego>|null> => {
+        try {
+            const resultado = await peticionGenerica(API_URL + `/game/${semanal ? 'weekly' : 'daily'}`, "GET");
+            if (resultado.ok) return deApiAJuego(resultado.data.game);
+            return null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    /**
+     * Busca los juegos destacados en x pagina
+     * @param pagina en que pagina buscar (de 50 en 50)
+     * @returns los juegos en formato miniatura
+     */
+    const verJuegosDestacados = async (pagina = 0): Promise<Array<Partial<Juego>>> => {
+        try {
+            const resultado = await peticionGenerica(API_URL + `/game/featured?page=${pagina}`, "GET");
+            if (resultado.ok) return resultado.data.games.map(deApiAJuego);
+            return [];
+        } catch (error) {
+            return [];
+        }
+    }
+
     const resetEstados = () => {
         setCargando(false);
         setError(false)
     }
 
-    return { cargando, error, editarPublicoJuego, establecerAdiciones, crearJuego, borrarJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
+    return { cargando, error, verJuegosDestacados, verJuegoTemporal, buscar, editarPublicoJuego, buscarJuegosSeguidos, buscarJuegosUsuario, establecerAdiciones, crearJuego, borrarJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
 };
 
 export default useApiJuegos;

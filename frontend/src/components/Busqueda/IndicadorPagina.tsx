@@ -7,11 +7,12 @@ import InputBasico from "../Elements/InputBasico";
  * Indicador de paginado, se usa con react-hook-form, se puede elegir a mano o usar botones de atajo
  * @param control usado por ract-hook-form
  * @param setValue usado por react-hook-form
+ * @param nombre del valor de la propiedad del form
  */
-function IndicadorPagina({ control, setValue }: { control: any, setValue: any }) {
+function IndicadorPagina({ control, setValue, nombre = "pagina" }: { control: any, setValue: any, nombre?: string }) {
     const traduccion = useIdioma();
     const { field } = useController({
-        name: "pagina",
+        name: nombre ?? "pagina",
         control,
         defaultValue: 0,
         rules: { min: 0 }
@@ -19,7 +20,7 @@ function IndicadorPagina({ control, setValue }: { control: any, setValue: any })
 
     const cambiarValor = (delta: number) => {
         const nuevo = Math.max(0, (Number(field.value) || 0) + delta);
-        setValue("pagina", nuevo, { shouldDirty: true });
+        setValue(nombre, nuevo, { shouldDirty: true, shouldValidate: true, shouldTouch: true });
     };
 
     return (

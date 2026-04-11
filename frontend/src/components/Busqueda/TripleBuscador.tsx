@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from 'react-hook-form';
+import useApiJuegos from "../../hooks/api/useApiJuegos";
 import useApiUsuarios from "../../hooks/api/useApiUsuarios";
 import useAjustes from "../../hooks/useAjustes";
 import useIdioma from "../../hooks/useIdioma";
+import { Juego } from "../../types/Juego";
 import { Usuario } from "../../types/Usuario";
 import BotonFuncion from "../Elements/BotonFuncion";
 import InputBasico from "../Elements/InputBasico";
 import Titulo from "../Elements/Titulo";
+import TarjetaJuego from "../Juego/TarjetaJuego";
 import Icono from "../Principal/Icono";
 import TarjetaUsuario from "../Usuario/TarjetaUsuario";
 import IndicadorPagina from "./IndicadorPagina";
@@ -29,12 +32,13 @@ function TripleBuscador({inicial}: {inicial: string}) {
   const formBase: FormValues = { busquedaActual: inicial ?? "", buscarUsuarios: true, buscarJuegos: true, buscarForos: true, orden: '0', pagina: 0 }
   const traduccion = useIdioma();
   const { register, handleSubmit, control, watch, formState: { errors }, setValue } = useForm<FormValues>({ defaultValues: formBase });
-  const datos = watch() /*useState<FormValues>(formBase);*/
+  const datos = watch(); /*useState<FormValues>(formBase);*/
   const [textoPrevio, setTextoPrevio] = useState("");
   const { TAMAGNO_PAGINA, FRECUENCIA_ACTUALIZACION } = useAjustes();
   const { buscar: buscarUsuarios } = useApiUsuarios();
+  const { buscar: buscarJuegos } = useApiJuegos();
   const [usuariosCargados, setUsuariosCargados] = useState<Array<Partial<Usuario>>>([]);
-  const [juegosCargados, setJuegosCargados] = useState([]);
+  const [juegosCargados, setJuegosCargados] = useState<Array<Partial<Juego>>>([]);
   const [forosCargados, setForosCargados] = useState([]);
   const opcionesOrden = useMemo(() => [
     { valor: "0", etiqueta: traduccion("formularios", "busquedaOrdenRelevancia") },
@@ -51,6 +55,10 @@ function TripleBuscador({inicial}: {inicial: string}) {
       if (datos.buscarUsuarios) {
         const resultado = await buscarUsuarios(texto, parseInt(datos?.pagina as string) ?? 0, parseInt(datos.orden) ?? 0);
         setUsuariosCargados(resultado.length ? resultado : []);
+      }
+      if (datos.buscarJuegos) {
+        const resultado = await buscarJuegos(texto, parseInt(datos?.pagina as string) ?? 0, parseInt(datos.orden) ?? 0);
+        setJuegosCargados(resultado.length ? resultado : []);
       }
     }
   }
@@ -95,7 +103,7 @@ function TripleBuscador({inicial}: {inicial: string}) {
       </div>
       <p>{traduccion("parrafos", "tipBuscador")}</p>
       <hr />
-      <div className="sm:flex w-full items-start gap-5 h-full">
+      <div className="lg:flex w-full items-start gap-5 h-full">
         {datos.buscarUsuarios && (
           <div className="flex-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
             <Titulo magnitud={3}><Icono numero={1} color="var(--color-principal)" /> {traduccion("titulos", "parteUsuarios")}</Titulo>
@@ -105,11 +113,11 @@ function TripleBuscador({inicial}: {inicial: string}) {
           </div>
         )}
         {datos.buscarJuegos && (
-          <div className="flex-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
+          <div className="flex-1 p-3 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
             <Titulo magnitud={3}><Icono numero={3} color="var(--color-principal)" /> {traduccion("titulos", "parteJuegos")}</Titulo>
-            {juegosCargados.length ? (<>
-              {juegosCargados.map((e) => (<></>))}
-            </>) : (<p>{traduccion("errores", "juegoNoEncontrado")}</p>)}
+            {juegosCargados.length ? (<div className="text-left">
+              {juegosCargados.map((e, i) => (<TarjetaJuego key={i} juego={e} />))}
+            </div>) : (<p>{traduccion("errores", "juegoNoEncontrado")}</p>)}
           </div>
         )}
         {datos.buscarForos && (

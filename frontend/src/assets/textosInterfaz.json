@@ -202,9 +202,12 @@
                 "comprarMeses": "Buy MAGNA months",
                 "inicio": "The online gaming open-source platform for players and developers",
                 "juegoDiario": "Daily game",
+                "juegoSemanal": "Weekly game",
                 "juegosDestacados": "Featured games",
                 "forosDestacados": "Featured forums",
-                "crearJuego": "Create game"
+                "crearJuego": "Create game",
+                "juegosPropios": "My games",
+                "juegosSeguidos": "Followed games"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -223,9 +226,12 @@
                 "comprarMeses": "Comprar meses de MAGNA",
                 "inicio": "La plataforma open-source olnine para jugadores y desarrolladores",
                 "juegoDiario": "Juego diario",
+                "juegoSemanal": "Juego semanal",
                 "juegosDestacados": "Juegos destacados",
                 "forosDestacados": "Foros destacados",
-                "crearJuego": "Crear juego"
+                "crearJuego": "Crear juego",
+                "juegosPropios": "Mis juegos",
+                "juegosSeguidos": "Juegos seguidos"
             }
         },
         "parrafos": {
@@ -252,7 +258,8 @@
                 "tipCreacionJuego2": "Fields marked with (*) are required. Have also into account that the game will be uploaded as private, you will be able to publish it once it's created, as well as adding game files and some extra info.",
                 "avisoCatastrofe1": "This action will may lead to CATASTROPHIC consequences (cascade delete)",
                 "explicarAdiciones1": "Additions are attachable pieces of information that you can add to your game, try to add one and see all the possibilities (regular users can have up to 10 per game, MAGNA users can have up to 30).",
-                "explicarAdiciones2": "Have into account that only the additions that remain here will be the ones displayed in your game, deleting one here will do so in your game."
+                "explicarAdiciones2": "Have into account that only the additions that remain here will be the ones displayed in your game, deleting one here will do so in your game.",
+                "explicarDestacados": "Here are shown the most popular games in the platform based on players, followers, comments and other features."
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -277,7 +284,8 @@
                 "tipCreacionJuego2": "Los campos marcados con (*) son obligatorios. Ten en cuenta también que el juego se subirá como privado, podrás establecerlo como público una vez se haya creado, así como añadir los archivos del juego y alguna información extra.",
                 "avisoCatastrofe1": "Esta acción podría llevar a consecuencias CATASTRÓFICAS (borrado en cascada)",
                 "explicarAdiciones1": "Las adiciones son piezas de información acoplables que puedes añadir a tu juego, prueba a añadir una para ver todas las posibilidades (los usuarios normales pueden tener hasta 10 por juego, los usuarios con MAGNA pueden hasta 30).",
-                "explicarAdiciones2": "Ten en cuenta que solo se mostrarán en la página del juego las adiciones que aparezcan aquí, borrar una también lo hará del juego original."
+                "explicarAdiciones2": "Ten en cuenta que solo se mostrarán en la página del juego las adiciones que aparezcan aquí, borrar una también lo hará del juego original.",
+                "explicarDestacados": "Aquí se muestran los juegos más populares de la plataforma basado en jugadores, seguidores, comentarios y otras características."
             }
         },
         "formularios": {
@@ -470,7 +478,8 @@
                 "errorBorrarJuego": "Couldn't delete game, authentication failed or there was an error",
                 "validacionSubtituloAdicion": "The subtitle must have less than 32 characters",
                 "muyLargo": "Data too long",
-                "errorCambiarAdiciones": "Couldn't update game's additions, data was invalid or there was a server error"
+                "errorCambiarAdiciones": "Couldn't update game's additions, data was invalid or there was a server error",
+                "noHayJuegos": "There are no games (or they weren't found)"
             },
             "ES-es": {
                 "genericoFormulario": "Uno o varios campos no son válidos, compruébalos",
@@ -516,7 +525,8 @@
                 "errorFormularioJuego": "Algunos de los datos del juego no son válidos (o a lo mejor ha habido un error de servidor)",
                 "errorBorrarJuego": "No se ha podido borrar el juego, la autenticación ha fallado o ha habido un error en el servidor",
                 "validacionSubtituloAdicion": "El subtítulo debe tener menos de 32 carácteres",
-                "muyLargo": "Demasiados datos"
+                "muyLargo": "Demasiados datos",
+                "noHayJuegos": "No hay juegos (o no han sido encontrados)"
             }
         },
         "titulosHtml": {
@@ -556,11 +566,13 @@
         "palabras": {
             "EN-us": {
                 "si": "Yes",
-                "no": "No"
+                "no": "No",
+                "hechoPor": "By "
             },
             "ES-es": {
                 "si": "Sí",
-                "no": "No"
+                "no": "No",
+                "hechoPor": "De "
             }
         },
         "extra": {

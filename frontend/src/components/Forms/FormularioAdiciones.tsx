@@ -58,11 +58,19 @@ function FormularioAdiciones({ id, adicionesPrevias }: FormularioAdicionesProps)
   const opcionesSelect = useMemo(() => tiposAdicion.map((e) => { return { valor: e, etiqueta: traduccion("formularios", "tipoAdicion_" + e) } }), [traduccion, tiposAdicion]);
   const { lanzarMensaje } = useMensajes();
 
+  /**
+   * Resete el formulario entero de adiciones
+   */
   const resetForm = useCallback(() => {
     setErrorFormulario("");
     reset(formBase);
   }, [formBase]);
 
+  /**
+   * Funcion para validar una adicion, es una copia ligeramente cambiada de la que se usa en el backend
+   * @param data adicion a validar
+   * @returns true si esta todo bien
+   */
   const validarAdicionJuego = (data: any): boolean => {
     if (typeof data !== "object" || typeof data.data !== "object" || typeof data.type !== "string" || data._id || data.id || data.game) return false;
     if ((data.url != undefined && !url(data.url)) || (data.subtitle != undefined && !subtituloAdicionJuego(data.subtitle))) return false;
@@ -98,11 +106,18 @@ function FormularioAdiciones({ id, adicionesPrevias }: FormularioAdicionesProps)
     return true;
   }
 
+  /**
+   * Valida todas las adiciones actuales
+   * @returns true si son correctas
+   */
   const validarTodo = (): boolean => {
     if (datos.length === 0) return true;
     return datos.every(validarAdicionJuego);
   }
 
+  /**
+   * Enviar a editar las adiciones del juego
+   */
   const enviar = async () => {
     if (validarTodo()) {
       setErrorFormulario("");

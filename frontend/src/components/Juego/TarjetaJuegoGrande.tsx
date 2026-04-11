@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import useApiJuegos from "../../hooks/api/useApiJuegos";
 import useApiUsuarios from "../../hooks/api/useApiUsuarios";
+import useAjustes from "../../hooks/useAjustes";
 import useIdioma from "../../hooks/useIdioma";
 import useMensajes from "../../hooks/useMensajes";
 import useSesion from "../../hooks/useSesion";
@@ -38,6 +39,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
   const { verSiguiendoJuego, seguirJuego } = useApiJuegos();
   const [usuarioCreador, setUsuarioCreador] = useState<Partial<Usuario> | null>(null);
   const { lanzarMensaje } = useMensajes();
+  const { PUBLIC_URL } = useAjustes();
   useTituloDinamico("", juego.titulo);
   
   const alternarSeguir = useCallback(async () => {
@@ -65,7 +67,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
 
   return (
     <div className="overflow-hidden relative w-full p-1">
-      {(juego.urlPortada3 && juego.urlPortada3 !== "/public/coverless3.png" && !jugando) && (<FondoPortadaJuego url={juego.urlPortada3} />)}
+      {(juego.urlPortada3 && juego.urlPortada3 !== PUBLIC_URL + "/coverless3.png" && !jugando && !editando) && (<FondoPortadaJuego url={juego.urlPortada3} />)}
       <div className="sm:flex items-center">
         <Titulo>{juego.titulo ?? '???'}</Titulo>
         {!jugando && (<BotonFuncion titulo={traduccion("botones", "jugar")} funcion={() => { setJugando(true); setEditando(false) }} tipo={1} hueco={false}>
@@ -86,7 +88,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         JUGAR
       </div>)}
       <div className="lg:flex gap-5">
-        {juego.urlPortada1 && (<img src={juego.urlPortada1 ?? "/public/coverless1.png"} alt={juego.titulo} className="w-[460px] h-[215px] lg:mb-0 mb-3 mx-auto shrink-0 object-cover relative z-100 border border-principal text-center" />)}
+        {juego.urlPortada1 && (<img src={juego.urlPortada1 ?? PUBLIC_URL + "/coverless1.png"} alt={juego.titulo} className="w-[460px] h-[215px] lg:mb-0 mb-3 mx-auto shrink-0 object-cover relative z-100 border border-principal text-center" />)}
         <div className='flex-1'>
           <div>{juego.descripcion?.length ?
             (creadorEsPremium ?
@@ -112,7 +114,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
             <EnlaceFuncion funcion={e.url} titulo={e.subtitle ?? e.url} color={1} />
             <div className="flex overflow-auto">
               {e.data.images.map((ee: string, ii: number) => {
-              return (<img src={ee} key={ii} className="object-cover relative z-100 m-4 h-[220px] w-auto object-contain" />)
+              return (<img src={ee} key={ii} className="object-cover relative z-100 m-4 h-[240px] w-auto object-contain" />)
             })}
             </div>
           </div>);
