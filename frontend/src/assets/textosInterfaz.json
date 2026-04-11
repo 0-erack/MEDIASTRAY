@@ -349,7 +349,8 @@
                 "adicionText": "Custom text",
                 "adicionMention": "Nickname of a Mediastray's user",
                 "adicionImagenEvento": "Image of the event (URL)",
-                "adicionInfoEvento": "Info about the event"
+                "adicionInfoEvento": "Info about the event",
+                "adicionCarrusel": "Images URLs (it is possible to put only one) (regular users can put up to 10 images, MAGNA users can put up to 32)"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -419,7 +420,8 @@
                 "adicionText": "Texto personalizado",
                 "adicionMention": "Nickname de un usuario de mediastray",
                 "adicionImagenEvento": "Imagen del evento (URL)",
-                "adicionInfoEvento": "Información sobre el evento"
+                "adicionInfoEvento": "Información sobre el evento",
+                "adicionCarrusel": "URLs de las imágenes (es posible poner solo una) (los usuarios normales pueden poner hasta 10 imágenes por carrusel, los usuarios con MAGNA pueden poner hasta 32)"
             }
         },
         "errores": {
@@ -467,7 +469,8 @@
                 "errorFormularioJuego": "Some of the game data is not correct (or there was a server error)",
                 "errorBorrarJuego": "Couldn't delete game, authentication failed or there was an error",
                 "validacionSubtituloAdicion": "The subtitle must have less than 32 characters",
-                "muyLargo": "Data too long"
+                "muyLargo": "Data too long",
+                "errorCambiarAdiciones": "Couldn't update game's additions, data was invalid or there was a server error"
             },
             "ES-es": {
                 "genericoFormulario": "Uno o varios campos no son válidos, compruébalos",
@@ -599,7 +602,8 @@
                 "premiumExpirado": "MAGNA expired...",
                 "exitoCrearJuego": "Game created succesfully!",
                 "exitoBorrarJuego": "Game deleted succesfully...",
-                "exitoCambiarPublicoJuego": "Game's public state changed succesfully"
+                "exitoCambiarPublicoJuego": "Game's public state changed succesfully",
+                "exitoCambiarAdiciones": "Game additions editted succesfully!"
             },
             "ES-es": {
                 "loginBien": "Sesión iniciada correctamente!",
@@ -619,7 +623,8 @@
                 "premiumExpirado": "MAGNA expiró...",
                 "exitoCrearJuego": "Juego creado correctamente!",
                 "exitoBorrarJuego": "Juego borrado correctamente...",
-                "exitoCambiarPublicoJuego": "El estado público del juego ha sido cambiado correctamente"
+                "exitoCambiarPublicoJuego": "El estado público del juego ha sido cambiado correctamente",
+                "exitoCambiarAdiciones": "Adiciones del juego actualizadas correctamente!"
             }
         },
         "dinero": {

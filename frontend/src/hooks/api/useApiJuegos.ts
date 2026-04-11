@@ -171,12 +171,29 @@ const useApiJuegos = () => {
         }
     }
 
+    /**
+     * Cambia las adiciones de un juego (borrando las que ya habian, metodo put)
+     * @param id juego a cambiar
+     * @param adiciones nuevas
+     * @returns las nuevas adiciones si todo ha ido bien
+     */
+    const establecerAdiciones = async (id: string, adiciones: Array<Record<string, any>>): Promise<Array<Record<string, any>>|null> => {
+        try {
+            if (!usuario || !id) return null;
+            const resultado = await peticionGenerica(API_URL + "/game/additions/" + id, "PUT", {additions: adiciones});
+            if (resultado.ok) return resultado.data.current;
+            return null;
+        } catch (error) {
+            return null;
+        }
+    }
+
     const resetEstados = () => {
         setCargando(false);
         setError(false)
     }
 
-    return { cargando, error, editarPublicoJuego, crearJuego, borrarJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
+    return { cargando, error, editarPublicoJuego, establecerAdiciones, crearJuego, borrarJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
 };
 
 export default useApiJuegos;

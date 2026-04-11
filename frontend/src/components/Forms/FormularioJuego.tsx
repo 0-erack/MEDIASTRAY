@@ -169,7 +169,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
     <div>
       {juegoEditar && (<>
         {editandoAdiciones ? (<>
-          <FormularioAdiciones id={juegoEditar?.id ?? ''} adicionesPrevias={juegoEditar?.adiciones ?? []} />
+          <FormularioAdiciones id={juegoEditar?.id ?? ''} adicionesPrevias={(juegoEditar?.adiciones ?? []).map((e) => {return {...e, id: undefined}})} />
           <br />
         </>) : (<BotonFuncion titulo={traduccion("botones", "editarAdiciones")} funcion={() => setEditandoAdiciones(true)} tipo={0} ><Icono numero={8} color='var(--color-principal)' /></BotonFuncion>)}
         <BotonFuncion titulo={traduccion("botones", juegoEditar.publico ? "hacerPrivado" : "hacerPublico")} funcion={alternarPublico} tipo={0} ><Icono numero={juegoEditar.publico ? 14 : 13} color='var(--color-principal)' /></BotonFuncion>

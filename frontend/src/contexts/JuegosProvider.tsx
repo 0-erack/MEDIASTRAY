@@ -36,7 +36,6 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
     setMisJuegos([]);
     if (usuarioActivo) { //Solo se pueden tener juegos teniendo la sesion iniciada
       const resultado = await verTodosMisJuegos();
-      console.log(resultado);
       setMisJuegos(resultado ?? []);
     }
   }, []);

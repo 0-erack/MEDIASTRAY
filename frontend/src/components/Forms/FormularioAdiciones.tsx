@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import useApiJuegos from "../../hooks/api/useApiJuegos";
 import useIdioma from "../../hooks/useIdioma";
+import useMensajes from "../../hooks/useMensajes";
 import useSesion from "../../hooks/useSesion";
 import { nickname, subtituloAdicionJuego, url } from "../../libraries/validacionesBackend";
 import BotonFuncion from "../Elements/BotonFuncion";
@@ -10,6 +11,7 @@ import InputBasico from "../Elements/InputBasico";
 import Titulo from "../Elements/Titulo";
 import Icono from "../Principal/Icono";
 import ImgCargando from "../Principal/ImgCargando";
+import ImagesInputExtra from "./ImageInputExtra";
 
 interface Adicion {
   type: string;
@@ -51,9 +53,10 @@ function FormularioAdiciones({ id, adicionesPrevias }: FormularioAdicionesProps)
   const { fields, append, remove } = useFieldArray({ control, name: "adiciones" });
   const datos = watch("adiciones");
   const [errorFormulario, setErrorFormulario] = useState("");
-  const { cargando } = useApiJuegos();
+  const { cargando, establecerAdiciones } = useApiJuegos();
   const tiposAdicion = useMemo(() => ["trailer", "images", "site", "ost", "requirements", "event", "text", "mention"], []);
   const opcionesSelect = useMemo(() => tiposAdicion.map((e) => { return { valor: e, etiqueta: traduccion("formularios", "tipoAdicion_" + e) } }), [traduccion, tiposAdicion]);
+  const { lanzarMensaje } = useMensajes();
 
   const resetForm = useCallback(() => {
     setErrorFormulario("");
@@ -96,22 +99,47 @@ function FormularioAdiciones({ id, adicionesPrevias }: FormularioAdicionesProps)
   }
 
   const validarTodo = (): boolean => {
-    return true;
+    if (datos.length === 0) return true;
+    return datos.every(validarAdicionJuego);
   }
 
   const enviar = async () => {
-
+    if (validarTodo()) {
+      setErrorFormulario("");
+      const resultado = await establecerAdiciones(id, datos);
+      if (resultado) {
+        lanzarMensaje(traduccion("mensajes", "exitoCrearJuego"), 1);
+        location.reload();
+      } else {
+        lanzarMensaje(traduccion("errores", "errorCambiarAdiciones"), 2);
+        setErrorFormulario(traduccion("errores", "errorCambiarAdiciones"));
+      }
+    } else {
+      lanzarMensaje(traduccion("errores", "errorCambiarAdiciones"), 2);
+      setErrorFormulario(traduccion("errores", "errorCambiarAdiciones"));
+    }
   }
 
+  const tiposPrevios = useRef<string>('');
   useEffect(() => {
-    datos.forEach((adicion, i) => {
-      setValue(`adiciones.${i}.data`, {});
+    const tiposActuales = datos.map(d => d.type).join(',');
+    if (tiposPrevios.current === '') {
+      tiposPrevios.current = tiposActuales;
+      return;
+    }
+    const tiposArray = tiposActuales.split(',');
+    const tiposPreviosArray = tiposPrevios.current.split(',');
+    tiposArray.forEach((tipo, i) => {
+      if (tipo !== tiposPreviosArray[i]) {
+        setValue(`adiciones.${i}.data`, {});
+      }
     });
+    tiposPrevios.current = tiposActuales;
   }, [datos.map(d => d.type).join(',')]);
 
   return (
-    <div className="border border-principal p-2 m-1">
-      {JSON.stringify(datos)}
+    <div className="border-2 border-principal p-2 m-1">
+      {cargando && (<ImgCargando />)}
       <Titulo magnitud={3}>{traduccion("formularios", "pantallaEditarAdiciones")}</Titulo>
       <p>{traduccion("parrafos", "explicarAdiciones1")}</p>
       <p>{traduccion("parrafos", "explicarAdiciones2")}</p>
@@ -130,23 +158,8 @@ function FormularioAdiciones({ id, adicionesPrevias }: FormularioAdicionesProps)
               {errors?.adiciones?.[i]?.data?.iframe && <CajaError>{errors?.adiciones?.[i]?.data?.iframe?.message}</CajaError>}
             </>)}
             {datos[i]?.type === "images" && (<>
-
-
-
-
-
-              PONER 10 NORMAL O 32 PREMIUM 
-
-
-
-
-
-
-
-
-
-
-
+              <p>{traduccion("formularios", "adicionCarrusel")}</p>
+              <ImagesInputExtra index={i} setValue={setValue} urlsPrevias={datos[i]?.data?.images ?? []} />
             </>)}
             {datos[i]?.type === "site" && (<>
               <InputBasico titulo={traduccion("formularios", "adicionIcon")} nombre={`adiciones.${i}.data.icon`} ancho='full' tipo="text" validador={(v) => !v || url(v)} objetoHook={register(`adiciones.${i}.data.icon`, { validate: (v) => !v || url(v) || traduccion("errores", "validacionUrl") })} mensajeError={errors?.adiciones?.[i]?.data?.icon?.message ?? ''} />
