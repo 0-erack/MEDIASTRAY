@@ -15,7 +15,7 @@ export const validarCreacionUsuario = (data:any): Partial<Usuario> => {
     if (!nickname(data.nickname)) throw new Error("Invalid nickname");
     if (!contrasegna(data.password)) throw new Error("Invalid password");
     if (!cumpleagnos(data.birthdate)) throw new Error("Invalid birthdate");
-    return {nombre: data.name.trim(), correo: data.email.trim(), nickname: data.nickname.trim(), contrasegna: data.password, cumpleagnos: data.birthdate} as Partial<Usuario>;
+    return {nombre: data?.name?.trim(), correo: data?.email?.trim(), nickname: data?.nickname?.trim(), contrasegna: data.password, cumpleagnos: data.birthdate} as Partial<Usuario>;
 }
 
 /**
@@ -35,7 +35,7 @@ export const validarEdicionUsuario = (data:any): Record<string, any> => {
     if (data.changePassword == true || data.nickname != undefined || data.email != undefined || data.password != undefined) {
         if (data.oldPassword == undefined || !contrasegna(data.oldPassword)) throw new Error("Invalid old password");
     }
-    return {cambiarContrasegna: data.changePassword, nombre: data.name.trim(), nickname: data.nickname.trim(), urlFoto: data.urlPhoto.trim(), descripcion: data.description, cumpleagnos: data.birthdate, correo: data.email.trim(), contrasegna: data.password, contrasegnaAntigua: data.oldPassword} as Partial<Usuario>;
+    return {cambiarContrasegna: data.changePassword, nombre: data?.name?.trim(), nickname: data?.nickname?.trim(), urlFoto: data?.urlPhoto?.trim(), descripcion: data.description, cumpleagnos: data.birthdate, correo: data?.email?.trim(), contrasegna: data.password, contrasegnaAntigua: data.oldPassword} as Partial<Usuario>;
 }
 
 /**

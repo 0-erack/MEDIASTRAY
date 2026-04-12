@@ -75,12 +75,6 @@ function Inicio() {
                     <Titulo magnitud={3}>{traduccion("titulos", "forosDestacados")}</Titulo>
                     <div className='p-1 border border-principal w-full'>
                         TARJETAS FOROS<br/>
-                        TARJETAS FOROS<br/>
-                        TARJETAS FOROS<br/>
-                        TARJETAS FOROS<br/>
-                        TARJETAS FOROS<br/>
-                        TARJETAS FOROS<br/>
-                        
                     </div>
                 </div>
             </div>

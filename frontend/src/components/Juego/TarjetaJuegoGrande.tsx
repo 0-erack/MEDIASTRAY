@@ -97,7 +97,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
             : traduccion("errores", "noDescripcion")}</div>
         </div>
       </div>
-      <div className="lg:grid grid-cols-1 sm:grid-cols-2 gap-4 w-full p-1 mt-6">
+      <div className="lg:grid grid-cols-1 sm:grid-cols-2 gap-4 w-full p-1 mt-6 relative z-100">
         {filtrarAdiciones("trailer").map((e, i) => {
           return (
             <div key={i} className="border border-principal p-2 h-80 overflow-auto flex flex-col">

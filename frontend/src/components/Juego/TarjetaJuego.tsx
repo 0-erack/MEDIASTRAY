@@ -36,7 +36,7 @@ function TarjetaJuego({ juego, mediano = false }: TarjetaJuegoProps) {
         <span className="text-lg"><EnlaceFuncion titulo={juego.titulo} funcion={"/game/" + juego.id} /> </span>
         <span className="whitespace-nowrap col-span-2 px-2 mt-1 tracking-widest">
           <Icono color='var(--color-principal)' numero={1} /> {juego.cantidadJugadores} {"|"} <Icono color='var(--color-principal)' numero={18} /> {juego.cantidadSeguidores}
-          {juego.precio && (<span> {juego.precio}</span>)}
+          {juego.precio && (<span> | {juego.precio}</span>)}
         </span><br />
         <p className="">{juego.descripcionCorta}</p>
         {juego.generos && (

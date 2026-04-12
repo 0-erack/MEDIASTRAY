@@ -370,7 +370,8 @@ export const verJuegosDestacados = async (pagina = 0): Promise<Array<Partial<Jue
             await redisSet("juegosDestacados-" + i, JSON.stringify(juegosCachear.slice(tamagnoPagina * i, tamagnoPagina * (i + 1))));
         }
     }
-    if (pagina < PAGINAS_CACHEADAS) return JSON.parse(await redisGet("juegosDestacados-" + pagina) ?? '') ?? null;
+    const cacheado = await redisGet("juegosDestacados-" + pagina)
+    if (pagina < PAGINAS_CACHEADAS && cacheado) return JSON.parse(cacheado ?? '') ?? null;
     const db = getDB();
     const juegosConsulta = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     if (!juegosConsulta || !juegosConsulta?.length) return null;

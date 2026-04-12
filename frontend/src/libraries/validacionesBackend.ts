@@ -7,9 +7,9 @@ const nicknameSchema = z.string().min(4).max(15).regex(/^[a-zA-Z0-9._\-|]+$/);
 const nombreSchema = z.string().min(5).max(100);
 const correoSchema = z.string().email();
 const timestampSchema = z.string().regex(/^-?\d{1,15}$/);
-const urlPattern = /^https?:\/\/[-a-zA-Z0-9@:%._+~#=]{1,512}(?::\d{1,5})?(?:\/[-a-zA-Z0-9()@:%_+.~#?&\/=]*)?$/;
+const urlPattern = /^https?:\/\/[-a-zA-Z0-9@:%._+~#=]{1,512}(?::\d{1,5})?(?:\/[-a-zA-Z0-9()@:%_+.~#?&\/=,]*)?$/;
 const versionPattern = /^(?=.*\d).{1,16}$/;
-const comalistaPattern = /^[a-z0-9]+(?:,[a-z0-9]+)*$/;
+const comalistaPattern = /^[a-zA-Z0-9-]+(?:,[a-zA-Z0-9-]+)*$/;
 const precioPattern = /^(?:[^0-9]+\d+[.,]\d{2}[^0-9]*|\d+[.,]\d{2}[^0-9]+)$/;
 const tituloJuegoSchema = z.string().min(3).max(64);
 

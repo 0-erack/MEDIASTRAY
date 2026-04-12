@@ -121,8 +121,10 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
    * @param pagina cual buscar
    */
   const buscarJuegosAjenos = useCallback(async (pagina = 0) => {
-    const juegos = await buscarJuegosUsuario(usuario.id, pagina);
-    setJuegosCreados(juegos ?? []);
+    if (!soyYo) {
+      const juegos = await buscarJuegosUsuario(usuario.id, pagina);
+      setJuegosCreados(juegos ?? []);
+    }
   }, [usuario.id]);
 
   /**
@@ -165,7 +167,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
   }, [datosPaginasJuegos.paginaSeguidos]);
 
   return (
-    <div className="tarjeta-usuario-grande xl:flex">
+    <div className="tarjeta-usuario-grande xl:flex gap-4">
       <div className='sm:min-w-[50%]'>
         <Titulo><Icono numero={1} color="var(--color-resaltado)" /> {(soyYo ? (traduccion("titulosHtml", "saludo") + ", ") : '') + usuario.nombre}</Titulo>
 
@@ -208,8 +210,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
         </div>) : (<p>REPORTAR USUARIO</p>) /*//TODO: */}
       </div>
 
-      <div className='w-full'>
-
+      {editandoPerfil ? "" : (<div className='w-full'>
         {cargando && <ImgCargando />}
         <Titulo magnitud={4}>{traduccion("titulos", "juegosPropios")}</Titulo>
         <div className={`pr-3 pb-4 border border-principal pl-2 overflow-y-scroll ${soyYo ? 'sm:max-h-[40vh]' : 'sm:max-h-[80vh]'}`}>
@@ -227,9 +228,9 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
             }) : traduccion("errores", "noHayJuegos")}
           </div>
         </>)}
-      </div>
+      </div>)}
 
-      {editandoPerfil && soyYo && (<FormularioEditarPerfil usuario={usuario} />)}
+      {editandoPerfil && soyYo && (<span><FormularioEditarPerfil usuario={usuario} /></span>)}
     </div>
   )
 }
