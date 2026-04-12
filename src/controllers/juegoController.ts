@@ -351,7 +351,7 @@ export const verJuegoTemporada = async (semanal = true): Promise<Record<string, 
 }
 
 /**
- * Ver los juegos destacados en base a cierto criterio, se actualizan cada dia y se cachean las primeras 5 paginas, se actualizan diariamente
+ * Ver los juegos destacados en base a cierto criterio, se actualizan cada dia y se cachean las primeras 5 paginas, se actualizan diariamente (al actualizarse diariamente, un juego nuevo no aparecera como destacado hasta el dia siguiente, lo mismo si sus datos cambian)
  * @param pagina donde mirar
  * @returns array con los juegos de la consulta
  */

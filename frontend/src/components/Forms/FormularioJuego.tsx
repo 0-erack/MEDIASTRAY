@@ -59,7 +59,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
   const [errorFormulario, setErrorFormulario] = useState("");
   const { lanzarMensaje } = useMensajes();
   const { premium } = useSesion();
-  const { cargando, crearJuego, editarJuego, borrarJuego, editarPublicoJuego } = useApiJuegos();
+  const { cargando, crearJuego, editarJuego, borrarJuego, editarPublicoJuego, error } = useApiJuegos();
   const navegar = useNavigate();
   const { borrarJuegoLocal, agregarJuegoLocal, editarJuegoLocal } = useJuegos();
   const [intencionBorrar, setIntencionBorrar] = useState(false);
@@ -98,7 +98,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
       && (datos.versionActual != undefined && version(datos.versionActual))
       && (datos.descripcionCorta != undefined && descripcionCortaJuego(datos.descripcionCorta))
       && (datos.descripcion != undefined && descripcionJuego(datos.descripcion))
-      && (datos.descripcion != undefined && precio(datos.precio))
+      && (datos.precio == undefined || precio(datos.precio))
       && (datos.tags != undefined && comalista(normalizarComalista(datos.tags)))
       && (datos.idiomas != undefined && comalista(normalizarComalista(datos.idiomas)))
       && (datos.avisos != undefined && comalista(normalizarComalista(datos.avisos)))
@@ -115,8 +115,13 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
       const datosEnviar = { ...limpiarVaciosStrings(datos), publico: false, precio: premium ? datos.precio : undefined, adiciones: undefined, tags: datos.tags ? normalizarComalista(datos.tags).split(",") : undefined, avisos: datos.avisos ? normalizarComalista(datos.avisos).split(",") : undefined, idiomas: datos.idiomas ? normalizarComalista(datos.idiomas).split(",") : undefined, generos: datos.generos ? normalizarComalista(datos.generos).split(",") : undefined }
       const resultado = juegoEditar ? await editarJuego(juegoEditar.id ?? '', datosEnviar) : await crearJuego(datosEnviar);
       if (!resultado) {
-        lanzarMensaje(traduccion("errores", "errorFormularioJuego"), 2);
-        setErrorFormulario(traduccion("errores", "errorFormularioJuego"));
+        if (typeof error === "object" && error?.error?.result?.data?.doubleTitle) { //Error falso de VSCode
+          lanzarMensaje(traduccion("errores", "juegoRepetido"), 2);
+          setErrorFormulario(traduccion("errores", "juegoRepetido"));
+        } else {
+          lanzarMensaje(traduccion("errores", "errorFormularioJuego"), 2);
+          setErrorFormulario(traduccion("errores", "errorFormularioJuego"));
+        }
       } else {
         lanzarMensaje(traduccion("mensajes", "exitoCrearJuego"), 1);
         resetForm();
@@ -169,6 +174,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
 
   return (
     <div>
+      {JSON.stringify(error)}
       {juegoEditar && (<>
         {editandoAdiciones ? (<>
           <FormularioAdiciones id={juegoEditar?.id ?? ''} adicionesPrevias={(juegoEditar?.adiciones ?? []).map((e) => {return {...e, id: undefined}})} />

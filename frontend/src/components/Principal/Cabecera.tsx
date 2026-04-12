@@ -60,7 +60,7 @@ function Cabecera() {
         <div className='text-right m-0 ml-4 sm:mr-10 sm:ml-auto'>
           {usuario ? (
             <span className="usuario-cabecera cursor-pointer min-w-fit w-max whitespace-nowrap flex bg-principal text-fondo-especial-1 fuente2 text-lg! hover:bg-resaltado hover:underline transition-all duration-100 hover:scale-x-110">
-              <img className='w-8 h-8' src={(typeof usuario === 'object' && usuario) ? usuario!.urlFoto! : '/public/nopfp.png'} alt="" onClick={() => navegar("/user")} />
+              <img className='w-8 h-8' src={(typeof usuario === 'object' && usuario) ? usuario!.urlFoto! : PUBLIC_URL + '/nopfp.png'} alt="" onClick={() => navegar("/user")} />
               <BotonNavegacion cabecera={true} direccion={"/user"} titulo={(typeof usuario === 'object' && usuario !== null) ? usuario?.nickname : "User"} />
             </span>
           ) : <div className='block text-center'>

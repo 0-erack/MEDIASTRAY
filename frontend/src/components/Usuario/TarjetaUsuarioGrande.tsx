@@ -124,6 +124,12 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
     if (!soyYo) {
       const juegos = await buscarJuegosUsuario(usuario.id, pagina);
       setJuegosCreados(juegos ?? []);
+    } else {
+      if (misJuegos.length) {
+        setJuegosCreados(misJuegos.slice(0, 50));
+      } else {
+        setJuegosCreados([]);
+      }
     }
   }, [usuario.id]);
 
@@ -161,10 +167,10 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
 
   useEffect(() => {
     buscarJuegosAjenos(datosPaginasJuegos.paginaMios);
-  }, [datosPaginasJuegos.paginaMios]);
+  }, [datosPaginasJuegos.paginaMios, usuario, soyYo]);
   useEffect(() => {
     buscarJuegosAjenosSeguidos(datosPaginasJuegos.paginaSeguidos);
-  }, [datosPaginasJuegos.paginaSeguidos]);
+  }, [datosPaginasJuegos.paginaSeguidos, usuario, soyYo]);
 
   return (
     <div className="tarjeta-usuario-grande xl:flex gap-4">

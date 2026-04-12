@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useApiUsuarios from "../../hooks/api/useApiUsuarios";
+import useAjustes from "../../hooks/useAjustes";
 import useIdioma from "../../hooks/useIdioma";
 import EnlaceFuncion from "../Elements/EnlaceFuncion";
 import Icono from "../Principal/Icono";
@@ -17,10 +18,11 @@ interface TarjetaJuegoProps {
  */
 function TarjetaJuego({ juego, mediano = false }: TarjetaJuegoProps) {
 
-  const urlEnUso = mediano ? juego.urlPortada2 : juego.urlPortada2;
+  const urlEnUso = mediano ? juego.urlPortada2 : juego.urlPortada1;
   const { verUsuario } = useApiUsuarios();
   const [duegno, setDuegno] = useState<Record<string, any>|null>(null);
   const traduccion = useIdioma();
+  const { PUBLIC_URL } = useAjustes();
 
   const buscarDuegno = async () => {
     setDuegno(await verUsuario(juego.idCreador));
@@ -31,7 +33,7 @@ function TarjetaJuego({ juego, mediano = false }: TarjetaJuegoProps) {
 
   return (
     <div className={`${mediano ? '' : 'border-2 border-principal sm:mx-0 m-5 mb-0 text-xs'} relative z-101 sm:grid grid-cols-[auto_1fr] w-full bg-fondo-especial-1`}>
-      <img src={urlEnUso ?? `/public/coverless${mediano ? '2' : '1'}.png`} className={mediano ? 'w-[150px] h-[225px] sm:mr-3' : "mx-0 min-w-[230px] max-h-[107px] object-cover"} />
+      <img src={urlEnUso ?? `${PUBLIC_URL}/coverless${mediano ? '2' : '1'}.png`} className={mediano ? 'w-[150px] h-[225px] sm:mr-3' : "mx-0 min-w-[230px] max-h-[107px] object-cover"} />
       <div className="p-2 break-all">
         <span className="text-lg"><EnlaceFuncion titulo={juego.titulo} funcion={"/game/" + juego.id} /> </span>
         <span className="whitespace-nowrap col-span-2 px-2 mt-1 tracking-widest">

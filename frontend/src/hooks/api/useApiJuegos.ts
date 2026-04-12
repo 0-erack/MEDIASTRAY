@@ -11,7 +11,7 @@ import useSesion from "../useSesion";
  */
 const useApiJuegos = () => {
     const [cargando, setCargando] = useState(false);
-    const [error, setError] = useState<boolean|object>(false);
+    const [error, setError] = useState<boolean/*|object*/|Record<string,any>>(false);
     const { API_URL, API_KEY } = useAjustes();
     const { usuario, tokenSesionActual } = useSesion();
 

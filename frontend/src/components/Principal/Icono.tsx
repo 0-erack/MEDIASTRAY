@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import atlas from '../../assets/images/iconos.png';
+import useAjustes from '../../hooks/useAjustes';
 
 interface IconoProps {
     numero: number;
@@ -21,7 +22,8 @@ const Icono = memo(function Icono({ numero, tamagno = 8, color = 'var(--color-re
     const x = numero % LIMITE;
     const TAMAGNO_ATLAS = 128;
     const y = Math.floor(numero / LIMITE);
-    const imageUrl = atlas ?? `/public/iconos.png`;
+    const { PUBLIC_URL } = useAjustes();
+    const imageUrl = atlas ?? `${PUBLIC_URL}/iconos.png`;
 
     return (
         <>
