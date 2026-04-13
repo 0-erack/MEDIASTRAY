@@ -69,3 +69,6 @@ export const precio = (data: unknown): data is string => z.string().refine(val =
 
 //Valida el texto general de una adicion a un juego
 export const subtituloAdicionJuego = (data: unknown): data is string => z.string().max(32).safeParse(data).success;
+
+//Valida el contenido de un comentario
+export const contenidoComentario = (data: unknown): data is string => z.string().max(512).safeParse(data).success;

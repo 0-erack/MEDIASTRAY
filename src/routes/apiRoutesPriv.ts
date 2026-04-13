@@ -1,6 +1,7 @@
 //Rutas ocultas para las cuales se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import { comentarJuego } from '../controllers/comentarioController.js';
 import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, seguirJuego, verJuego, verJuegosSeguidos, verJuegosUsuario } from '../controllers/juegoController.js';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, renovarPremium, verUsuario } from '../controllers/usuarioController.js';
@@ -233,6 +234,19 @@ routerPriv.get("/game/follow/:id", autenticarTokenApi, autenticarTokenSesion, as
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const resultado = await seguirJuego(req.params?.id, req.datosSesion!.id, 0);
         return res.json(exito("Game follow information", resultado ?? false));
+    });
+});
+
+
+
+
+//Ver si el usuario sigue un juego
+routerPriv.post("/comment/game/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const resultado = await comentarJuego(req.params?.id, req.body?.content, req.datosSesion!.id);
+        if (!resultado) return res.status(404).json(fallo("Comment didn't get posted", null, 400));
+        return res.json(exito("Comment posted", {comment: resultado}));
     });
 });
 

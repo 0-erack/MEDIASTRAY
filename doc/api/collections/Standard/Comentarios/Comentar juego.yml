@@ -1,11 +1,11 @@
 info:
-  name: Ver juego
+  name: Comentar juego
   type: http
-  seq: 3
+  seq: 2
 
 http:
-  method: GET
-  url: "{{url_backend}}/game/c13210cd-35e3-4dc9-a971-19d9c684aa85"
+  method: POST
+  url: "{{url_backend}}/comment/game/c13210cd-35e3-4dc9-a971-19d9c684aa85"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,7 +17,10 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "content": "asdfhaspdfh asdhf asdf oalsiudf aosliduf gholiasdufgholi udasjghf asjdgfkasdlfkhjg"
+      }
   auth:
     type: bearer
     token: "{{session_token}}"

@@ -1,6 +1,7 @@
 //Rutas abiertas al publico para la cuales no se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import { verComentario } from '../controllers/comentarioController.js';
 import { buscarJuegos, verJuego, verJuegosDestacados, verJuegosUsuario, verJuegoTemporada } from '../controllers/juegoController.js';
 import { alterarSeguidores, buscarUsuarios, usuarioTienePremium, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { hacerTestsConexiones } from '../tests/tests.js';
@@ -133,6 +134,22 @@ router.get("/game/:id", async (req: ExpressRequest<{ id: string; }>, res: Expres
         const usuario = await verJuego(req.params?.id, false, undefined, true) ?? false;
         if (!usuario) return res.status(404).json(fallo("Game not found", null, 404));
         return res.json(exito("Game found", usuario));
+    });
+});
+
+
+
+
+//Devuelve los comentarios que coincidan con la busqueda
+router.get("/comment/:modo/:id", async (req: ExpressRequest<{ id: string; modo: 0|1|2; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const pagina = parseInt(req.query.page as string) ?? 0;
+        const paginaSub = parseInt(req.query.pageSub as string) ?? 0;
+        if (!req.params?.modo) return res.status(404).json(fallo("Comment not found", null, 404));
+        if (!req.params?.id) return res.status(404).json(fallo("Comment not found", null, 404));
+        const comentarios = await verComentario(req.params?.modo ?? 0, req.params?.id, pagina, paginaSub) ?? null;
+        if (!comentarios) return res.status(404).json(fallo("Comment not found", null, 404));
+        return res.json(exito("Comments found", {comments: comentarios}));
     });
 });
 

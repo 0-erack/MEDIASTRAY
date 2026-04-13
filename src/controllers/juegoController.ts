@@ -21,7 +21,7 @@ import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
  * @param id juego a buscar
  * @returns el juego en si
  */
-const buscarJuego = async (id: string): Promise<Juego | null> => {
+export const buscarJuego = async (id: string): Promise<Juego | null> => {
     const db = getDB();
     const juegoPrevio = await db.select().from(juegos).where(eq(juegos.id, id)).limit(1);
     const juego = (juegoPrevio[0] as Juego) ?? null;
