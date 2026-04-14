@@ -15,24 +15,37 @@ const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 50;
  * @param id id de busqueda
  * @param pagina en la que buscar
  * @param paginaSub pagina en la que buscar las respuestas a ese comentario
+ * @param idCreadorObjeto id del creador del objeto comentado, sus comentarios aparecen antes
  * @returns array con los comentarios
  */
-export const buscarComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, paginaSub = 0): Promise<Array<Record<string, any>> | null> => {
+export const buscarComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, paginaSub = 0, idCreadorObjeto?: string): Promise<Array<Record<string, any>> | null> => {
     if (pagina < 0) pagina = 0;
     const filtro = {} as Record<string, any>;
     if (modo == 0) filtro.id = id;
     if (modo == 1) filtro.target = id;
     if (modo == 2) filtro.owner = id;
+    //Orden: idCreadorObjeto == owner, featured == true, por likesAmount, por responsesAmount
     const resultado = await Comentario.aggregate([
         { $match: filtro },
-        { $sort: { destacado: -1, likesAmount: -1, responsesAmount: -1 } },
+        {
+            $addFields: {
+                esCreador: { $cond: { if: { $eq: ["$owner", idCreadorObjeto] }, then: 1, else: 0 } },
+                esDestacado: { $cond: { if: { $eq: ["$featured", true] }, then: 1, else: 0 } }
+            }
+        },
+        { $sort: { esCreador: -1, esDestacado: -1, likesAmount: -1, responsesAmount: -1 } },
         { $skip: pagina * tamagnoPagina },
         { $limit: tamagnoPagina },
         {
             $addFields: {
                 respuestas: {
                     $slice: [
-                        { $sortArray: { input: "$respuestas", sortBy: { destacado: -1, likesAmount: -1, responsesAmount: -1 } } },
+                        {
+                            $sortArray: {
+                                input: "$responses",
+                                sortBy: { esCreador: -1, esDestacado: -1, likesAmount: -1, responsesAmount: -1 }
+                            }
+                        },
                         paginaSub * tamagnoPagina,
                         tamagnoPagina
                     ]
@@ -78,7 +91,7 @@ export const comentarJuego = async (id: string, contenido: string, idAutor: stri
 export const likeComentario = async (id: string, idUsuario: string, cantidad = 0): Promise<boolean> => {
     const usuario = await buscarUsuario(idUsuario);
     if (!usuario || usuario.nivelPublico === 2) throw { message: "User not found", code: 404 }
-    const yaLike = await Intermediario.findOne({sujeto: idUsuario, verbo: "sigue", perdicado: id}) ?? null;
+    const yaLike = await Intermediario.findOne({ sujeto: idUsuario, verbo: "sigue", perdicado: id }) ?? null;
     if (cantidad == 0) {
         return yaLike?.id ? true : false;
     } else {
@@ -86,7 +99,7 @@ export const likeComentario = async (id: string, idUsuario: string, cantidad = 0
         if (cantidad < 0 && !yaLike?.id) return false;
         if (cantidad < 0) await mongoDelete("intermediario", { sujeto: idUsuario, verbo: "sigue", predicado: id }, true);
         if (cantidad > 0) await mongoSet("intermediario", { id: uuidv4(), sujeto: idUsuario, verbo: "sigue", predicado: id, extra: { comentario: true } });
-        const resultado = await Comentario.updateOne({id: id}, {$inc: {likesAmount: cantidad}});
+        const resultado = await Comentario.updateOne({ id: id }, { $inc: { likesAmount: cantidad } });
         return resultado.modifiedCount !== 0;
     }
 }
@@ -107,6 +120,12 @@ export const verComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, pag
     if (!idVisor) {
         return await buscarComentario(modo, id, pagina, paginaSub) ?? null;
     }
+
+
+    //Buscar creador de objeto y pasar a la funcion adf asdkf ajsdlkf 
+
+
+
     return [];
 }
 
