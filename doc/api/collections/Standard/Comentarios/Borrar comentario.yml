@@ -1,11 +1,11 @@
 info:
-  name: Ver comentario personalmente
+  name: Borrar comentario
   type: http
-  seq: 3
+  seq: 6
 
 http:
-  method: GET
-  url: "{{url_backend}}/comment/personal/1/game_9270afbb-01a8-4620-a3db-198e254f72cf?page=0&pageSub=0"
+  method: DELETE
+  url: "{{url_backend}}/comment/delete/9270afbb-01a8-4620-a3db-198e254f72cf"
   headers:
     - name: Content-Type
       value: application/json
@@ -15,13 +15,6 @@ http:
       value: "{{session_token}}"
     - name: X-auth-api
       value: "{{api_token}}"
-  params:
-    - name: page
-      value: "0"
-      type: query
-    - name: pageSub
-      value: "0"
-      type: query
   body:
     type: json
     data: ""

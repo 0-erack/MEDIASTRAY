@@ -1,11 +1,11 @@
 info:
-  name: Ver comentario personalmente
+  name: Comentar comentario
   type: http
-  seq: 3
+  seq: 4
 
 http:
-  method: GET
-  url: "{{url_backend}}/comment/personal/1/game_9270afbb-01a8-4620-a3db-198e254f72cf?page=0&pageSub=0"
+  method: POST
+  url: "{{url_backend}}/comment/comment/9270afbb-01a8-4620-a3db-198e254f72cf"
   headers:
     - name: Content-Type
       value: application/json
@@ -15,16 +15,12 @@ http:
       value: "{{session_token}}"
     - name: X-auth-api
       value: "{{api_token}}"
-  params:
-    - name: page
-      value: "0"
-      type: query
-    - name: pageSub
-      value: "0"
-      type: query
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "content": "asdfhaspdfh asdhf asdf oalsiudf aosliduf gholiasdufgholi udasjghf asjdgfkasdlfkhjg"
+      }
   auth:
     type: bearer
     token: "{{session_token}}"

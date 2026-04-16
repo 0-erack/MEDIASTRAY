@@ -1,7 +1,7 @@
 //Rutas ocultas para las cuales se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { comentarJuego } from '../controllers/comentarioController.js';
+import { borrarComentario, comentarComentario, comentarJuego, likeComentario, verComentario } from '../controllers/comentarioController.js';
 import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, seguirJuego, verJuego, verJuegosSeguidos, verJuegosUsuario } from '../controllers/juegoController.js';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, renovarPremium, verUsuario } from '../controllers/usuarioController.js';
@@ -31,7 +31,7 @@ routerPriv.post("/user/create", autenticarTokenApi, async (req: ExpressRequest, 
     return manejadorRuta(req, res, async () => {
         const { token, usuario } = await crearUsuario(req.body.user);
         res.setHeader('X-auth-session', token);
-        return res.json(exito("User created successfully", {sessionToken: token, user: usuario}, 201));
+        return res.json(exito("User created successfully", { sessionToken: token, user: usuario }, 201));
     });
 });
 
@@ -40,7 +40,7 @@ routerPriv.post("/user/login", autenticarTokenApi, async (req: ExpressRequest, r
     return manejadorRuta(req, res, async () => {
         const { token, usuario } = await loginUsuario(req.body.credentials);
         res.setHeader('X-auth-session', token);
-        return res.json(exito("User logged in successfully", {sessionToken: token, user: usuario}));
+        return res.json(exito("User logged in successfully", { sessionToken: token, user: usuario }));
     })
 });
 
@@ -62,7 +62,7 @@ routerPriv.patch("/user/edit", autenticarTokenApi, autenticarTokenSesion, async 
     return manejadorRuta(req, res, async () => {
         const { usuarioRenovado, tokenNuevo } = await editarUsuario(req.body.newData, req.datosSesion!.id);
         res.setHeader('X-auth-session', tokenNuevo);
-        return res.json(exito("User editted successfully", {sessionToken: tokenNuevo, user: usuarioRenovado}));
+        return res.json(exito("User editted successfully", { sessionToken: tokenNuevo, user: usuarioRenovado }));
     });
 });
 
@@ -123,7 +123,7 @@ routerPriv.post("/game/create", autenticarTokenApi, autenticarTokenSesion, async
     return manejadorRuta(req, res, async () => {
         const juego = await crearJuego(req.body.game, req.datosSesion!.id);
         if (juego) {
-            return res.json(exito("Game created succesfully", {game: juego}));
+            return res.json(exito("Game created succesfully", { game: juego }));
         } else {
             return res.status(409).json(fallo("Couldn't create game", null, 409));
         }
@@ -136,7 +136,7 @@ routerPriv.get("/game/personal/:id", autenticarTokenApi, autenticarTokenSesion, 
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const juego = await verJuego(req.params.id, false, req.datosSesion!.id, true);
         if (juego) {
-            return res.json(exito("Game found", {...juego}));
+            return res.json(exito("Game found", { ...juego }));
         } else {
             return res.status(404).json(fallo("Couldn't find game", null, 404));
         }
@@ -149,7 +149,7 @@ routerPriv.get("/game/my", autenticarTokenApi, autenticarTokenSesion, async (req
         const pagina = parseInt(req.query.page as string) ?? 0;
         const juegos = await verJuegosUsuario(req.datosSesion!.id, req.datosSesion!.id, req.query?.all ? -1 : pagina);
         if (!juegos) return res.status(404).json(fallo("Games not found", null, 404));
-        return res.json(exito("Own games", {games: juegos}));
+        return res.json(exito("Own games", { games: juegos }));
     });
 });
 
@@ -185,7 +185,7 @@ routerPriv.patch("/game/edit/:id", autenticarTokenApi, autenticarTokenSesion, as
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const resultado = await editarJuego(req.body?.newData, req.params.id, req.datosSesion!.id);
         if (resultado) {
-            return res.json(exito("Game settings changed", {game: resultado}));
+            return res.json(exito("Game settings changed", { game: resultado }));
         } else {
             return res.status(404).json(fallo("Couldn't change game settings or invalid credentials", null, 404));
         }
@@ -198,7 +198,7 @@ routerPriv.put("/game/additions/:id", autenticarTokenApi, autenticarTokenSesion,
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const resultado = await editarAdicionesJuego(req.body?.additions, req.params.id, req.datosSesion!.id);
         if (resultado) {
-            return res.json(exito("Game additions setted", {current: resultado}));
+            return res.json(exito("Game additions setted", { current: resultado }));
         } else {
             return res.status(409).json(fallo("There was an error changing the additions of the game", null, 409));
         }
@@ -240,15 +240,64 @@ routerPriv.get("/game/follow/:id", autenticarTokenApi, autenticarTokenSesion, as
 
 
 
-//Ver si el usuario sigue un juego
+//Comentar un juego
 routerPriv.post("/comment/game/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
         const resultado = await comentarJuego(req.params?.id, req.body?.content, req.datosSesion!.id);
         if (!resultado) return res.status(404).json(fallo("Comment didn't get posted", null, 400));
-        return res.json(exito("Comment posted", {comment: resultado}));
+        return res.json(exito("Comment posted", { comment: resultado }));
     });
 });
+
+//Comentar un comentario
+routerPriv.post("/comment/comment/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Comment not found", null, 404));
+        const resultado = await comentarComentario(req.params?.id, req.body?.content, req.datosSesion!.id);
+        if (!resultado) return res.status(404).json(fallo("Comment didn't get posted", null, 400));
+        return res.json(exito("Comment posted", { comment: resultado }));
+    });
+});
+
+//Ver comentarios de un juego personalmente
+routerPriv.get("/comment/personal/:modo/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; modo: 0 | 1 | 2; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const pagina = parseInt(req.query.page as string) ?? 0;
+        const paginaSub = parseInt(req.query.pageSub as string) ?? 0;
+        if (!req.params?.modo) return res.status(404).json(fallo("Comment not found", null, 404));
+        if (!req.params?.id) return res.status(404).json(fallo("Comment not found", null, 404));
+        const comentarios = await verComentario(req.params?.modo ?? 0, req.params?.id, pagina, paginaSub, req.datosSesion!.id) ?? null;
+        if (!comentarios) return res.status(404).json(fallo("Comment not found", null, 404));
+        return res.json(exito("Comments found", { comments: comentarios }));
+    });
+});
+
+//El usuario actual da like a un comentario
+routerPriv.post("/comment/like/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const cantidad = Math.sign(req.body?.quantity) ?? 0;
+        const resultado = await likeComentario(req.body?.id, req.datosSesion!.id, cantidad);
+        if (resultado) {
+            return res.json(exito("Comment liked/unliked", resultado));
+        } else {
+            return res.status(409).json(fallo("There was an error liking/unliking the comment", null, 409));
+        }
+    });
+});
+
+//Borrar un comentario y subcomentarios
+routerPriv.delete("/comment/delete/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        const resultado = await borrarComentario(req.body?.id, req.datosSesion!.id);
+        if (resultado) {
+            return res.json(exito("Comment deleted"));
+        } else {
+            return res.status(409).json(fallo("There was an error deleting the comment", null, 409));
+        }
+    });
+});
+
 
 
 export default routerPriv;

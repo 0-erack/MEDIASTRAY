@@ -41,8 +41,8 @@ const AdicionJuegoSchema = new Schema({
 const ComentarioSchema = new Schema({
     id: { type: String, required: true },
     owner: { type: String, required: true }, //Que usuario comenta
-    content: { type: String, required: true }, //Contenido del comentario (game_<id>, comment_<id>, forum_<id>)
-    target: { type: String, required: true }, //A que entidad se comenta
+    content: { type: String, required: true }, //Contenido del comentario
+    target: { type: String, required: true }, //A que entidad se comenta (game_<id>, comment_<id>, forum_<id>)
     responsesAmount: {type: Number, required: false}, //Tambien se guarda cacheado la cantidad de respuestas
     featured: {type: Boolean, required: false}, //Si lo ha hecho un usuario premium y tiene que aparecer arriba
     date: {type: String, required: false}, //Timestamp de cuando se publico
