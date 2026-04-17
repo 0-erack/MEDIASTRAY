@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{url_backend}}/comment/1/game_9270afbb-01a8-4620-a3db-198e254f72cf?page=0&pageSub=0"
+  url: "{{url_backend}}/comment/1/game_7dcd7efe-1e76-44e6-9a3f-e7cccb1d33fa?page=0&pageSub=0"
   headers:
     - name: Content-Type
       value: application/json

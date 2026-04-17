@@ -3,6 +3,7 @@
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { borrarComentario, comentarComentario, comentarJuego, likeComentario, verComentario } from '../controllers/comentarioController.js';
 import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, seguirJuego, verJuego, verJuegosSeguidos, verJuegosUsuario } from '../controllers/juegoController.js';
+import { reportarObjeto } from '../controllers/reportesController.js';
 import { cerrarSesion, verSesionToken } from '../controllers/sessionController.js';
 import { alterarSeguidores, borrarUsuario, crearUsuario, editarUsuario, loginUsuario, logoutUsuario, renovarPremium, verUsuario } from '../controllers/usuarioController.js';
 import { autenticarTokenApi, autenticarTokenSesion } from './autenticaciones.js';
@@ -274,7 +275,7 @@ routerPriv.get("/comment/personal/:modo/:id", autenticarTokenApi, autenticarToke
 });
 
 //El usuario actual da like a un comentario
-routerPriv.post("/comment/like/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+routerPriv.post("/comment/like", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         const cantidad = Math.sign(req.body?.quantity) ?? 0;
         const resultado = await likeComentario(req.body?.id, req.datosSesion!.id, cantidad);
@@ -287,9 +288,10 @@ routerPriv.post("/comment/like/:id", autenticarTokenApi, autenticarTokenSesion, 
 });
 
 //Borrar un comentario y subcomentarios
-routerPriv.delete("/comment/delete/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+routerPriv.delete("/comment/delete/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{id: string}>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const resultado = await borrarComentario(req.body?.id, req.datosSesion!.id);
+        if (!req.params?.id) return res.status(404).json(fallo("Comment not found", null, 404));
+        const resultado = await borrarComentario(req.params?.id, req.datosSesion!.id);
         if (resultado) {
             return res.json(exito("Comment deleted"));
         } else {
@@ -298,6 +300,18 @@ routerPriv.delete("/comment/delete/:id", autenticarTokenApi, autenticarTokenSesi
     });
 });
 
+//Borrar un comentario y subcomentarios
+routerPriv.post("/report/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{id: string}>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id || !req.body?.type || !req.body?.text) return res.status(404).json(fallo("Insufficient data", null, 409));
+        const resultado = await reportarObjeto(req.params?.id, req.body?.type, req.datosSesion!.id, req.body?.text);
+        if (resultado) {
+            return res.json(exito("Object reported"));
+        } else {
+            return res.status(409).json(fallo("There was an error when reporting", null, 409));
+        }
+    });
+});
 
 
 export default routerPriv;

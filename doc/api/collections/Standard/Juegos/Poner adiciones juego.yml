@@ -1,7 +1,7 @@
 info:
   name: Poner adiciones juego
   type: http
-  seq: 9
+  seq: 8
 
 http:
   method: PUT

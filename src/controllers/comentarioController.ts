@@ -10,6 +10,15 @@ import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
 const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 50;
 
 /**
+ * Formatea un comentario para que este presentable para la api
+ * @param data comentario original
+ * @returns comentario formateado
+ */
+const formatearPublicoComentario = (data: Record<string, any>): Record<string, any> => {
+    return {...data, _id: undefined, fromOwner: data?.esCreador, fromMe: data?.esMio, esDestacado: undefined, respuestas: undefined, responses: data?.respuestas, esMio: undefined, esCreador: undefined}
+}
+
+/**
  * Busca uno o varios comentarios
  * @param modo 0 = un solo comentario por su id, 1 = comentarios referentes a x objetivo, 2 = comentarios de un usuario
  * @param id id de busqueda
@@ -55,7 +64,10 @@ export const buscarComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, 
             }
         }
     ]);
-    return resultado ?? null;
+    return resultado.map((comentario) => ({
+        ...formatearPublicoComentario(comentario),
+        responses: comentario.respuestas?.map(formatearPublicoComentario) ?? []
+    })) ?? null;
 }
 
 /**
@@ -77,7 +89,7 @@ export const comentarJuego = async (id: string, contenido: string, idAutor: stri
     if (!juego || !juego.publico) throw { message: "Game not found", code: 404 };
     const esPremium = await usuarioTienePremium(usuario.id);
     const idComentario = uuidv4();
-    const comentario = { id: idComentario, onwer: usuario.id, content: contenido, target: "game_" + juego.id, responsesAmount: 0, featured: esPremium ? true : false, date: Date.now() + "", responses: [], likesAmount: 0 }
+    const comentario = { id: idComentario, owner: usuario.id, content: contenido, target: "game_" + juego.id, responsesAmount: 0, featured: esPremium ? true : false, date: Date.now() + "", responses: [], likesAmount: 0 }
     const resultado = await mongoSet("comentario", comentario);
     if (!resultado) throw { message: "Unexcepted error", code: 500 };
     return comentario;
@@ -93,15 +105,15 @@ export const comentarJuego = async (id: string, contenido: string, idAutor: stri
 export const likeComentario = async (id: string, idUsuario: string, cantidad = 0): Promise<boolean> => {
     const usuario = await buscarUsuario(idUsuario);
     if (!usuario || usuario.nivelPublico === 2) throw { message: "User not found", code: 404 }
-    const yaLike = await Intermediario.findOne({ sujeto: idUsuario, verbo: "sigue", perdicado: id }) ?? null;
+    const yaLike = await Intermediario.findOne({ sujeto: idUsuario, verbo: "like", predicado: id });
     if (cantidad == 0) {
         return yaLike?.id ? true : false;
     } else {
         if (cantidad > 0 && yaLike?.id) return false;
         if (cantidad < 0 && !yaLike?.id) return false;
-        if (cantidad < 0) await mongoDelete("intermediario", { sujeto: idUsuario, verbo: "sigue", predicado: id }, true);
-        if (cantidad > 0) await mongoSet("intermediario", { id: uuidv4(), sujeto: idUsuario, verbo: "sigue", predicado: id, extra: { comentario: true } });
-        const resultado = await Comentario.updateOne({ id: id }, { $inc: { likesAmount: cantidad } });
+        if (cantidad < 0) await mongoDelete("intermediario", { sujeto: idUsuario, verbo: "like", predicado: id }, true);
+        if (cantidad > 0) await mongoSet("intermediario", { id: uuidv4(), sujeto: idUsuario, verbo: "like", predicado: id, extra: { comentario: true } });
+        const resultado = await Comentario.updateOne({ id: id }, { $inc: { likesAmount: Number(cantidad) } });
         return resultado.modifiedCount !== 0;
     }
 }
@@ -162,12 +174,13 @@ export const comentarComentario = async (id: string, contenido: string, idAutor:
     }
     const usuario = await buscarUsuario(idAutor);
     if (!usuario || usuario.disponibilidad >= 2 || usuario.nivelPublico > 0) throw { message: "User doesn't exist or doesn't have permissions for this", code: 403 };
-    const comentarioOriginal = await Comentario.find({id: id}).lean();
+    const comentarioOriginal = await Comentario.findOne({id: id});
     if (!comentarioOriginal) throw { message: "Comment not found", code: 404 };
-
+    
     const esPremium = await usuarioTienePremium(usuario.id);
     const idComentario = uuidv4();
-    const comentario = { id: idComentario, onwer: usuario.id, content: contenido, target: "comment_" + id, responsesAmount: 0, featured: esPremium ? true : false, date: Date.now() + "", responses: [], likesAmount: 0 }
+    const comentario = { id: idComentario, owner: usuario.id, content: contenido, target: "comment_" + id, responsesAmount: 0, featured: esPremium ? true : false, date: Date.now() + "", responses: [], likesAmount: 0 }
+    console.log("hola");
     const resultado = await Comentario.updateOne({id: id}, {$push: {responses: comentario}});
     if (!resultado?.modifiedCount) throw { message: "Unexcepted error", code: 500 };
     return comentario ?? null;
@@ -183,15 +196,9 @@ export const borrarComentario = async (id: string, idVisor: string): Promise<boo
     const usuario = await buscarUsuario(idVisor);
     if (!usuario) throw { message: "User doesn't exist or doesn't have permissions for this", code: 403 };
     const comentario = await Comentario.findOne({id: id});
-    if (!comentario || comentario.owner !== usuario.id) throw { message: "Comment doesn't exist or can't delete it", code: 404 };
+    if (!comentario || comentario.owner !== idVisor) throw { message: "Comment doesn't exist or can't delete it", code: 404 };
     const resultado = await Comentario.deleteOne({id: id});
     if (!resultado?.deletedCount) throw { message: "Unexcepted error", code: 500 };
+    await Comentario.deleteMany({verbo: "like", predicado: id}); //TODO: borrado en cascada intermediario seguir RECURSIVO
     return true;
-
-
-    //TODO: borrado en cascada intermediario seguir
-
 }
-
-
-//borrado en cascada en juegos, rutas y testing

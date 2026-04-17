@@ -5,7 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: "{{url_backend}}/comment/delete/9270afbb-01a8-4620-a3db-198e254f72cf"
+  url: "{{url_backend}}/comment/delete/22487993-ec4b-4bae-8c86-b60a13ae0b17"
   headers:
     - name: Content-Type
       value: application/json

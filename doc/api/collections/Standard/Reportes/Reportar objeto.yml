@@ -1,11 +1,11 @@
 info:
-  name: Crear juego simple
+  name: Reportar objeto
   type: http
-  seq: 3
+  seq: 19
 
 http:
   method: POST
-  url: "{{url_backend}}/game/create"
+  url: "{{url_backend}}/report/7dcd7efe-1e76-44e6-9a3f-e7cccb1d33fa"
   headers:
     - name: Content-Type
       value: application/json
@@ -19,10 +19,8 @@ http:
     type: json
     data: |-
       {
-        "game": {
-          "title": "el juego 2",
-          "public": true
-        }
+        "type": "game",
+        "text": "es malo"
       }
   auth:
     type: bearer

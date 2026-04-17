@@ -8,7 +8,7 @@ import { getDB } from "../connections/postgresql.js";
 import { redisGet, redisSet } from "../connections/redis.js";
 import { hashStringToInt, lunesMadrugada } from "../libraries/miscelanea.js";
 import { juegos, usuarios } from '../models/schema.js';
-import { AdicionJuego, Intermediario } from "../models/schemaMongo.js";
+import { AdicionJuego, Comentario, Intermediario } from "../models/schemaMongo.js";
 import { autenticarContrasegnaUsuario } from "../routes/autenticaciones.js";
 import { Juego } from "../types/Juego.js";
 import { formatearJuegoMiniatura, formatearJuegoPrivado, formatearJuegoPublico, validarAdicionJuego, validarCreacionJuego, validarEdicionJuego } from "../validators/validacionesJuego.js";
@@ -136,6 +136,7 @@ export const borrarJuego = async (id: string, contrasegnaDuegno: string, idDuegn
     await AdicionJuego.deleteMany({ game: id });
     //await mongoDelete("intermediario", {predicado: id}, true);
     await Intermediario.deleteMany({ predicado: id });
+    await Comentario.deleteMany({target: id}); //RECURSIVO RECURSIVO ERCURSIV
     //TODO: borrado en cascada
     return true;
 }

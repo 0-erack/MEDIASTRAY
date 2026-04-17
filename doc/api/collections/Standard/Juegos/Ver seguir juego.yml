@@ -1,7 +1,7 @@
 info:
   name: Ver seguir juego
   type: http
-  seq: 13
+  seq: 12
 
 http:
   method: GET

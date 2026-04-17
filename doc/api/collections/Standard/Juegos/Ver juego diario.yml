@@ -1,7 +1,7 @@
 info:
   name: Ver juego diario
   type: http
-  seq: 15
+  seq: 14
 
 http:
   method: GET

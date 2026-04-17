@@ -46,10 +46,21 @@ const ComentarioSchema = new Schema({
     responsesAmount: {type: Number, required: false}, //Tambien se guarda cacheado la cantidad de respuestas
     featured: {type: Boolean, required: false}, //Si lo ha hecho un usuario premium y tiene que aparecer arriba
     date: {type: String, required: false}, //Timestamp de cuando se publico
-    responses: { type: [String], default: [] }, //Datos con las respuestas (o si no, comentarios haciendo referencia a otros)
-    likesAmount: { type: [String], default: [] } //Cantidad de likes del comentario
+    responses: { type: [Object], default: [] }, //Datos con las respuestas (o si no, comentarios haciendo referencia a otros)
+    likesAmount: { type: Number, default: 0 } //Cantidad de likes del comentario
 }, { 
     collection: 'comentario'
+});
+
+//Objeto de reporte a un objeto
+const ReporteSchema = new Schema({
+    id: { type: String, required: true },
+    texto: {type: String, required: true}, //Texto del reporte
+    idReportador: {type: String, required: true}, //Usuario que reporta
+    tipo: {type: String, required: true}, //Que tipo de objeto reporta
+    idReportado: {type: String, required: true}, //Objeto reportado en base al tipo
+    }, { 
+    collection: 'reporte'
 });
 
 //Objeto de test
@@ -66,5 +77,6 @@ const WildcardSchema = new Schema({
 export const Intermediario = model('Intermediario', IntermediarioSchema);
 export const AdicionJuego = model('AdicionJuego', AdicionJuegoSchema);
 export const Comentario = model('Comentario', ComentarioSchema);
+export const Reporte = model('Reporte', ReporteSchema);
 export const Test = model('Test', TestInitSchema);
 export const Wildcard = model('Wildcard', WildcardSchema);
