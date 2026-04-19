@@ -46,7 +46,7 @@ const ComentarioSchema = new Schema({
     responsesAmount: {type: Number, required: false}, //Tambien se guarda cacheado la cantidad de respuestas
     featured: {type: Boolean, required: false}, //Si lo ha hecho un usuario premium y tiene que aparecer arriba
     date: {type: String, required: false}, //Timestamp de cuando se publico
-    responses: { type: [Object], default: [] }, //Datos con las respuestas (o si no, comentarios haciendo referencia a otros)
+    //responses: { type: [Object], default: [] }, //Datos con las respuestas (o si no, comentarios haciendo referencia a otros)
     likesAmount: { type: Number, default: 0 } //Cantidad de likes del comentario
 }, { 
     collection: 'comentario'

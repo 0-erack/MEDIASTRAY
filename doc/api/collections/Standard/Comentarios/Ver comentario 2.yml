@@ -1,11 +1,11 @@
 info:
-  name: Ver comentario personalmente
+  name: Ver comentario 2
   type: http
-  seq: 3
+  seq: 7
 
 http:
   method: GET
-  url: "{{url_backend}}/comment/personal/1/game_854cbb68-117f-44ed-88b4-8a82112e1bb3?page=0&pageSub=0"
+  url: "{{url_backend}}/comment/1/comment_45880615-0166-4cdd-8edf-343022ca607f?page=0&pageSub=0"
   headers:
     - name: Content-Type
       value: application/json

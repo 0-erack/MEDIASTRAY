@@ -35,12 +35,14 @@ export const reportarObjeto = async (id: string, tipo: "game"|"forum"|"comment"|
             return false;
         break;
     }
-    const reportador = await buscarUsuario(idReportador);
-    if (!reportador) throw { message: "User not found", code: 404 }
-    const yaReportado = await Reporte.findOne({idReportado: id, idReportador: idReportador});
-    if (yaReportado) throw { message: "User already reported this", code: 409, doubleReport: true }
+    if (idReportador) {
+        const reportador = await buscarUsuario(idReportador);
+        if (!reportador) throw { message: "User not found", code: 404 }
+        const yaReportado = await Reporte.findOne({idReportado: id, idReportador: idReportador});
+        if (yaReportado) throw { message: "User already reported this", code: 409, doubleReport: true }
+    }
     const idNuevo = uuidv4();
-    await Reporte.insertOne({id: idNuevo, texto: texto, idReportador: idReportador, tipo: tipo, idReportado: id});
+    await Reporte.insertOne({id: idNuevo, texto: texto, idReportador: idReportador ?? '', tipo: tipo, idReportado: id});
 
     return true;
 }

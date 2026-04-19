@@ -279,11 +279,7 @@ routerPriv.post("/comment/like", autenticarTokenApi, autenticarTokenSesion, asyn
     return manejadorRuta(req, res, async () => {
         const cantidad = Math.sign(req.body?.quantity) ?? 0;
         const resultado = await likeComentario(req.body?.id, req.datosSesion!.id, cantidad);
-        if (resultado) {
-            return res.json(exito("Comment liked/unliked", resultado));
-        } else {
-            return res.status(409).json(fallo("There was an error liking/unliking the comment", null, 409));
-        }
+        return res.json(exito("Comment info about liking", resultado));
     });
 });
 

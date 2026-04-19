@@ -19,7 +19,7 @@ http:
     type: json
     data: |-
       {
-        "id": "5269219f-4f02-4941-8cbe-3b2d9994b146",
+        "id": "1eff10de-65a3-4e39-be51-94dc0645e117",
         "quantity": 1
       }
   auth:

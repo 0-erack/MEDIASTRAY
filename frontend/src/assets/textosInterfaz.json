@@ -145,7 +145,12 @@
                 "editarAdiciones": "Edit extra info",
                 "eliminar": "Delete",
                 "guardar": "Save",
-                "agnadir": "Add"
+                "agnadir": "Add",
+                "mostrarMas": "Show more...",
+                "mostrarRespuestas": "Show responses...",
+                "meGusta": "Like",
+                "noMeGusta": "Unlike",
+                "borrar": "Delete"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -181,7 +186,12 @@
                 "editarAdiciones": "Editar información extra",
                 "eliminar": "Eliminar",
                 "guardar": "Guardar",
-                "agnadir": "Añadir"
+                "agnadir": "Añadir",
+                "mostrarMas": "Mostrar más...",
+                "mostrarRespuestas": "Mostrar respuestas...",
+                "meGusta": "Me gusta",
+                "noMeGusta": "No me gusta",
+                "borrar": "Borrar"
             }
         },
         "titulos": {
@@ -207,7 +217,8 @@
                 "forosDestacados": "Featured forums",
                 "crearJuego": "Create game",
                 "juegosPropios": "My games",
-                "juegosSeguidos": "Followed games"
+                "juegosSeguidos": "Followed games",
+                "seccionComentarios": "Comments"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -231,7 +242,8 @@
                 "forosDestacados": "Foros destacados",
                 "crearJuego": "Crear juego",
                 "juegosPropios": "Mis juegos",
-                "juegosSeguidos": "Juegos seguidos"
+                "juegosSeguidos": "Juegos seguidos",
+                "seccionComentarios": "Comentarios"
             }
         },
         "parrafos": {
@@ -480,7 +492,8 @@
                 "muyLargo": "Data too long",
                 "errorCambiarAdiciones": "Couldn't update game's additions, data was invalid or there was a server error",
                 "noHayJuegos": "There are no games (or they weren't found)",
-                "juegoRepetido": "There is another game with that title"
+                "juegoRepetido": "There is another game with that title",
+                "noComentarios": "There are no comments yet or couldn't be loaded"
             },
             "ES-es": {
                 "genericoFormulario": "Uno o varios campos no son válidos, compruébalos",
@@ -528,7 +541,8 @@
                 "validacionSubtituloAdicion": "El subtítulo debe tener menos de 32 carácteres",
                 "muyLargo": "Demasiados datos",
                 "noHayJuegos": "No hay juegos (o no han sido encontrados)",
-                "juegoRepetido": "Ya hay otro juego con ese título"
+                "juegoRepetido": "Ya hay otro juego con ese título",
+                "noComentarios": "No hay comentarios aún o no han podido cargar"
             }
         },
         "titulosHtml": {

@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{url_backend}}/comment/comment/4d2574a2-8631-49a7-a789-b4d49975c6f3"
+  url: "{{url_backend}}/comment/comment/1eff10de-65a3-4e39-be51-94dc0645e117"
   headers:
     - name: Content-Type
       value: application/json

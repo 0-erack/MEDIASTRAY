@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{url_backend}}/comment/game/7dcd7efe-1e76-44e6-9a3f-e7cccb1d33fa"
+  url: "{{url_backend}}/comment/game/854cbb68-117f-44ed-88b4-8a82112e1bb3"
   headers:
     - name: Content-Type
       value: application/json
@@ -19,7 +19,7 @@ http:
     type: json
     data: |-
       {
-        "content": "asdfhaspdfh asdhf asdf oalsiudf aosliduf gholiasdufgholi udasjghf asjdgfkasdlfkhjg"
+        "content": "# hola \n hola"
       }
   auth:
     type: bearer

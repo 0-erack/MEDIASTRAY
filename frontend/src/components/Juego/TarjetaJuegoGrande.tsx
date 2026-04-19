@@ -8,6 +8,7 @@ import useSesion from "../../hooks/useSesion";
 import useTituloDinamico from "../../hooks/useTituloDinamico";
 import { timestampAFecha } from "../../libraries/extraFechas";
 import { Usuario } from "../../types/Usuario";
+import CagradorComentarios from "../Comentarios/CagradorComentarios";
 import BotonFuncion from "../Elements/BotonFuncion";
 import EnlaceFuncion from "../Elements/EnlaceFuncion";
 import MarkdownDisplay from "../Elements/MarkdownDisplay";
@@ -159,7 +160,8 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         })}
       </div>
       <div>
-        COMENTARIOS
+        <Titulo magnitud={4}>{traduccion("titulos", "seccionComentarios")}</Titulo>
+        {juego && (<CagradorComentarios idObjeto={juego.id} tipoObjeto="game" />)}
       </div>
     </div>
   )

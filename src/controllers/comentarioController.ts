@@ -1,13 +1,16 @@
+import { eq, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { mongoDelete, mongoSet } from "../connections/mongodb.js";
+import { getDB } from '../connections/postgresql.js';
 import { contenidoComentario } from "../libraries/validaciones.js";
+import { juegos } from '../models/schema.js';
 import { Comentario, Intermediario } from '../models/schemaMongo.js';
 import { buscarJuego } from "./juegoController.js";
 import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
 
 
 //Tamagno de pagina estandar para las consultas
-const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 50;
+const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 10;
 
 /**
  * Formatea un comentario para que este presentable para la api
@@ -15,7 +18,7 @@ const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 50;
  * @returns comentario formateado
  */
 const formatearPublicoComentario = (data: Record<string, any>): Record<string, any> => {
-    return {...data, _id: undefined, fromOwner: data?.esCreador, fromMe: data?.esMio, esDestacado: undefined, respuestas: undefined, responses: data?.respuestas, esMio: undefined, esCreador: undefined}
+    return { ...data, _id: undefined, liked: data?.liked, fromOwner: data?.esCreador, fromMe: data?.esMio, esDestacado: undefined, respuestas: undefined, esMio: undefined, esCreador: undefined }
 }
 
 /**
@@ -28,14 +31,14 @@ const formatearPublicoComentario = (data: Record<string, any>): Record<string, a
  * @param idVisor id de quien ve los comentarios, los tuyos propios aparecen primero
  * @returns array con los comentarios
  */
-export const buscarComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, paginaSub = 0, idCreadorObjeto?: string, idVisor ?: string): Promise<Array<Record<string, any>> | null> => {
+export const buscarComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, paginaSub = 0, idCreadorObjeto?: string, idVisor?: string): Promise<Array<Record<string, any>> | null> => {
     if (pagina < 0) pagina = 0;
     const filtro = {} as Record<string, any>;
-    if (modo == 0) filtro.id = id;
-    if (modo == 1) filtro.target = id;
-    if (modo == 2) filtro.owner = id;
-    //Orden: idCreadorObjeto == owner, featured == true, por likesAmount, por responsesAmount
-    const resultado = await Comentario.aggregate([
+    if (modo == 0) { filtro.id = id; filtro.parentId = { $exists: false }; }
+    if (modo == 1) { filtro.target = id; } // works for games and comments
+    if (modo == 2) { filtro.owner = id; filtro.parentId = { $exists: false }; }
+
+    let resultado = await Comentario.aggregate([
         { $match: filtro },
         {
             $addFields: {
@@ -44,30 +47,50 @@ export const buscarComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, 
                 esDestacado: { $cond: { if: { $eq: ["$featured", true] }, then: 1, else: 0 } }
             }
         },
-        { $sort: { esCreador: -1, esDestacado: -1, likesAmount: -1, responsesAmount: -1 } },
+        { $sort: { esCreador: -1, esMio: -1, esDestacado: -1, likesAmount: -1, responsesAmount: -1 } },
         { $skip: pagina * tamagnoPagina },
         { $limit: tamagnoPagina },
         {
-            $addFields: {
-                respuestas: {
-                    $slice: [
-                        {
-                            $sortArray: {
-                                input: "$responses",
-                                sortBy: { esMio: -1, esCreador: -1, esDestacado: -1, likesAmount: -1, responsesAmount: -1, date: -1 }
-                            }
-                        },
-                        paginaSub * tamagnoPagina,
-                        tamagnoPagina
-                    ]
-                }
+            $lookup: {
+                from: "comentario",
+                let: { commentId: "$id" },
+                pipeline: [
+                    { $match: { $expr: { $eq: ["$parentId", "$$commentId"] } } },
+                    {
+                        $addFields: {
+                            esCreador: { $cond: { if: { $eq: ["$owner", idCreadorObjeto] }, then: 1, else: 0 } },
+                            esMio: { $cond: { if: { $eq: ["$owner", idVisor] }, then: 1, else: 0 } },
+                            esDestacado: { $cond: { if: { $eq: ["$featured", true] }, then: 1, else: 0 } }
+                        }
+                    },
+                    { $sort: { esCreador: -1, esMio: -1, esDestacado: -1, likesAmount: -1, responsesAmount: -1 } },
+                    { $skip: paginaSub * tamagnoPagina },
+                    { $limit: tamagnoPagina }
+                ],
+                as: "respuestas"
             }
         }
     ]);
+
+    const ids = resultado.map(c => "comment_" + c.id);
+    const todasRespuestas = await Comentario.find({ target: { $in: ids } })
+        .sort({ likesAmount: -1, responsesAmount: -1 })
+        .limit(tamagnoPagina)
+        .lean();
+
+    if (idVisor) {
+        resultado = await Promise.all(resultado.map(async (e) => {
+            const seguido = await Intermediario.findOne({ sujeto: idVisor, verbo: "like", predicado: e.id });
+            return {...e, liked: seguido ? true : false};
+        }));
+    }
     return resultado.map((comentario) => ({
         ...formatearPublicoComentario(comentario),
-        responses: comentario.respuestas?.map(formatearPublicoComentario) ?? []
+        responses: todasRespuestas
+            .filter(r => r.target === "comment_" + comentario.id)
+            .map(formatearPublicoComentario)
     })) ?? null;
+
 }
 
 /**
@@ -89,9 +112,11 @@ export const comentarJuego = async (id: string, contenido: string, idAutor: stri
     if (!juego || !juego.publico) throw { message: "Game not found", code: 404 };
     const esPremium = await usuarioTienePremium(usuario.id);
     const idComentario = uuidv4();
-    const comentario = { id: idComentario, owner: usuario.id, content: contenido, target: "game_" + juego.id, responsesAmount: 0, featured: esPremium ? true : false, date: Date.now() + "", responses: [], likesAmount: 0 }
+    const comentario = { id: idComentario, owner: usuario.id, content: contenido, target: "game_" + juego.id, responsesAmount: 0, featured: esPremium ? true : false, date: Date.now() + "", likesAmount: 0 }
     const resultado = await mongoSet("comentario", comentario);
     if (!resultado) throw { message: "Unexcepted error", code: 500 };
+    const db = getDB();
+    await db.update(juegos).set({ cantidadComentarios: sql`${juegos.cantidadComentarios} + 1` }).where(eq(juegos.id, id)).returning({ id: juegos.id });
     return comentario;
 }
 
@@ -105,16 +130,19 @@ export const comentarJuego = async (id: string, contenido: string, idAutor: stri
 export const likeComentario = async (id: string, idUsuario: string, cantidad = 0): Promise<boolean> => {
     const usuario = await buscarUsuario(idUsuario);
     if (!usuario || usuario.nivelPublico === 2) throw { message: "User not found", code: 404 }
+    const comentario = await Comentario.findOne({id});
+    if (!comentario) return false;
     const yaLike = await Intermediario.findOne({ sujeto: idUsuario, verbo: "like", predicado: id });
     if (cantidad == 0) {
         return yaLike?.id ? true : false;
     } else {
-        if (cantidad > 0 && yaLike?.id) return false;
-        if (cantidad < 0 && !yaLike?.id) return false;
+        if (cantidad > 0 && yaLike) return false;
+        if (cantidad < 0 && !yaLike) return false;
         if (cantidad < 0) await mongoDelete("intermediario", { sujeto: idUsuario, verbo: "like", predicado: id }, true);
         if (cantidad > 0) await mongoSet("intermediario", { id: uuidv4(), sujeto: idUsuario, verbo: "like", predicado: id, extra: { comentario: true } });
         const resultado = await Comentario.updateOne({ id: id }, { $inc: { likesAmount: Number(cantidad) } });
-        return resultado.modifiedCount !== 0;
+        console.log(id, resultado, await Comentario.findOne({id}));
+        return resultado ? true : false;
     }
 }
 
@@ -136,18 +164,18 @@ export const verComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, pag
         const juego = await buscarJuego(id.replaceAll("game_", ""));
         if (juego) autorObjetoComentado = juego?.idCreador;
     }
-    if (modo == 1 && id.startsWith("comment_")) {
+    /*if (modo == 1 && id.startsWith("comment_")) {
         return await buscarComentario(modo, id, pagina, paginaSub) ?? null;
-    }
+    }*/
     if (modo == 1 && id.startsWith("forum_")) {
         //TODO: si pide forum
     }
     if (modo == 0) {
-        const resultado = await Comentario.find({id: id}).lean();
+        const resultado = await Comentario.find({ id: id }).lean();
         return resultado ?? [];
     }
     if (modo == 2) {
-        const resultado = await Comentario.find({id: id}).lean();
+        const resultado = await Comentario.find({ id: id }).lean();
         return resultado ?? [];
     }
     if (modo == 1 && !idVisor) {
@@ -166,7 +194,7 @@ export const verComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, pag
  * @param idAutor usuario que comenta
  * @returns el comentario nuevo si todo ha ido bien
  */
-export const comentarComentario = async (id: string, contenido: string, idAutor: string): Promise<Record<string, any>|null> => {
+export const comentarComentario = async (id: string, contenido: string, idAutor: string): Promise<Record<string, any> | null> => {
     if (!contenidoComentario(contenido) || !contenido) {
         throw { message: "Missing comment content", code: 409 };
     } else {
@@ -174,15 +202,15 @@ export const comentarComentario = async (id: string, contenido: string, idAutor:
     }
     const usuario = await buscarUsuario(idAutor);
     if (!usuario || usuario.disponibilidad >= 2 || usuario.nivelPublico > 0) throw { message: "User doesn't exist or doesn't have permissions for this", code: 403 };
-    const comentarioOriginal = await Comentario.findOne({id: id});
+    const comentarioOriginal = await Comentario.findOne({ id: id });
     if (!comentarioOriginal) throw { message: "Comment not found", code: 404 };
-    
     const esPremium = await usuarioTienePremium(usuario.id);
     const idComentario = uuidv4();
-    const comentario = { id: idComentario, owner: usuario.id, content: contenido, target: "comment_" + id, responsesAmount: 0, featured: esPremium ? true : false, date: Date.now() + "", responses: [], likesAmount: 0 }
-    console.log("hola");
-    const resultado = await Comentario.updateOne({id: id}, {$push: {responses: comentario}});
-    if (!resultado?.modifiedCount) throw { message: "Unexcepted error", code: 500 };
+    const comentario = { id: idComentario, owner: usuario.id, content: contenido, target: "comment_" + id, responsesAmount: 0, featured: esPremium ? true : false, date: Date.now() + "", likesAmount: 0 }
+    //const resultado = await Comentario.updateOne({id: id}, {$push: {responses: comentario}});
+    const resultado = await mongoSet("comentario", comentario);
+    await Comentario.updateOne({ id: id }, { $inc: { responsesAmount: 1 } });
+    if (!resultado) throw { message: "Unexcepted error", code: 500 };
     return comentario ?? null;
 }
 
@@ -195,10 +223,13 @@ export const comentarComentario = async (id: string, contenido: string, idAutor:
 export const borrarComentario = async (id: string, idVisor: string): Promise<boolean> => {
     const usuario = await buscarUsuario(idVisor);
     if (!usuario) throw { message: "User doesn't exist or doesn't have permissions for this", code: 403 };
-    const comentario = await Comentario.findOne({id: id});
+    const comentario = await Comentario.findOne({ id: id });
     if (!comentario || comentario.owner !== idVisor) throw { message: "Comment doesn't exist or can't delete it", code: 404 };
-    const resultado = await Comentario.deleteOne({id: id});
+    const resultado = await Comentario.deleteOne({ id: id });
     if (!resultado?.deletedCount) throw { message: "Unexcepted error", code: 500 };
-    await Comentario.deleteMany({verbo: "like", predicado: id}); //TODO: borrado en cascada intermediario seguir RECURSIVO
+    await Comentario.deleteMany({ verbo: "like", predicado: id }); //TODO: borrado en cascada intermediario seguir RECURSIVO
+    if (comentario.target.startsWith("comment_")) {
+        await Comentario.updateOne({ id: comentario.target }, { $inc: { commentsAmount: -1 } });
+    }
     return true;
 }

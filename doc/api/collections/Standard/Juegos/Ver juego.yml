@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{url_backend}}/game/9270afbb-01a8-4620-a3db-198e254f72cf"
+  url: "{{url_backend}}/game/222a754b-8569-48eb-a0be-479d83d90816"
   headers:
     - name: Content-Type
       value: application/json
