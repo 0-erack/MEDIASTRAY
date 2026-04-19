@@ -10,6 +10,7 @@ import useSesion from '../../hooks/useSesion';
 import useTituloDinamico from '../../hooks/useTituloDinamico';
 import { timestampAFecha } from '../../libraries/extraFechas';
 import IndicadorPagina from '../Busqueda/IndicadorPagina';
+import ElementoReporte from '../Comentarios/ElementoReporte';
 import BotonFuncion from '../Elements/BotonFuncion';
 import EnlaceFuncion from '../Elements/EnlaceFuncion';
 import MarkdownDisplay from '../Elements/MarkdownDisplay';
@@ -208,12 +209,10 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
           </span>
         </div>) : (<EnlaceFuncion color={1} titulo={traduccion("botones", "verSeguidos")} funcion={() => consultarSeguimientos(false)} />)}
 
-
-
         {(soyYo) ? (<div>
           {!editandoPerfil && (<BotonFuncion funcion={() => { setEditandoPerfil(true) }} titulo={traduccion("botones", "editarPerfil")} />)}
           <EnlaceFuncion titulo={traduccion("botones", "logout")} funcion={() => { navegar("/logout") }} />
-        </div>) : (<p>REPORTAR USUARIO</p>) /*//TODO: */}
+        </div>) : (<ElementoReporte idObjeto={usuario.id} tipoObjeto="user" />)}
       </div>
 
       {editandoPerfil ? "" : (<div className='w-full'>

@@ -56,7 +56,7 @@ const ComentarioSchema = new Schema({
 const ReporteSchema = new Schema({
     id: { type: String, required: true },
     texto: {type: String, required: true}, //Texto del reporte
-    idReportador: {type: String, required: true}, //Usuario que reporta
+    idReportador: {type: String, required: false}, //Usuario que reporta
     tipo: {type: String, required: true}, //Que tipo de objeto reporta
     idReportado: {type: String, required: true}, //Objeto reportado en base al tipo
     }, { 

@@ -1,11 +1,11 @@
 info:
-  name: Reportar objeto
+  name: Reportar objeto anonimo
   type: http
-  seq: 19
+  seq: 2
 
 http:
   method: POST
-  url: "{{url_backend}}/report/854cbb68-117f-44ed-88b4-8a82112e1bb3"
+  url: "{{url_backend}}/anonymous/report/854cbb68-117f-44ed-88b4-8a82112e1bb3"
   headers:
     - name: Content-Type
       value: application/json

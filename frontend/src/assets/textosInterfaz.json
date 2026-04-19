@@ -150,7 +150,9 @@
                 "mostrarRespuestas": "Show responses...",
                 "meGusta": "Like",
                 "noMeGusta": "Unlike",
-                "borrar": "Delete"
+                "borrar": "Delete",
+                "publicar": "Publish",
+                "reportar": "Report"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -191,7 +193,9 @@
                 "mostrarRespuestas": "Mostrar respuestas...",
                 "meGusta": "Me gusta",
                 "noMeGusta": "No me gusta",
-                "borrar": "Borrar"
+                "borrar": "Borrar",
+                "publicar": "Publicar",
+                "reportar": "Reportar"
             }
         },
         "titulos": {
@@ -370,7 +374,12 @@
                 "adicionMention": "Nickname of a Mediastray's user",
                 "adicionImagenEvento": "Image of the event (URL)",
                 "adicionInfoEvento": "Info about the event",
-                "adicionCarrusel": "Images URLs (it is possible to put only one) (regular users can put up to 10 images, MAGNA users can put up to 32)"
+                "adicionCarrusel": "Images URLs (it is possible to put only one) (regular users can put up to 10 images, MAGNA users can put up to 32)",
+                "contenidoComentario": "Post new comment",
+                "contenidoRespuesta": "Reply the comment",
+                "contenidoReporte": "Report information",
+                "infoReporte": "Report this only if you are completelly sure that its unlawful or nocive, and describe the reason.",
+                "reporteAnonimo": "You're about to report anonymously because you aren't logged in, reports from users with an account are more taken into consideration."
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -441,7 +450,12 @@
                 "adicionMention": "Nickname de un usuario de mediastray",
                 "adicionImagenEvento": "Imagen del evento (URL)",
                 "adicionInfoEvento": "Información sobre el evento",
-                "adicionCarrusel": "URLs de las imágenes (es posible poner solo una) (los usuarios normales pueden poner hasta 10 imágenes por carrusel, los usuarios con MAGNA pueden poner hasta 32)"
+                "adicionCarrusel": "URLs de las imágenes (es posible poner solo una) (los usuarios normales pueden poner hasta 10 imágenes por carrusel, los usuarios con MAGNA pueden poner hasta 32)",
+                "contenidoComentario": "Publicar un comentario",
+                "contenidoRespuesta": "Responder al comentario",
+                "contenidoReporte": "Información del reporte",
+                "infoReporte": "Reporta solo si estás totalmente seguro de que este contenido es nocivo o ilegal, y describe el motivo.",
+                "reporteAnonimo": "Al no tener sesión iniciada, vas a reportar de manera anónima, los reportes de usuarios con cuenta se tienen más en consideración."
             }
         },
         "errores": {
@@ -493,7 +507,8 @@
                 "errorCambiarAdiciones": "Couldn't update game's additions, data was invalid or there was a server error",
                 "noHayJuegos": "There are no games (or they weren't found)",
                 "juegoRepetido": "There is another game with that title",
-                "noComentarios": "There are no comments yet or couldn't be loaded"
+                "noComentarios": "There are no comments yet or couldn't be loaded",
+                "noReporte": "There was an error with your report, maybe you already reported this content"
             },
             "ES-es": {
                 "genericoFormulario": "Uno o varios campos no son válidos, compruébalos",
@@ -542,7 +557,8 @@
                 "muyLargo": "Demasiados datos",
                 "noHayJuegos": "No hay juegos (o no han sido encontrados)",
                 "juegoRepetido": "Ya hay otro juego con ese título",
-                "noComentarios": "No hay comentarios aún o no han podido cargar"
+                "noComentarios": "No hay comentarios aún o no han podido cargar",
+                "noReporte": "Ha habido un error con tu reporte, quizás ya reportaste este contenido"
             }
         },
         "titulosHtml": {
@@ -631,7 +647,11 @@
                 "exitoCrearJuego": "Game created succesfully!",
                 "exitoBorrarJuego": "Game deleted succesfully...",
                 "exitoCambiarPublicoJuego": "Game's public state changed succesfully",
-                "exitoCambiarAdiciones": "Game additions editted succesfully!"
+                "exitoCambiarAdiciones": "Game additions editted succesfully!",
+                "comentarioLike": "Comment liked/unliked",
+                "comentarioPost": "Comment posted",
+                "comentarioBorrar": "Comment deleted...",
+                "reporteEnviar": "Content reported"
             },
             "ES-es": {
                 "loginBien": "Sesión iniciada correctamente!",
@@ -652,7 +672,11 @@
                 "exitoCrearJuego": "Juego creado correctamente!",
                 "exitoBorrarJuego": "Juego borrado correctamente...",
                 "exitoCambiarPublicoJuego": "El estado público del juego ha sido cambiado correctamente",
-                "exitoCambiarAdiciones": "Adiciones del juego actualizadas correctamente!"
+                "exitoCambiarAdiciones": "Adiciones del juego actualizadas correctamente!",
+                "comentarioLike": "Comentario gustado/no gustado",
+                "comentarioPost": "Comentario publicado",
+                "comentarioBorrar": "Comentario eliminado...",
+                "reporteEnviar": "Contenido reportado"
             }
         },
         "dinero": {

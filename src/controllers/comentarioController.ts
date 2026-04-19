@@ -9,6 +9,16 @@ import { buscarJuego } from "./juegoController.js";
 import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
 
 
+
+/**
+     * Dentro de la plataforma los comentarios son un tipo de objeto muy volatil, dinamico y rapido, lo que quiere decir que se manejaran en grandes volumenes de manera rapida
+     * Por eso, al contrario que con el resto de objetos, se tratan como objetos de este tipo lo cual implica prescindir de algunas comodidades de usuario en favor al rendimiento
+     * La justificacion de este tradeoff es que el hecho de que los comentarios carguen y se publiquen rapidamente y sin errores es mas importante que, por ejemplo aumente el numero en la interfaz inmediatamente al responder a uno
+     * Tanto en el backend como en el frontend los comentarios estan diseñados para funcionar a la maxima velocidad a costa de detalles como estos, en terminos de disegno implementar este tipo de detalles sin perjudicar al rendimiento seria muy dificil.
+*/
+
+
+
 //Tamagno de pagina estandar para las consultas
 const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 10;
 
@@ -141,7 +151,6 @@ export const likeComentario = async (id: string, idUsuario: string, cantidad = 0
         if (cantidad < 0) await mongoDelete("intermediario", { sujeto: idUsuario, verbo: "like", predicado: id }, true);
         if (cantidad > 0) await mongoSet("intermediario", { id: uuidv4(), sujeto: idUsuario, verbo: "like", predicado: id, extra: { comentario: true } });
         const resultado = await Comentario.updateOne({ id: id }, { $inc: { likesAmount: Number(cantidad) } });
-        console.log(id, resultado, await Comentario.findOne({id}));
         return resultado ? true : false;
     }
 }
@@ -230,6 +239,10 @@ export const borrarComentario = async (id: string, idVisor: string): Promise<boo
     await Comentario.deleteMany({ verbo: "like", predicado: id }); //TODO: borrado en cascada intermediario seguir RECURSIVO
     if (comentario.target.startsWith("comment_")) {
         await Comentario.updateOne({ id: comentario.target }, { $inc: { commentsAmount: -1 } });
+    }
+    if (comentario.target.startsWith("game_")) {
+        const db = getDB();
+        await db.update(juegos).set({ cantidadComentarios: sql`${juegos.cantidadComentarios} - 1` }).where(eq(juegos.id, comentario.target.replaceAll("game_", ""))).returning({ id: juegos.id });
     }
     return true;
 }

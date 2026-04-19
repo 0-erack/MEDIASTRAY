@@ -296,7 +296,7 @@ routerPriv.delete("/comment/delete/:id", autenticarTokenApi, autenticarTokenSesi
     });
 });
 
-//Borrar un comentario y subcomentarios
+//Guardar un reporte de un objeto personalmente
 routerPriv.post("/report/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{id: string}>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         if (!req.params?.id || !req.body?.type || !req.body?.text) return res.status(404).json(fallo("Insufficient data", null, 409));

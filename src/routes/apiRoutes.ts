@@ -3,6 +3,7 @@
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { verComentario } from '../controllers/comentarioController.js';
 import { buscarJuegos, verJuego, verJuegosDestacados, verJuegosUsuario, verJuegoTemporada } from '../controllers/juegoController.js';
+import { reportarObjeto } from '../controllers/reportesController.js';
 import { alterarSeguidores, buscarUsuarios, usuarioTienePremium, verSeguimientosUsuario, verUsuario } from '../controllers/usuarioController.js';
 import { hacerTestsConexiones } from '../tests/tests.js';
 import { exito, fallo, manejadorRuta } from './respuesta.js';
@@ -150,6 +151,21 @@ router.get("/comment/:modo/:id", async (req: ExpressRequest<{ id: string; modo: 
         const comentarios = await verComentario(req.params?.modo ?? 0, req.params?.id, pagina, paginaSub) ?? null;
         if (!comentarios) return res.status(404).json(fallo("Comment not found", null, 404));
         return res.json(exito("Comments found", {comments: comentarios}));
+    });
+});
+
+
+//Guardar un reporte de un objeto
+//Al existir esta ruta se puede reportar sin tener cuenta, lo cual podria ser una vulnerabilidad en caso de que un usuario envie muchisimos reportes a la vez, seria logico implementar un bloqueo segun ip, o simplemente que se requiera una cuenta
+router.post("/anonymous/report/:id", async (req: ExpressRequest<{id: string}>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id || !req.body?.type || !req.body?.text) return res.status(404).json(fallo("Insufficient data", null, 409));
+        const resultado = await reportarObjeto(req.params?.id, req.body?.type, "", req.body?.text);
+        if (resultado) {
+            return res.json(exito("Object reported"));
+        } else {
+            return res.status(409).json(fallo("There was an error when reporting", null, 409));
+        }
     });
 });
 

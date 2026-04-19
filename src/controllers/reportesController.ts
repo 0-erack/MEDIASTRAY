@@ -9,12 +9,12 @@ import { buscarUsuario } from "./usuarioController.js";
  * Reporta un objeto en la plataforma
  * @param id objeto a reportar
  * @param tipo tipo de objeto a reportar
- * @param idReportador usuario que reporta
+ * @param idReportador usuario que reporta (en caso de anonimo no se pone o es "")
  * @param texto info del reporte
  * @returns true si ha ido todo bien
  */
-export const reportarObjeto = async (id: string, tipo: "game"|"forum"|"comment"|"user", idReportador: string, texto: string): Promise<boolean> => {
-    if (texto.length > 256) throw { message: "Text too long", code: 409 }
+export const reportarObjeto = async (id: string, tipo: "game"|"forum"|"comment"|"user", idReportador?: string, texto?: string): Promise<boolean> => {
+    if (texto && texto.length > 256) throw { message: "Text too long", code: 409 }
     switch (tipo) {
         case "game":
             const juego = await buscarJuego(id);

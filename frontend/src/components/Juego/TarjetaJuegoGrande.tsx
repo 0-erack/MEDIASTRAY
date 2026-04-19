@@ -9,6 +9,7 @@ import useTituloDinamico from "../../hooks/useTituloDinamico";
 import { timestampAFecha } from "../../libraries/extraFechas";
 import { Usuario } from "../../types/Usuario";
 import CagradorComentarios from "../Comentarios/CagradorComentarios";
+import ElementoReporte from "../Comentarios/ElementoReporte";
 import BotonFuncion from "../Elements/BotonFuncion";
 import EnlaceFuncion from "../Elements/EnlaceFuncion";
 import MarkdownDisplay from "../Elements/MarkdownDisplay";
@@ -141,7 +142,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           {(juego.idiomas && juego.idiomas?.length != 0) && (<p>{traduccion("formularios", "listaIdiomas")} <strong>{juego?.idiomas?.join(", ")}</strong></p>)}
         </div>
         <div className="ml-0 sm:ml-5">
-          REPORTAR
+          <ElementoReporte idObjeto={juego.id} tipoObjeto="game" />
         </div>
       </div>
       <div className="grid lg:grid-cols-4 grid-cols-2 gap-2 w-full p-1">
