@@ -1,11 +1,11 @@
 info:
-  name: Reportar objeto anonimo
+  name: Eliminar reporte
   type: http
-  seq: 2
+  seq: 5
 
 http:
-  method: POST
-  url: "{{url_backend}}/anonymous/report/e695ad8f-05ae-409e-9e35-653907e2639e"
+  method: DELETE
+  url: "{{url_backend}}/admin/reports/339ddb7e-c3bd-4176-9d10-c14e549f7954"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,11 +17,7 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: |-
-      {
-        "type": "user",
-        "text": "es malo"
-      }
+    data: ""
   auth:
     type: bearer
     token: "{{session_token}}"

@@ -1,11 +1,11 @@
 info:
-  name: Reportar objeto anonimo
+  name: Ver reportes
   type: http
-  seq: 2
+  seq: 4
 
 http:
-  method: POST
-  url: "{{url_backend}}/anonymous/report/e695ad8f-05ae-409e-9e35-653907e2639e"
+  method: GET
+  url: "{{url_backend}}/admin/reports?page=0&id=e695ad8f-05ae-409e-9e35-653907e2639e"
   headers:
     - name: Content-Type
       value: application/json
@@ -15,13 +15,16 @@ http:
       value: "{{session_token}}"
     - name: X-auth-api
       value: "{{api_token}}"
+  params:
+    - name: page
+      value: "0"
+      type: query
+    - name: id
+      value: e695ad8f-05ae-409e-9e35-653907e2639e
+      type: query
   body:
     type: json
-    data: |-
-      {
-        "type": "user",
-        "text": "es malo"
-      }
+    data: ""
   auth:
     type: bearer
     token: "{{session_token}}"

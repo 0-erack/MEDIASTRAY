@@ -4,6 +4,14 @@ import { buscarComentario } from "./comentarioController.js";
 import { buscarJuego } from "./juegoController.js";
 import { buscarUsuario } from "./usuarioController.js";
 
+/**
+ * Formatea un reporte de la base de datos hacia la api
+ * @param reporte objeto del reporte
+ * @return reporte formateado
+ */
+export const reporteAApi = (reporte: Record<string, any>): Record<string, any> => {
+    return {_id: undefined, text: reporte.texto, idReporter: reporte.idReportador, idReportee: reporte?.idReportado ?? '', type: reporte.tipo, id: reporte.id}
+}
 
 /**
  * Reporta un objeto en la plataforma

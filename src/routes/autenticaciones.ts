@@ -2,7 +2,7 @@
 
 import bcrypt from 'bcrypt';
 import { verSesionToken } from "../controllers/sessionController.js";
-import { usuarioEsAdmin } from '../controllers/usuarioController.js';
+import { usuarioEsAdmin, usuarioEsModerador, usuarioEsSudo } from '../controllers/usuarioController.js';
 import { fallo } from './respuesta.js';
 
 
@@ -59,6 +59,29 @@ export const autenticarAdmin = async (req, res, next) => {
         return res.status(403).json(fallo("User is not admin", null, 403));
     }
 }
+
+//Para requerir que el usuario sea moderador, se tiene que hacer despues de autenticarTokenSesion
+export const autenticarModerador = async (req, res, next) => {
+    if (!req?.datosSesion?.id) return res.status(401).json(fallo("User is not a moderator", null, 403));
+    if (await usuarioEsModerador(req.datosSesion.id)) {
+        req.datosSesion.esAdmin = true;
+        next();
+    } else {
+        return res.status(403).json(fallo("User is not a moderator", null, 403));
+    }
+}
+
+//Para requerir que el usuario sea sudo (permisos supremos), se tiene que hacer despues de autenticarTokenSesion
+export const autenticarSudo = async (req, res, next) => {
+    if (!req?.datosSesion?.id) return res.status(401).json(fallo("User is not sudo", null, 403));
+    if (await usuarioEsSudo(req.datosSesion.id)) {
+        req.datosSesion.esAdmin = true;
+        next();
+    } else {
+        return res.status(403).json(fallo("User is not sudo", null, 403));
+    }
+}
+
 
 //Para requerir el token de sesion de juego (de un usuario) en el header X-auth-playtime
 export const autenticarTokenJuego = (req, res, next) => {

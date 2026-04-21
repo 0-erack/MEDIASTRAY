@@ -9,7 +9,7 @@ import { procesarPago } from '../connections/pagos.js';
 import { getDB } from '../connections/postgresql.js';
 import { contrasegna as validarContrasegna } from '../libraries/validaciones.js';
 import { juegos, usuarios } from '../models/schema.js';
-import { Intermediario } from '../models/schemaMongo.js';
+import { Comentario, Intermediario } from '../models/schemaMongo.js';
 import { autenticarContrasegnaUsuario } from '../routes/autenticaciones.js';
 import { Usuario } from '../types/Usuario.js';
 import { formatearUsuarioMiniatura, formatearUsuarioPrivado, formatearUsuarioPublico, validarCreacionUsuario, validarEdicionUsuario, validarLoginUsuario } from '../validators/validacionesUsuario.js';
@@ -42,6 +42,7 @@ const cascadaUsuario = async (id: string): Promise<boolean> => {
         await db.update(usuarios).set({ cantidadSeguidores: sql`${usuarios.cantidadSeguidores} - 1` }).where(inArray(usuarios.id, ids));
         await Intermediario.deleteMany({ sujeto: id });
         await Intermediario.deleteMany({ predicado: id });
+        await Comentario.deleteMany({owner: id});
         let juegosSeguidos = await Intermediario.find({ sujeto: id, verbo: "sigue", extra: {juego: true} }) as any;
         if (juegosSeguidos && juegosSeguidos.length) juegosSeguidos = juegosSeguidos.map((e) => e.predicado);
         await db.update(juegos).set({cantidadSeguidores: sql`${juegos.cantidadSeguidores} - 1`}).where(inArray(juegos.id, juegosSeguidos ?? []));
@@ -380,8 +381,28 @@ export const buscarUsuarios = async (consulta: string, pagina = 0, orden = 0): P
  */
 export const usuarioEsAdmin = async (id: string): Promise<boolean> => {
     const usuario = await buscarUsuario(id);
-    if (!usuario) return false;
-    return usuario.nivelAcceso >= 1 && usuario.disponibilidad < 2;//&& usuario.nivelPublico < 2;
+    if (!usuario || usuario.disponibilidad !== 0) return false;
+    return usuario.nivelAcceso === 1 || usuario.nivelAcceso === 2;//&& usuario.nivelPublico < 2;
 }
 
-//TODO: privilegios de admin, o un panel para estos
+/**
+ * Consulta si un usuario tiene permisos de moderacion
+ * @param id usuario a consultar
+ * @returns si es moderador
+ */
+export const usuarioEsModerador = async (id: string): Promise<boolean> => {
+    const usuario = await buscarUsuario(id);
+    if (!usuario || usuario.disponibilidad !== 0) return false;
+    return usuario.nivelAcceso === 1 || usuario.nivelAcceso === 2 || usuario.nivelAcceso === 3;//&& usuario.nivelPublico < 2;
+}
+
+/**
+ * Consulta si un usuario tiene permisos de sudo (supremos)
+ * @param id usuario a consultar
+ * @returns si es sudo
+ */
+export const usuarioEsSudo = async (id: string): Promise<boolean> => {
+    const usuario = await buscarUsuario(id);
+    if (!usuario) return false;
+    return usuario.nivelAcceso === 2 && usuario.disponibilidad === 0;
+}
