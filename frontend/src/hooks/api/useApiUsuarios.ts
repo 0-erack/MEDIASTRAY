@@ -116,7 +116,7 @@ const useApiUsuarios = () => {
             let cantidadCorrecta = cantidad;
             if (cantidadCorrecta > 1) cantidadCorrecta = 1;
             if (cantidadCorrecta < -1) cantidadCorrecta = -1;
-            await peticionGenerica(API_URL + `/user/follow/`, "POST", {"id_b": id, "quantity": cantidadCorrecta});
+            await peticionGenerica(API_URL + `/user/follow/`, "POST", {"id_b": id, "amount": cantidadCorrecta});
             return true;
         } catch (error) {
             console.log(error);

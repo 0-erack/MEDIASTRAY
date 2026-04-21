@@ -1,11 +1,11 @@
 info:
-  name: Seguir usuario
+  name: Eliminar usuario totalmente
   type: http
-  seq: 10
+  seq: 11
 
 http:
-  method: POST
-  url: "{{url_backend}}/user/follow"
+  method: DELETE
+  url: "{{url_backend}}/admin/user/bb0c31a7-94cd-4a82-9f9a-7a8ffdc68c6d"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,14 +17,15 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: |-
-      {
-        "amount": 1,
-        "id_b": "85ac9432-426f-479f-89f2-52cd92e18063"
-      }
+    data: ""
   auth:
     type: bearer
     token: "{{session_token}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setEnvVar("session_token", ' ');
 
 settings:
   encodeUrl: true

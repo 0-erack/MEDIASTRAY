@@ -1,11 +1,11 @@
 info:
-  name: Seguir usuario
+  name: Eliminar juego
   type: http
   seq: 10
 
 http:
-  method: POST
-  url: "{{url_backend}}/user/follow"
+  method: DELETE
+  url: "{{url_backend}}/admin/game/d0dc134c-8959-4d62-8c25-0b72b6d8c7fd"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,11 +17,7 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: |-
-      {
-        "amount": 1,
-        "id_b": "85ac9432-426f-479f-89f2-52cd92e18063"
-      }
+    data: ""
   auth:
     type: bearer
     token: "{{session_token}}"

@@ -79,7 +79,7 @@ export const validarUsuario = (data:Usuario): Usuario => {
  * @param data el usuario crudo
  */
 export const formatearUsuarioPrivado = (data:Partial<Usuario>): Record<string, any> => {
-    return {id: data.id, nickname: data.nickname, name: data.nombre, email: data.correo, password: undefined, description: data.descripcion, urlPhoto: data.urlFoto, birthdate: data.cumpleagnos, creationDate: data.fechaCreacion, followersAmount: data.cantidadSeguidores}
+    return {visibility: data.nivelPublico, availability: data.disponibilidad, premium: data.premium, accessLevel: data.nivelAcceso, id: data.id, nickname: data.nickname, name: data.nombre, email: data.correo, password: undefined, description: data.descripcion, urlPhoto: data.urlFoto, birthdate: data.cumpleagnos, creationDate: data.fechaCreacion, followersAmount: data.cantidadSeguidores}
 }
 
 /**

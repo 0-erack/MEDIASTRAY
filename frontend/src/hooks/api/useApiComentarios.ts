@@ -85,7 +85,7 @@ const useApiComentarios = () => {
      */
     const likeComentario = async (id:string, cantidad = 0):Promise<boolean> => {
         try {
-            const resultado = await peticionGenerica(API_URL + `/comment/like`, "POST", {id: id, quantity: cantidad});
+            const resultado = await peticionGenerica(API_URL + `/comment/like`, "POST", {id: id, amount: cantidad});
             return resultado.ok ? resultado?.data : false;
         } catch (error) {
             return false;

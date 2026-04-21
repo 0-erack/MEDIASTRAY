@@ -24,6 +24,7 @@ import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
 export const buscarJuego = async (id: string): Promise<Juego | null> => {
     const db = getDB();
     const juegoPrevio = await db.select().from(juegos).where(eq(juegos.id, id)).limit(1);
+    if (!juegoPrevio) return null;
     const juego = (juegoPrevio[0] as Juego) ?? null;
     return juego;
 }
@@ -92,11 +93,15 @@ export const crearJuego = async (datosCreacion: Record<string, any>, idCreador):
  * @param id juego a buscar
  * @param miniatura si se pide el formato miniatura
  * @param idVisor el id del usuario que lo ve, usado para determinar que datos se muestran
+ * @param verPrivado obliga a devolver todos los datos incluso en juegos privados
  * @returns los datos del juego
  */
-export const verJuego = async (id: string, miniatura = false, idVisor = "", adiciones = false): Promise<Partial<Juego>> => {
+export const verJuego = async (id: string, miniatura = false, idVisor = "", adiciones = false, verPrivado = false): Promise<Partial<Juego>> => {
     const juego = await buscarJuego(id);
-    if (!juego || (idVisor !== juego.idCreador && !juego.publico)) throw { message: "Game not found", code: 404 }
+    if (!juego) throw { message: "Game not found", code: 404 }
+    if (!verPrivado) {
+        if (idVisor !== juego.idCreador && !juego.publico && !verPrivado) throw { message: "Game not found", code: 404 }
+    }
     if (idVisor && !miniatura) {
         //const yaVisto = await mongoGet("intermediario", { sujeto: idVisor, verbo: "juega", predicado: id });
         const yaVisto = await Intermediario.findOne({ sujeto: idVisor, verbo: "juega", predicado: id });
@@ -119,16 +124,18 @@ export const verJuego = async (id: string, miniatura = false, idVisor = "", adic
  * Borrar un juego y todo lo que eso conlleva
  * @param id juego a borrar
  * @param contrasegnaDuegno contrasegna del duegno para mas seguridad
- * @param idDuegno para comprobar quien hace la operacion
+ * @param idDuegno para comprobar quien hace la operacion, si no esta presente no se hace la comprobacion
  * @returns true si se ha borrado correctamente 
  */
-export const borrarJuego = async (id: string, contrasegnaDuegno: string, idDuegno: string): Promise<boolean> => {
+export const borrarJuego = async (id: string, contrasegnaDuegno: string, idDuegno?: string): Promise<boolean> => {
     const juego = await buscarJuego(id);
     if (!juego) throw { message: "Game not found", code: 404 }
-    if (juego.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
-    const duegno = await buscarUsuario(juego.idCreador as string);
-    const contrasegnaCoincide = await autenticarContrasegnaUsuario(contrasegnaDuegno, duegno!.contrasegna ?? '');
-    if (!contrasegnaCoincide) throw { message: "Can't delete game", code: 403 }
+    if (idDuegno) {
+        if (juego.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
+        const duegno = await buscarUsuario(juego.idCreador as string);
+        const contrasegnaCoincide = await autenticarContrasegnaUsuario(contrasegnaDuegno, duegno!.contrasegna ?? '');
+        if (!contrasegnaCoincide) throw { message: "Can't delete game", code: 403 }
+    }
     const db = getDB();
     const resultado = await db.delete(juegos).where(eq(juegos.id, id)).returning({ id: juegos.id });
     if (!resultado && !resultado?.length) throw { message: "Couldn't delete game", code: 500 }
@@ -145,13 +152,13 @@ export const borrarJuego = async (id: string, contrasegnaDuegno: string, idDuegn
  * Cambia si un juego es publico o no y todo lo que eso conlleva
  * @param id juego a cambiar
  * @param estado como va a quedar
- * @param idDuegno para comprobar quien hace la operacion
+ * @param idDuegno para comprobar quien hace la operacion, si no esta presente se hace sin la comprobacion
  * @returning true si todo ha ido bien
  */
-export const cambiarIndexacionJuego = async (id: string, estado: boolean, idDuegno: string): Promise<boolean> => {
-    const juego = await buscarJuego(id);
+export const cambiarIndexacionJuego = async (id: string, estado: boolean, idDuegno?: string): Promise<boolean> => {
+    const juego = await buscarJuego(id); 
     if (!juego) throw { message: "Game not found", code: 404 }
-    if (juego.idCreador !== idDuegno) throw { message: "Can't delete game", code: 401 }
+    if (idDuegno && juego.idCreador !== idDuegno) throw { message: "Can't update game", code: 401 }
     const db = getDB();
     const resultado = await db.update(juegos).set(estado ? { publico: estado } : {publico: estado/*, cantidadComentarios: 0, cantidadJugadores: 0, cantidadSeguidores: 0*/}).where(eq(juegos.id, id));
     if (!resultado) throw { message: "Couldn't change game settings", code: 500 }

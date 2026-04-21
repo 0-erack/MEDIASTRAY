@@ -1,11 +1,11 @@
 info:
-  name: Seguir usuario
+  name: Cambiar strikes
   type: http
-  seq: 10
+  seq: 14
 
 http:
-  method: POST
-  url: "{{url_backend}}/user/follow"
+  method: PATCH
+  url: "{{url_backend}}/admin/strike"
   headers:
     - name: Content-Type
       value: application/json
@@ -19,8 +19,8 @@ http:
     type: json
     data: |-
       {
-        "amount": 1,
-        "id_b": "85ac9432-426f-479f-89f2-52cd92e18063"
+        "id": "e695ad8f-05ae-409e-9e35-653907e2639e",
+        "amount": 1
       }
   auth:
     type: bearer

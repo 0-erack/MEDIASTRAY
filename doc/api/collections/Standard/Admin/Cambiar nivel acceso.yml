@@ -1,11 +1,11 @@
 info:
-  name: Seguir usuario
+  name: Cambiar nivel acceso
   type: http
-  seq: 10
+  seq: 15
 
 http:
-  method: POST
-  url: "{{url_backend}}/user/follow"
+  method: PATCH
+  url: "{{url_backend}}/admin/userPermissions"
   headers:
     - name: Content-Type
       value: application/json
@@ -19,8 +19,8 @@ http:
     type: json
     data: |-
       {
-        "amount": 1,
-        "id_b": "85ac9432-426f-479f-89f2-52cd92e18063"
+        "id": "db3e4b1f-6562-4da4-9861-b23a64e0c87e",
+        "level": 3
       }
   auth:
     type: bearer

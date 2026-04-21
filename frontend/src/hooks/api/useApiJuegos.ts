@@ -96,7 +96,7 @@ const useApiJuegos = () => {
             let cantidadCorrecta = cantidad;
             if (cantidadCorrecta > 1) cantidadCorrecta = 1;
             if (cantidadCorrecta < -1) cantidadCorrecta = -1;
-            const resultado = await peticionGenerica(API_URL + "/game/follow", "POST", {id, quantity: cantidadCorrecta});
+            const resultado = await peticionGenerica(API_URL + "/game/follow", "POST", {id, amount: cantidadCorrecta});
             if (resultado.ok) return true;
             return false;
         } catch (error) {

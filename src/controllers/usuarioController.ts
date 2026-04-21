@@ -46,6 +46,7 @@ const cascadaUsuario = async (id: string): Promise<boolean> => {
         let juegosSeguidos = await Intermediario.find({ sujeto: id, verbo: "sigue", extra: {juego: true} }) as any;
         if (juegosSeguidos && juegosSeguidos.length) juegosSeguidos = juegosSeguidos.map((e) => e.predicado);
         await db.update(juegos).set({cantidadSeguidores: sql`${juegos.cantidadSeguidores} - 1`}).where(inArray(juegos.id, juegosSeguidos ?? []));
+        //TODO: mejorar cascada con todas las entidades
         return true;
     } catch (e) { return false }
 }
@@ -182,12 +183,19 @@ export const editarUsuario = async (nuevos: Record<string, any>, id: string): Pr
  * Esta accion tiene un borrado en cascada
  * @param contrasegna seguridad adicional antes de borrar
  * @param id usuario a borrar
+ * @param sudo si es true borra sin la verificacion
  * @returns 
  */
-export const borrarUsuario = async (contrasegna: string, id: string): Promise<boolean> => {
+export const borrarUsuario = async (contrasegna: string, id: string, sudo = false): Promise<boolean> => {
     const usuario = await buscarUsuario(id);
-    if (!usuario || !validarContrasegna(contrasegna)) throw { message: "Invalid credentials", code: 403 };
-    const contrasegnaCoincide = await autenticarContrasegnaUsuario(contrasegna, usuario.contrasegna!);
+    if (!usuario) throw { message: "User not found", code: 404 };
+    let contrasegnaCoincide;
+    if (!sudo) {
+        if (!validarContrasegna(contrasegna)) throw { message: "Invalid credentials", code: 403 };
+        contrasegnaCoincide = await autenticarContrasegnaUsuario(contrasegna, usuario.contrasegna!);
+    } else {
+        contrasegnaCoincide = true;
+    }
     if (contrasegnaCoincide) {
         const db = getDB();
         const resultado = await db.delete(usuarios).where(eq(usuarios.id, id)).returning({ id: usuarios.id });
@@ -229,14 +237,15 @@ export const verUsuario = async (id: string, publico = true): Promise<Record<str
  * Si se establece a 3 se elimina toda la informacion referente a sus seguidores y seguidos
  * @param nuevoValor valor a establecer en el campo
  * @param id usuario a afectar
- * @returns 
+ * @returns true si ha ido todo bien
  */
 export const alterarDisponibilidadUsuario = async (nuevoValor: number, id: string): Promise<boolean> => {
+    if (nuevoValor < 0 || nuevoValor > 4) return false;
     const db = getDB();
     const resultado = await db.update(usuarios).set({ disponibilidad: nuevoValor }).where(eq(usuarios.id, id)).returning({ id: usuarios.id });
     if (nuevoValor == 3) await cascadaUsuario(id);
-    agnadirLog("backend.log", `User ${id} altered its disponibility to ${nuevoValor}`);
-    return resultado ? true : false;
+    if (resultado?.length) agnadirLog("backend.log", `User ${id} altered its disponibility to ${nuevoValor}`);
+    return resultado?.length ? true : false;
 }
 
 /**
@@ -244,14 +253,15 @@ export const alterarDisponibilidadUsuario = async (nuevoValor: number, id: strin
  * Si se establece a 2 se elimina toda la informacion referente a sus seguidores y seguidos
  * @param nuevoValor valor a establecer en el campo
  * @param id usuario a afectar
- * @returns 
+ * @returns true si ha ido todo bien
  */
 export const alterarVisibilidadUsuario = async (nuevoValor: number, id: string): Promise<boolean> => {
+    if (nuevoValor < 0 || nuevoValor > 3) return false;
     const db = getDB();
     const resultado = await db.update(usuarios).set({ nivelPublico: nuevoValor }).where(eq(usuarios.id, id)).returning({ id: usuarios.id });
     if (nuevoValor == 2) await cascadaUsuario(id);
-    agnadirLog("backend.log", `User ${id} altered its visibility to ${nuevoValor}`);
-    return resultado ? true : false;
+    if (resultado?.length) agnadirLog("backend.log", `User ${id} altered its visibility to ${nuevoValor}`);
+    return resultado?.length ? true : false;
 }
 
 /**

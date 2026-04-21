@@ -1,11 +1,11 @@
 info:
-  name: Seguir usuario
+  name: Alterar indexacion/publico juego
   type: http
-  seq: 10
+  seq: 7
 
 http:
-  method: POST
-  url: "{{url_backend}}/user/follow"
+  method: PATCH
+  url: "{{url_backend}}/admin/alterIndexGame"
   headers:
     - name: Content-Type
       value: application/json
@@ -19,8 +19,8 @@ http:
     type: json
     data: |-
       {
-        "amount": 1,
-        "id_b": "85ac9432-426f-479f-89f2-52cd92e18063"
+        "id": "d0dc134c-8959-4d62-8c25-0b72b6d8c7fd",
+        "new": false
       }
   auth:
     type: bearer

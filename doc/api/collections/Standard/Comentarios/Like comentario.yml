@@ -20,7 +20,7 @@ http:
     data: |-
       {
         "id": "1eff10de-65a3-4e39-be51-94dc0645e117",
-        "quantity": 1
+        "amount": 1
       }
   auth:
     type: bearer

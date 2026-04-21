@@ -1,11 +1,11 @@
 info:
-  name: Seguir usuario
+  name: Ver todo juego
   type: http
-  seq: 10
+  seq: 13
 
 http:
-  method: POST
-  url: "{{url_backend}}/user/follow"
+  method: GET
+  url: "{{url_backend}}/admin/game/551c2241-1daa-4479-8571-d7593cae7901"
   headers:
     - name: Content-Type
       value: application/json
@@ -17,11 +17,7 @@ http:
       value: "{{api_token}}"
   body:
     type: json
-    data: |-
-      {
-        "amount": 1,
-        "id_b": "85ac9432-426f-479f-89f2-52cd92e18063"
-      }
+    data: ""
   auth:
     type: bearer
     token: "{{session_token}}"

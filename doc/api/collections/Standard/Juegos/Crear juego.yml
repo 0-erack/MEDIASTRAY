@@ -24,7 +24,7 @@ http:
           "cover1": "https://placehold.co/460x215",
           "cover2": "https://placehold.co/600x900",
           "cover3": "http://localhost:8510/public/2Q2.png",
-          "public": true,
+          "public": false,
           "version": "v1.0.0",
           "description": "## titulo \n adl asdf asd flaskdjfh lah adl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lah",
           "shortDescription": "aksdfh asdf hasd fhasdj fghaksjdgf asdjhfg h",

@@ -1,11 +1,11 @@
 info:
-  name: Seguir usuario
+  name: Alterar visibilidad
   type: http
-  seq: 10
+  seq: 8
 
 http:
-  method: POST
-  url: "{{url_backend}}/user/follow"
+  method: PATCH
+  url: "{{url_backend}}/admin/alterAvailability"
   headers:
     - name: Content-Type
       value: application/json
@@ -19,8 +19,8 @@ http:
     type: json
     data: |-
       {
-        "amount": 1,
-        "id_b": "85ac9432-426f-479f-89f2-52cd92e18063"
+        "id": "bb0c31a7-94cd-4a82-9f9a-7a8ffdc68c6d",
+        "new": 1
       }
   auth:
     type: bearer

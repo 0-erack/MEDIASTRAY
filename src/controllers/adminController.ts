@@ -1,40 +1,43 @@
-import { Reporte } from "../models/schemaMongo.js";
-import { reporteAApi } from "./reportesController.js";
+import { eq, sql } from "drizzle-orm";
+import { agnadirLog } from "../connections/logs.js";
+import { getDB } from "../connections/postgresql.js";
+import { usuarios } from "../models/schema.js";
+import { buscarUsuario } from "./usuarioController.js";
 
-
-//Tamagno de pagina estandar para las consultas
-const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 50;
 
 /**
- * Ver los reportes, o todos o los de cierto objeto
- * Los admins y moderadores deberian ser capaces de esto
- * @param id objeto del cual ver los reportes, si no hay nada se ve de todos
- * @param pagina en que pagina ver los reportes
- * @returns array de reportes si todo va bien
+ * Altera los strikes de un usuario incrementando (funciona solo como una flag)
+ * Los moderadores y admins pueden hacer esto
+ * @param id usuario a alterar
+ * @param cantidad cantidad a incrementar, puede ser negativo para restar, si es 0 slo ve los actuales
+ * @returns numero con el numero de strikes final si ha ido todo bien
  */
-export const verReportes = async (id?: string, pagina = 0): Promise<Array<Record<string,any>>|null> => {
-    if (isNaN(pagina) || pagina < 0) pagina = 0;
-    const reportes = await Reporte.find(id ? {$or: [{id: id}, {idReportado: id}, {idReportador: id}]} : undefined).skip(pagina * tamagnoPagina).limit(tamagnoPagina).lean();
-    return reportes?.map(reporteAApi) ?? null;
+export const alterarStrikesUsuario = async (id: string, cantidad: number): Promise<number|null> => {
+    const usuario = await buscarUsuario(id);
+    if (!usuario) throw { message: "User not found", code: 404 };
+    if (isNaN(cantidad)) return null;
+    if (cantidad == 0) {
+        return usuario.strikes;
+    } else {
+        const db = getDB();
+        const resultado = await db.update(usuarios).set({ strikes: sql`${usuarios.strikes} + ${cantidad}` }).where(eq(usuarios.id, id))//.returning({ id: usuarios.id });
+        if (!resultado) return null;
+        agnadirLog("backend.log", `User ${id} added ${cantidad} strikes`);
+        return usuario.strikes + cantidad;
+    }
 }
 
 /**
- * Borrar un reporte
- * Los admins y moderadores deberian ser capaces de esto
- * @param id el reporte a borrar
- * @returns true si se ha borrado
+ * Altera el nivel de acceso de un usuario, alterando sus permisos
+ * Solo admins con sudo pueden hacer esto
+ * @param id usuario a afectar
+ * @param nuevoValor valor a establecer en el campo
+ * @returns true si ha ido todo bien
  */
-export const eliminarReporte = async (id: string): Promise<boolean> => {
-    const resultado = await Reporte.deleteOne({id: id});
-    return resultado.deletedCount ? true : false;
+export const alterarNivelAccesoUsuario = async (id: string, nuevoValor: number): Promise<boolean> => {
+    if (nuevoValor < 0 || nuevoValor > 4) return false;
+    const db = getDB();
+    const resultado = await db.update(usuarios).set({ nivelAcceso: nuevoValor }).where(eq(usuarios.id, id)).returning({ id: usuarios.id });
+    if (resultado?.length) agnadirLog("backend.log", `User ${id} altered its access level to ${nuevoValor}`);
+    return resultado?.length ? true : false;
 }
-
-//eliminar comentario
-//eliminar juego
-//quitar publico juego
-//eliminar usuario
-//restringir usuario
-
-//ver cualquier juego
-//ver cualquier usuario
-//dar/quitar admin (solo supremo)

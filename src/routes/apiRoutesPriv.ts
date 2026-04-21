@@ -92,7 +92,7 @@ routerPriv.delete("/user", autenticarTokenApi, autenticarTokenSesion, async (req
 //Usuario A sigue a usuario B, se crea el registro en mongodb y se altera la cantidad de seguidores en el usuario B, requiere follow +1 o -1 para seguir o desseguir (si es posible) (id_b, cantidad)
 routerPriv.post("/user/follow", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        let cantidad = Math.sign(req.body?.quantity) ?? 0;
+        let cantidad = Math.sign(req.body?.amount) ?? 0;
         if (cantidad != 0 && await alterarSeguidores(req.datosSesion!.id, req.body.id_b, cantidad)) {
             return res.json(exito("User followed/unfollowed successfully", undefined, 201));
         } else {
@@ -209,7 +209,7 @@ routerPriv.put("/game/additions/:id", autenticarTokenApi, autenticarTokenSesion,
 //El usuario actual sigue un juego
 routerPriv.post("/game/follow", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const cantidad = Math.sign(req.body?.quantity) ?? 0;
+        const cantidad = Math.sign(req.body?.amount) ?? 0;
         const resultado = await seguirJuego(req.body?.id, req.datosSesion!.id, cantidad);
         if (resultado) {
             return res.json(exito("Game followed/unfollowed", resultado));
@@ -277,7 +277,7 @@ routerPriv.get("/comment/personal/:modo/:id", autenticarTokenApi, autenticarToke
 //El usuario actual da like a un comentario
 routerPriv.post("/comment/like", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        const cantidad = Math.sign(req.body?.quantity) ?? 0;
+        const cantidad = Math.sign(req.body?.amount) ?? 0;
         const resultado = await likeComentario(req.body?.id, req.datosSesion!.id, cantidad);
         return res.json(exito("Comment info about liking", resultado));
     });

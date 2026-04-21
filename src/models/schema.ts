@@ -36,7 +36,7 @@ export const juegos = pgTable("juegos", {
   fechaUltima: varchar("fechaUltima", { length: 16 }), //Ultima fecha en la que se edito el juego
   descripcion: varchar("descripcion", { length: 8192 }).default(""), //Descripcion en markdown (alternativamente cambia en los archivos html)
   descripcionCorta: varchar("descripcionCorta", { length: 127 }), //Descripcion mas corta para el engagement
-  idCreador: varchar("id_creador", { length: 36 }).notNull().references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador
+  idCreador: varchar("id_creador", { length: 36 }).references(() => usuarios.id, { onDelete: "set null" }), //FK id de su creador
   tokenJuego: varchar("tokenJuego", { length: 300 }), //Token actual para la api de juegos
   generos: varchar("generos", { length: 255 }), //Generos separados por comas
   tags: varchar("tags", { length: 255 }), //Tags separados por comas

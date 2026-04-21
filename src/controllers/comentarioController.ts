@@ -226,14 +226,17 @@ export const comentarComentario = async (id: string, contenido: string, idAutor:
 /**
  * Borra un comentario y todas sus respuestas
  * @param id el comentario a borrar
- * @param idVisor quien lo borra (debe ser el duegno)
+ * @param idVisor quien lo borra (debe ser el duegno), si no esta presente no hace la comprobacion
  * @returns true si todo ha ido bien
  */
-export const borrarComentario = async (id: string, idVisor: string): Promise<boolean> => {
-    const usuario = await buscarUsuario(idVisor);
-    if (!usuario) throw { message: "User doesn't exist or doesn't have permissions for this", code: 403 };
+export const borrarComentario = async (id: string, idVisor?: string): Promise<boolean> => {
+    if (idVisor) {
+        const usuario = await buscarUsuario(idVisor);
+        if (!usuario) throw { message: "User doesn't exist or doesn't have permissions for this", code: 403 };
+    }
     const comentario = await Comentario.findOne({ id: id });
-    if (!comentario || comentario.owner !== idVisor) throw { message: "Comment doesn't exist or can't delete it", code: 404 };
+    if (!comentario) throw { message: "Comment doesn't exist or can't delete it", code: 404 };
+    if (idVisor && comentario.owner !== idVisor) throw { message: "Comment doesn't exist or can't delete it", code: 404 };
     const resultado = await Comentario.deleteOne({ id: id });
     if (!resultado?.deletedCount) throw { message: "Unexcepted error", code: 500 };
     await Comentario.deleteMany({ verbo: "like", predicado: id }); //TODO: borrado en cascada intermediario seguir RECURSIVO
