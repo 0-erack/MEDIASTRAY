@@ -12,7 +12,7 @@ interface SesionContextType {
     logout: (conPeticion?: boolean) => Promise<void>;
     cambiarTokenSesionActual: (token: string) => Promise<boolean>;
     fallo: any;
-    esAdmin: boolean;
+    esAdmin: number;
     bloqueado: boolean;
     premium: boolean;
     actualizarEstadoPremium: (id:string, token:string)=> Promise<void>;
@@ -31,9 +31,33 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
     const { leerLS, guardarLS, borrarLS } = useLocalStorage();
     const [fallo, setFallo] = useState<any>(false);
     const { API_KEY, API_URL } = useAjustes();
-    const [esAdmin, setEsAdmin] = useState<boolean>(false); //Guarda si el usuario actual es admin
+    const [esAdmin, setEsAdmin] = useState<number>(0); //Guarda si el usuario actual es admin
     const [bloqueado, setBloqueado] = useState<boolean>(false); //Guarda si el usuario actual tiene un bloqueo
     const [premium, setPremium] = useState<boolean>(false); //Guarda si el usuario actual es premium
+    
+    /**
+     * Comprobar el nivel de acceso del usuario actual
+     * @returns nivel de acceso
+     */
+    const verEstadoAdmin = async (): Promise<number> => {
+        try {
+            let resultado = await peticionGenerica(API_URL + "/admin/checkMod", "GET");
+            if (resultado.ok) {
+                return 3;
+            }
+            resultado = await peticionGenerica(API_URL + "/admin/check", "GET");
+            if (resultado.ok) {
+                return 1;
+            }
+            resultado = await peticionGenerica(API_URL + "/admin/checkSudo", "GET");
+            if (resultado.ok) {
+                return 2;
+            }
+            return 0;
+        } catch (error) {
+            return 0;
+        }
+    }
 
     const inicio = useCallback(async () => {
         try {
@@ -55,7 +79,7 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
                     await logout();
                     return;
                 }
-                setEsAdmin(false); //TODO: 
+                setEsAdmin(await verEstadoAdmin());
                 setBloqueado(false);
                 await actualizarEstadoPremium(datosUsuario.data.id, tokenFromLS);
                 const resultado = await cambiarUsuarioActual(deApiAUsuario(datosUsuario.data));
@@ -79,7 +103,7 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
         await borrarLS("tokenSesionActual");
         setUsuarioActual(false);
         setTokenSesionActual(null);
-        setEsAdmin(false);
+        setEsAdmin(0);
         setBloqueado(false);
         setFallo(false);
         setPremium(false);
