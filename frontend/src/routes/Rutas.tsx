@@ -17,6 +17,7 @@ const Logout = lazy(() => import('../pages/Logout'));
 const Premium = lazy(() => import('../pages/Premium'));
 const Register = lazy(() => import('../pages/Register'));
 const Settings = lazy(() => import('../pages/Settings'));
+const PaginaAdmin = lazy(() => import('../pages/PaginaAdmin'));
 
 /**
  * Las distintas rutas de la aplicacion
@@ -47,6 +48,7 @@ function Rutas() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/game/:id" element={<ViewGame />} />
         <Route path="/createGame" element={<CreateGame />} />
+        <Route path="/admin" element={<PaginaAdmin />} />
         <Route path="/error" element={<ErrorNotFound />} />
         <Route path="/*" element={<ErrorNotFound />} />
       </Routes>

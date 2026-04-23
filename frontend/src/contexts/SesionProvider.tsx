@@ -37,29 +37,32 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
     
     /**
      * Comprobar el nivel de acceso del usuario actual
+     * Aqui y en otros sitios no se usan las funciones de la api ya que estas cargarian despues del contexto, y requieren del contexto de sesion para saber el token
+     * @param token que token de sesion se usa para comprobar, si no esta presente se usa el actual
      * @returns nivel de acceso
      */
-    const verEstadoAdmin = async (): Promise<number> => {
+    const verEstadoAdmin = async (token?: string): Promise<number> => {
         try {
-            let resultado = await peticionGenerica(API_URL + "/admin/checkMod", "GET");
-            if (resultado.ok) {
-                return 3;
-            }
-            resultado = await peticionGenerica(API_URL + "/admin/check", "GET");
-            if (resultado.ok) {
-                return 1;
-            }
-            resultado = await peticionGenerica(API_URL + "/admin/checkSudo", "GET");
-            if (resultado.ok) {
-                return 2;
-            }
+            const tokenUso = token ?? tokenSesionActual;
+            let resultado = await peticionBasica(API_URL + "/admin/checkSudo", {"X-auth-api": API_KEY,"X-auth-session": tokenUso}, "GET", undefined, tokenUso + "");
+            if (resultado.ok) return 2;
+            resultado = await peticionBasica(API_URL + "/admin/check", {"X-auth-api": API_KEY,"X-auth-session": tokenUso}, "GET", undefined, tokenUso + "");
+            if (resultado.ok) return 1;
+            resultado = await peticionBasica(API_URL + "/admin/checkMod", {"X-auth-api": API_KEY,"X-auth-session": tokenUso}, "GET", undefined, tokenUso + "");
+            if (resultado.ok) return 3;
             return 0;
         } catch (error) {
             return 0;
         }
     }
 
+    /**
+     * El inicio absoluto de la app
+     */
     const inicio = useCallback(async () => {
+        console.log("ATTENTION: if you're here to claim advantages in the app as some people in the internet might have told you to do, STOP, IT IS A FRAUD");
+        console.log("We wont ever ask you to put any information here, neither to paste commands or scripts");
+        console.log("However, if you're here to test the API, we recommend you to check the documentation");
         try {
             const tokenFromLS: string | null = await leerLS("tokenSesionActual");
             setTokenSesionActual(tokenFromLS ?? '');
@@ -79,7 +82,7 @@ export const SesionProvider = ({ children }: { children: ReactNode }) => {
                     await logout();
                     return;
                 }
-                setEsAdmin(await verEstadoAdmin());
+                setEsAdmin(await verEstadoAdmin(tokenFromLS));
                 setBloqueado(false);
                 await actualizarEstadoPremium(datosUsuario.data.id, tokenFromLS);
                 const resultado = await cambiarUsuarioActual(deApiAUsuario(datosUsuario.data));

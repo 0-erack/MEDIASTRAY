@@ -33,7 +33,11 @@ function Cabecera() {
       return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} >
         <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={e.numeroIcono} color={`var(--color-${e.numeroIcono === 7 ? 'info1' : 'fondo1'})`} /></span>
       </BotonNavegacion>)
-    })}</>);
+    })}
+    {esAdmin && (<BotonNavegacion cabecera={true} direccion={"/admin"} titulo={traduccion("botones", "panelAdmin")} >
+        <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={13} color={`var(--color-fondo1`} /></span>
+      </BotonNavegacion>)}
+    </>);
 
   return (
     <>
@@ -43,7 +47,6 @@ function Cabecera() {
           <img src={imgLogoHover ?? PUBLIC_URL + "/logoAhover.png"} className="w-full cursor-pointer hidden group-hover:block" style={{ imageRendering: 'pixelated' }} alt="Logo Hover" onClick={() => navegar("/")} />
         </div>
 
-    {JSON.stringify(esAdmin)}
         <div className='hidden sm:block'>
           <nav className='py-1 flex min-w-80 flex-1 min-h-18 flex-wrap items-center content-center gap-2 *:bg-principal *:text-fondo-especial-1 *:hover:bg-resaltado *:p-2 *:hover:underline *:transition-all *:duration-100 *:hover:scale-y-120'>
             {enlaces()}

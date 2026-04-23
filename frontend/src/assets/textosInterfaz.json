@@ -152,7 +152,8 @@
                 "noMeGusta": "Unlike",
                 "borrar": "Delete",
                 "publicar": "Publish",
-                "reportar": "Report"
+                "reportar": "Report",
+                "panelAdmin": "Admin panel"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -195,7 +196,8 @@
                 "noMeGusta": "No me gusta",
                 "borrar": "Borrar",
                 "publicar": "Publicar",
-                "reportar": "Reportar"
+                "reportar": "Reportar",
+                "panelAdmin": "Panel de admin"
             }
         },
         "titulos": {
@@ -275,7 +277,13 @@
                 "avisoCatastrofe1": "This action will may lead to CATASTROPHIC consequences (cascade delete)",
                 "explicarAdiciones1": "Additions are attachable pieces of information that you can add to your game, try to add one and see all the possibilities (regular users can have up to 10 per game, MAGNA users can have up to 30).",
                 "explicarAdiciones2": "Have into account that only the additions that remain here will be the ones displayed in your game, deleting one here will do so in your game.",
-                "explicarDestacados": "Here are shown the most popular games in the platform based on players, followers, comments and other features."
+                "explicarDestacados": "Here are shown the most popular games in the platform based on players, followers, comments and other features.",
+                "infoAdmin1": "This is the administration panel, if you are seeing this it means you were granted access and confidence to moderate Mediastray, act carefully.",
+                "infoAdmin2": "Some of the operation you are allowed to perform as an administrator/moderator are locked to API only, here are the ones triggerable by UI.",
+                "infoAdmin3": "- You have admin permissions",
+                "infoAdmin4": "- You have sudo permissions",
+                "infoAdmin5": "- You have moderator permissions",
+                "infoAdmin6": "Type an object's uuid to operate with it"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -301,7 +309,13 @@
                 "avisoCatastrofe1": "Esta acción podría llevar a consecuencias CATASTRÓFICAS (borrado en cascada)",
                 "explicarAdiciones1": "Las adiciones son piezas de información acoplables que puedes añadir a tu juego, prueba a añadir una para ver todas las posibilidades (los usuarios normales pueden tener hasta 10 por juego, los usuarios con MAGNA pueden hasta 30).",
                 "explicarAdiciones2": "Ten en cuenta que solo se mostrarán en la página del juego las adiciones que aparezcan aquí, borrar una también lo hará del juego original.",
-                "explicarDestacados": "Aquí se muestran los juegos más populares de la plataforma basado en jugadores, seguidores, comentarios y otras características."
+                "explicarDestacados": "Aquí se muestran los juegos más populares de la plataforma basado en jugadores, seguidores, comentarios y otras características.",
+                "infoAdmin1": "Este es el panel de administración, si estas viendo esto significa que se te han ofrecido los permisos y la confianza para moderar Mediastray, actúa con precaución.",
+                "infoAdmin2": "Algunas de las operaciones de las que tienes permitido ejecutar como administrador/moderador están bloqueadas a solo mediante API, aquí están las que puedes ejecutar desde la interfaz gráfica.",
+                "infoAdmin3": "- Tienes permisos de admin",
+                "infoAdmin4": "- Tienes permisos de sudo",
+                "infoAdmin5": "- Tienes permisos de moderador",
+                "infoAdmin6": "Introduce el uuid de un objeto para operar con el"
             }
         },
         "formularios": {
@@ -379,7 +393,11 @@
                 "contenidoRespuesta": "Reply the comment",
                 "contenidoReporte": "Report information",
                 "infoReporte": "Report this only if you are completelly sure that its unlawful or nocive, and describe the reason.",
-                "reporteAnonimo": "You're about to report anonymously because you aren't logged in, reports from users with an account are more taken into consideration."
+                "reporteAnonimo": "You're about to report anonymously because you aren't logged in, reports from users with an account are more taken into consideration.",
+                "idJuego": "Selected game uuid",
+                "idUsuario": "Selected user uuid",
+                "idComentario": "Selected comment uuid",
+                "busquedaReporte": "Uuid of the object related to the report in order to query"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -455,7 +473,11 @@
                 "contenidoRespuesta": "Responder al comentario",
                 "contenidoReporte": "Información del reporte",
                 "infoReporte": "Reporta solo si estás totalmente seguro de que este contenido es nocivo o ilegal, y describe el motivo.",
-                "reporteAnonimo": "Al no tener sesión iniciada, vas a reportar de manera anónima, los reportes de usuarios con cuenta se tienen más en consideración."
+                "reporteAnonimo": "Al no tener sesión iniciada, vas a reportar de manera anónima, los reportes de usuarios con cuenta se tienen más en consideración.",
+                "idJuego": "Uuid del juego seleccionado",
+                "idUsuario": "Uuid del usuario seleccionado",
+                "idComentario": "Uuid del comentario seleccionado",
+                "busquedaReporte": "Uuid del objeto relacionado con el reporte para poder consultar"
             }
         },
         "errores": {
