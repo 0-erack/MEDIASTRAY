@@ -34,7 +34,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
   const [jugando, setJugando] = useState(false);
   const traduccion = useIdioma();
   const [siguiendo, setSiguiendo] = useState(false);
-  const { usuario } = useSesion();
+  const { usuario, esAdmin } = useSesion();
   const [editando, setEditando] = useState(false);
   const [creadorEsPremium, setCreadorEsPremium] = useState(false);
   const { verPremium, verUsuario } = useApiUsuarios();
@@ -71,6 +71,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
     <div className="overflow-hidden relative w-full p-1">
       {(juego.urlPortada3 && juego.urlPortada3 !== PUBLIC_URL + "/coverless3.png" && !jugando && !editando) && (<FondoPortadaJuego url={juego.urlPortada3} />)}
       <div className="sm:flex items-center">
+        {(esAdmin > 0 && usuario) && (<p>{juego.id}</p>)}
         <Titulo>{juego.titulo ?? '???'}</Titulo>
         {!jugando && (<BotonFuncion titulo={traduccion("botones", "jugar")} funcion={() => { setJugando(true); setEditando(false) }} tipo={1} hueco={false}>
           <Icono numero={15} color="var(--color-fondo1)" />

@@ -12,14 +12,13 @@ import useTituloDinamico from '../hooks/useTituloDinamico.js';
  */
 const PaginaAdmin = memo(function PaginaAdmin() {
 
-  useTituloDinamico("settings");
   const traduccion = useIdioma();
   const { esAdmin, usuario } = useSesion();
   const navegar = useNavigate();
-  useTituloDinamico("ADMIN");
+  useTituloDinamico("","ADMIN");
 
   useEffect(() => {
-    if (!esAdmin || !usuario) navegar("/login");
+    if (!esAdmin || !usuario) navegar("/");
   }, []);
 
   return (

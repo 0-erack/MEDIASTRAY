@@ -1,11 +1,11 @@
 info:
   name: Alterar disponibilidad
   type: http
-  seq: 6
+  seq: 8
 
 http:
   method: PATCH
-  url: "{{url_backend}}/admin/alterVisibility"
+  url: "{{url_backend}}/admin/alterAvailability"
   headers:
     - name: Content-Type
       value: application/json
@@ -19,7 +19,7 @@ http:
     type: json
     data: |-
       {
-        "id": "bb0c31a7-94cd-4a82-9f9a-7a8ffdc68c6d",
+        "id": "db3e4b1f-6562-4da4-9861-b23a64e0c87e",
         "new": 1
       }
   auth:

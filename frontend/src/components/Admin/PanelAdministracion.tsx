@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import useApiAdmin from "../../hooks/api/useApiAdmin";
 import useIdioma from "../../hooks/useIdioma";
 import useMensajes from "../../hooks/useMensajes";
 import useSesion from "../../hooks/useSesion";
@@ -7,6 +8,8 @@ import IndicadorPagina from "../Busqueda/IndicadorPagina";
 import BotonFuncion from "../Elements/BotonFuncion";
 import CajaError from "../Elements/CajaError";
 import InputBasico from "../Elements/InputBasico";
+import Titulo from "../Elements/Titulo";
+import InfoReporte from "./InfoReporte";
 
 interface FormValues {
   idJuego: string;
@@ -30,24 +33,54 @@ const PanelAdministracion = () => {
   const [mensajeError, setMensajeError] = useState("");
   const [mensajeExito, setMensajeExito] = useState("");
   const [datosResultado, setDatosResultado] = useState("");
+  const [reportesCargados, setReportesCargados] = useState<Array<Record<string, any>>>([]);
+  const { verJuego, verUsuario, cambiarStrikes, borrarReporte, verReportes, borrarComentairio, cambiarVisibilidadJuego, cambiarNivelDisponibleUsuario, cambiarNivelPublicoUsuario, borrarJuego } = useApiAdmin();
 
   /**
    * Handler para las operaciones que no sean de lectura
    * @param resultado resultado de la operacion de la API, para poner mensaje de exito o error
    */
-  const realizarOperacion = async (resultado: Record<string, any>): Promise<void> => {
+  const realizarOperacion = useCallback((resultado: Record<string, any>) => {
       setMensajeError("");
       setMensajeExito("");
       setDatosResultado("");
       if (resultado.ok) {
         if (resultado.data) setDatosResultado(JSON.stringify(resultado.data));
         lanzarMensaje(traduccion("mensajes", "exitoAdmin"), 1);
-        setMensajeExito(traduccion("mensajes", "exitoAdmin"));
+        setMensajeExito(traduccion("mensajes", "exitoAdmin") + (resultado?.message ? (" - " + resultado.message) : ''));
       } else {
         lanzarMensaje(traduccion("mensajes", "falloAdmin"), 2);
         setMensajeError(traduccion("mensajes", "falloAdmin") + " - " + (resultado?.code ?? 400) + " - " + (resultado?.message ?? ''));
       }
-  }
+  }, [traduccion]);
+
+  /**
+   * Handler para eliminar un reporte
+   * @param id reporte a eliminar
+   */
+  const elimninarReporte = useCallback(async (id: string) => {
+    const resultado = await borrarReporte(id);
+    if (resultado?.ok) {
+      setReportesCargados(reportesCargados.filter((e) => {return e.id != id}));
+      lanzarMensaje(traduccion("mensajes", "exitoAdmin"), 3);
+      setMensajeExito(traduccion("mensajes", "exitoAdmin") + (resultado?.message ? (" - " + resultado.message) : ''));
+    } else {
+      lanzarMensaje(traduccion("mensajes", "falloAdmin"), 2);
+      setMensajeError(traduccion("mensajes", "falloAdmin") + " - " + (resultado?.code ?? 400) + " - " + (resultado?.message ?? ''));
+    }
+  }, [traduccion]);
+
+  const cargaInicial = useCallback(async () => {
+    const resultado = await verReportes(datos?.idBusquedaReportes ?? undefined, datos.pagina ?? 0);
+    if (resultado?.ok && Array.isArray(resultado?.data?.reports)) {
+      setReportesCargados(resultado?.data?.reports);
+    } else {
+      setReportesCargados([]);
+    }
+  }, [datos.pagina, datos.idBusquedaReportes]);
+  useEffect(() => {
+    cargaInicial();
+  }, [datos.pagina, datos.idBusquedaReportes]);
 
   return (
     <form>
@@ -61,7 +94,7 @@ const PanelAdministracion = () => {
         {mensajeError && (<CajaError>{mensajeError}</CajaError>)}
         {mensajeExito && (<>
           <p>{mensajeExito}</p>
-          {datosResultado && (<div>
+          {datosResultado && (<div className="bg-principal text-fondo1 p-2 fuente3">
             {datosResultado}
           </div>)}
         </>)}
@@ -69,30 +102,35 @@ const PanelAdministracion = () => {
 
       {esAdmin > 0 && (<> {/*Moderador*/}
         <p>{traduccion("parrafos", "infoAdmin5")}</p>
-        <BotonFuncion titulo={traduccion("botones", "adminBorrarComentario")} funcion={realizarOperacion} tipo={2} />
-        <BotonFuncion titulo={traduccion("botones", "adminMenosStrike")} funcion={realizarOperacion} />
-        <BotonFuncion titulo={traduccion("botones", "adminMasStrike")} funcion={realizarOperacion} />
-        <BotonFuncion titulo={traduccion("botones", "adminVerUsuario")} funcion={realizarOperacion} />
-        <BotonFuncion titulo={traduccion("botones", "adminVerJuego")} funcion={realizarOperacion} />
+        <BotonFuncion titulo={traduccion("botones", "adminBorrarComentario")} funcion={async () => realizarOperacion(await borrarComentairio(datos.idComentario))} tipo={2} />
+        <BotonFuncion titulo={traduccion("botones", "adminMenosStrike")} funcion={async () => realizarOperacion(await cambiarStrikes(datos.idUsuario, -1))} />
+        <BotonFuncion titulo={traduccion("botones", "adminMasStrike")} funcion={async () => realizarOperacion(await cambiarStrikes(datos.idUsuario, 1))} />
+        <BotonFuncion titulo={traduccion("botones", "adminVerUsuario")} funcion={async () => realizarOperacion(await verUsuario(datos.idUsuario))} />
+        <BotonFuncion titulo={traduccion("botones", "adminVerJuego")} funcion={async () => realizarOperacion(await verJuego(datos.idJuego))} />
       </>)}
       {(esAdmin === 1 || esAdmin === 2) && (<> {/*Admin*/}
         <p>{traduccion("parrafos", "infoAdmin3")}</p>
-        <BotonFuncion titulo={traduccion("botones", "adminOcultarJuego")} funcion={realizarOperacion} tipo={2} />
-        <BotonFuncion titulo={traduccion("botones", "adminPublicoUsuarioNormal")} funcion={realizarOperacion} />
-        <BotonFuncion titulo={traduccion("botones", "adminPublicoUsuarioRestringido")} funcion={realizarOperacion} tipo={2} />
-        <BotonFuncion titulo={traduccion("botones", "adminPublicoUsuarioOculto")} funcion={realizarOperacion} tipo={2} />
-        <BotonFuncion titulo={traduccion("botones", "adminBorrarJuego")} funcion={realizarOperacion} tipo={2} />
-        <BotonFuncion titulo={traduccion("botones", "adminRestriccionNo")} funcion={realizarOperacion} />
-        <BotonFuncion titulo={traduccion("botones", "adminRestriccion")} funcion={realizarOperacion} tipo={2} />
-        <BotonFuncion titulo={traduccion("botones", "adminRestriccionSi")} funcion={realizarOperacion} tipo={2} />
+        <BotonFuncion titulo={traduccion("botones", "adminOcultarJuego")} funcion={async () => realizarOperacion(await cambiarVisibilidadJuego(datos.idJuego, false))} tipo={2} />
+        <BotonFuncion titulo={traduccion("botones", "adminPublicoUsuarioNormal")} funcion={async () => realizarOperacion(await cambiarNivelPublicoUsuario(datos.idUsuario, 0))} />
+        <BotonFuncion titulo={traduccion("botones", "adminPublicoUsuarioRestringido")} funcion={async () => realizarOperacion(await cambiarNivelPublicoUsuario(datos.idUsuario, 1))} tipo={2} />
+        <BotonFuncion titulo={traduccion("botones", "adminPublicoUsuarioOculto")} funcion={async () => realizarOperacion(await cambiarNivelPublicoUsuario(datos.idUsuario, 2))} tipo={2} />
+        <BotonFuncion titulo={traduccion("botones", "adminBorrarJuego")} funcion={async () => realizarOperacion(await borrarJuego(datos.idJuego))} tipo={2} />
+        <BotonFuncion titulo={traduccion("botones", "adminRestriccionNo")} funcion={async () => realizarOperacion(await cambiarNivelDisponibleUsuario(datos.idUsuario, 0))} />
+        <BotonFuncion titulo={traduccion("botones", "adminRestriccion")} funcion={async () => realizarOperacion(await cambiarNivelDisponibleUsuario(datos.idUsuario, 2))} tipo={2} />
+        <BotonFuncion titulo={traduccion("botones", "adminRestriccionSi")} funcion={async () => realizarOperacion(await cambiarNivelDisponibleUsuario(datos.idUsuario, 3))} tipo={2} />
       </>)}
       {esAdmin === 2 && (<> {/*Sudo*/}
         <p>{traduccion("parrafos", "infoAdmin4")}</p>
       </>)}
       
-      todo relacionado reportes
+      <Titulo magnitud={3}>{traduccion("titulos", "seccionReportes")}</Titulo>
       <InputBasico titulo={traduccion("formularios", "busquedaReporte")} nombre="idBusquedaReportes" ancho='full' tipo="text" objetoHook={register("idBusquedaReportes")}/>
       <IndicadorPagina control={control} setValue={setValue} /><br />
+        <div>
+          {reportesCargados.map((e, i) => {
+            return (<InfoReporte reporte={e} key={i} funcionEliminar={elimninarReporte}/>)
+          })}
+        </div>
     </form>
   )
 }

@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{url_backend}}/admin/reports?page=0&id=e695ad8f-05ae-409e-9e35-653907e2639e"
+  url: "{{url_backend}}/admin/reports?page=0&id=f342ffbe-9470-4970-b0cf-77616f1a71e9"
   headers:
     - name: Content-Type
       value: application/json
@@ -20,7 +20,7 @@ http:
       value: "0"
       type: query
     - name: id
-      value: e695ad8f-05ae-409e-9e35-653907e2639e
+      value: f342ffbe-9470-4970-b0cf-77616f1a71e9
       type: query
   body:
     type: json

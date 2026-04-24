@@ -34,7 +34,7 @@ function Cabecera() {
         <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={e.numeroIcono} color={`var(--color-${e.numeroIcono === 7 ? 'info1' : 'fondo1'})`} /></span>
       </BotonNavegacion>)
     })}
-    {esAdmin && (<BotonNavegacion cabecera={true} direccion={"/admin"} titulo={traduccion("botones", "panelAdmin")} >
+    {(esAdmin > 0) && (<BotonNavegacion cabecera={true} direccion={"/admin"} titulo={traduccion("botones", "panelAdmin")} >
         <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={13} color={`var(--color-fondo1`} /></span>
       </BotonNavegacion>)}
     </>);

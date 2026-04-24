@@ -39,7 +39,7 @@ interface FormValues {
  */
 function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrandeProps) {
 
-  const { usuario: usuarioActual } = useSesion();
+  const { usuario: usuarioActual, esAdmin: soyAdmin } = useSesion();
   const fechaCumpleagnos = timestampAFecha(usuario.cumpleagnos);
   const fechaCreacion = timestampAFecha(usuario.fechaCreacion);
   const [siguiendo, setSiguiendo] = useState(false);
@@ -176,6 +176,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
   return (
     <div className="tarjeta-usuario-grande xl:flex gap-4">
       <div className='sm:min-w-[50%]'>
+        {(soyAdmin > 0 && usuario) && (<p>{usuario.id}</p>)}
         <Titulo><Icono numero={1} color="var(--color-resaltado)" /> {(soyYo ? (traduccion("titulosHtml", "saludo") + ", ") : '') + usuario.nombre}</Titulo>
 
         <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className={`h-auto w-[10%] min-w-20 max-w-50 mb-2 border-4 ${esPremium ? 'border-info1' : 'border-resaltado'} aspect-square object-cover`} />

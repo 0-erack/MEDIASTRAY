@@ -250,7 +250,8 @@
                 "crearJuego": "Create game",
                 "juegosPropios": "My games",
                 "juegosSeguidos": "Followed games",
-                "seccionComentarios": "Comments"
+                "seccionComentarios": "Comments",
+                "seccionReportes": "Reports information"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -275,7 +276,8 @@
                 "crearJuego": "Crear juego",
                 "juegosPropios": "Mis juegos",
                 "juegosSeguidos": "Juegos seguidos",
-                "seccionComentarios": "Comentarios"
+                "seccionComentarios": "Comentarios",
+                "seccionReportes": "Información de reportes"
             }
         },
         "parrafos": {
@@ -309,7 +311,7 @@
                 "infoAdmin3": "- You have admin permissions",
                 "infoAdmin4": "- You have sudo permissions, for security measures the operations you're allowed to do arent available here in the UI, check the API",
                 "infoAdmin5": "- You have moderator permissions",
-                "infoAdmin6": "Type an object's uuid to operate with it"
+                "infoAdmin6": "Type an object's uuid to operate with it (you're allowed to see the id of the objects in the platform)"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -341,7 +343,7 @@
                 "infoAdmin3": "- Tienes permisos de admin",
                 "infoAdmin4": "- Tienes permisos de sudo, por cuestiones de seguridad las operaciones que tienes permitido hacer no están disponibles en la interfaz, consulte la API",
                 "infoAdmin5": "- Tienes permisos de moderador",
-                "infoAdmin6": "Introduce el uuid de un objeto para operar con el"
+                "infoAdmin6": "Introduce el uuid de un objeto para operar con el (tienes permitido ver los ids de los objetos en la plataforma)"
             }
         },
         "formularios": {
@@ -647,12 +649,14 @@
             "EN-us": {
                 "si": "Yes",
                 "no": "No",
-                "hechoPor": "By "
+                "hechoPor": "By ",
+                "anonimo": "Anonymous"
             },
             "ES-es": {
                 "si": "Sí",
                 "no": "No",
-                "hechoPor": "De "
+                "hechoPor": "De ",
+                "anonimo": "Anónimo"
             }
         },
         "extra": {

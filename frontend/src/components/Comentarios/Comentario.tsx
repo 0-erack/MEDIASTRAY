@@ -23,7 +23,7 @@ interface ComentarioProps {
  */
 const Comentario = memo(function Comentario({ comentario }: ComentarioProps) {
 
-  const { usuario } = useSesion();
+  const { usuario, esAdmin } = useSesion();
   const [duegno, setDuegno] = useState<Partial<Usuario> | null>(null);
   const { verUsuario } = useApiUsuarios();
   const traduccion = useIdioma();
@@ -87,7 +87,10 @@ const Comentario = memo(function Comentario({ comentario }: ComentarioProps) {
             <BotonFuncion tipo={2} funcion={borrar} titulo={intencionBorrar ? traduccion("botones", "borrar").toUpperCase() : traduccion("botones", "borrar")}><Icono numero={10} color="var(--color-error)" /></BotonFuncion>
           </>)}
         </>)}
-        <span>{fechaComentario ?? ''} <Icono numero={5} color='var(--color-principal)' /> {comentario.responsesAmount ?? 0} <Icono numero={18} color='var(--color-principal)' /> {comentario?.likesAmount ?? 0}</span>
+        <span>
+          {fechaComentario ?? ''} <Icono numero={5} color='var(--color-principal)' /> {comentario.responsesAmount ?? 0} <Icono numero={18} color='var(--color-principal)' /> {comentario?.likesAmount ?? 0}
+            {(esAdmin > 0 && usuario) && (<p>{comentario.id}</p>)}
+        </span>
       </div>
       {comentario?.featured ? (<MarkdownDisplay text={comentario?.content ?? ''} />) : (<p>{comentario?.content ?? ''}</p>)}
 
