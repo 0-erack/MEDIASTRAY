@@ -153,7 +153,20 @@
                 "borrar": "Delete",
                 "publicar": "Publish",
                 "reportar": "Report",
-                "panelAdmin": "Admin panel"
+                "panelAdmin": "Admin panel",
+                "adminBorrarComentario": "Delete selected comment and responses",
+                "adminMasStrike": "+1 strike on selected user",
+                "adminMenosStrike": "-1 strike on selected user",
+                "adminVerUsuario": "See selected user's data",
+                "adminVerJuego": "See selected game's data",
+                "adminOcultarJuego": "Hide selected game",
+                "adminPublicoUsuarioNormal": "Set selected user's public level to normal",
+                "adminPublicoUsuarioRestringido": "Set selected user's public level to restricted",
+                "adminPublicoUsuarioOculto": "Set selected user's public level to hidden",
+                "adminBorrarJuego": "DELETE selected game",
+                "adminRestriccionNo": "Deactivate selected user's restrictions",
+                "adminRestriccion": "Unallow the sleected user to publish games",
+                "adminRestriccionSi": "Unallow the selected user from everything"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -197,7 +210,20 @@
                 "borrar": "Borrar",
                 "publicar": "Publicar",
                 "reportar": "Reportar",
-                "panelAdmin": "Panel de admin"
+                "panelAdmin": "Panel de admin",
+                "adminBorrarComentario": "Borrar el comentario seleccionado y sus respuestas",
+                "adminMasStrike": "+1 strike en el usuario seleccionado",
+                "adminMenosStrike": "-1 strike en el usuario seleccionado",
+                "adminVerUsuario": "Ver los datos del usuario seleccionado",
+                "adminVerJuego": "Ver los datos del juego seleccionado",
+                "adminOcultarJuego": "Ocultar juego seleccionado",
+                "adminPublicoUsuarioNormal": "Establecer el nivel público del usuario seleccionado a normal",
+                "adminPublicoUsuarioRestringido": "Establecer el nivel público del usuario seleccionado a restringido",
+                "adminPublicoUsuarioOculto": "Establecer el nivel público del usuario seleccionado a oculto",
+                "adminBorrarJuego": "BORRAR juego seleccionado",
+                "adminRestriccionNo": "Desactivar restricciones al usuario seleccionado",
+                "adminRestriccion": "Restringir al usuario seleccionado de subir juegos",
+                "adminRestriccionSi": "Restringir al usuario seleccionado de todo"
             }
         },
         "titulos": {
@@ -281,7 +307,7 @@
                 "infoAdmin1": "This is the administration panel, if you are seeing this it means you were granted access and confidence to moderate Mediastray, act carefully.",
                 "infoAdmin2": "Some of the operation you are allowed to perform as an administrator/moderator are locked to API only, here are the ones triggerable by UI.",
                 "infoAdmin3": "- You have admin permissions",
-                "infoAdmin4": "- You have sudo permissions",
+                "infoAdmin4": "- You have sudo permissions, for security measures the operations you're allowed to do arent available here in the UI, check the API",
                 "infoAdmin5": "- You have moderator permissions",
                 "infoAdmin6": "Type an object's uuid to operate with it"
             },
@@ -313,7 +339,7 @@
                 "infoAdmin1": "Este es el panel de administración, si estas viendo esto significa que se te han ofrecido los permisos y la confianza para moderar Mediastray, actúa con precaución.",
                 "infoAdmin2": "Algunas de las operaciones de las que tienes permitido ejecutar como administrador/moderador están bloqueadas a solo mediante API, aquí están las que puedes ejecutar desde la interfaz gráfica.",
                 "infoAdmin3": "- Tienes permisos de admin",
-                "infoAdmin4": "- Tienes permisos de sudo",
+                "infoAdmin4": "- Tienes permisos de sudo, por cuestiones de seguridad las operaciones que tienes permitido hacer no están disponibles en la interfaz, consulte la API",
                 "infoAdmin5": "- Tienes permisos de moderador",
                 "infoAdmin6": "Introduce el uuid de un objeto para operar con el"
             }
@@ -673,7 +699,10 @@
                 "comentarioLike": "Comment liked/unliked",
                 "comentarioPost": "Comment posted",
                 "comentarioBorrar": "Comment deleted...",
-                "reporteEnviar": "Content reported"
+                "reporteEnviar": "Content reported",
+                "exitoAdmin": "Admin operation succesfully executed",
+                "falloAdmin": "Admin operation went into an error",
+                "resultadoAdmin": "Results of the admin operation"
             },
             "ES-es": {
                 "loginBien": "Sesión iniciada correctamente!",
@@ -698,7 +727,10 @@
                 "comentarioLike": "Comentario gustado/no gustado",
                 "comentarioPost": "Comentario publicado",
                 "comentarioBorrar": "Comentario eliminado...",
-                "reporteEnviar": "Contenido reportado"
+                "reporteEnviar": "Contenido reportado",
+                "exitoAdmin": "Operación de admin ejecutada con éxito",
+                "falloAdmin": "Ha habido un error al ejecutar la operación de admin",
+                "resultadoAdmin": "Resultados de la operación de admin"
             }
         },
         "dinero": {
