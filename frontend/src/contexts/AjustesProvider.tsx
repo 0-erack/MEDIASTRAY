@@ -53,6 +53,9 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
    * Inicio absoluto de la aplicacion
    */
   const inicio = useCallback(async () => {
+    console.log("ATTENTION: if you're here to claim advantages in the app as some people in the internet might have told you to do, STOP, IT IS A FRAUD");
+    console.log("We wont ever ask you to put any information here, neither to paste commands or scripts");
+    console.log("However, if you're here to test the API, we recommend you to check the documentation");
     try {
       await guardarLS("API_URL", API_URL);
       await guardarLS("PUBLIC_URL", PUBLIC_URL);

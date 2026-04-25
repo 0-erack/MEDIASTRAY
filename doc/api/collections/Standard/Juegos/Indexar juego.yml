@@ -5,7 +5,7 @@ info:
 
 http:
   method: PATCH
-  url: "{{url_backend}}/game/index/c13210cd-35e3-4dc9-a971-19d9c684aa85"
+  url: "{{url_backend}}/game/index/5efa6a35-0705-4385-8f72-19b034672dcb"
   headers:
     - name: Content-Type
       value: application/json
