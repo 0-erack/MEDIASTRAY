@@ -166,7 +166,15 @@
                 "adminBorrarJuego": "DELETE selected game",
                 "adminRestriccionNo": "Deactivate selected user's restrictions",
                 "adminRestriccion": "Unallow the sleected user to publish games",
-                "adminRestriccionSi": "Unallow the selected user from everything"
+                "adminRestriccionSi": "Unallow the selected user from everything",
+                "editarArchivosJuego": "Manage files",
+                "descargar": "Download...",
+                "directoJugar": "Having trouble? Click here",
+                "pantallaCompleta": "Fullscreen",
+                "pausa": "Pause",
+                "noPausa": "Resume",
+                "silenciar": "Mute",
+                "desSilenciar": "Unmute"
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -223,7 +231,15 @@
                 "adminBorrarJuego": "BORRAR juego seleccionado",
                 "adminRestriccionNo": "Desactivar restricciones al usuario seleccionado",
                 "adminRestriccion": "Restringir al usuario seleccionado de subir juegos",
-                "adminRestriccionSi": "Restringir al usuario seleccionado de todo"
+                "adminRestriccionSi": "Restringir al usuario seleccionado de todo",
+                "editarArchivosJuego": "Administrar archivos",
+                "descargar": "Descargar...",
+                "directoJugar": "¿Algún problema? Pulsa aquí",
+                "pantallaCompleta": "Pantalla completa",
+                "pausa": "Pausa",
+                "noPausa": "Reanudar",
+                "silenciar": "Silenciar",
+                "desSilenciar": "Desilenciar"
             }
         },
         "titulos": {
@@ -251,7 +267,8 @@
                 "juegosPropios": "My games",
                 "juegosSeguidos": "Followed games",
                 "seccionComentarios": "Comments",
-                "seccionReportes": "Reports information"
+                "seccionReportes": "Reports information",
+                "archivos": "Game files"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -277,7 +294,8 @@
                 "juegosPropios": "Mis juegos",
                 "juegosSeguidos": "Juegos seguidos",
                 "seccionComentarios": "Comentarios",
-                "seccionReportes": "Información de reportes"
+                "seccionReportes": "Información de reportes",
+                "archivos": "Archivos del juego"
             }
         },
         "parrafos": {
@@ -311,7 +329,9 @@
                 "infoAdmin3": "- You have admin permissions",
                 "infoAdmin4": "- You have sudo permissions, for security measures the operations you're allowed to do arent available here in the UI, check the API",
                 "infoAdmin5": "- You have moderator permissions",
-                "infoAdmin6": "Type an object's uuid to operate with it (you're allowed to see the id of the objects in the platform)"
+                "infoAdmin6": "Type an object's uuid to operate with it (you're allowed to see the id of the objects in the platform)",
+                "infoArchivos1": "MAGNA users can upload up to 8 game files 2Gb each one while non MAGNA users can only up to 2 files and 1Gb per file. However it is globally limited to .zip only files",
+                "infoArchivos2": "If the file is called \"web\" it will be the one to be showed online, so make sure that when extracted, it directly contains an index.html showing the game."
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -343,7 +363,9 @@
                 "infoAdmin3": "- Tienes permisos de admin",
                 "infoAdmin4": "- Tienes permisos de sudo, por cuestiones de seguridad las operaciones que tienes permitido hacer no están disponibles en la interfaz, consulte la API",
                 "infoAdmin5": "- Tienes permisos de moderador",
-                "infoAdmin6": "Introduce el uuid de un objeto para operar con el (tienes permitido ver los ids de los objetos en la plataforma)"
+                "infoAdmin6": "Introduce el uuid de un objeto para operar con el (tienes permitido ver los ids de los objetos en la plataforma)",
+                "infoArchivos1": "Los usuarios MAGNA pueden publicar hasta 8 archivos de juego de 2Gb cada uno, mientras que los usuarios sin MAGNA solo pueden hasta 2 archivos de 1Gb cada uno. Sin embargo, hay una limitación global a solo archivos .zip",
+                "infoArchivos2": "Si el archivo es llamado \"web\" será el que se use para mostrarse en la web online, así que asegurate de que cuando se extrae, contiene directamente un index.html mostrando el juego."
             }
         },
         "formularios": {

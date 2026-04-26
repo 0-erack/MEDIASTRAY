@@ -59,8 +59,13 @@ function Cabecera() {
             </div>
           </div>
         )}
-
-        <div className='text-right m-0 ml-4 sm:mr-10 sm:ml-auto'>
+        <div className={`block sm:hidden transition-all duration-200 cursor-pointer z-40 ml-auto ${menuAbierto ? 'bg-resaltado scale-80' : 'bg-principal scale-100'} p-1`}>
+          <button className='z-500 pr-1 translate-y-0.5 inline-block' onClick={(e) => {
+            e.preventDefault();
+            setMenuAbierto(!menuAbierto);
+          }}><Icono numero={25} color="var(--color-fondo1)" tamagno={16} /></button>
+        </div>
+        <div className='text-right m-0 ml-2 sm:mr-10 sm:ml-auto'>
           {usuario ? (
             <span className="usuario-cabecera cursor-pointer min-w-fit w-max whitespace-nowrap flex bg-principal text-fondo-especial-1 fuente2 text-lg! hover:bg-resaltado hover:underline transition-all duration-100 hover:scale-x-110">
               <img className='w-8 h-8' src={(typeof usuario === 'object' && usuario) ? usuario!.urlFoto! : PUBLIC_URL + '/nopfp.png'} alt="" onClick={() => navegar("/user")} />
@@ -90,12 +95,7 @@ function Cabecera() {
             </select>
           </div>
         </div>
-        <div className={`block sm:hidden transition-all duration-200 cursor-pointer z-40 ml-auto ${menuAbierto ? 'bg-resaltado scale-80' : 'bg-principal scale-100'} p-1`}>
-          <button className='pr-1 translate-y-0.5 inline-block' onClick={(e) => {
-            e.preventDefault();
-            setMenuAbierto(!menuAbierto);
-          }}><Icono numero={25} color="var(--color-fondo1)" tamagno={16} /></button>
-        </div>
+        
       </header>
     </>
   )

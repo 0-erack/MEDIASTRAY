@@ -14,10 +14,13 @@ import BotonFuncion from "../Elements/BotonFuncion";
 import EnlaceFuncion from "../Elements/EnlaceFuncion";
 import MarkdownDisplay from "../Elements/MarkdownDisplay";
 import Titulo from "../Elements/Titulo";
+import FormularioArchivoJuego from "../Forms/FormularioArchivoJuego";
 import FormularioJuego from "../Forms/FormularioJuego";
 import Icono from "../Principal/Icono";
 import TarjetaUsuario from "../Usuario/TarjetaUsuario";
 import FondoPortadaJuego from "./FondoPortadaJuego";
+import PantallaJuego from "./PantallaJuego";
+import TargetaArchivo from "./TarjetaArchivo";
 
 interface TarjetaJuegoGrandeProps {
   juego: Record<string, any>;
@@ -36,14 +39,16 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
   const [siguiendo, setSiguiendo] = useState(false);
   const { usuario, esAdmin } = useSesion();
   const [editando, setEditando] = useState(false);
+  const [editandoArchivos, setEditandoArchivos] = useState(false);
   const [creadorEsPremium, setCreadorEsPremium] = useState(false);
   const { verPremium, verUsuario } = useApiUsuarios();
-  const { verSiguiendoJuego, seguirJuego } = useApiJuegos();
+  const { verSiguiendoJuego, seguirJuego, verArchivos } = useApiJuegos();
   const [usuarioCreador, setUsuarioCreador] = useState<Partial<Usuario> | null>(null);
   const { lanzarMensaje } = useMensajes();
-  const { PUBLIC_URL } = useAjustes();
+  const { PUBLIC_URL, GAMES_URL } = useAjustes();
+  const [archivos, setArchivos] = useState<Array<Record<string, any>>>([]);
   useTituloDinamico("", juego.titulo);
-  
+
   const alternarSeguir = useCallback(async () => {
     const resultado = await seguirJuego(juego.id, siguiendo ? -1 : 1);
     if (resultado) {
@@ -62,6 +67,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
     setCreadorEsPremium((await verPremium(juego.idCreador))?.active ?? false);
     setUsuarioCreador(await verUsuario(juego.idCreador) ?? null);
     setSiguiendo(await verSiguiendoJuego(juego.id));
+    setArchivos(await verArchivos(juego.id));
   }, []);
   useEffect(() => {
     cargaInicial();
@@ -73,23 +79,34 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
       <div className="sm:flex items-center">
         {(esAdmin > 0 && usuario) && (<p>{juego.id}</p>)}
         <Titulo>{juego.titulo ?? '???'}</Titulo>
-        {!jugando && (<BotonFuncion titulo={traduccion("botones", "jugar")} funcion={() => { setJugando(true); setEditando(false) }} tipo={1} hueco={false}>
+        {(!jugando && archivos.filter((e) => { return e.name == "web" }).length) ? (<BotonFuncion titulo={traduccion("botones", "jugar")} funcion={() => { setJugando(true); setEditando(false) }} tipo={1} hueco={false}>
           <Icono numero={15} color="var(--color-fondo1)" />
-        </BotonFuncion>)}
+        </BotonFuncion>) : ''}
         {!esMio && usuario && (<BotonFuncion titulo={traduccion("botones", siguiendo ? "noSeguir" : "seguir")} funcion={alternarSeguir} tipo={1}>
           {siguiendo ? (<Icono numero={18} color='var(--color-info1)' />) : (<Icono numero={19} color='var(--color-principal)' />)}
         </BotonFuncion>)}
         {!jugando && esMio && !editando && (<BotonFuncion titulo={traduccion("botones", "editarJuego")} funcion={() => { setEditando(true) }} tipo={0}>
           <Icono numero={9} color="var(--color-principal)" />
         </BotonFuncion>)}
+
+        {!jugando && esMio && !editandoArchivos && (<BotonFuncion titulo={traduccion("botones", "editarArchivosJuego")} funcion={() => { setEditandoArchivos(true) }} tipo={0}>
+          <Icono numero={21} color="var(--color-principal)" />
+        </BotonFuncion>)}
+
         {juego.precio && (<Titulo magnitud={3}>{juego.precio}</Titulo>)}
       </div>
       {editando && (<div className="border-2 border-principal p-2 m-4">
         <FormularioJuego juegoEditar={juego} />
       </div>)}
-      {jugando && (<div className="w-full h-max min-h-[600px] bg-black my-5 z-1000">
-        JUGAR
+      {editandoArchivos && (<div className="border-2 border-principal p-2 m-4">
+        <FormularioArchivoJuego previos={archivos} />
       </div>)}
+      {jugando && (<><div>
+        <PantallaJuego juego={juego} />
+      </div>
+        <EnlaceFuncion titulo={traduccion("botones", "directoJugar")} funcion={`${GAMES_URL}/${juego.id}/web`} />
+        <hr />
+      </>)}
       <div className="lg:flex gap-5">
         {juego.urlPortada1 && (<img src={juego.urlPortada1 ?? PUBLIC_URL + "/coverless1.png"} alt={juego.titulo} className="w-[460px] h-[215px] lg:mb-0 mb-3 mx-auto shrink-0 object-cover relative z-100 border border-principal text-center" />)}
         <div className='flex-1'>
@@ -117,8 +134,8 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
             <EnlaceFuncion funcion={e.url} titulo={e.subtitle ?? e.url} color={1} />
             <div className="flex overflow-auto">
               {e.data.images.map((ee: string, ii: number) => {
-              return (<img src={ee} key={ii} className="object-cover relative z-100 m-4 h-[240px] w-auto object-contain" />)
-            })}
+                return (<img src={ee} key={ii} className="object-cover relative z-100 m-4 h-[240px] w-auto object-contain" />)
+              })}
             </div>
           </div>);
         })}
@@ -137,14 +154,14 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           {juego.edad != 0 && <div>{traduccion("formularios", "edadMinima")} <strong>{juego.edad}</strong></div>}
         </div>
         <div className="ml-0 lg:ml-5 text-left">
-          {(juego.generos && juego.generos?.length != 0) && (<p>{traduccion("formularios", "listaGeneros")} <strong>{juego?.generos?.map((e:string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
-          {(juego.tags && juego.tags?.length != 0) && (<p>{traduccion("formularios", "listaTags")} <strong>{juego?.tags?.map((e:string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
+          {(juego.generos && juego.generos?.length != 0) && (<p>{traduccion("formularios", "listaGeneros")} <strong>{juego?.generos?.map((e: string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
+          {(juego.tags && juego.tags?.length != 0) && (<p>{traduccion("formularios", "listaTags")} <strong>{juego?.tags?.map((e: string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
           {(juego.avisos && juego.avisos?.length != 0) && (<p>{traduccion("formularios", "listaAvisos")} <strong>{juego?.avisos?.join(", ")}</strong></p>)}
           {(juego.idiomas && juego.idiomas?.length != 0) && (<p>{traduccion("formularios", "listaIdiomas")} <strong>{juego?.idiomas?.join(", ")}</strong></p>)}
         </div>
-        <div className="ml-0 sm:ml-5">
+        {(typeof usuario === "object" && usuario?.id != juego.idCreador) ? (<div className="ml-0 sm:ml-5">
           <ElementoReporte idObjeto={juego.id} tipoObjeto="game" />
-        </div>
+        </div>) : ''}
       </div>
       <div className="grid lg:grid-cols-4 grid-cols-2 gap-2 w-full p-1">
         {filtrarAdiciones("images", true, filtrarAdiciones("trailer", true)).map((e, i) => {
@@ -160,6 +177,14 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
             <img src={e.data.icon ?? e.data.cover ?? e.data.image} className="ml-auto max-h-20 max-w-20" />
           </div>)
         })}
+      </div>
+      <div>
+        {archivos.length && (<>
+          <Titulo magnitud={4}>{traduccion("titulos", "archivos")}</Titulo>
+          {archivos.map((e, i) => {
+            if (e.name != "web") return (<TargetaArchivo key={i} archivo={e} />)
+          })}
+        </>)}
       </div>
       <div>
         <Titulo magnitud={4}>{traduccion("titulos", "seccionComentarios")}</Titulo>

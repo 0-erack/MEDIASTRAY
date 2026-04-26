@@ -268,12 +268,62 @@ const useApiJuegos = () => {
         }
     }
 
+    /**
+     * Busca los archivos de un juego
+     * @param id juego a consultar
+     * @returns la informacion de los archivos del juego
+     */
+    const verArchivos = async (id:string): Promise<Array<Record<string, any>>> => {
+        try {
+            const resultado = await peticionGenerica(API_URL + `/gameFile/${usuario ? 'personal/' : ''}${id}`, "GET");
+            if (resultado.ok) return resultado.data.files;
+            return [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    /**
+     * Elimina un archivo de un juego
+     * @param id juego a consultar
+     * @param nombre que archivo eliminar
+     * @returns true si ha ido todo bien
+     */
+    const eliminarArchivo = async (id:string, nombre: string): Promise<boolean> => {
+        try {
+            if (!usuario) return false;
+            const resultado = await peticionGenerica(API_URL + `/gameFile`, "DELETE", {id: id, name: nombre});
+            if (resultado.ok) return true;
+            return false;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    /**
+     * Sube un archivo de juego al servidor
+     * @param id que juego subir el archivo
+     * @param nombre como se llamara el archivo
+     * @param archivo blob en si
+     * @returns true si ha ido todo bien
+     */
+    const subirArchivo = async (id: string, nombre: string, archivo: any): Promise<boolean> => {
+        if (!usuario) return false;
+        const resultado = true;
+
+
+
+
+        return true;
+    }
+
+
     const resetEstados = () => {
         setCargando(false);
         setError(false)
     }
 
-    return { cargando, error, verJuegosDestacados, verJuegoTemporal, buscar, editarPublicoJuego, buscarJuegosSeguidos, buscarJuegosUsuario, establecerAdiciones, crearJuego, borrarJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
+    return { cargando, error, subirArchivo, eliminarArchivo, verArchivos, verJuegosDestacados, verJuegoTemporal, buscar, editarPublicoJuego, buscarJuegosSeguidos, buscarJuegosUsuario, establecerAdiciones, crearJuego, borrarJuego, editarJuego, peticionGenerica, resetEstados, verJuego, verTodosMisJuegos, verSiguiendoJuego, seguirJuego };
 };
 
 export default useApiJuegos;

@@ -18,7 +18,8 @@ import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
  */
 export const subirArchivosJuego = async (idUsuario: string, idJuego: string, archivo: any, nombre: string): Promise<string|null> => {
     const usuario = await buscarUsuario(idUsuario);
-    if (!usuario) throw { message: "User not found", code: 404 };
+    if (!usuario || usuario.disponibilidad >= 2 || usuario.nivelPublico > 0) throw { message: "User not found", code: 404 };
+    
     const juego = await buscarJuego(idJuego);
     if (!juego) throw { message: "Game not found", code: 404 };
     if (!nombreArchivo(nombre)) throw { message: "File name not situable", code: 409 };
@@ -99,5 +100,5 @@ export const listarArchivosJuego = async (idJuego: string, idVisor?:string): Pro
     } else if (!juego.publico) throw { message: "Game not found", code: 404 };
     const archivos = await Archivo.find({juego: idJuego}).lean();
     if (!archivos.length) return [];
-    return archivos.map((e) => {return {id: e.id, name: e.nombre, size: e.peso, date: e.fecha}});
+    return archivos.map((e) => {return {id: e.id, name: e.nombre, size: e.peso, date: e.fecha, game: e.juego}});
 }
