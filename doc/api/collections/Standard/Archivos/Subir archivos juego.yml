@@ -1,0 +1,43 @@
+info:
+  name: Subir archivos juego
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url_backend}}/gameFile"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: multipart-form
+    data:
+      - name: id
+        type: text
+        value: 5efa6a35-0705-4385-8f72-19b034672dcb
+        contentType: text
+      - name: name
+        type: text
+        value: version
+        contentType: text
+      - name: archivo
+        type: file
+        value:
+          - /home/yete/Escritorio/MEDIASTRAY.zip
+        contentType: file
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |
+  Ruta privada para crear un usuario

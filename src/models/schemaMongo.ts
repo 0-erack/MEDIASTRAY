@@ -63,6 +63,16 @@ const ReporteSchema = new Schema({
     collection: 'reporte'
 });
 
+//Objeto de archivos de un juego
+const ArchivoSchema = new Schema({
+    id: { type: String, required: true },
+    nombre: {type: String, required: true}, //Tag del archivo
+    juego: {type: String, required: true},
+    
+}, { 
+    collection: 'reporte'
+});
+
 //Objeto de test
 const TestInitSchema = new Schema({
     nombre: String,
@@ -78,5 +88,6 @@ export const Intermediario = model('Intermediario', IntermediarioSchema);
 export const AdicionJuego = model('AdicionJuego', AdicionJuegoSchema);
 export const Comentario = model('Comentario', ComentarioSchema);
 export const Reporte = model('Reporte', ReporteSchema);
+export const Archivo = model('Archivo', ArchivoSchema);
 export const Test = model('Test', TestInitSchema);
 export const Wildcard = model('Wildcard', WildcardSchema);

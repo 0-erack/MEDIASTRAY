@@ -1,6 +1,7 @@
 //Funciones relacionadas con el manejo de archivos
 
 import fs from 'fs/promises';
+import multer from 'multer';
 import path from 'path';
 
 /**
@@ -99,3 +100,17 @@ export const borrarArchivo = async (rutaMasNombre:string):Promise<boolean> => {
     }
 }
 
+/**
+ * Handler para subir archivos de juego mediante la api
+ */
+export const subidaJuego = multer({ 
+  storage: multer.memoryStorage(), // store in memory first
+  limits: { fileSize: 1024 * 1024 * 1024 * (Number(process.env.PUBLIC_FILES_PATH) ? Number(process.env.PUBLIC_FILES_PATH) : 4) },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/zip' || file.originalname.endsWith('.zip')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only .zip files allowed'));
+    }
+  }
+});

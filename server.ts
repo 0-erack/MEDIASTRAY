@@ -9,6 +9,7 @@ import { iniciarServicioLogs } from './src/connections/logs.js';
 import { getConexionMongoose } from './src/connections/mongodb.js';
 import apiRoutes from "./src/routes/apiRoutes.js";
 import apiRoutesAdmin from "./src/routes/apiRoutesAdmin.js";
+import apiRoutesArchivos from "./src/routes/apiRoutesArchivos.js";
 import apiRoutesPriv from "./src/routes/apiRoutesPriv.js";
 import { abrirServidorMetricas } from './src/servidorMetricas.js';
 import { hacerTestsConexiones } from './src/tests/tests.js';
@@ -20,8 +21,6 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(process.cwd(), '.env') });
 const APP_PORT = process.env.BACKEND_PORT ?? 8510;
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 iniciarServicioLogs();
 
 await getConexionMongoose();
@@ -79,6 +78,10 @@ if (process.env.FREE_CORS) {
 if (process.env.SERVE_STATIC === "true") app.use("/public", express.static(process.env.PUBLIC_FILES_PATH ?? './public'));
 if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(process.env.GAMES_FILES_PATH ?? './games'));
 //Peticiones a la API (se gestionan manualmente por el servidor)
+
+app.use("/api/v1", apiRoutesArchivos);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", apiRoutesPriv);
 app.use("/api/v1/admin", apiRoutesAdmin);
 app.use("/api/v1", apiRoutes);

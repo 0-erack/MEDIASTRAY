@@ -27,7 +27,6 @@ export const autenticarTokenSesion = async (req, res, next) => {
         //const tokenActual = req.headers.authorization?.split(" ")[1] ?? (req?.body?.token ?? (req.header('X-auth-session') ?? ""));
         const tokenActual = 
             req.headers.authorization?.split(" ")[1] ?? 
-            req?.body?.token ?? 
             req.header('X-auth-session') ?? 
             null;
         const datosSesion = await verSesionToken(tokenActual);

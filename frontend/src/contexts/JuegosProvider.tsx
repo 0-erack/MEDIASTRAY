@@ -26,7 +26,7 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
   //Juegos del usuario (que han sido creados por este) (en un futuro este contexto podria funcionar como biblioteca de juegos comprados)
   const [misJuegos, setMisJuegos] = useState<Array<Partial<Juego>>>([]);
   const [fallo, setFallo] = useState<any>(false);
-  const { usuario } = useSesion();
+  const { usuario, tokenSesionActual } = useSesion();
   const { verTodosMisJuegos } = useApiJuegos();
 
   /**
@@ -76,11 +76,12 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const inicio = useCallback(async (elUsuario: any) => {
+    console.log("act ju");
     await actualizarBackend(elUsuario ? true : false);
   }, []);
   useEffect(() => {
     inicio(usuario);
-  }, [usuario]);
+  }, [usuario, tokenSesionActual]);
 
   const exportaciones = useMemo(() => ({
     fallo, misJuegos, borrarJuegoLocal, actualizarBackend, agregarJuegoLocal, editarJuegoLocal
