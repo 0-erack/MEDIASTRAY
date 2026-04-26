@@ -67,8 +67,9 @@ const ReporteSchema = new Schema({
 const ArchivoSchema = new Schema({
     id: { type: String, required: true },
     nombre: {type: String, required: true}, //Tag del archivo
-    juego: {type: String, required: true},
-    
+    juego: {type: String, required: true}, //A que juego hace referencia
+    peso: {type: Number, required: false}, //Peso en bytes del archivo
+    fecha: {type: String, required: false} //Fecha en la que se subio
 }, { 
     collection: 'reporte'
 });

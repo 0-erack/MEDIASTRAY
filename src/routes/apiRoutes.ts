@@ -1,6 +1,7 @@
 //Rutas abiertas al publico para la cuales no se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import { listarArchivosJuego } from '../controllers/archivosController.js';
 import { verComentario } from '../controllers/comentarioController.js';
 import { buscarJuegos, verJuego, verJuegosDestacados, verJuegosUsuario, verJuegoTemporada } from '../controllers/juegoController.js';
 import { reportarObjeto } from '../controllers/reportesController.js';
@@ -166,6 +167,16 @@ router.post("/anonymous/report/:id", async (req: ExpressRequest<{id: string}>, r
         } else {
             return res.status(409).json(fallo("There was an error when reporting", null, 409));
         }
+    });
+});
+
+
+//Devuelve la informacion de los archivos de un juego
+router.get("/gameFile/:id", async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const archivos = await listarArchivosJuego(req.params?.id) ?? [];
+        return res.json(exito("Files found", {files: archivos}));
     });
 });
 

@@ -1,11 +1,11 @@
 info:
-  name: Ver premium
+  name: Listar archivos juego (1)
   type: http
-  seq: 15
+  seq: 4
 
 http:
   method: GET
-  url: "{{url_backend}}/user/premium/e695ad8f-05ae-409e-9e35-653907e2639e"
+  url: "{{url_backend}}/gameFile/5efa6a35-0705-4385-8f72-19b034672dcb"
   headers:
     - name: Content-Type
       value: application/json

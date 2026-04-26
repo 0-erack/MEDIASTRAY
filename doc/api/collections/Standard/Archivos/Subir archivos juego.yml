@@ -22,12 +22,12 @@ http:
         contentType: text
       - name: name
         type: text
-        value: version
+        value: web
         contentType: text
       - name: archivo
         type: file
         value:
-          - /home/yete/Escritorio/MEDIASTRAY.zip
+          - /home/yete/Escritorio/MEDIASTRAY/games/index.zip
         contentType: file
   auth:
     type: bearer

@@ -12,6 +12,7 @@ import { AdicionJuego, Comentario, Intermediario } from "../models/schemaMongo.j
 import { autenticarContrasegnaUsuario } from "../routes/autenticaciones.js";
 import { Juego } from "../types/Juego.js";
 import { formatearJuegoMiniatura, formatearJuegoPrivado, formatearJuegoPublico, validarAdicionJuego, validarCreacionJuego, validarEdicionJuego } from "../validators/validacionesJuego.js";
+import { borrarArchivoJuego } from "./archivosController.js";
 import { crearTokenJuego } from "./sessionController.js";
 import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
 
@@ -139,6 +140,7 @@ export const borrarJuego = async (id: string, contrasegnaDuegno: string, idDuegn
     const db = getDB();
     const resultado = await db.delete(juegos).where(eq(juegos.id, id)).returning({ id: juegos.id });
     if (!resultado && !resultado?.length) throw { message: "Couldn't delete game", code: 500 }
+    await borrarArchivoJuego(juego.id, idDuegno ?? (juego.idCreador as string));
     //await mongoDelete("adicionJuego", {game: id}, true);
     await AdicionJuego.deleteMany({ game: id });
     //await mongoDelete("intermediario", {predicado: id}, true);

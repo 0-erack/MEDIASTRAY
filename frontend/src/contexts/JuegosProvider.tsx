@@ -76,7 +76,6 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const inicio = useCallback(async (elUsuario: any) => {
-    console.log("act ju");
     await actualizarBackend(elUsuario ? true : false);
   }, []);
   useEffect(() => {

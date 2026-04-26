@@ -1,6 +1,7 @@
 //Rutas ocultas para las cuales se necesita el token de la api
 
 import express, { Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import { borrarArchivoJuego, listarArchivosJuego } from '../controllers/archivosController.js';
 import { borrarComentario, comentarComentario, comentarJuego, likeComentario, verComentario } from '../controllers/comentarioController.js';
 import { borrarJuego, cambiarIndexacionJuego, crearJuego, editarAdicionesJuego, editarJuego, seguirJuego, verJuego, verJuegosSeguidos, verJuegosUsuario } from '../controllers/juegoController.js';
 import { reportarObjeto } from '../controllers/reportesController.js';
@@ -299,13 +300,35 @@ routerPriv.delete("/comment/delete/:id", autenticarTokenApi, autenticarTokenSesi
 //Guardar un reporte de un objeto personalmente
 routerPriv.post("/report/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{id: string}>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
-        if (!req.params?.id || !req.body?.type || !req.body?.text) return res.status(404).json(fallo("Insufficient data", null, 409));
+        if (!req.params?.id || !req.body?.type || !req.body?.text) return res.status(409).json(fallo("Insufficient data", null, 409));
         const resultado = await reportarObjeto(req.params?.id, req.body?.type, req.datosSesion!.id, req.body?.text);
         if (resultado) {
             return res.json(exito("Object reported"));
         } else {
             return res.status(409).json(fallo("There was an error when reporting", null, 409));
         }
+    });
+});
+
+//Eliminar archivos del juego
+routerPriv.delete("/gameFile", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.body?.id || !req.body?.name) return res.status(409).json(fallo("Insufficient data", null, 409));
+        const resultado = await borrarArchivoJuego(req.body?.id, req.datosSesion!.id, req.body?.name);
+        if (resultado) {
+            return res.json(exito("Game files deleted"));
+        } else {
+            return res.status(409).json(fallo("There was an error when deleting the game files", null, 409));
+        }
+    });
+});
+
+//Devuelve la informacion de los archivos de un juego
+routerPriv.get("/gameFile/personal/:id", autenticarTokenApi, autenticarTokenSesion, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
+    return manejadorRuta(req, res, async () => {
+        if (!req.params?.id) return res.status(404).json(fallo("Game not found", null, 404));
+        const archivos = await listarArchivosJuego(req.params?.id, req.datosSesion!.id) ?? [];
+        return res.json(exito("Files found", {files: archivos}));
     });
 });
 
