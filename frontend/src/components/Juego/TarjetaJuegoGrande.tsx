@@ -99,12 +99,11 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         <FormularioJuego juegoEditar={juego} />
       </div>)}
       {editandoArchivos && (<div className="border-2 border-principal p-2 m-4">
-        <FormularioArchivoJuego previos={archivos} />
+        <FormularioArchivoJuego idJuego={juego.id} actualizar={setArchivos} previos={archivos} />
       </div>)}
       {jugando && (<><div>
         <PantallaJuego juego={juego} />
       </div>
-        <EnlaceFuncion titulo={traduccion("botones", "directoJugar")} funcion={`${GAMES_URL}/${juego.id}/web`} />
         <hr />
       </>)}
       <div className="lg:flex gap-5">

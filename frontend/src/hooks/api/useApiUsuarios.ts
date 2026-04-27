@@ -49,6 +49,7 @@ const useApiUsuarios = () => {
                 cambiarTokenSesionActual(resultado.data.sessionToken);
                 cambiarUsuarioActual(deApiAUsuario(resultado.data.user));
                 await actualizarEstadoPremium(resultado.data.user.id, resultado.data.sessionToken);
+                //location.reload();
             }
             return resultado;
         } catch (error) {

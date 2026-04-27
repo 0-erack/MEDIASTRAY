@@ -5,13 +5,14 @@ import EnlaceFuncion from "../Elements/EnlaceFuncion";
 
 interface TarjetaArchivoProps {
   archivo: Record<string, any>;
+  funcionEliminar?: (id:string) => Promise<void>;
 }
 
 /**
  * Representa un archivo del juego
  * @param archivo datos del archivo
  */
-function TarjetaArchivo({ archivo }: TarjetaArchivoProps) {
+function TarjetaArchivo({ archivo, funcionEliminar }: TarjetaArchivoProps) {
 
   const peso = ((archivo.size / 1024) / 1024).toFixed(2) + " Mb";
   const { GAMES_URL } = useAjustes();
@@ -24,6 +25,7 @@ function TarjetaArchivo({ archivo }: TarjetaArchivoProps) {
       <span>{peso}</span>
       <span>{archivo.date && timestampAFecha(archivo.date)}</span>
       <span><EnlaceFuncion titulo={traduccion("botones", "descargar")} funcion={direccion} /></span>
+      {funcionEliminar && (<span><EnlaceFuncion titulo={traduccion("botones", "borrar")} funcion={() => funcionEliminar(archivo.name)} /></span>)}
     </div>
   )
 }

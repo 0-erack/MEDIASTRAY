@@ -1,10 +1,11 @@
 .zona-mensajes {
     position:fixed; /*posicionar*/
-    overflow: scroll;
+    overflow: none;
     z-index: 999;
     margin: 7px;
     /*height: 1vh;
     overflow: hidden;*/
+    scrollbar-color: transparent;
 }
 .mensaje-flotante p::before {content: " ●  ";}
 .mensaje-flotante {
@@ -13,7 +14,8 @@
     padding: 7px 5px;
     margin: 5px;
     background-color: var(--color-fondo1);
-    overflow: scroll;
+    overflow: none;
+    scrollbar-color: transparent;
 
     animation: aparecer 4s ease-out forwards;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);

@@ -11,7 +11,7 @@ import useSesion from "../useSesion";
  */
 const useApiJuegos = () => {
     const [cargando, setCargando] = useState(false);
-    const [error, setError] = useState<boolean/*|object*/|Record<string,any>>(false);
+    const [error, setError] = useState<boolean/*|object*/ | Record<string, any>>(false);
     const { API_URL, API_KEY } = useAjustes();
     const { usuario, tokenSesionActual } = useSesion();
 
@@ -23,15 +23,15 @@ const useApiJuegos = () => {
      * @param headersExtra nuevos headers ademas de los que ya se agnaden por defecto
      * @returns resultado de la peticion, normalmente estara en resultado.data, este objeto tambien devuelve el codigo http resultante, o algun mensaje para dar contexto
      */
-    const peticionGenerica = async (url:string, verbo = "GET", body?:Record<string, any>, headersExtra:Record<string, any> = {}):Promise<any> => {
+    const peticionGenerica = async (url: string, verbo = "GET", body?: Record<string, any>, headersExtra: Record<string, any> = {}): Promise<any> => {
         await setCargando(true);
         await setError(false);
         try {
-            const resultado = await peticionBasica(url, {...headersExtra, "X-auth-api": API_KEY, "X-auth-session": tokenSesionActual ?? '', }, verbo, body ?? undefined, tokenSesionActual ?? '');
-            if (!resultado.ok || resultado.code >= 400) throw {fallo: true, code: resultado.code ?? '', message: "Error api", result: resultado}
+            const resultado = await peticionBasica(url, { ...headersExtra, "X-auth-api": API_KEY, "X-auth-session": tokenSesionActual ?? '', }, verbo, body ?? undefined, tokenSesionActual ?? '');
+            if (!resultado.ok || resultado.code >= 400) throw { fallo: true, code: resultado.code ?? '', message: "Error api", result: resultado }
             return resultado;
         } catch (error) {
-            setError({fallo: true, error});
+            setError({ fallo: true, error });
             throw error;
         } finally {
             setCargando(false);
@@ -49,7 +49,7 @@ const useApiJuegos = () => {
             if (resultado.ok) return deApiAJuego(resultado.data);
             return null;
         } catch (error) {
-            return {fallo: true, error}
+            return { fallo: true, error }
         }
     }
 
@@ -96,7 +96,7 @@ const useApiJuegos = () => {
             let cantidadCorrecta = cantidad;
             if (cantidadCorrecta > 1) cantidadCorrecta = 1;
             if (cantidadCorrecta < -1) cantidadCorrecta = -1;
-            const resultado = await peticionGenerica(API_URL + "/game/follow", "POST", {id, amount: cantidadCorrecta});
+            const resultado = await peticionGenerica(API_URL + "/game/follow", "POST", { id, amount: cantidadCorrecta });
             if (resultado.ok) return true;
             return false;
         } catch (error) {
@@ -109,10 +109,10 @@ const useApiJuegos = () => {
      * @param juego datos del juego nuevo
      * @returns juego nuevo devuelto por la api, o null
      */
-    const crearJuego = async (juego: Partial<Juego>): Promise<Partial<Juego>|null> => {
+    const crearJuego = async (juego: Partial<Juego>): Promise<Partial<Juego> | null> => {
         try {
             if (!usuario) return null;
-            const resultado = await peticionGenerica(API_URL + "/game/create", "POST", {game: deJuegoAApi(juego)});
+            const resultado = await peticionGenerica(API_URL + "/game/create", "POST", { game: deJuegoAApi(juego) });
             if (!resultado.ok) return null;
             return deApiAJuego(resultado.data.game);
         } catch (error) {
@@ -126,10 +126,10 @@ const useApiJuegos = () => {
      * @param juego datos nuevos del juego
      * @returns juego nuevo devuelto por la api, o null
      */
-    const editarJuego = async (id: string, juego: Partial<Juego>): Promise<Partial<Juego>|null> => {
+    const editarJuego = async (id: string, juego: Partial<Juego>): Promise<Partial<Juego> | null> => {
         try {
             if (!usuario || !id) return null;
-            const resultado = await peticionGenerica(API_URL + "/game/edit/" + id, "PATCH", {newData: deJuegoAApi(juego)});
+            const resultado = await peticionGenerica(API_URL + "/game/edit/" + id, "PATCH", { newData: deJuegoAApi(juego) });
             if (!resultado.ok) return null;
             return deApiAJuego(resultado.data.game);
         } catch (error) {
@@ -146,7 +146,7 @@ const useApiJuegos = () => {
     const borrarJuego = async (id: string, contrasegna: string): Promise<boolean> => {
         try {
             if (!usuario || !id) return false;
-            const resultado = await peticionGenerica(API_URL + "/game/delete/" + id, "DELETE", {password: contrasegna});
+            const resultado = await peticionGenerica(API_URL + "/game/delete/" + id, "DELETE", { password: contrasegna });
             if (resultado.ok) return true;
             return false;
         } catch (error) {
@@ -163,7 +163,7 @@ const useApiJuegos = () => {
     const editarPublicoJuego = async (id: string, estado: boolean): Promise<boolean> => {
         try {
             if (!usuario || !id) return false;
-            const resultado = await peticionGenerica(API_URL + "/game/index/" + id, "PATCH", {state: estado});
+            const resultado = await peticionGenerica(API_URL + "/game/index/" + id, "PATCH", { state: estado });
             if (resultado.ok) return true;
             return false;
         } catch (error) {
@@ -177,10 +177,10 @@ const useApiJuegos = () => {
      * @param adiciones nuevas
      * @returns las nuevas adiciones si todo ha ido bien
      */
-    const establecerAdiciones = async (id: string, adiciones: Array<Record<string, any>>): Promise<Array<Record<string, any>>|null> => {
+    const establecerAdiciones = async (id: string, adiciones: Array<Record<string, any>>): Promise<Array<Record<string, any>> | null> => {
         try {
             if (!usuario || !id) return null;
-            const resultado = await peticionGenerica(API_URL + "/game/additions/" + id, "PUT", {additions: adiciones});
+            const resultado = await peticionGenerica(API_URL + "/game/additions/" + id, "PUT", { additions: adiciones });
             if (resultado.ok) return resultado.data.current;
             return null;
         } catch (error) {
@@ -194,7 +194,7 @@ const useApiJuegos = () => {
      * @param pagina en que pagina buscar (de 50 en 50)
      * @returns los juegos en formato miniatura
      */
-    const buscarJuegosUsuario = async (id: string, pagina = 0): Promise<Array<Partial<Juego>>|null> => {
+    const buscarJuegosUsuario = async (id: string, pagina = 0): Promise<Array<Partial<Juego>> | null> => {
         try {
             if (!id) return null;
             const resultado = await peticionGenerica(API_URL + `/user/games/${id}?page=${pagina ?? '0'}`, "GET");
@@ -243,7 +243,7 @@ const useApiJuegos = () => {
      * @param semanal true para ver el semanal y no el diario
      * @returns el juego en formato miniatura
      */
-    const verJuegoTemporal = async (semanal = false): Promise<Partial<Juego>|null> => {
+    const verJuegoTemporal = async (semanal = false): Promise<Partial<Juego> | null> => {
         try {
             const resultado = await peticionGenerica(API_URL + `/game/${semanal ? 'weekly' : 'daily'}`, "GET");
             if (resultado.ok) return deApiAJuego(resultado.data.game);
@@ -273,7 +273,7 @@ const useApiJuegos = () => {
      * @param id juego a consultar
      * @returns la informacion de los archivos del juego
      */
-    const verArchivos = async (id:string): Promise<Array<Record<string, any>>> => {
+    const verArchivos = async (id: string): Promise<Array<Record<string, any>>> => {
         try {
             const resultado = await peticionGenerica(API_URL + `/gameFile/${usuario ? 'personal/' : ''}${id}`, "GET");
             if (resultado.ok) return resultado.data.files;
@@ -289,10 +289,10 @@ const useApiJuegos = () => {
      * @param nombre que archivo eliminar
      * @returns true si ha ido todo bien
      */
-    const eliminarArchivo = async (id:string, nombre: string): Promise<boolean> => {
+    const eliminarArchivo = async (id: string, nombre: string): Promise<boolean> => {
         try {
             if (!usuario) return false;
-            const resultado = await peticionGenerica(API_URL + `/gameFile`, "DELETE", {id: id, name: nombre});
+            const resultado = await peticionGenerica(API_URL + `/gameFile`, "DELETE", { id: id, name: nombre });
             if (resultado.ok) return true;
             return false;
         } catch (error) {
@@ -301,7 +301,7 @@ const useApiJuegos = () => {
     }
 
     /**
-     * Sube un archivo de juego al servidor
+     * Sube un archivo de juego al servidor (esta ya no envia json asi que es distinta)
      * @param id que juego subir el archivo
      * @param nombre como se llamara el archivo
      * @param archivo blob en si
@@ -309,12 +309,29 @@ const useApiJuegos = () => {
      */
     const subirArchivo = async (id: string, nombre: string, archivo: any): Promise<boolean> => {
         if (!usuario) return false;
-        const resultado = true;
 
-
-
-
-        return true;
+        try {
+            const formData = new FormData();
+            formData.append("id", id);
+            formData.append("name", nombre);
+            const fileToUpload = archivo instanceof FileList ? archivo[0] : archivo;
+            if (!fileToUpload) return false;
+            formData.append("archivo", fileToUpload);
+            const response = await fetch(`${API_URL}/gameFile`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-auth-session': tokenSesionActual ?? '',
+                    'X-auth-api': API_KEY,
+                    'Authorization': `Bearer ${tokenSesionActual ?? ''}`
+                },
+                body: formData,
+            });
+            if (!response.ok) return false;
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 
 

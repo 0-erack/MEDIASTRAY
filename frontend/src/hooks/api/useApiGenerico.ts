@@ -11,7 +11,7 @@ const useApiGenerico = () => {
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState<boolean|object>(false);
     const { API_URL, API_KEY } = useAjustes();
-    const { cambiarTokenSesionActual, cambiarUsuarioActual, logout, tokenSesionActual, usuario, actualizarEstadoPremium } = useSesion();
+    const { tokenSesionActual, usuario } = useSesion();
 
     const peticionGenerica = async (url:string, verbo = "GET", body?:Record<string, any>, headersExtra:Record<string, any> = {}):Promise<any> => {
         await setCargando(true);

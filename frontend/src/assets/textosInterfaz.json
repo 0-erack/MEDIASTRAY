@@ -330,8 +330,8 @@
                 "infoAdmin4": "- You have sudo permissions, for security measures the operations you're allowed to do arent available here in the UI, check the API",
                 "infoAdmin5": "- You have moderator permissions",
                 "infoAdmin6": "Type an object's uuid to operate with it (you're allowed to see the id of the objects in the platform)",
-                "infoArchivos1": "MAGNA users can upload up to 8 game files 2Gb each one while non MAGNA users can only up to 2 files and 1Gb per file. However it is globally limited to .zip only files",
-                "infoArchivos2": "If the file is called \"web\" it will be the one to be showed online, so make sure that when extracted, it directly contains an index.html showing the game."
+                "infoArchivos1": "MAGNA users can upload up to 8 game files 4Gb each one while non MAGNA users can only up to 2 files and 2Gb per file. However it is globally limited to .zip only files",
+                "infoArchivos2": "If the file is called \"web\" it will be the one to be showed online, so make sure that when extracted, it directly contains an index.html showing the game. Files labels must be unique too"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -364,8 +364,8 @@
                 "infoAdmin4": "- Tienes permisos de sudo, por cuestiones de seguridad las operaciones que tienes permitido hacer no están disponibles en la interfaz, consulte la API",
                 "infoAdmin5": "- Tienes permisos de moderador",
                 "infoAdmin6": "Introduce el uuid de un objeto para operar con el (tienes permitido ver los ids de los objetos en la plataforma)",
-                "infoArchivos1": "Los usuarios MAGNA pueden publicar hasta 8 archivos de juego de 2Gb cada uno, mientras que los usuarios sin MAGNA solo pueden hasta 2 archivos de 1Gb cada uno. Sin embargo, hay una limitación global a solo archivos .zip",
-                "infoArchivos2": "Si el archivo es llamado \"web\" será el que se use para mostrarse en la web online, así que asegurate de que cuando se extrae, contiene directamente un index.html mostrando el juego."
+                "infoArchivos1": "Los usuarios MAGNA pueden publicar hasta 8 archivos de juego de 4Gb cada uno, mientras que los usuarios sin MAGNA solo pueden hasta 2 archivos de 2Gb cada uno. Sin embargo, hay una limitación global a solo archivos .zip",
+                "infoArchivos2": "Si el archivo es llamado \"web\" será el que se use para mostrarse en la web online, así que asegurate de que cuando se extrae, contiene directamente un index.html mostrando el juego. Las etiquetas de los archivos además tienen que ser únicas"
             }
         },
         "formularios": {
@@ -447,7 +447,10 @@
                 "idJuego": "Selected game uuid",
                 "idUsuario": "Selected user uuid",
                 "idComentario": "Selected comment uuid",
-                "busquedaReporte": "Uuid of the object related to the report in order to query"
+                "busquedaReporte": "Uuid of the object related to the report in order to query",
+                "nombreArchivo": "File label",
+                "archivo": ".zip file",
+                "nuevoArchivo": "New game file"
             },
             "ES-es": {
                 "identificacion": "Correo o nickname:",
@@ -527,7 +530,10 @@
                 "idJuego": "Uuid del juego seleccionado",
                 "idUsuario": "Uuid del usuario seleccionado",
                 "idComentario": "Uuid del comentario seleccionado",
-                "busquedaReporte": "Uuid del objeto relacionado con el reporte para poder consultar"
+                "busquedaReporte": "Uuid del objeto relacionado con el reporte para poder consultar",
+                "nombreArchivo": "Etiqueta de archivo",
+                "archivo": "Archivo .zip",
+                "nuevoArchivo": "Nuevo archivo de juego"
             }
         },
         "errores": {
@@ -580,7 +586,9 @@
                 "noHayJuegos": "There are no games (or they weren't found)",
                 "juegoRepetido": "There is another game with that title",
                 "noComentarios": "There are no comments yet or couldn't be loaded",
-                "noReporte": "There was an error with your report, maybe you already reported this content"
+                "noReporte": "There was an error with your report, maybe you already reported this content",
+                "errorNombreArchivo": "This is not a valid file name",
+                "errorArchivo": "File error: you must select 1 .zip file smaller than the accorded size, check the requisites"
             },
             "ES-es": {
                 "genericoFormulario": "Uno o varios campos no son válidos, compruébalos",
@@ -630,7 +638,9 @@
                 "noHayJuegos": "No hay juegos (o no han sido encontrados)",
                 "juegoRepetido": "Ya hay otro juego con ese título",
                 "noComentarios": "No hay comentarios aún o no han podido cargar",
-                "noReporte": "Ha habido un error con tu reporte, quizás ya reportaste este contenido"
+                "noReporte": "Ha habido un error con tu reporte, quizás ya reportaste este contenido",
+                "errorNombreArchivo": "No es un nombre de archivo válido",
+                "errorArchivo": "Error de archivo: debes seleccionar 1 archivo .zip que cumpla con el tamaño, comprueba los requisitos"
             }
         },
         "titulosHtml": {
@@ -728,7 +738,9 @@
                 "reporteEnviar": "Content reported",
                 "exitoAdmin": "Admin operation succesfully executed",
                 "falloAdmin": "Admin operation went into an error",
-                "resultadoAdmin": "Results of the admin operation"
+                "resultadoAdmin": "Results of the admin operation",
+                "exitoBorrarArchivo": "Game file deleted",
+                "errorArchivo": "A problem occured with the game file"
             },
             "ES-es": {
                 "loginBien": "Sesión iniciada correctamente!",
@@ -756,7 +768,9 @@
                 "reporteEnviar": "Contenido reportado",
                 "exitoAdmin": "Operación de admin ejecutada con éxito",
                 "falloAdmin": "Ha habido un error al ejecutar la operación de admin",
-                "resultadoAdmin": "Resultados de la operación de admin"
+                "resultadoAdmin": "Resultados de la operación de admin",
+                "exitoBorrarArchivo": "Archivo de juego borrado",
+                "errorArchivo": "Ha ocurrido un problema con el archivo de juego"
             }
         },
         "dinero": {

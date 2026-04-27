@@ -32,7 +32,7 @@ function TarjetaJuego({ juego, mediano = false }: TarjetaJuegoProps) {
   }, []);
 
   return (
-    <div className={`${mediano ? '' : 'border-2 border-principal sm:mx-0 m-5 mb-0 text-xs'} relative z-101 sm:grid grid-cols-[auto_1fr] w-full bg-fondo-especial-1`}>
+    <div className={`${mediano ? '' : 'border-2 border-principal sm:mx-0 m-5 mb-0 text-xs'} relative min-h-[110px] z-101 sm:grid grid-cols-[auto_1fr] w-full bg-fondo-especial-1`}>
       <img src={urlEnUso ?? `${PUBLIC_URL}/coverless${mediano ? '2' : '1'}.png`} className={mediano ? 'w-[150px] h-[225px] sm:mr-3' : "mx-0 min-w-[230px] max-h-[107px] object-cover"} />
       <div className="p-2 break-all">
         <span className="text-lg"><EnlaceFuncion titulo={juego.titulo} funcion={"/game/" + juego.id} /> </span>

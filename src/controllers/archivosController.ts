@@ -35,7 +35,7 @@ export const subirArchivosJuego = async (idUsuario: string, idJuego: string, arc
         if (archivo.buffer.length > 2147483648) throw { message: "Non premium users can only post files up to 2GB", code: 409, tooLong: true };
     }
     if (previos.length >= 8) throw { message: "Premium users can post up to 8 files", code: 409, manyFiles: true };
-    if (archivo.buffer.length > 8589934592) throw { message: "Premium users can post files up to 8GB", code: 409, tooLong: true };
+    if (archivo.buffer.length > 1073741824 * 4) throw { message: "Premium users can post files up to 4GB", code: 409, tooLong: true };
     const id = uuidv4();
     await Archivo.insertOne({id: id, nombre: nombre, juego: idJuego, peso: archivo.buffer.length, fecha: Date.now() + ""});
     const resultado = await escribirArchivo(archivo.buffer, ruta, nombre + ".zip", false);
