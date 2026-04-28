@@ -33,7 +33,7 @@ export const validarCreacionJuego = (data:any) : Partial<Juego> => {
 }
 
 /**
- * Valida los datos para editar un usuario
+ * Valida los datos para editar un juego
  * @param data datos a validar
  * @returns el juego en si si es valido para la operacion
  * @throws error si no es valido

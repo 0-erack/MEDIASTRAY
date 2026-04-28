@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
 import useIdioma from '../../hooks/useIdioma';
 import useMensajes from '../../hooks/useMensajes';
+import useSesion from '../../hooks/useSesion';
 import { correoFalso, nicknameFalso, nombreFalso } from '../../libraries/datosFalsos';
 import { inputDateATimestamp, timestampAInputDate } from '../../libraries/extraFechas';
 import { contrasegna as validarContrasegna, correo as validarCorreo, cumpleagnos as validarCumpleagnos, descripcionUsuario as validarDescripcion, nickname as validarNickname, nombre as validarNombre, url as validarUrl } from '../../libraries/validacionesBackend';
@@ -21,6 +22,7 @@ import Texto from '../Texto';
 function FormularioEditarPerfil({usuario}: {usuario: any}) {
 
     const previo = usuario;
+    const { premium } = useSesion();
     const { editarUsuario, borrarUsuario, cargando, error, resetEstados } = useApiUsuarios();
     //const objetoPatchBasico = useMemo(() => {return {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", urlFoto: previo.urlFoto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }}, [previo]);
     const objetoPatchBasico = {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", urlFoto: previo.urlFoto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }
@@ -124,7 +126,7 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
                 <InputBasico nombre="nombre" placeholder={nombreFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="nombre" />} valor={objetoPatch.nombre} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionNombre" />} validador={validarNombre} />
                 <InputBasico inline={true} nombre="urlFoto" placeholder={''} titulo={<Texto tipo="formularios" nombre="urlFoto" />} valor={objetoPatch.urlFoto} tipo="url" mensajeError={<Texto tipo="errores" nombre="validacionUrl" />} validador={validarUrl} />
                 <img src={objetoPatch.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className='h-auto w-[10%] max-w-50 mb-2 border-4 border-principal aspect-square object-cover inline ml-5'/>
-                <InputBasico nombre="descripcion" placeholder={'...'} titulo={<Texto tipo="formularios" nombre="descripcion" />} valor={objetoPatch.descripcion} tipo="textarea" markdown={true} mensajeError={<Texto tipo="errores" nombre="validacionDescripcion" />} validador={validarDescripcion} />
+                <InputBasico nombre="descripcion" placeholder={'...'} titulo={<Texto tipo="formularios" nombre="descripcion" />} valor={objetoPatch.descripcion} tipo="textarea" markdown={premium ? true : false} mensajeError={<Texto tipo="errores" nombre="validacionDescripcion" />} validador={validarDescripcion} />
                 <InputBasico nombre="cumpleagnos" titulo={<Texto tipo="formularios" nombre="cumpleagnos" />} valor={objetoPatch.cumpleagnos} tipo="date" mensajeError={<Texto tipo="errores" nombre="validacionCumpleagnos" />} validador={validarFechaInput} />
                 <InputBasico inline={true} nombre="cambiarContrasegna" titulo={<Texto tipo="formularios" nombre="cambiarContrasegna" />} estaChecked={objetoPatch.cambiarContrasegna} tipo="checkbox" />
                 {objetoPatch.cambiarContrasegna && (<span>

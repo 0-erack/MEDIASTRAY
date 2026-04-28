@@ -174,8 +174,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
 
   return (
     <div>
-      {JSON.stringify(error)}
-      {juegoEditar && (<>
+      {juegoEditar ? (<>
         {editandoAdiciones ? (<>
           <FormularioAdiciones id={juegoEditar?.id ?? ''} adicionesPrevias={(juegoEditar?.adiciones ?? []).map((e) => {return {...e, id: undefined}})} />
           <br />
@@ -187,8 +186,8 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
           <BotonFuncion titulo={traduccion("botones", "borrarJuego").toUpperCase()} funcion={borrarJuegoBoton} hueco={false} tipo={2} ><Icono numero={10} color='var(--color-fondo1)' /></BotonFuncion>
         </form>)
           : (<BotonFuncion titulo={traduccion("botones", "borrarJuego")} funcion={() => setIntencionBorrar(true)} tipo={2} ><Icono numero={10} color='var(--color-error)' /></BotonFuncion>)}
-      </>)}
-      <p>{juegoEditar ? traduccion("parrafos", "tipCreacionJuego1") : traduccion("parrafos", "tipCreacionJuego2")}</p>
+      </>) : ''}
+      <p>{juegoEditar != undefined ? traduccion("parrafos", "tipCreacionJuego1") : traduccion("parrafos", "tipCreacionJuego2")}</p>
       <form className="w-full lg:w-[60%] pr-10 lg:pr-0">
         <span>
           <InputBasico placeholder={tituloFalsoPlaceholder} titulo={(juegoEditar ? "" : "(*) ") + traduccion("formularios", "tituloJuego")} nombre="titulo" ancho='full' tipo="text" validador={tituloJuego} objetoHook={register("titulo", { required: traduccion("errores", "estaPropiedadObligatoria"), minLength: { value: 3, message: traduccion("errores", "validacionTituloJuego") } })} mensajeError={errors?.titulo?.message ?? ''} />

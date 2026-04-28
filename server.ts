@@ -35,8 +35,11 @@ if (process.env.INIT_TESTS === "true") {
 }
 if (process.env.FREE_CORS) {
     app.use(cors({
-        origin: (origin, callback) => callback(null, true),
-        credentials: true
+        //origin: (origin, callback) => callback(null, true),
+        origin: true,
+        credentials: true,
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     }));
 } else {
     if (process.env.NODE_ENV === "DEVELOPMENT") { //Código solo para development
@@ -45,6 +48,7 @@ if (process.env.FREE_CORS) {
             //origin: process.env.FREE_CORS ?? "n" === "s" ? true : 'http://localhost:8520', //Permitir peticiones de vite
             origin: process.env.FRONTEND_URL_DEV ?? 'http://localhost:8520', //Permitir peticiones de vite
             credentials: true,
+            allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept']
         }));
     } else {
         const origenes = [
@@ -63,7 +67,8 @@ if (process.env.FREE_CORS) {
                     callback(new Error());
                 }
             },
-            credentials: true
+            credentials: true,
+            allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept']
         }));
 
         //app.use(cors({

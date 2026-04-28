@@ -21,7 +21,7 @@ const FondoPortadaJuego = memo(function FondoPortadaJuego({ url }: { url: string
         maskComposite: 'intersect'
       }}>
       <div
-        className="w-full h-full opacity-10 scale-110 bg-repeat-y bg-top"
+        className="w-full h-full opacity-10 scale-100 bg-repeat-y bg-top relative"
         style={{
           backgroundImage: `url('${url}')`,
           backgroundSize: '100% 500px',

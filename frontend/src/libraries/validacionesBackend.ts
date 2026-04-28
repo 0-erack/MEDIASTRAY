@@ -76,3 +76,9 @@ export const contenidoComentario = (data: unknown): data is string => z.string()
 
 //Valida el nombre de un archivo usable en Linux y Windows
 export const nombreArchivo = (data: unknown): data is string => z.string().refine(val => nombreArchivoPattern.test(val)).safeParse(data).success;
+
+//Valida la descripcion de un foro
+export const descripcionForo = (data: unknown): data is string => z.string().max(255).safeParse(data).success;
+
+//Valida el titulo de un foro
+export const tituloForo = (data: unknown): data is string => tituloJuegoPattern.safeParse(data).success;

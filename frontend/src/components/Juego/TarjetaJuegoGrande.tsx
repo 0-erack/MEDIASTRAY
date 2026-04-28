@@ -95,6 +95,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
 
         {juego.precio && (<Titulo magnitud={3}>{juego.precio}</Titulo>)}
       </div>
+      {juego.publico == false && (<p>{traduccion("extra", "juegoEsPrivado")}</p>)}
       {editando && (<div className="border-2 border-principal p-2 m-4">
         <FormularioJuego juegoEditar={juego} />
       </div>)}
@@ -178,7 +179,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         })}
       </div>
       <div>
-        {archivos.length && (<>
+        {archivos.length > 0 && (<>
           <Titulo magnitud={4}>{traduccion("titulos", "archivos")}</Titulo>
           {archivos.map((e, i) => {
             if (e.name != "web") return (<TargetaArchivo key={i} archivo={e} />)

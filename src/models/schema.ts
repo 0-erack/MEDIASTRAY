@@ -57,12 +57,11 @@ export const foros = pgTable("foros", {
   descripcion: varchar("descripcion", { length: 511 }).default(""), //Descripcion en markdown
   urlFoto: varchar("urlFoto", { length: 255 }).default("/public/coverless_forum.png"), //Url de la foto principal
   urlBanner: varchar("url_banner", { length: 255 }).default("/public/bannerless.png"), //Url de la foto principal (horizontal)
-  //TODO publico o no, exclusivo, igdb
   idCreador: varchar("id_creador", { length: 36 }).references(() => usuarios.id, { onDelete: "cascade" }), //FK id de su creador
   fechaCreacion: varchar("fechaCreacion", { length: 15 }), //Fecha en la que se creo
   cantidadSeguidores: integer("cantidadSeguidores").default(0), //Cantidad de seguidores actual
-  cantidadLikes: integer("cantidad_likes").default(0), //Cantidad de likes actual
-  juegoAsociado: varchar("juego_asociado", { length: 36 }), //FK? juego asociado
+  cantidadComentarios: integer("cantidadComentarios").default(0), //Cantidad de comentarios actual
+  juegoAsociado: varchar("juego_asociado", { length: 36 }).references(() => juegos.id, { onDelete: "set null" }), //FK? juego asociado
 });
 
 //Relaciones entre las entidades, consultar mejor el diagrama uml
@@ -72,11 +71,15 @@ export const usuariosRelations = relations(usuarios, ({ many }) => ({
   foros: many(foros),
 }));
 
-export const juegosRelations = relations(juegos, ({ one }) => ({
+export const juegosRelations = relations(juegos, ({ one, many }) => ({
   creador: one(usuarios, {
     fields: [juegos.idCreador],
     references: [usuarios.id],
   }),
+  foro: one(foros, {
+    fields: [juegos.id],
+    references: [foros.juegoAsociado],
+  })
 }));
 
 export const forosRelations = relations(foros, ({ one }) => ({
@@ -84,4 +87,8 @@ export const forosRelations = relations(foros, ({ one }) => ({
     fields: [foros.idCreador],
     references: [usuarios.id],
   }),
+  juego: one(juegos, {
+    fields: [foros.juegoAsociado],
+    references: [juegos.id],
+  })
 }));

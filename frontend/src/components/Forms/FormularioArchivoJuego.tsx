@@ -68,11 +68,11 @@ function FormularioArchivoJuego({ actualizar, previos, idJuego }: FormularioArch
         reset();
       } else {
         lanzarMensaje(traduccion("mensajes", "errorArchivo"), 2);
-        setError(traduccion("mensajes", "errorArchivo"));
+        setError(traduccion("errores", "errorArchivo"));
       }
     } else {
       lanzarMensaje(traduccion("mensajes", "errorArchivo"), 2);
-      setError(traduccion("mensajes", "errorArchivo"));
+      setError(traduccion("errores", "errorArchivo"));
     }
   }
 
@@ -86,7 +86,7 @@ function FormularioArchivoJuego({ actualizar, previos, idJuego }: FormularioArch
         return (<TarjetaArchivo key={i} archivo={e} funcionEliminar={borrarArchivo} />)
       })}
       <hr />
-      {previos.length < ((premium ? 2 : 8)) && (<form>
+      {previos.length + 1 < ((premium ? 2 : 8)) && (<form>
       <Titulo magnitud={4}>{datos.nombre === "web" ? "WEB: " : ''}{traduccion("formularios", "nuevoArchivo")}</Titulo>
         <InputBasico placeholder={"portable"} titulo={traduccion("formularios", "nombreArchivo")} nombre="nombre" ancho='full' tipo="text" validador={(v) => !v || nombreArchivo(v)} objetoHook={register("nombre", { validate: (v) => !v || nombreArchivo(v) || traduccion("errores", "errorNombreArchivo") })} mensajeError={errors?.nombre?.message ?? ''} />
         {errors.nombre && <CajaError>{errors.nombre.message}</CajaError>}

@@ -309,6 +309,7 @@ const useApiJuegos = () => {
      */
     const subirArchivo = async (id: string, nombre: string, archivo: any): Promise<boolean> => {
         if (!usuario) return false;
+        await setCargando(true);
 
         try {
             const formData = new FormData();
@@ -327,9 +328,11 @@ const useApiJuegos = () => {
                 },
                 body: formData,
             });
+            await setCargando(false);
             if (!response.ok) return false;
             return true;
         } catch (error) {
+            await setCargando(false);
             return false;
         }
     }

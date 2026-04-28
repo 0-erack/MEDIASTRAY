@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { borrarArchivo, escribirArchivo } from "../connections/archivos.js";
 import { nombreArchivo } from '../libraries/validaciones.js';
 import { Archivo } from "../models/schemaMongo.js";
-import { buscarJuego } from "./juegoController.js";
+import { actualizarFechaUltimaJuego, buscarJuego } from "./juegoController.js";
 import { buscarUsuario, usuarioTienePremium } from "./usuarioController.js";
 
 /**
@@ -40,9 +40,14 @@ export const subirArchivosJuego = async (idUsuario: string, idJuego: string, arc
     await Archivo.insertOne({id: id, nombre: nombre, juego: idJuego, peso: archivo.buffer.length, fecha: Date.now() + ""});
     const resultado = await escribirArchivo(archivo.buffer, ruta, nombre + ".zip", false);
     if (!resultado) throw { message: "Couldn't save file", code: 500 };
-    if (nombre == "web") fs.createReadStream(path.join(ruta, nombre + ".zip")).pipe(unzipper.Extract({ path: ruta })); //No es await porque se espera que tarde un rato largo y el dato no es necesario ahora
-    //await borrarArchivo(path.join(ruta, nombre + ".zip"));
+    try {
+        if (nombre == "web") fs.createReadStream(path.join(ruta, nombre + ".zip")).pipe(unzipper.Extract({ path: ruta })); //No es await porque se espera que tarde un rato largo y el dato no es necesario ahora
+        //await borrarArchivo(path.join(ruta, nombre + ".zip"));
+        await actualizarFechaUltimaJuego(idJuego);
 
+    } catch (error) {
+        throw { message: "Couldn't save file", code: 500 };
+    }
 
 
 
@@ -83,6 +88,7 @@ export const borrarArchivoJuego = async (idJuego: string, idUsuario: string, nom
     if (!resultado.deletedCount) throw { message: "Game files not found", code: 404 };
     const ruta = nombre ? path.join(process.env.GAMES_FILES_PATH ?? './games', idJuego, nombre) : path.join(process.env.GAMES_FILES_PATH ?? './games', idJuego);
     const borrado = await borrarArchivo(ruta);
+    await actualizarFechaUltimaJuego(idJuego);
     return borrado;
 }
 

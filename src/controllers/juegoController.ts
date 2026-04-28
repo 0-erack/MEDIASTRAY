@@ -31,6 +31,19 @@ export const buscarJuego = async (id: string): Promise<Juego | null> => {
 }
 
 /**
+ * Actualiza la fecha de actualizacion de un juego
+ * @param id juego a actualizar
+ * @returns true si ha ido todo bien
+ */
+export const actualizarFechaUltimaJuego = async (id: string): Promise<boolean> => {
+    const juego = await buscarJuego(id);
+    if (!juego) return false;
+    const db = getDB();
+    await db.update(juegos).set({ fechaUltima: Date.now() + "" }).where(eq(juegos.id, id));
+    return true;
+}
+
+/**
  * Devuelve las adiciones de un juego, si no hay o no existe devuelve []
  * @param id juego a consultar
  * @returns objetos de mongo coincidentes
@@ -169,6 +182,7 @@ export const cambiarIndexacionJuego = async (id: string, estado: boolean, idDueg
         await AdicionJuego.deleteMany({ game: id });
         await Intermediario.deleteMany({ predicado: id });
     }
+    await actualizarFechaUltimaJuego(id);
     agnadirLog("backend.log", "Game changed indexed " + id);
     return true;
 }
@@ -236,6 +250,7 @@ export const editarAdicionesJuego = async (adiciones: Array<Record<string, any>>
                 { iframe: e.data?.iframe ?? undefined, icon: e.data?.icon ?? undefined, cover: e.data?.cover ?? undefined, images: e.data?.images ?? undefined, specs: e.data?.specs ?? undefined, info: e.data?.info ?? undefined, image: e.data?.image ?? undefined, text: e.data?.text ?? undefined, nickname: e.data?.nickname ?? undefined }
         }
     }), true)) : true;
+    await actualizarFechaUltimaJuego(id);
     return borrado && nuevos ? adiciones : null;
 }
 

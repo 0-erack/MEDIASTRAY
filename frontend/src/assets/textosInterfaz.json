@@ -26,16 +26,6 @@
                     "direccion": "/magna",
                     "titulo": "Magna",
                     "numeroIcono": 7
-                },
-                {
-                    "direccion": "/info",
-                    "titulo": "About",
-                    "numeroIcono": 6
-                },
-                {
-                    "direccion": "/settings",
-                    "titulo": "Settings",
-                    "numeroIcono": 9
                 }
             ],
             "ES-es": [
@@ -63,16 +53,6 @@
                     "direccion": "/magna",
                     "titulo": "Magna",
                     "numeroIcono": 7
-                },
-                {
-                    "direccion": "/info",
-                    "titulo": "Información",
-                    "numeroIcono": 6
-                },
-                {
-                    "direccion": "/settings",
-                    "titulo": "Ajustes",
-                    "numeroIcono": 9
                 }
             ],
             "noUsuario": {
@@ -699,7 +679,8 @@
                 "labelComentarios": "Comments:",
                 "labelCaducidad": "Expiration date:",
                 "labelCantidad": "Amount:",
-                "indicadorPago": "Credit/debit card data"
+                "indicadorPago": "Credit/debit card data",
+                "juegoEsPrivado": "This game is private"
             },
             "ES-es": {
                 "labelSeguidos": "Seguidos:",
@@ -708,7 +689,8 @@
                 "labelComentarios": "Comentarios:",
                 "labelCaducidad": "Fecha de caducidad:",
                 "labelCantidad": "Cantidad:",
-                "indicadorPago": "Datos de la tarjeta de crédito/débito"
+                "indicadorPago": "Datos de la tarjeta de crédito/débito",
+                "juegoEsPrivado": "Este juego es privado"
             }
         },
         "mensajes": {

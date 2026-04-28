@@ -1,6 +1,6 @@
 
 import { memo, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import PanelAdministracion from '../components/Admin/PanelAdministracion.js';
 import Titulo from '../components/Elements/Titulo.js';
 import useIdioma from '../hooks/useIdioma.js';
