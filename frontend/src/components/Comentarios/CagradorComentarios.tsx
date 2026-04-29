@@ -97,7 +97,7 @@ const CagradorComentarios = memo(function CagradorComentarios({ idObjeto, tipoOb
                 if (e) return (<Comentario comentario={e} key={i} />)
               })}
 
-              <BotonFuncion titulo={traduccion("botones", "mostrarMas")} funcion={cargarMas} />
+              {contenidoComentario(datos.contenido) && (<BotonFuncion titulo={traduccion("botones", "mostrarMas")} funcion={cargarMas} />)}
             </>
           ) : (<p>{tipoObjeto === "comment" ? '' : traduccion("errores", "noComentarios")}</p>)
         )

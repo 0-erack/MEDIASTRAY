@@ -248,7 +248,9 @@
                 "juegosSeguidos": "Followed games",
                 "seccionComentarios": "Comments",
                 "seccionReportes": "Reports information",
-                "archivos": "Game files"
+                "archivos": "Game files",
+                "foros": "Featured forums",
+                "documentacion": "Documentation"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -275,7 +277,9 @@
                 "juegosSeguidos": "Juegos seguidos",
                 "seccionComentarios": "Comentarios",
                 "seccionReportes": "Información de reportes",
-                "archivos": "Archivos del juego"
+                "archivos": "Archivos del juego",
+                "foros": "Foros destacados",
+                "documentacion": "Documentación"
             }
         },
         "parrafos": {

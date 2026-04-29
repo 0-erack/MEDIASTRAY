@@ -38,7 +38,7 @@ if (process.env.FREE_CORS) {
         //origin: (origin, callback) => callback(null, true),
         origin: true,
         credentials: true,
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept', 'X-Auth-Session'],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     }));
 } else {
@@ -48,7 +48,7 @@ if (process.env.FREE_CORS) {
             //origin: process.env.FREE_CORS ?? "n" === "s" ? true : 'http://localhost:8520', //Permitir peticiones de vite
             origin: process.env.FRONTEND_URL_DEV ?? 'http://localhost:8520', //Permitir peticiones de vite
             credentials: true,
-            allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept']
+            allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept', 'X-Auth-Session']
         }));
     } else {
         const origenes = [
@@ -68,7 +68,7 @@ if (process.env.FREE_CORS) {
                 }
             },
             credentials: true,
-            allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept']
+            allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept', 'X-Auth-Session']
         }));
 
         //app.use(cors({

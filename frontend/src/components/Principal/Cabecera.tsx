@@ -21,6 +21,10 @@ function Cabecera() {
   const traduccion = useIdioma();
   const slug = useLocation();
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const handlerCambiarIdioma = (e: string) => {
+                  cambiarIdiomaActual(e);
+                  cambiarIdiomaHtml((e[0] + e[1]).toLowerCase());
+                }
   const enlaces = () => (<><BotonNavegacion key={-1} cabecera={true} direccion={"/"} titulo={traduccion("botones", "inicio")} >
     <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={0} color="var(--color-fondo1)" /></span>
   </BotonNavegacion>
@@ -87,10 +91,7 @@ function Cabecera() {
             <select name="selector-idioma" id="selector-idioma" className='cursor-pointer'>
               <option value={idiomaActual}>{idiomaActual}</option>
               {idiomasAdmitidos?.map((e, i) => {
-                if (e !== idiomaActual) return (<option key={i} value={e} onClick={() => {
-                  cambiarIdiomaActual(e);
-                  cambiarIdiomaHtml((e[0] + e[1]).toLowerCase());
-                }}>{e}</option>)
+                if (e !== idiomaActual) return (<option key={i} value={e} onChange={() => handlerCambiarIdioma(e)} onClick={() => handlerCambiarIdioma(e)}>{e}</option>)
               })}
             </select>
           </div>

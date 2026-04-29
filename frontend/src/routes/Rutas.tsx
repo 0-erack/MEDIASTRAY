@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Routes } from 'react-router-dom';
 import ImgCargando from '../components/Principal/ImgCargando';
 const ViewGame = lazy(() => import('../pages/ViewGame'));
@@ -19,13 +20,33 @@ const Register = lazy(() => import('../pages/Register'));
 const Settings = lazy(() => import('../pages/Settings'));
 const PaginaAdmin = lazy(() => import('../pages/PaginaAdmin'));
 
+/*import Browse from '../pages/Browse';
+import CreateGame from '../pages/CreateGame';
+import ErrorNotFound from '../pages/ErrorNotFound';
+import FeaturedForums from '../pages/FeaturedForums';
+import FeaturedGames from '../pages/FeaturedGames';
+import Info from '../pages/Info';
+import Inicio from '../pages/Inicio';
+import InicioDocumentacion from '../pages/InicioDocumentacion';
+import Login from '../pages/Login';
+import Logout from '../pages/Logout';
+import PaginaAdmin from '../pages/PaginaAdmin';
+import Premium from '../pages/Premium';
+import Register from '../pages/Register';
+import RenewPremium from '../pages/RenewPremium';
+import Settings from '../pages/Settings';
+import ViewGame from '../pages/ViewGame';
+import ViewUser from '../pages/ViewUser';*/
+
+
 /**
  * Las distintas rutas de la aplicacion
  */
 function Rutas() {
 
   return (
-    <Suspense fallback={<ImgCargando />}>
+    <ErrorBoundary fallback={<div>CRITICAL ERROR.</div>} onReset={() => window.location.reload()}>
+      <Suspense fallback={<ImgCargando />}>
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/info" element={<Info />} />
@@ -53,6 +74,7 @@ function Rutas() {
         <Route path="/*" element={<ErrorNotFound />} />
       </Routes>
     </Suspense>
+    </ErrorBoundary>
   )
 }
 

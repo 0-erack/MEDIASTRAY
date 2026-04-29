@@ -339,12 +339,14 @@ export const verJuegoTemporada = async (semanal = true): Promise<Record<string, 
     //Al recalcular se establece una nueva fecha proxima y se elige un juego aleatorio de los top mas populares usando como seed la fecha de hoy
     //El algoritmo diario ayuda a juegos no tan reconocidos a darse a la luz, y el semanal es un poco mas elitista, pero nunca se mostraran los juegos mas populares
     //En un futuro se podria agnadir uno mensual, o incluso goty
+    const db = getDB();
+    const hayJuegos = await db.select({count: sql<number>`count(*)`}).from(juegos).where(eq(juegos.publico, true));
+    if (!hayJuegos[0]?.count) return [];
     const ahora = Date.now();
     if (semanal) {
         const juegoActualizado = await redisGet("juegoSemanalUltimaFecha");
         if (!juegoActualizado || ahora >= Number(juegoActualizado)) {
             await redisSet("juegoSemanalUltimaFecha", (lunesMadrugada() + ""));
-            const db = getDB();
             let candidatos = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(100);
             if (!candidatos || !candidatos?.length) return null;
             if (candidatos.length > 80) candidatos = candidatos.slice(60);
@@ -360,7 +362,6 @@ export const verJuegoTemporada = async (semanal = true): Promise<Record<string, 
         const juegoActualizado = await redisGet("juegoDiarioUltimaFecha");
         if (!juegoActualizado || ahora >= Number(juegoActualizado)) {
             await redisSet("juegoDiarioUltimaFecha", (new Date()).setHours(24, 0, 0, 0) + "");
-            const db = getDB();
             let candidatos = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(200);
             if (!candidatos || !candidatos?.length) return null;
             if (candidatos.length > 180) candidatos = candidatos.slice(140);
@@ -376,18 +377,26 @@ export const verJuegoTemporada = async (semanal = true): Promise<Record<string, 
 }
 
 /**
- * Ver los juegos destacados en base a cierto criterio, se actualizan cada dia y se cachean las primeras 5 paginas, se actualizan diariamente (al actualizarse diariamente, un juego nuevo no aparecera como destacado hasta el dia siguiente, lo mismo si sus datos cambian)
+ * Ver los juegos destacados en base a cierto criterio, se actualizan 4 veces cada dia y se cachean las primeras 5 paginas, se actualizan diariamente (al actualizarse diariamente, un juego nuevo no aparecera como destacado hasta el dia siguiente, lo mismo si sus datos cambian)
  * @param pagina donde mirar
  * @returns array con los juegos de la consulta
  */
 const PAGINAS_CACHEADAS = 5;
+const INTERVALO_HORAS = 6;
 export const verJuegosDestacados = async (pagina = 0): Promise<Array<Partial<Juego>> | null> => {
     if (isNaN(pagina) || pagina < 0) pagina = 0;
+    const db = getDB();
+    const hayJuegos = await db.select({count: sql<number>`count(*)`}).from(juegos).where(eq(juegos.publico, true));
+    if (!hayJuegos[0]?.count) return [];
     const ahora = Date.now();
     const juegoActualizado = await redisGet("juegosDestacadosUltimaFecha");
     if (!juegoActualizado || ahora >= Number(juegoActualizado)) { //Toca recalcular los juegos destacados
-        const db = getDB();
-        await redisSet("juegosDestacadosUltimaFecha", (new Date()).setHours(24, 0, 0, 0) + "");
+        //await redisSet("juegosDestacadosUltimaFecha", (new Date()).setHours(24, 0, 0, 0) + "");
+        const proximaFecha = new Date();
+        const horaActual = proximaFecha.getHours();
+        const siguienteCorte = Math.ceil((horaActual + 0.1) / INTERVALO_HORAS) * INTERVALO_HORAS;
+        proximaFecha.setHours(siguienteCorte, 0, 0, 0);
+        await redisSet("juegosDestacadosUltimaFecha", proximaFecha.getTime() + "");
         let juegosCachear = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(tamagnoPagina * PAGINAS_CACHEADAS)
         if (!juegosCachear || !juegosCachear?.length) return null;
         juegosCachear = juegosCachear.map(formatearJuegoMiniatura);
@@ -396,8 +405,7 @@ export const verJuegosDestacados = async (pagina = 0): Promise<Array<Partial<Jue
         }
     }
     const cacheado = await redisGet("juegosDestacados-" + pagina)
-    if (pagina < PAGINAS_CACHEADAS && cacheado) return JSON.parse(cacheado ?? '') ?? null;
-    const db = getDB();
+    if (pagina < PAGINAS_CACHEADAS && cacheado && hayJuegos[0].count >= tamagnoPagina) return JSON.parse(cacheado ?? '') ?? null;
     const juegosConsulta = await db.select().from(juegos).where(eq(juegos.publico, true)).orderBy(desc(sql`${juegos.cantidadJugadores} + (${juegos.cantidadSeguidores} * 2)`)).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
     if (!juegosConsulta || !juegosConsulta?.length) return null;
     return juegosConsulta.map(formatearJuegoMiniatura);

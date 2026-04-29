@@ -118,7 +118,7 @@ function FormularioArchivoJuego({ actualizar, previos, idJuego }: FormularioArch
                 }
               },
             })}
-            className="border p-2 underline"
+            className="border p-2 underline cursor-pointer"
           />
           
           {selectedFile && (

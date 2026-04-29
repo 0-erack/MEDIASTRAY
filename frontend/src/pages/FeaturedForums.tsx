@@ -14,7 +14,7 @@ const FeaturedForums = memo(function FeaturedForums() {
 
   return (
     <>
-      <Titulo>{traduccion("titulos", "forosDestacados")}</Titulo>
+      <Titulo>{traduccion("titulos", "foros")}</Titulo>
       
     </>
   )

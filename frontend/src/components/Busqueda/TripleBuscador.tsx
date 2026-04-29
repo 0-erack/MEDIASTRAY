@@ -27,7 +27,7 @@ interface FormValues {
  * Pagina para buscar usuarios, juegos y foros con filtros, orden y paginado
  * @param inicial texto inicial en el buscador
  */
-function TripleBuscador({inicial}: {inicial: string}) {
+function TripleBuscador({ inicial }: { inicial: string }) {
 
   const formBase: FormValues = { busquedaActual: inicial ?? "", buscarUsuarios: true, buscarJuegos: true, buscarForos: true, orden: '0', pagina: 0 }
   const traduccion = useIdioma();
@@ -75,6 +75,20 @@ function TripleBuscador({inicial}: {inicial: string}) {
   useEffect(() => {
     if (datos.busquedaActual) buscar(datos.busquedaActual);
   }, [datos.orden, datos.buscarForos, datos.buscarUsuarios, datos.buscarJuegos, datos.pagina]);
+  useEffect(() => {
+    if (!datos.busquedaActual) {
+      setJuegosCargados([]);
+      setUsuariosCargados([]);
+      setForosCargados([]);
+    }
+  });
+  useEffect(() => {
+    setValue("busquedaActual", inicial ?? "");
+
+    if (inicial) {
+      buscar(inicial);
+    }
+  }, [inicial, setValue]);
 
   return (
     <div>
