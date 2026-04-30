@@ -18,8 +18,8 @@ const Browse  = memo(function Browse() {
 
   return (
     <>
-      <Titulo><Icono numero={4} color="var(--color-resaltado)" /> {traduccion("titulos", "browse")}</Titulo>
-      <TripleBuscador inicial={query ?? ''} />
+      <Titulo><Icono numero={4} tamagno={16} color="var(--color-resaltado)" /> {traduccion("titulos", "browse")}</Titulo>
+      <TripleBuscador inicial={query ?? ''} key={query ?? 'ee'} />
     </>
   )
 });

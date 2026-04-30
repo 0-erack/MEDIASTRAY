@@ -45,7 +45,7 @@ function Cabecera() {
 
   return (
     <>
-      <header id="cabecera" className='flex items-center justify-start gap-1 sm:gap-4 p-1 bg-fondo2 fuente2 z-200'>
+      <header id="cabecera" className='flex items-center justify-start gap-1 sm:gap-4 p-1 sm:pr-10 bg-fondo2 fuente2 z-200'>
         <div className='shrink-0 group relative min-w-50 max-w-60 h-auto m-2 sm:m-2'>
           <img src={imgLogo ?? PUBLIC_URL + "/logoA.png"} className="w-full cursor-pointer block group-hover:hidden" style={{ imageRendering: 'pixelated' }} alt="Logo" onClick={() => navegar("/")} />
           <img src={imgLogoHover ?? PUBLIC_URL + "/logoAhover.png"} className="w-full cursor-pointer hidden group-hover:block" style={{ imageRendering: 'pixelated' }} alt="Logo Hover" onClick={() => navegar("/")} />
@@ -69,7 +69,7 @@ function Cabecera() {
             setMenuAbierto(!menuAbierto);
           }}><Icono numero={25} color="var(--color-fondo1)" tamagno={16} /></button>
         </div>
-        <div className='text-right m-0 ml-2 sm:mr-10 sm:ml-auto'>
+        <div className='text-right sm:m-0 mr-4 sm:ml-auto'>
           {usuario ? (
             <span className="usuario-cabecera cursor-pointer min-w-fit w-max whitespace-nowrap flex bg-principal text-fondo-especial-1 fuente2 text-lg! hover:bg-resaltado hover:underline transition-all duration-100 hover:scale-x-110">
               <img className='w-8 h-8' src={(typeof usuario === 'object' && usuario) ? usuario!.urlFoto! : PUBLIC_URL + '/nopfp.png'} alt="" onClick={() => navegar("/user")} />

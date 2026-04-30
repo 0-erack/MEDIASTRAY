@@ -63,32 +63,39 @@ function TripleBuscador({ inicial }: { inicial: string }) {
     }
   }
 
-  useEffect(() => {
-    if (FRECUENCIA_ACTUALIZACION != 0) {
-      const intervalo = setInterval(() => {
-        if (datos.busquedaActual! && textoPrevio !== datos.busquedaActual!) buscar(datos!.busquedaActual!);
-        setTextoPrevio(datos?.busquedaActual ?? '');
-      }, FRECUENCIA_ACTUALIZACION ?? 1000);
-      return () => clearInterval(intervalo);
-    }
-  }, [datos]);
-  useEffect(() => {
-    if (datos.busquedaActual) buscar(datos.busquedaActual);
-  }, [datos.orden, datos.buscarForos, datos.buscarUsuarios, datos.buscarJuegos, datos.pagina]);
-  useEffect(() => {
-    if (!datos.busquedaActual) {
-      setJuegosCargados([]);
-      setUsuariosCargados([]);
-      setForosCargados([]);
-    }
-  });
-  useEffect(() => {
-    setValue("busquedaActual", inicial ?? "");
+  // 1. Handle the "Reset" when the search is empty
+useEffect(() => {
+  if (!datos.busquedaActual) {
+    setJuegosCargados([]);
+    setUsuariosCargados([]);
+    setForosCargados([]);
+  }
+}, [datos.busquedaActual]); // Only runs when the text actually changes to empty
 
-    if (inicial) {
-      buscar(inicial);
-    }
-  }, [inicial, setValue]);
+// 2. Handle the "Debounced" Search (Replacing your Interval)
+// This is much lighter on the CPU and allows the Router to interrupt
+useEffect(() => {
+  if (!datos.busquedaActual) return;
+
+  // We use a timeout. If the user types again within the frequency, 
+  // the previous search is cancelled. This prevents the "UI Lock".
+  const delay = FRECUENCIA_ACTUALIZACION || 1000;
+  
+  const timer = setTimeout(() => {
+    buscar(datos.busquedaActual);
+  }, delay);
+
+  return () => clearTimeout(timer); // CRITICAL: Stops the search if you navigate away
+}, [datos.busquedaActual, datos.orden, datos.pagina, datos.buscarUsuarios, datos.buscarJuegos, datos.buscarForos]);
+
+// 3. Handle the Initial Load from URL Slug
+useEffect(() => {
+  if (inicial) {
+    // Only set the value if it's different to prevent loops
+    setValue("busquedaActual", inicial);
+    buscar(inicial);
+  }
+}, [inicial, setValue]);
 
   return (
     <div>
@@ -117,9 +124,9 @@ function TripleBuscador({ inicial }: { inicial: string }) {
       </div>
       <p>{traduccion("parrafos", "tipBuscador")}</p>
       <hr />
-      <div className="lg:flex w-full items-start gap-5 h-full">
+      <div className="xl:flex w-full items-start gap-5 h-full">
         {datos.buscarUsuarios && (
-          <div className="flex-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
+          <div className="flex-1 p-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
             <Titulo magnitud={3}><Icono numero={1} color="var(--color-principal)" /> {traduccion("titulos", "parteUsuarios")}</Titulo>
             {usuariosCargados.length ? (<>
               {usuariosCargados.map((e) => (<TarjetaUsuario key={e.id} usuario={e} destacado={false} />))}
@@ -127,7 +134,7 @@ function TripleBuscador({ inicial }: { inicial: string }) {
           </div>
         )}
         {datos.buscarJuegos && (
-          <div className="flex-1 p-3 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
+          <div className="flex-1 p-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
             <Titulo magnitud={3}><Icono numero={3} color="var(--color-principal)" /> {traduccion("titulos", "parteJuegos")}</Titulo>
             {juegosCargados.length ? (<div className="text-left">
               {juegosCargados.map((e, i) => (<TarjetaJuego key={i} juego={e} />))}
@@ -135,7 +142,7 @@ function TripleBuscador({ inicial }: { inicial: string }) {
           </div>
         )}
         {datos.buscarForos && (
-          <div className="flex-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
+          <div className="flex-1 p-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
             <Titulo magnitud={3}><Icono numero={5} color="var(--color-principal)" /> {traduccion("titulos", "parteForos")}</Titulo>
             {forosCargados.length ? (<>
               {forosCargados.map((e) => (<></>))}

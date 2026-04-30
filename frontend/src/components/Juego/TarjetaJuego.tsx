@@ -33,14 +33,14 @@ function TarjetaJuego({ juego, mediano = false }: TarjetaJuegoProps) {
 
   return (
     <div className={`${mediano ? '' : 'border-2 border-principal sm:mx-0 m-5 mb-0 text-xs'} relative min-h-[110px] z-101 sm:grid grid-cols-[auto_1fr] w-full bg-fondo-especial-1`}>
-      <img src={urlEnUso ?? `${PUBLIC_URL}/coverless${mediano ? '2' : '1'}.png`} className={mediano ? 'w-[150px] h-[225px] sm:mr-3' : "mx-0 min-w-[230px] max-h-[107px] object-cover"} />
-      <div className="p-2 break-all">
+      <img src={urlEnUso ?? `${PUBLIC_URL}/coverless${mediano ? '2' : '1'}.png`} className={mediano ? 'm-auto w-[150px] h-[225px] sm:mr-3' : "mx-0 min-w-[230px] max-h-[107px] object-cover"} />
+      <div className="p-2 pt-1 break-all">
         <span className="text-lg"><EnlaceFuncion titulo={juego.titulo} funcion={"/game/" + juego.id} /> </span>
         <span className="whitespace-nowrap col-span-2 px-2 mt-1 tracking-widest">
           <Icono color='var(--color-principal)' numero={1} /> {juego.cantidadJugadores} {"|"} <Icono color='var(--color-principal)' numero={18} /> {juego.cantidadSeguidores}
           {juego.precio && (<span> | {juego.precio}</span>)}
         </span><br />
-        <p className="">{juego.descripcionCorta}</p>
+        <p className="overflow-y-scroll max-h-8">{juego.descripcionCorta}</p>
         {juego.generos && (
           <p className="col-span-2">- {juego.generos.join(", ")}</p>
         )}

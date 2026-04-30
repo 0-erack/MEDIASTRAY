@@ -54,8 +54,8 @@ function Rutas() {
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/featuredGames" element={<FeaturedGames />} />
-        <Route path="/browse" element={<Browse />} />
-        <Route path="/browse/:query" element={<Browse />} />
+        <Route path="/browse" element={<Browse key='ee' />} />
+        <Route path="/browseSpecific/:query" element={<Browse key='aa' />} />
         <Route path="/featuredForums" element={<FeaturedForums />} />
         <Route path="/magna" element={<Premium />} />
         <Route path="/renewMagna" element={<RenewPremium />} />

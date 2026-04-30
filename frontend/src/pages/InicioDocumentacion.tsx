@@ -1,6 +1,7 @@
 
 import { memo } from 'react';
 import Titulo from '../components/Elements/Titulo';
+import Icono from '../components/Principal/Icono';
 import useIdioma from '../hooks/useIdioma';
 import useTituloDinamico from '../hooks/useTituloDinamico';
 
@@ -14,7 +15,7 @@ const InicioDocumentacion = memo(function InicioDocumentacion() {
 
   return (
     <>
-      <Titulo>{traduccion("titulos", "documentacion")}</Titulo>
+      <Titulo><Icono numero={8} tamagno={16} color="var(--color-resaltado)" /> {traduccion("titulos", "documentacion")}</Titulo>
     </>
   )
 });

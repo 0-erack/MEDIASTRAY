@@ -24,7 +24,7 @@ const CreateGame = memo(function CreateGame() {
 
   return (
     <>
-      <Titulo><Icono numero={21} color="var(--color-resaltado)" /> {traduccion("titulos", "crearJuego")}</Titulo>
+      <Titulo><Icono numero={21} tamagno={16} color="var(--color-resaltado)" /> {traduccion("titulos", "crearJuego")}</Titulo>
       <FormularioJuego />
     </>
   )

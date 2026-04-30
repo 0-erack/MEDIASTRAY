@@ -15,7 +15,7 @@ const Login = memo(function Login() {
 
   return (
     <>
-      <Titulo><Icono numero={2} color="var(--color-resaltado)" /> <Texto tipo="titulos" nombre="login" /></Titulo>
+      <Titulo><Icono numero={2} tamagno={16} color="var(--color-resaltado)" /> <Texto tipo="titulos" nombre="login" /></Titulo>
       <FormularioLogin />
     </>
   )

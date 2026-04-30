@@ -67,14 +67,16 @@ function Inicio() {
                     {juegoSemanal && (<TarjetaJuego juego={juegoSemanal} mediano={true} />)}
                 </div>
             </div>
-            <div className='sm:flex m-auto justify-between gap-10 mb-5'>
+            <div className='sm:flex m-auto justify-between gap-10 mb-5 p-5'>
                 
 
                 
                 <div className='w-full'>
                     <Titulo magnitud={3}>{traduccion("titulos", "forosDestacados")}</Titulo>
                     <div className='p-1 border border-principal w-full'>
-                        TARJETAS FOROS<br/>
+                        <br/>
+                        <p>W.I.P.</p>
+                        <br/>
                     </div>
                 </div>
             </div>

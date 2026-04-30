@@ -5,7 +5,7 @@ info:
 
 http:
   method: PUT
-  url: "{{url_backend}}/game/additions/8fd0e622-132c-4860-a3bb-88fe152387de"
+  url: "{{url_backend}}/game/additions/f1d2610b-7b3d-4301-b48c-c6601c08d4ea"
   headers:
     - name: Content-Type
       value: application/json

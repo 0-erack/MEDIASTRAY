@@ -23,6 +23,11 @@
                     "numeroIcono": 8
                 },
                 {
+                    "direccion": "/info",
+                    "titulo": "About",
+                    "numeroIcono": 6
+                },
+                {
                     "direccion": "/magna",
                     "titulo": "Magna",
                     "numeroIcono": 7
@@ -48,6 +53,11 @@
                     "direccion": "/docs",
                     "titulo": "Documentación",
                     "numeroIcono": 8
+                },
+                {
+                    "direccion": "/info",
+                    "titulo": "Información",
+                    "numeroIcono": 6
                 },
                 {
                     "direccion": "/magna",
@@ -154,7 +164,8 @@
                 "pausa": "Pause",
                 "noPausa": "Resume",
                 "silenciar": "Mute",
-                "desSilenciar": "Unmute"
+                "desSilenciar": "Unmute",
+                "masInformacion": "Know more..."
             },
             "ES-es": {
                 "irInicio": "Volver al inicio",
@@ -219,7 +230,8 @@
                 "pausa": "Pausa",
                 "noPausa": "Reanudar",
                 "silenciar": "Silenciar",
-                "desSilenciar": "Desilenciar"
+                "desSilenciar": "Desilenciar",
+                "masInformacion": "Saber más..."
             }
         },
         "titulos": {
@@ -250,7 +262,8 @@
                 "seccionReportes": "Reports information",
                 "archivos": "Game files",
                 "foros": "Featured forums",
-                "documentacion": "Documentation"
+                "documentacion": "Documentation",
+                "info": "Information"
             },
             "ES-es": {
                 "login": "Iniciar sesión con una cuenta ya existente",
@@ -279,13 +292,14 @@
                 "seccionReportes": "Información de reportes",
                 "archivos": "Archivos del juego",
                 "foros": "Foros destacados",
-                "documentacion": "Documentación"
+                "documentacion": "Documentación",
+                "info": "Información"
             }
         },
         "parrafos": {
             "EN-us": {
                 "error404Explicacion": "Site not found :(",
-                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> ",
+                "footer": "MEDIASTRAY is an free open-source gaming platform, you can see its source code at <a class='underline' href='https://github.com/0-erack/MEDIASTRAY'>this link</a>. For more information visit the <a class='underline' href='/info'>Information</a> section or visit the <a class='underline' href='/docs'>Documentation</a> for knowing more.<br/>(c) MEDIASTRAY - Rack Games 2026 MIT License, all rights reserved",
                 "textoPremium1": "Unlock new limits and possibilities in MEDIASTRAY with your new MAGNA account!",
                 "textoPremium2": "Texts in Markdown format",
                 "textoPremium3": "Type in Markdown format, advanced stylizing in the profile description, your comments and in your published games",
@@ -315,11 +329,29 @@
                 "infoAdmin5": "- You have moderator permissions",
                 "infoAdmin6": "Type an object's uuid to operate with it (you're allowed to see the id of the objects in the platform)",
                 "infoArchivos1": "MAGNA users can upload up to 8 game files 4Gb each one while non MAGNA users can only up to 2 files and 2Gb per file. However it is globally limited to .zip only files",
-                "infoArchivos2": "If the file is called \"web\" it will be the one to be showed online, so make sure that when extracted, it directly contains an index.html showing the game. Files labels must be unique too"
+                "infoArchivos2": "If the file is called \"web\" it will be the one to be showed online, so make sure that when extracted, it directly contains an index.html showing the game. Files labels must be unique too",
+                "info1": "MEDIASTRAY is an online, free and open-source gaming platfomr where users can upload their own games and players can download them or even play them directly on the website making use of the WebGL technology, with multiple social media features.",
+                "info2": "It's a free software from: (c) Rack Games (2026), with MIT license, which means that it isn't needed to pay any retribution for using the code, just mentioning the author in case it gets used.",
+                "info3": "Mediastray still lacks some features to become a fullfilled product, this is a demonstration version. In the documentation there can be seen the possible new features that may get implemented to the platform, like a real payment system (currently the Magna accounts are free for doing tests)",
+                "info4": "For more information go to the next links",
+                "infoEnlace1": "Documentation",
+                "infoEnlace2": "Repository",
+                "infoEnlace3": "License",
+                "infoPremium1": "MAGNA account advantages",
+                "infoPremium2": "MAGNA accounts can be bought for a specific number of months, until it expires, the user can enjoy the next advantages and features:",
+                "infoPremium3": "You will be able to write your comments and the descriptions of your games or your profile in Markdown format, it will be represented with this format while the Magna duration.",
+                "infoPremium4": "Your game file upload limit (on each game) will grow from 2 files to 8, and each one may be ultil 4Gb size, when normally it would be 2Gb.",
+                "infoPremium5": "There will be less quantity related limits when editting the additions of your game, as well as an augmented character limit on some fields.",
+                "infoPremium6": "Your comments and your games will appear on the top when being recommended by the algorythm.",
+                "infoPremium7": "Your profile will have a Magna color border anywhere it is present, working also as a validity stamp.",
+                "infoPremium8": "Your reports will have a higher priority, as well as a better attention by the technical support team.",
+                "infoPremium9": "You will be able to access new features such as setting up an achievement API with MantoSDK for your games, cloud save game data, put a price on your games, and much more customization",
+                "infoPremium10": "You will have acces via mail to the oficial Mediastray Newsletter (when it gets implemented)",
+                "infoPremium11": "Access to the MAGNA site"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
-                "footer": "Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> Contenido del footer de ejemplo hola <a href='/'>inicio</a> ",
+                "footer": "MEDIASTRAY es una plataforma de gaming open-source y libre, puedes visitar el código desde <a class='underline' href='https://github.com/0-erack/MEDIASTRAY'>este enlace</a>. Para más información visitar la sección de <a class='underline' href='/info'>Información</a> o visitar la <a class='underline' href='/docs'>Documentación</a> para saber más.<br/>(c) MEDIASTRAY - Rack Games 2026 MIT License, all rights reserved",
                 "textoPremium1": "¡Desbloquea nuevos límites y posibilidades en MEDIASTRAY con tu nueva cuenta MAGNA!",
                 "textoPremium2": "Textos en formato Markdown",
                 "textoPremium3": "Escribe en formato Markdown, estilizado avanzado la descripción del perfil, en tus comentarios y en los juegos que publiques",
@@ -349,7 +381,25 @@
                 "infoAdmin5": "- Tienes permisos de moderador",
                 "infoAdmin6": "Introduce el uuid de un objeto para operar con el (tienes permitido ver los ids de los objetos en la plataforma)",
                 "infoArchivos1": "Los usuarios MAGNA pueden publicar hasta 8 archivos de juego de 4Gb cada uno, mientras que los usuarios sin MAGNA solo pueden hasta 2 archivos de 2Gb cada uno. Sin embargo, hay una limitación global a solo archivos .zip",
-                "infoArchivos2": "Si el archivo es llamado \"web\" será el que se use para mostrarse en la web online, así que asegurate de que cuando se extrae, contiene directamente un index.html mostrando el juego. Las etiquetas de los archivos además tienen que ser únicas"
+                "infoArchivos2": "Si el archivo es llamado \"web\" será el que se use para mostrarse en la web online, así que asegurate de que cuando se extrae, contiene directamente un index.html mostrando el juego. Las etiquetas de los archivos además tienen que ser únicas.",
+                "info1": "MEDIASTRAY es una plataforma open-source libre en la que los usuarios pueden publicar sus propios juegos y los jugadores pueden descargarlos o incluso jugarlos en la propia página aprovechando la tecnología WebGL, con múltiples funcionalidades de red social.",
+                "info2": "Es un software libre de: (c) Rack Games (2026), con licencia MIT, lo que quiere decir que no es necesario pagar ninguna retribución para usar el código, solo mencionar al autor en caso de que se use.",
+                "info3": "A Mediastray aún le quedan algunas funcionalidades para ser un producto completo, esto es una versión de demostración. En la documentación se pueden ver las posibles adiciones que se podrían implementar en la plataforma, como un sistema de pagos real (actualmente las cuentas Magna son gratuítas para hacer el testing)",
+                "info4": "Para más información consultar los siguientes enlaces",
+                "infoEnlace1": "Documentación",
+                "infoEnlace2": "Repositorio",
+                "infoEnlace3": "Licencia",
+                "infoPremium1": "Ventajas de tener una cuenta MAGNA",
+                "infoPremium2": "Las cuentas MAGNA se pueden comprar por un numero determinado de meses, hasta que caduquen, el usuario podrá disfrutar de las siguientes ventajas:",
+                "infoPremium3": "Podrás escribir los comentarios y las descripciones de tus juegos o tu perfil en formato Markdown, será representado con estos estilos mientras que dure el Magna.",
+                "infoPremium4": "Tu límite de subida de archivos de juego (en cada juego) pasará de ser de 2 archivos a 8, y cada uno podrá pesar hasta 4Gb cuando de normal serían 2Gb.",
+                "infoPremium5": "Habrán menos límites relacionados con cantidades a la hora de editar las adiciones de tu juego, también se aumenta el límite máximo de carácteres en algunos campos.",
+                "infoPremium6": "Tus comentarios y juegos aparecerán más arriba a la hora de ser recomendados por el algoritmo.",
+                "infoPremium7": "Tu perfil tendrá un coloreado con el color de Magna en todas las partes donde este se represente, funcionando también como un sello de validez.",
+                "infoPremium8": "Tus reportes tendrán una mayor prioridad así como una mejor atención por parte del soporte técnico.",
+                "infoPremium9": "Podrás acceder a nuevas características como configurar una API de logros mediante MantoSDK para tus juegos, guardado de partidas en la nube, ponerle precio a tus juegos, y muchas más personalizaciones.",
+                "infoPremium10": "Tendrás acceso por correo (cuando se implemente) a una Newsletter oficial de Mediastray.",
+                "infoPremium11": "Acceder a la página de MAGNA"
             }
         },
         "formularios": {

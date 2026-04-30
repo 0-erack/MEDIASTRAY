@@ -160,7 +160,7 @@ function FormularioAdiciones({ id, adicionesPrevias }: FormularioAdicionesProps)
       <p>{traduccion("parrafos", "explicarAdiciones2")}</p>
       <form>
         {fields.map((field, i) => {
-          return (<div key={i} className="border border-principal my-5 p-3">
+          return (<div key={i} className="border border-principal my-8 p-3 *:my-50">
 
             <InputBasico titulo={traduccion("formularios", "adicionTipo")} nombre={`adiciones.${i}.type`} ancho='50%' tipo="select" opcionesSelect={opcionesSelect} validador={(v) => !v || tiposAdicion.includes(v)} objetoHook={register(`adiciones.${i}.type`, { validate: (v) => !v || tiposAdicion.includes(v) || traduccion("errores", "error") })} mensajeError={errors?.adiciones?.[i]?.type?.message ?? ''} />
             <InputBasico titulo={traduccion("formularios", "adicionSubtitulo")} nombre={`adiciones.${i}.subtitle`} ancho='full' tipo="text" validador={(v) => !v || subtituloAdicionJuego(v)} objetoHook={register(`adiciones.${i}.subtitle`, { validate: (v) => !v || subtituloAdicionJuego(v) || traduccion("errores", "validacionSubtituloAdicion") })} mensajeError={errors?.adiciones?.[i]?.subtitle?.message ?? ''} />

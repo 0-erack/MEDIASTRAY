@@ -1,5 +1,4 @@
-import { memo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 interface BotonNavegacoinProps {
   cabecera?: boolean|string|null;
@@ -15,15 +14,18 @@ interface BotonNavegacoinProps {
  * @param titulo texto del boton
  * @param children
  */
-const BotonNavegacion = memo(function BotonNavegacion({cabecera, direccion, titulo, children}: BotonNavegacoinProps) {
-
-  const slug = useLocation();
-  const coincide = direccion === "/" ? slug.pathname === "/" : slug.pathname.includes(direccion ?? 'x');
-  
-  return (<>
-      <Link className={(cabecera ? "boton-cabecera" : "") + " boton-navegacion px-1 whitespace-nowrap " + (coincide ? 'bg-resaltado! text-fondo1' : '')} to={direccion ?? '/'}>{children}{titulo ?? ''}</Link>
-    </>
-  )
-})
-
+const BotonNavegacion = ({ cabecera, direccion, titulo, children }: BotonNavegacoinProps) => {
+  return (
+    <NavLink 
+      to={direccion ?? '/'}
+      className={({ isActive }) => 
+        (cabecera ? "boton-cabecera" : "") + 
+        " boton-navegacion px-1 whitespace-nowrap " + 
+        (isActive ? 'bg-resaltado! text-fondo1' : '')
+      }
+    >
+      {children}{titulo ?? ''}
+    </NavLink>
+  );
+};
 export default BotonNavegacion;

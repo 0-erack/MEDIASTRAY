@@ -16,7 +16,7 @@ const FeaturedGames = memo(function FeaturedGames() {
 
   return (
     <>
-      <Titulo><Icono color='var(--color-principal)' numero={3} tamagno={16} /> {traduccion("titulos", "juegosDestacados")}</Titulo>
+      <Titulo><Icono color='var(--color-resaltado)' numero={3} tamagno={16} /> {traduccion("titulos", "juegosDestacados")}</Titulo>
       <p>{traduccion("parrafos", "explicarDestacados")}</p>
       <ListaJuegosDestacados infinito={false} />
     </>

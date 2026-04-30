@@ -96,32 +96,33 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         {juego.precio && (<Titulo magnitud={3}>{juego.precio}</Titulo>)}
       </div>
       {juego.publico == false && (<p>{traduccion("extra", "juegoEsPrivado")}</p>)}
-      {editando && (<div className="border-2 border-principal p-2 m-4">
-        <FormularioJuego juegoEditar={juego} />
-      </div>)}
+      
       {editandoArchivos && (<div className="border-2 border-principal p-2 m-4">
         <FormularioArchivoJuego idJuego={juego.id} actualizar={setArchivos} previos={archivos} />
+      </div>)}
+      {editando && (<div className="border-2 border-principal p-2 m-4">
+        <FormularioJuego juegoEditar={juego} />
       </div>)}
       {jugando && (<><div>
         <PantallaJuego juego={juego} />
       </div>
         <hr />
       </>)}
-      <div className="lg:flex gap-5">
+      <div className="lg:flex gap-5 mx-3">
         {juego.urlPortada1 && (<img src={juego.urlPortada1 ?? PUBLIC_URL + "/coverless1.png"} alt={juego.titulo} className="w-[460px] h-[215px] lg:mb-0 mb-3 mx-auto shrink-0 object-cover relative z-100 border border-principal text-center" />)}
         <div className='flex-1'>
-          <div>{juego.descripcion?.length ?
+          <div className="md:h-[215px] md:flex md:flex-col md:[&>*]:min-h-0 md:[&>*]:flex-1 md:[&>*]:overflow-y-auto">{juego.descripcion?.length ?
             (creadorEsPremium ?
               (<MarkdownDisplay text={juego.descripcion} />)
               : (<div className='overflow-y-scroll w-auto border border-principal p-2 bg-fondo-especial-1' style={{ maxHeight: '400px' }}>{juego.descripcion}</div>))
             : traduccion("errores", "noDescripcion")}</div>
         </div>
       </div>
-      <div className="lg:grid grid-cols-1 sm:grid-cols-2 gap-4 w-full p-1 mt-6 relative z-100">
+      <div className="lg:grid grid-cols-1 mx-2 sm:grid-cols-2 gap-4 w-full p-1 mt-6 relative z-100">
         {filtrarAdiciones("trailer").map((e, i) => {
           return (
             <div key={i} className="border border-principal p-2 h-80 overflow-auto flex flex-col">
-              <p className="font-bold mb-2">{e.subtitle}</p>
+              <p className="font-bold mb-2 fuente2">{e.subtitle}</p>
               <div className="flex-1 flex items-center justify-center bg-black/20">
                 {e?.url && (<video controls className="w-full max-h-full" src={e.url}></video>)}
                 {e?.data?.iframe && (<div className="w-full h-full [&>iframe]:w-full [&>iframe]:h-full" dangerouslySetInnerHTML={{ __html: e.data.iframe }} />)}
@@ -140,7 +141,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           </div>);
         })}
       </div>
-      <div className="lg:flex items-center text-center">
+      <div className="sm:flex items-center text-center mx-4">
         {usuarioCreador && (<TarjetaUsuario usuario={usuarioCreador} destacado={creadorEsPremium} />)}
         <div className="m-5 text-left">
           <div><Icono numero={1} color="var(--color-principal)" /> {traduccion("extra", "labelJugadores")} <strong>{juego.cantidadJugadores}</strong></div>
@@ -154,8 +155,8 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           {juego.edad != 0 && <div>{traduccion("formularios", "edadMinima")} <strong>{juego.edad}</strong></div>}
         </div>
         <div className="ml-0 lg:ml-5 text-left">
-          {(juego.generos && juego.generos?.length != 0) && (<p>{traduccion("formularios", "listaGeneros")} <strong>{juego?.generos?.map((e: string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
-          {(juego.tags && juego.tags?.length != 0) && (<p>{traduccion("formularios", "listaTags")} <strong>{juego?.tags?.map((e: string) => (<EnlaceFuncion titulo={e} funcion={"/browse/" + e} color={1} />))}</strong></p>)}
+          {(juego.generos && juego.generos?.length != 0) && (<p>{traduccion("formularios", "listaGeneros")} <strong>{juego?.generos?.map((e: string) => (<EnlaceFuncion titulo={e} funcion={"/browseSpecific/" + e} color={1} />))}</strong></p>)}
+          {(juego.tags && juego.tags?.length != 0) && (<p>{traduccion("formularios", "listaTags")} <strong>{juego?.tags?.map((e: string) => (<EnlaceFuncion titulo={e} funcion={"/browseSpecific/" + e} color={1} />))}</strong></p>)}
           {(juego.avisos && juego.avisos?.length != 0) && (<p>{traduccion("formularios", "listaAvisos")} <strong>{juego?.avisos?.join(", ")}</strong></p>)}
           {(juego.idiomas && juego.idiomas?.length != 0) && (<p>{traduccion("formularios", "listaIdiomas")} <strong>{juego?.idiomas?.join(", ")}</strong></p>)}
         </div>
@@ -163,10 +164,10 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           <ElementoReporte idObjeto={juego.id} tipoObjeto="game" />
         </div>) : ''}
       </div>
-      <div className="grid lg:grid-cols-4 grid-cols-2 gap-2 w-full p-1">
+      <div className="grid lg:grid-cols-4 mx-2 grid-cols-2 gap-2 w-full p-1">
         {filtrarAdiciones("images", true, filtrarAdiciones("trailer", true)).map((e, i) => {
-          return (<div key={i} className="border flex border-principal p-1">
-            <div>
+          return (<div key={i} className="border flex border-principal">
+            <div className="*:pl-3 my-auto *:m-0">
               {e?.subtitle && (<p className="font-bold mb-2">{e.subtitle}</p>)}
               {e?.url && (<EnlaceFuncion funcion={e.url} titulo={traduccion("botones", "textoEnlaceAdicion_" + e.type) ?? e.url} color={1} />)}
               {e.type === "requirements" && (<p>{e.data.specs}</p>)}

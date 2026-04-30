@@ -45,7 +45,7 @@ function InputBasico({ validador, nombre, tipo, titulo, valor, mensajeError, pla
   const funcionValidadora = validador ?? (() => true);
 
   return (
-    <div className={`input-basico m-4 pl-1 border-l-2 z-100 ${correcto ? 'border-l-principal' : 'border-l-error'} ${inline ? 'inline-flex items-center mr-2' : 'm-4'}`}>
+    <div className={`input-basico m-4 pl-1 border-l-2 z-100 ${correcto ? 'border-l-principal' : 'border-l-error'} ${inline ? 'inline-flex items-center mr-2' : 'm-4 sm:my-6'}`}>
       {titulo && (<label htmlFor={nombre ?? ''} className='pr-1'>{iconoA && (<Icono numero={iconoA ?? 0} color="var(--color-principal)" />)} {titulo}<br /></label>)}
       {children}
       {tipo === "select" ? (<select

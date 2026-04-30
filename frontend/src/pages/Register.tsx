@@ -15,7 +15,7 @@ const Register = memo(function Register() {
 
   return (
     <>
-      <Titulo><Icono numero={1} color="var(--color-resaltado)" /> <Texto tipo="titulos" nombre="register" /></Titulo>
+      <Titulo><Icono numero={1} tamagno={16} color="var(--color-resaltado)" /> <Texto tipo="titulos" nombre="register" /></Titulo>
       <FormularioRegister />
     </>
   )

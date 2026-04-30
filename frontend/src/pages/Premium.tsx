@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BotonFuncion from '../components/Elements/BotonFuncion';
+import EnlaceFuncion from '../components/Elements/EnlaceFuncion';
 import Titulo from '../components/Elements/Titulo';
 import Icono from '../components/Principal/Icono';
 import useApiUsuarios from '../hooks/api/useApiUsuarios';
@@ -51,6 +52,7 @@ const Premium = function Premium() {
         <Icono tamagno={32} numero={18} color='var(--color-info1)' />{"\ \ \ "}<Icono tamagno={32} numero={7} color='var(--color-info1)' />{"\ \ \ "}<Icono tamagno={32} numero={21} color='var(--color-info1)' />
         <p className='mb-5'>{traduccion("parrafos", "textoPremium1")}</p>
         {botonPrincipal()}
+        <p><EnlaceFuncion funcion="/info" titulo={traduccion("botones", "masInformacion")} /></p>
         <Titulo magnitud={3} >{traduccion("titulos", "mejorasPremium")}</Titulo>
         {/*//TODO: revisar mejoras y poner imagenes y hacer cambios segun region*/}
         <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-10 sm:flex border-5 border-info1 m-5 text-lg gap-3 items-center'>
@@ -112,6 +114,7 @@ const Premium = function Premium() {
         <p>{traduccion("parrafos", "textoPremium13")}</p>
 
         {botonPrincipal()}
+        <p><EnlaceFuncion funcion="/info" titulo={traduccion("botones", "masInformacion")} /></p>
       </div>
     </>
   )

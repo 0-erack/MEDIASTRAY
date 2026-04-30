@@ -16,7 +16,7 @@ const Titulo = memo(function Titulo({children, magnitud = 2}: TituloProps) {
   const tamagno = ['text-6xl', 'text-5xl', 'text-4xl', 'text-3xl', 'text-2xl', 'text-xl'][magnitud];
 
   return (
-    <Tag className={`fuente2 ${tamagno} m-4`}>
+    <Tag className={`fuente2 ${tamagno} m-4 ${magnitud === 2 ? 'mt-8' : ''}`}>
       {children ?? ''}
     </Tag>
   );
