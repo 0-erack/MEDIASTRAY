@@ -1,16 +1,26 @@
-
 import { memo } from 'react';
 import gifCagrando from '../../assets/images/cargando.gif';
 
-/**
- * Componente para mostrar la animacion de cargando
- */
 const ImgCargando = memo(function ImgCargando() {
   
   return (
-    <>
-        <img className="cargando m-auto p-2" src={gifCagrando} alt={"..."} />
-    </>
+    <div className="flex h-full w-full items-center justify-center">
+      {/* 
+        We use a div instead of an <img>. 
+        The background-color becomes the "tint".
+      */}
+      <div 
+        className="w-64 h-64 bg-resaltado animate-spin" // Change 'bg-resaltado' to your desired color
+        style={{
+          maskImage: `url(${gifCagrando})`,
+          WebkitMaskImage: `url(${gifCagrando})`,
+          maskRepeat: 'no-repeat',
+          maskSize: 'contain',
+          maskPosition: 'center',
+          imageRendering: 'pixelated' // Keep it crisp if it's pixel art
+        }}
+      />
+    </div>
   )
 })
 
