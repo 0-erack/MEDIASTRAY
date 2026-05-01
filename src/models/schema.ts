@@ -47,7 +47,6 @@ export const juegos = pgTable("juegos", {
   cantidadJugadores: integer("cantidadJugadores").default(0), //Cantidad de jugadores (no anonimos) que lo han jugado, tambien contaria como vistos ya que se aumenta cuando se entra en su pagina
   cantidadComentarios: integer("cantidadComentarios").default(0), //Cantidad de comentarios del juego, para rendimiento
   precio: varchar("precio", { length: 20 }).default(""), //Precio del juego (solo para usuarios premium de momento) (string porque tambien almacena la moneda)
-  //TODO: logros builds savedatas extensiones paginas
 });
 
 //Foros existentes y sus datos principales

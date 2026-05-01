@@ -43,7 +43,7 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
   //Texto indicador con el idioma que esta actualmente elegido
   const [idiomaActual, setIdiomaActual] = useState("");
   //Idiomas admitidos en la pagina, estan representados en textosInterfaz.json
-  const idiomasAdmitidos = ["EN-us", "ES-es", "ZH-ch"];
+  const idiomasAdmitidos = ["EN-us", "ES-es"];//
   //Posible informacion de error relacionada con este contexto
   const [fallo, setFallo] = useState<any>(false);
   const { leerLS, guardarLS } = useLocalStorage();

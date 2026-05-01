@@ -177,7 +177,7 @@ export const verComentario = async (modo: 0 | 1 | 2, id: string, pagina = 0, pag
         return await buscarComentario(modo, id, pagina, paginaSub) ?? null;
     }*/
     if (modo == 1 && id.startsWith("forum_")) {
-        //TODO: si pide forum
+
     }
     if (modo == 0) {
         const resultado = await Comentario.find({ id: id }).lean();

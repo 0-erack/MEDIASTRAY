@@ -298,7 +298,7 @@ export const alterarPremiumUsuario = async (id: string, fechaCaducidad: string):
  * Renueva el premium de un usuario x meses validando y ejecutando el pago, si ya tenia premium se agregan los meses a la fecha anterior
  * @param id usuario a actualizar
  * @param meses cantidad de meses agregados
- * @param objetoPago objeto con los datos del pago //TODO: pagos no implementados actualmente
+ * @param objetoPago objeto con los datos del pago
  * @returns si se ha actualizado correctamente
  */
 export const renovarPremium = async (id: string, meses: number, objetoPago: Record<string, any>): Promise<boolean> => {

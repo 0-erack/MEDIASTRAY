@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
+import useAjustes from '../../hooks/useAjustes';
 import useIdioma from '../../hooks/useIdioma';
 import useMensajes from '../../hooks/useMensajes';
 import { correoFalso, nicknameFalso, nombreFalso } from '../../libraries/datosFalsos';
@@ -34,6 +35,7 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
   const correoFalsoPlaceholder = useMemo(() => correoFalso(), []);
   const { lanzarMensaje } = useMensajes();
   const traduccion = useIdioma();
+  const { PUBLIC_URL } = useAjustes();
 
   const cambio = (e: React.SyntheticEvent) => {
     const target = e.target as HTMLInputElement;
@@ -97,8 +99,8 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
   
 
   return (
-    <div>
-      <form onChange={cambio}>
+    <div className='sm:flex'>
+      <form className='max-w-[500px]'  onChange={cambio}>
         <InputBasico nombre="nickname" placeholder={nicknameFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="nickname" />} valor={objetoRegister.nickname} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionNickname" />} validador={validarNickname} />
         <InputBasico nombre="correo" placeholder={correoFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="correo" />} valor={objetoRegister.correo} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionEmail" />} validador={validarCorreo} />
         <InputBasico nombre="nombre" placeholder={nombreFalsoPlaceholder} titulo={<Texto tipo="formularios" nombre="nombre" />} valor={objetoRegister.nombre} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionNombre" />} validador={validarNombre} />
@@ -112,6 +114,9 @@ function FormularioRegister({enviarPersonalizado}: FormularioRegisterProps) {
         <CajaError texto={errorFormulario ?? ''} nivel="input" />
         {cargando && (<ImgCargando />)}
       </form>
+      <div>
+        <img src={PUBLIC_URL + "/fotoRegister.png"} alt="login" className='lg:w-128 w-64 m-5 lg:ml-20 [image-rendering:pixelated]' />
+      </div>
     </div>
   )
 }

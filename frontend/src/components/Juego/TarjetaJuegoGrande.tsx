@@ -96,7 +96,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         {juego.precio && (<Titulo magnitud={3}>{juego.precio}</Titulo>)}
       </div>
       {juego.publico == false && (<p>{traduccion("extra", "juegoEsPrivado")}</p>)}
-      
+
       {editandoArchivos && (<div className="border-2 border-principal p-2 m-4">
         <FormularioArchivoJuego idJuego={juego.id} actualizar={setArchivos} previos={archivos} />
       </div>)}
@@ -133,9 +133,17 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         {filtrarAdiciones("images").map((e, i) => {
           return (<div key={i} className="border border-principal p-2 h-80 flex flex-col">
             <EnlaceFuncion funcion={e.url} titulo={e.subtitle ?? e.url} color={1} />
-            <div className="flex overflow-auto">
+            <div className="flex overflow-x-auto h-[430px] items-stretch py-2">
               {e.data.images.map((ee: string, ii: number) => {
-                return (<img src={ee} key={ii} className="object-cover relative z-100 m-4 h-[240px] w-auto object-contain" />)
+                return (
+                  <a href={ee} target="_blank" key={ii} className="mx-2 shrink-0 h-full">
+                    <img
+                      src={ee}
+                      className="object-contain cursor-pointer z-100 h-full w-auto"
+                      alt="Gallery item"
+                    />
+                  </a>
+                )
               })}
             </div>
           </div>);
@@ -180,7 +188,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         })}
       </div>
       <div>
-        {archivos.length > 0 && (<>
+        {archivos.filter((e) => { return e.name != "web" }).length > 0 && (<>
           <Titulo magnitud={4}>{traduccion("titulos", "archivos")}</Titulo>
           {archivos.map((e, i) => {
             if (e.name != "web") return (<TargetaArchivo key={i} archivo={e} />)

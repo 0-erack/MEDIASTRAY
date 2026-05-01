@@ -8,8 +8,8 @@ export const crearForo = async (datosCreacion: Record<string, any>, idCreador: s
 
 }
 
-//TODO: editar foro
-//TODO: ver foros de usuario o seguidos de usuario
+editar foro
+ver foros de usuario o seguidos de usuario
 
 export const eliminarForo = async (idForo: string, idUsuario: string): Promise<boolean> => {
 

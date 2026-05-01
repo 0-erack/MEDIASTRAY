@@ -42,8 +42,8 @@ export const subirArchivosJuego = async (idUsuario: string, idJuego: string, arc
     if (!resultado) throw { message: "Couldn't save file", code: 500 };
     try {
         if (nombre == "web") fs.createReadStream(path.join(ruta, nombre + ".zip")).pipe(unzipper.Extract({ path: ruta })); //No es await porque se espera que tarde un rato largo y el dato no es necesario ahora
-        //await borrarArchivo(path.join(ruta, nombre + ".zip"));
-        await actualizarFechaUltimaJuego(idJuego);
+        await borrarArchivo(path.join(ruta, nombre + ".zip"));
+        await actualizarFechaUltimaJuego(idJuego);//
 
     } catch (error) {
         throw { message: "Couldn't save file", code: 500 };

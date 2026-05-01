@@ -22,26 +22,27 @@ function Cabecera() {
   const slug = useLocation();
   const [menuAbierto, setMenuAbierto] = useState(false);
   const handlerCambiarIdioma = (e: string) => {
-                  cambiarIdiomaActual(e);
-                  cambiarIdiomaHtml((e[0] + e[1]).toLowerCase());
-                }
+    cambiarIdiomaActual(e);
+    cambiarIdiomaHtml((e[0] + e[1]).toLowerCase());
+  }
   const enlaces = () => (<><BotonNavegacion key={-1} cabecera={true} direccion={"/"} titulo={traduccion("botones", "inicio")} >
     <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={0} color="var(--color-fondo1)" /></span>
   </BotonNavegacion>
-    {textosInterfazEnlacesCabecera[(usuario ? "si" : "no") + "Usuario"][idiomaActual]?.map((e: any, i: number) => {
-      return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} >
-        <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={e.numeroIcono} color="var(--color-fondo1)" /></span>
-      </BotonNavegacion>)
-    })}
+
     {textosInterfazEnlacesCabecera[idiomaActual]?.map((e: any, i: number) => {
       return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} >
         <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={e.numeroIcono} color={`var(--color-${e.numeroIcono === 7 ? 'info1' : 'fondo1'})`} /></span>
       </BotonNavegacion>)
     })}
     {(esAdmin > 0) && (<BotonNavegacion cabecera={true} direccion={"/admin"} titulo={traduccion("botones", "panelAdmin")} >
-        <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={13} color={`var(--color-fondo1`} /></span>
-      </BotonNavegacion>)}
-    </>);
+      <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={13} color={`var(--color-fondo1`} /></span>
+    </BotonNavegacion>)}
+    {textosInterfazEnlacesCabecera[(usuario ? "si" : "no") + "Usuario"][idiomaActual]?.map((e: any, i: number) => {
+      return (<BotonNavegacion key={i} cabecera={true} direccion={e.direccion} titulo={e.titulo} >
+        <span className='pr-1 translate-y-0.5 inline-block'><Icono numero={e.numeroIcono} color="var(--color-fondo1)" /></span>
+      </BotonNavegacion>)
+    })}
+  </>);
 
   return (
     <>
@@ -96,7 +97,7 @@ function Cabecera() {
             </select>
           </div>
         </div>
-        
+
       </header>
     </>
   )

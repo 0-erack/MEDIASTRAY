@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
+import useAjustes from '../../hooks/useAjustes';
 import useIdioma from '../../hooks/useIdioma';
 import useMensajes from '../../hooks/useMensajes';
 import { contrasegna as validarContrasegna, identificacion as validarIdentificacion } from '../../libraries/validacionesBackend';
@@ -29,6 +30,7 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
   const navegar = useNavigate();
   const { lanzarMensaje } = useMensajes();
   const traduccion = useIdioma();
+  const { PUBLIC_URL } = useAjustes();
 
   const cambio = (e: React.SyntheticEvent) => {
     const target = e.target as HTMLInputElement;
@@ -74,8 +76,8 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
   }
 
   return (
-    <div>
-      {cargando ? (<ImgCargando />) : (<form onChange={cambio}>
+    <div className='sm:flex'>
+      {cargando ? (<ImgCargando />) : (<form className='max-w-[500px]' onChange={cambio}>
         <InputBasico iconoA={1} nombre="identificacion" titulo={<Texto tipo="formularios" nombre="identificacion" />} valor={objetoLogin.identificacion} tipo="text" mensajeError={<Texto tipo="errores" nombre="validacionIdentificacion" />} validador={validarIdentificacion} />
         <InputBasico iconoA={2} nombre="contrasegna" titulo={<Texto tipo="formularios" nombre="contrasegna" />} valor={objetoLogin.contrasegna} tipo={objetoLogin.verContrasegna ? "text" : "password"} placeholder="········" />
         <InputBasico iconoA={13} nombre="verContrasegna" titulo={<Texto tipo="formularios" nombre="contrasegnaMostrar" />} estaChecked={objetoLogin.verContrasegna} tipo="checkbox" />
@@ -83,7 +85,9 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
         <CajaError texto={errorFormulario ?? ''} nivel="input" />
         <EnlaceFuncion titulo={traduccion("formularios", "preguntaRegister")} funcion="/register" />
       </form>)}
-
+      <div>
+        <img src={PUBLIC_URL + "/fotoLogin.png"} alt="login" className='lg:w-128 w-64 m-5 lg:ml-20 [image-rendering:pixelated]' />
+      </div>
     </div>
   )
 }

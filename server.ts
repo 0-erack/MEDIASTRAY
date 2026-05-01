@@ -35,11 +35,12 @@ if (process.env.INIT_TESTS === "true") {
 }
 if (process.env.FREE_CORS) {
     app.use(cors({
-        //origin: (origin, callback) => callback(null, true),
-        origin: true,
+        origin: (origin, callback) => callback(null, true),
+        //origin: true,
         credentials: true,
         allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept', 'X-Auth-Session'],
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        optionsSuccessStatus: 204
     }));
 } else {
     if (process.env.NODE_ENV === "DEVELOPMENT") { //Código solo para development

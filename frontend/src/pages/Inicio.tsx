@@ -58,19 +58,16 @@ function Inicio() {
             <div className='p-5'>
                 <Titulo magnitud={3}>{traduccion("titulos", "juegoDiario")}</Titulo>
                 <div className='p-1 border border-principal sm:mx-[10%]'>
-                    {juegoDiario && (<TarjetaJuego juego={juegoDiario} mediano={true} />)}
+                    {juegoDiario ? (<TarjetaJuego juego={juegoDiario} mediano={true} />) : traduccion("errores", "noHayJuegos")}
                 </div>
             </div>
             <div className='p-5'>
                 <Titulo magnitud={3}>{traduccion("titulos", "juegoSemanal")}</Titulo>
                 <div className='p-1 border border-principal sm:mx-[10%]'>
-                    {juegoSemanal && (<TarjetaJuego juego={juegoSemanal} mediano={true} />)}
+                    {juegoSemanal ? (<TarjetaJuego juego={juegoSemanal} mediano={true} />) : traduccion("errores", "noHayJuegos")}
                 </div>
             </div>
             <div className='sm:flex m-auto justify-between gap-10 mb-5 p-5'>
-                
-
-                
                 <div className='w-full'>
                     <Titulo magnitud={3}>{traduccion("titulos", "forosDestacados")}</Titulo>
                     <div className='p-1 border border-principal w-full'>

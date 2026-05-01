@@ -49,7 +49,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
   const avisosMostrables = useMemo(() => Array.isArray(juegoEditar?.avisos) ? juegoEditar.avisos.join(',') : (juegoEditar?.avisos || ""), [juegoEditar?.avisos]);
   const idiomasMostrables = useMemo(() => Array.isArray(juegoEditar?.idiomas) ? juegoEditar.idiomas.join(',') : (juegoEditar?.idiomas || ""), [juegoEditar?.idiomas]);
   const formBase: FormValues = useMemo(()=> juegoEditar
-    ? { ...juegoEditar, tags: tagsMostrables, generos: generosMostrables, avisos: avisosMostrables, idiomas: idiomasMostrables, titulo: juegoEditar.titulo ?? "", descripcion: juegoEditar.descripcion ?? "", descripcionCorta: juegoEditar.descripcionCorta ?? "", precio: juegoEditar.precio ?? "0", edad: juegoEditar.edad ?? 0, }
+    ? { ...juegoEditar, urlPortada1: (!juegoEditar?.urlPortada1 || juegoEditar.urlPortada1 === "/public/coverless1.png") ? '' : juegoEditar.urlPortada1, urlPortada2: (!juegoEditar?.urlPortada2 || juegoEditar.urlPortada2 === "/public/coverless2.png") ? '' : juegoEditar.urlPortada2, urlPortada3: (!juegoEditar?.urlPortada3 || juegoEditar.urlPortada3 === "/public/coverless3.png") ? '' : juegoEditar.urlPortada3, tags: tagsMostrables, generos: generosMostrables, avisos: avisosMostrables, idiomas: idiomasMostrables, titulo: juegoEditar.titulo ?? "", descripcion: juegoEditar.descripcion ?? "", descripcionCorta: juegoEditar.descripcionCorta ?? "", precio: juegoEditar.precio ?? "0", edad: juegoEditar.edad ?? 0, }
     : { titulo: "", edad: 0, versionActual: "v1.0.0", tags: "", generos: "", avisos: "", idiomas: "" },
       [juegoEditar, tagsMostrables, generosMostrables, avisosMostrables, idiomasMostrables]);
   const traduccion = useIdioma();

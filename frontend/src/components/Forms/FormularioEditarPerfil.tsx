@@ -25,7 +25,7 @@ function FormularioEditarPerfil({usuario}: {usuario: any}) {
     const { premium } = useSesion();
     const { editarUsuario, borrarUsuario, cargando, error, resetEstados } = useApiUsuarios();
     //const objetoPatchBasico = useMemo(() => {return {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", urlFoto: previo.urlFoto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }}, [previo]);
-    const objetoPatchBasico = {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", urlFoto: previo.urlFoto ?? "", cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }
+    const objetoPatchBasico = {correo: previo.correo ?? "", nickname: previo.nickname ?? "", contrasegna: "", verContrasegna: false, contrasegna2: "", nombre: previo.nombre ?? "", cumpleagnos: timestampAInputDate(previo.cumpleagnos) ?? "", descripcion: previo.descripcion ?? "", urlFoto: (!previo.urlFoto || previo.urlFoto === "/public/nopfp.png") ? '' : previo.urlFoto, cambiarContrasegna: false, contrasegnaAntigua: "", contrasegnaEliminar: "", correoEliminar: "" }
     const [objetoPatch, setObjetoPatch] = useState(objetoPatchBasico);
     const [errorFormulario, setErrorFormulario] = useState("");
     const nombreFalsoPlaceholder = useMemo(() => nombreFalso(), []);

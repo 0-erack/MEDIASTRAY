@@ -7,6 +7,7 @@ interface EnlaceFuncionProps {
   funcion: string | ((data?: any) => void) | null;
   color?: number;
   subrallado?: boolean;
+  pestagna?: string;
 }
 
 /**
@@ -16,8 +17,9 @@ interface EnlaceFuncionProps {
  * @param funcion si es string lleva a esa ruta/url, si es una funcion la ejecuta
  * @param color que color se usara
  * @param subrallado si tiene underline
+ * @param pestagna el atributo href
  */
-const EnlaceFuncion = memo(function EnlaceFuncion({ cabecera, titulo, funcion, color = 0, subrallado = true }: EnlaceFuncionProps) {
+const EnlaceFuncion = memo(function EnlaceFuncion({ cabecera, pestagna, titulo, funcion, color = 0, subrallado = true }: EnlaceFuncionProps) {
   const navegar = useNavigate();
   const esEnlace = typeof funcion === 'string';
   const esUrl = esEnlace && funcion.startsWith("http");
@@ -47,8 +49,10 @@ const EnlaceFuncion = memo(function EnlaceFuncion({ cabecera, titulo, funcion, c
       <a 
         href={hrefTarget} 
         onClick={handleClick}
-        target={esUrl ? "_blank" : undefined}
+        //target={esUrl ? "_blank" : undefined}
+        target={pestagna ?? ''}
         rel={esUrl ? "noopener noreferrer" : undefined}
+        
       >
         {titulo ?? ""}
       </a>

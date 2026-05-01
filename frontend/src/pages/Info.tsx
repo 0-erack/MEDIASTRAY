@@ -25,11 +25,11 @@ const Info = memo(function Info() {
       <p>{traduccion("parrafos", "info4")}</p>
       <p >
         <span><EnlaceFuncion titulo={traduccion("parrafos", "infoEnlace1")} funcion="/docs" /></span><wbr />
-        <span><EnlaceFuncion titulo={traduccion("parrafos", "infoEnlace2")} funcion="https://github.com/0-erack/MEDIASTRAY" /></span><wbr />
-        <span><EnlaceFuncion titulo={traduccion("parrafos", "infoEnlace3")} funcion="https://mit-license.org/" /></span>
+        <span><EnlaceFuncion pestagna='_blank' titulo={traduccion("parrafos", "infoEnlace2")} funcion="https://github.com/0-erack/MEDIASTRAY" /></span><wbr />
+        <span><EnlaceFuncion pestagna='_blank' titulo={traduccion("parrafos", "infoEnlace3")} funcion="https://mit-license.org/" /></span>
       </p>
       <div>
-        <img className='relative z-10 sm:w-5xl w-lg m-auto' src={"/src/assets/images/LogoE.png"} alt="Logo" style={{ imageRendering: 'pixelated' }} />
+        <img className='relative z-10 sm:w-5xl w-lg m-auto mt-5' src={PUBLIC_URL + "/LogoE.png"} alt="Logo" style={{ imageRendering: 'pixelated' }} />
       </div>
     </div>
     <div className='text-info1 text-left m-0 p-0'>

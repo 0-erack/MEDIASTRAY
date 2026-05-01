@@ -68,7 +68,7 @@ const RenewPremium = memo(function RenewPremium() {
         <CajaError texto={error && traduccion("errores", "errorCompra")} />
       </div>
       <BotonFuncion hueco={false} tipo={3} titulo={traduccion("botones", "comprar")} funcion={comprarPremium} /> 
-      <p>{traduccion("parrafos", "textoLegal1")}</p> {/*//TODO: no hay textos legales*/}
+      <p>{traduccion("parrafos", "textoLegal1")}</p>
     </>
   )
 });

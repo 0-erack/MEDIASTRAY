@@ -99,7 +99,6 @@ export const crearJuego = async (datosCreacion: Record<string, any>, idCreador):
     agnadirLog("backend.log", "New game created " + juegoFinal.id);
     agnadirLog("db.log", "New game created JUEGOS " + juegoFinal.id);
     return formatearJuegoPublico(juegoFinal);
-    //TODO: subida de archivos y encrustacion
 }
 
 /**

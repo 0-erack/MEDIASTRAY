@@ -6,6 +6,7 @@ import EnlaceFuncion from '../components/Elements/EnlaceFuncion';
 import Titulo from '../components/Elements/Titulo';
 import Icono from '../components/Principal/Icono';
 import useApiUsuarios from '../hooks/api/useApiUsuarios';
+import useAjustes from '../hooks/useAjustes';
 import useIdioma from '../hooks/useIdioma';
 import useMensajes from '../hooks/useMensajes';
 import useSesion from '../hooks/useSesion';
@@ -24,6 +25,7 @@ const Premium = function Premium() {
   const { verPremium } = useApiUsuarios();
   const navegar = useNavigate();
   const { lanzarMensaje } = useMensajes();
+  const { PUBLIC_URL } = useAjustes();
   const botonPrincipal = () => (usuario ? (<>
     {tiempoRestante ? (<p>{traduccion("extra", "labelCaducidad")} {timestampAFecha(tiempoRestante)} <BotonFuncion tipo={3} hueco={false} titulo={traduccion("botones", "irComprarPremiumMas")} funcion={() => navegar("/renewMagna")} /></p>)
       : (<BotonFuncion tipo={3} hueco={false} titulo={traduccion("botones", "irComprarPremium")} funcion={() => navegar("/renewMagna")} />)}
@@ -54,20 +56,19 @@ const Premium = function Premium() {
         {botonPrincipal()}
         <p><EnlaceFuncion funcion="/info" titulo={traduccion("botones", "masInformacion")} /></p>
         <Titulo magnitud={3} >{traduccion("titulos", "mejorasPremium")}</Titulo>
-        {/*//TODO: revisar mejoras y poner imagenes y hacer cambios segun region*/}
         <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-10 sm:flex border-5 border-info1 m-5 text-lg gap-3 items-center'>
           <div className='flex-1'>
             <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium2")}</Titulo>
             <p className='m-5'>{traduccion("parrafos", "textoPremium3")}</p>
           </div>
           <div className='flex items-center justify-center w-full sm:w-64 sm:h-64  py-4 sm:py-0'>
-            <img src="https://placehold.co/256x256" alt="Example" className='w-32 h-32 sm:w-full sm:h-full object-contain' />
+            <img src={PUBLIC_URL + "/fotoPremium1.png"} alt="Premium1" className='lg:w-128 w-256 [image-rendering:pixelated]' />
           </div>
         </div>
 
         <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-10 sm:flex border-5 border-info1 m-5 text-lg gap-3 items-center'>
           <div className='flex items-center justify-center w-full sm:w-64 sm:h-64  py-4 sm:py-0'>
-            <img src="https://placehold.co/256x256" alt="Example" className='w-32 h-32 sm:w-full sm:h-full object-contain' />
+            <img src={PUBLIC_URL + "/fotoPremium2.png"}  alt="Premium2" className='w-32 h-32 sm:w-full sm:h-full object-contain [image-rendering:pixelated]' />
           </div>
           <div className='flex-1'>
             <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium4")}</Titulo>
@@ -81,13 +82,13 @@ const Premium = function Premium() {
             <p className='m-5'>{traduccion("parrafos", "textoPremium7")}</p>
           </div>
           <div className='flex items-center justify-center w-full sm:w-64 sm:h-64  py-4 sm:py-0'>
-            <img src="https://placehold.co/256x256" alt="Example" className='w-32 h-32 sm:w-full sm:h-full object-contain' />
+            <img src={PUBLIC_URL + "/fotoPremium3.png"}  alt="Premium3" className='w-32 h-32 sm:w-full sm:h-full object-contain [image-rendering:pixelated]' />
           </div>
         </div>
 
         <div className='text-left bg-fondo-especial-1 p-5 sm:mx-30 mb-5 sm:flex border-5 border-info1 m-5 text-lg gap-3 items-center'>
           <div className='flex items-center justify-center w-full sm:w-64 sm:h-64  py-4 sm:py-0'>
-            <img src="https://placehold.co/256x256" alt="Example" className='w-32 h-32 sm:w-full sm:h-full object-contain' />
+            <img src={PUBLIC_URL + "/fotoPremium4.png"}  alt="Premium4" className='w-32 h-32 sm:w-full sm:h-full object-contain [image-rendering:pixelated]' />
           </div>
           <div className='flex-1'>
             <Titulo magnitud={4}>{traduccion("parrafos", "textoPremium8")}</Titulo>
