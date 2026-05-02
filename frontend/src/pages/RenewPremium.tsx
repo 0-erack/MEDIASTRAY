@@ -64,7 +64,7 @@ const RenewPremium = memo(function RenewPremium() {
       </div>
       <div className='border border-principal my-5 px-10 py-3'>
         <p>{traduccion("extra", "indicadorPago")}</p>
-        <p>Aún no se ha implementado el sistema de pagos, esta versión de la app es para pruebas, aqui iria un formulario con los datos</p> {/*//TODO:*/}
+        <p>Aún no se ha implementado el sistema de pagos, esta versión de la app es para pruebas, aqui iria un formulario con los datos</p>
         <CajaError texto={error && traduccion("errores", "errorCompra")} />
       </div>
       <BotonFuncion hueco={false} tipo={3} titulo={traduccion("botones", "comprar")} funcion={comprarPremium} /> 
