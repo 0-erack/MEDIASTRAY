@@ -30,8 +30,6 @@ ReactRouterDom
 DBeaver
 Nginx?
 Mailgun?Resend?
-GraphQL?
-ApolloClient?ApolloServer?
 Multer?
 React-markdown
 React-hook-form
@@ -43,7 +41,6 @@ Bash
 Penpot 
 DrawIO
 Excalidraw
-Stripe?
 AWS?
 Cloudflare?
 PDF
