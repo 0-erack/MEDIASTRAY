@@ -115,8 +115,8 @@ useEffect(() => {
           <div className="text-center">
             <IndicadorPagina control={control} setValue={setValue} />
             <InputBasico iconoA={2} inline={true} nombre="buscarUsuarios" titulo={traduccion("formularios", "activarBusquedaUsuarios")} objetoHook={register("buscarUsuarios")} tipo="checkbox" />
-            <InputBasico iconoA={3} inline={true} nombre="buscarJuegos" titulo={traduccion("formularios", "activarBusquedaJuegos")} objetoHook={register("buscarJuegos")} tipo="checkbox" />
-            <InputBasico iconoA={5} inline={true} nombre="buscarForos" titulo={traduccion("formularios", "activarBusquedaForos")} objetoHook={register("buscarForos")} tipo="checkbox" />
+            <InputBasico iconoA={5} inline={true} nombre="buscarJuegos" titulo={traduccion("formularios", "activarBusquedaForos")} objetoHook={register("buscarJuegos")} tipo="checkbox" />
+            <InputBasico iconoA={3} inline={true} nombre="buscarForos" titulo={traduccion("formularios", "activarBusquedaJuegos")} objetoHook={register("buscarForos")} tipo="checkbox" />
             <InputBasico iconoA={4} inline={true} nombre="orden" titulo={traduccion("formularios", "busquedaOrden")} objetoHook={register("orden")} tipo="select" opcionesSelect={opcionesOrden} />
           </div>
         </form>
