@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Reportar un objeto
+  ## Recibe
+  UUID del objeto a bloquear, type para saber que objeto es y text con la información del reporte
+  ## Devuelve
+  Confirmación de que todo ha ido bien o error

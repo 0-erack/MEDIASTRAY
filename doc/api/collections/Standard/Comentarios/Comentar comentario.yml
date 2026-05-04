@@ -32,4 +32,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Comentar un comentario (poner respuesta)
+  ## Recibe
+  UUID del comentario a comentar y contenido del comentario en content
+  ## Devuelve
+  Confirmación de que todo ha ido bien o error

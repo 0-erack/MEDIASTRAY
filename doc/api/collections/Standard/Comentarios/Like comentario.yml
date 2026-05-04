@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Dar o quitar like a un comentario
+  ## Recibe
+  UUID del comentario a alterar el like y amount con -1, 0 o 1
+  ## Devuelve
+  Estado actual del like sobre este comentario

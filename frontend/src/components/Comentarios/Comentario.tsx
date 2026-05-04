@@ -19,7 +19,7 @@ interface ComentarioProps {
 
 /**
  * Componente para ver un comentario, muestra sus respuestas
- * @param comentario el comentairo
+ * @param comentario el comentario
  */
 const Comentario = memo(function Comentario({ comentario }: ComentarioProps) {
 

@@ -28,5 +28,10 @@ settings:
   followRedirects: true
   maxRedirects: 5
 
-docs: |
-  Ruta privada para crear un usuario
+docs: |-
+  Endpoint público
+  Ver si un usuario sigue a otro
+  ## Recibe
+  UUIDs del sujeto y predicado
+  ## Devuelve
+  Información actual del seguimiento

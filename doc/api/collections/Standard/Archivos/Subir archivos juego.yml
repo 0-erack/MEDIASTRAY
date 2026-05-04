@@ -40,4 +40,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Publicar un nuevo archivo de juego
+  ## Recibe
+  En formato MultiPartFormData (no JSON) el id del juego, el archivo y el name para la etiqueta
+  ## Devuelve
+  Confirmación de que todo ha ido bien o error

@@ -37,6 +37,3 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
-
-docs: |
-  Ruta privada para crear un usuario

@@ -28,5 +28,10 @@ settings:
   followRedirects: true
   maxRedirects: 5
 
-docs: |
-  Ruta privada para crear un usuario
+docs: |-
+  Endpoint público
+  Ver los datos públicos de un usuario
+  ## Recibe
+  UUID del usuario a buscar
+  ## Devuelve
+  Datos públicos del usuario

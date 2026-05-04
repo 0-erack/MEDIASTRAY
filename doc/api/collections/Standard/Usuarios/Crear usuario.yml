@@ -38,5 +38,10 @@ settings:
   followRedirects: true
   maxRedirects: 5
 
-docs: |
-  Ruta privada para crear un usuario
+docs: |-
+  Endpoint público
+  Registrarse en la app como un nuevo usuario
+  ## Recibe
+  Datos de registro: email, name, nickname, password, birthdate
+  ## Devuelve
+  Token de sesión y datos del usuario creado

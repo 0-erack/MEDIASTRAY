@@ -29,4 +29,7 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Ver el usuario actual
+  ## Devuelve
+  Los datos del usuario actual

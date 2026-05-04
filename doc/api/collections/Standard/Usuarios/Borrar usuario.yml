@@ -32,4 +32,7 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Borrar el usuario actual
+  ## Recibe
+  La contraseña antigua en password

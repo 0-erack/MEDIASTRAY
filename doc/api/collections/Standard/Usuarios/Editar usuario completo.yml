@@ -42,4 +42,10 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Editar el usuario actual
+  ## Recibe
+  Datos a editar en el objeto newData: email, name, nickname, password, birthdate, changePassword, oldPassword, urlPhoto, description
+  Si se van a editar el nickname o la contraseña, oldPassword tiene que estar presente y correcto
+  ## Devuelve
+  Token de sesión y datos del usuario actualizados

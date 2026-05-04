@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Seguir a un usuario
+  ## Recibe
+  -1, 0 o 1 en amount y el UUID del usuario a seguir en id_b
+  ## Devuelve
+  Última información del seguimiento

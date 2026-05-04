@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint público
+  Ver los usuarios que siguen un usuario
+  ## Recibe
+  UUID del usuario a consultar y opcionalmente la página donde mirar
+  ## Devuelve
+  Usuarios que coinciden con la búsqueda

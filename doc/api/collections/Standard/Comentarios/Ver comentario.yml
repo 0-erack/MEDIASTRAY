@@ -36,4 +36,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint público
+  Ver un comentario
+  ## Recibe
+  El tipo de búsqueda, _ y el UUID a buscar, y opcionalmente la página en la que buscar y la página en la que ver las respuestas
+  ## Devuelve
+  Datos del comentario y sus respuestas

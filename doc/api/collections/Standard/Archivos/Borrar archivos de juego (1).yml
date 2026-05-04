@@ -21,7 +21,6 @@ http:
       {
         "id": "5efa6a35-0705-4385-8f72-19b034672dcb",
         "name": "web"
-        
       }
   auth:
     type: bearer
@@ -34,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Borrar el archivo de un juego
+  ## Recibe
+  El nombre del archivo en name y el juego en id
+  ## Devuelve
+  Confirmación de que ha ido bien o error

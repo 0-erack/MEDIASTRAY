@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import useApiJuegos from '../../hooks/api/useApiJuegos';
 import useApiUsuarios from '../../hooks/api/useApiUsuarios';
+import useAjustes from '../../hooks/useAjustes';
 import useIdioma from '../../hooks/useIdioma';
 import useJuegos from '../../hooks/useJuegos';
 import useMensajes from '../../hooks/useMensajes';
@@ -61,6 +62,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
   const formBaseJuegos = { paginaMios: 0, paginaSeguidos: 0 }
   const { control, watch, formState: { errors }, setValue } = useForm<FormValues>({ defaultValues: formBaseJuegos });
   const datosPaginasJuegos = watch();
+  const { TAMAGNO_PAGINA } = useAjustes();
   useTituloDinamico("", usuario.nickname);
 
   /**
@@ -127,7 +129,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
       setJuegosCreados(juegos ?? []);
     } else {
       if (misJuegos.length) {
-        setJuegosCreados(misJuegos.slice(0, 50));
+        setJuegosCreados(misJuegos.slice(0, typeof Number.parseInt(TAMAGNO_PAGINA + '') == "number" ? Number.parseInt(TAMAGNO_PAGINA + '') : 50));
       } else {
         setJuegosCreados([]);
       }

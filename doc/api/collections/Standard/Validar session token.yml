@@ -26,3 +26,8 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  Comprueba que el token de sesión actual sea válido
+  ## Devuelve
+  La confirmación

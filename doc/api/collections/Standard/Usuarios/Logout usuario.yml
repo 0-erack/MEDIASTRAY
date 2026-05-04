@@ -33,5 +33,6 @@ settings:
   followRedirects: true
   maxRedirects: 5
 
-docs: |
-  Ruta privada para crear un usuario
+docs: |-
+  Endpoint privado con identificación
+  Elimina la sesión actual del usuario

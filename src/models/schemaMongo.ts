@@ -6,7 +6,7 @@ import { Schema, model } from 'mongoose';
 const IntermediarioSchema = new Schema({
     id: { type: String, required: true },
     sujeto: { type: String, required: true }, //Entidad qeu realiza la accion
-    verbo: { type: String, required: true }, //Que accion se hace: sigue, reporta, like, juega, pertenece
+    verbo: { type: String, required: true }, //Que accion se hace: sigue, like, juega, pertenece
     predicado: { type: String, required: true }, //Entidad a las que se le hace la accion
     extra: { type: Object, default: {} } //Datos extra
 }, { 
@@ -31,7 +31,7 @@ const AdicionJuegoSchema = new Schema({
     type: { type: String, required: true }, 
     subtitle: { type: String, required: false }, //Texto de la adicion
     url: { type: String, required: false }, //URL de la adicion
-    data: { type: Object, default: {url: "", subtitle: ""} } //Datos de la adicion, siempre tendra una url pero se pueden poner mas cosas dependiendo del tipo
+    data: { type: Object, default: {} } //Datos de la adicion, siempre tendra una url pero se pueden poner mas cosas dependiendo del tipo
 },{
     collection: 'adicionJuego',
     timestamps: true

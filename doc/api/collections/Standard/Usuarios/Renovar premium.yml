@@ -36,4 +36,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Renueva el premium al usuario actual
+  ## Recibe
+  Cantidad de meses en months, location para la localización en ISO y objeto payment para el pago
+  ## Devuelve
+  Última fecha de caducidad del premium

@@ -24,3 +24,8 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  Verifica si el token de API actual es válido
+  ## Devuelve
+  La confirmación
