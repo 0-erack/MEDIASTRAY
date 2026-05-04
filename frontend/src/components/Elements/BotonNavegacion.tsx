@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-interface BotonNavegacoinProps {
+interface BotonNavegacionProps {
   cabecera?: boolean|string|null;
   direccion: string|null;
   titulo: string|null|React.ReactNode;
@@ -14,7 +14,7 @@ interface BotonNavegacoinProps {
  * @param titulo texto del boton
  * @param children
  */
-const BotonNavegacion = ({ cabecera, direccion, titulo, children }: BotonNavegacoinProps) => {
+const BotonNavegacion = ({ cabecera, direccion, titulo, children }: BotonNavegacionProps) => {
   return (
     <NavLink 
       to={direccion ?? '/'}

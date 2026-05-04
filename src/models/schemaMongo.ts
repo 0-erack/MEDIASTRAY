@@ -59,6 +59,7 @@ const ReporteSchema = new Schema({
     idReportador: {type: String, required: false}, //Usuario que reporta
     tipo: {type: String, required: true}, //Que tipo de objeto reporta
     idReportado: {type: String, required: true}, //Objeto reportado en base al tipo
+    //TODO: fecha
     }, { 
     collection: 'reporte'
 });
@@ -70,6 +71,7 @@ const ArchivoSchema = new Schema({
     juego: {type: String, required: true}, //A que juego hace referencia
     peso: {type: Number, required: false}, //Peso en bytes del archivo
     fecha: {type: String, required: false} //Fecha en la que se subio
+    //TODO: mostrar fecha
 }, { 
     collection: 'reporte'
 });
