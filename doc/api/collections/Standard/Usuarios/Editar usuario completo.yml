@@ -43,7 +43,7 @@ settings:
 
 docs: |
   Endpoint privado con identificación
-  Editar el usuario actual
+  Editar el usuario actual, solo cambiarán los datos presentes en el body
   ## Recibe
   Datos a editar en el objeto newData: email, name, nickname, password, birthdate, changePassword, oldPassword, urlPhoto, description
   Si se van a editar el nickname o la contraseña, oldPassword tiene que estar presente y correcto

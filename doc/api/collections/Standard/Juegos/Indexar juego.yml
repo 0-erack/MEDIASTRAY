@@ -31,5 +31,10 @@ settings:
   followRedirects: true
   maxRedirects: 5
 
-docs: |
-  Ruta privada para crear un usuario
+docs: |-
+  Endpoint privado con identificación
+  Alterar el parámetro de público de un juego
+  ## Recibe
+  UUID del juego a alterar y el nuevo valor en state
+  ## Devuelve
+  El estado actual del público del juego

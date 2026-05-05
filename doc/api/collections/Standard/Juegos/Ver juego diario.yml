@@ -29,4 +29,7 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint público
+  Ver el juego diario actual, esta acción podría provocar que se calcule
+  ## Devuelve
+  Datos del juego diario actual

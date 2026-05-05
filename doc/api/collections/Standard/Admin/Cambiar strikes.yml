@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para moderadores
+  Alterar los strikes de un usuario usuario
+  ## Recibe
+  UUID del usuario a alterar y la cantidad de strikes a sumar en amoult
+  ## Devuelve
+  Cantidad de strikes actuales en el usuario

@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para administradores
+  Altera el parámetro de público de un juego
+  ## Recibe
+  UUID del juego a alterar y el nuevo valor en new
+  ## Devuelve
+  Confirmación de que todo ha ido bien o error

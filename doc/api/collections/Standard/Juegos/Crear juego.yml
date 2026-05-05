@@ -47,4 +47,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Crear un juego nuevo
+  ## Recibe
+  Datos del juego en game, dentro solo es obligatorio title pero tambien puede contener: pulbic, cover1, cover2, cover3, version, description, shortDescription, genres, tags, languages, warnings, price, age
+  ## Devuelve
+  Datos del juego nuevo

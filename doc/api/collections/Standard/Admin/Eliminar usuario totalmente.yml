@@ -34,4 +34,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para administradores totales con sudo
+  Borra enteramente un usuario, esta acción se considera catastrófica
+  ## Recibe
+  UUID del usuario a borrar
+  ## Devuelve
+  Confirmación de que todo ha ido bien o error

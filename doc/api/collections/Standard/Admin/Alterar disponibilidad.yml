@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para administradores
+  Altera el parámetro de disponibilidad de un usuario
+  ## Recibe
+  UUID del usuario a alterar y el nuevo valor en new
+  ## Devuelve
+  Confirmación de que todo ha ido bien o error

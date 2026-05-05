@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint público
+  Ver los juegos destacados que hay ahora, esto podría provocar que se recalcule
+  ## Recibe
+  Opcionalmente la página en la que buscar
+  ## Devuelve
+  Datos de los juegos destacados

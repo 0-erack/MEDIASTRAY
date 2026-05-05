@@ -347,7 +347,9 @@
                 "infoPremium8": "Your reports will have a higher priority, as well as a better attention by the technical support team.",
                 "infoPremium9": "You will be able to access new features such as setting up an achievement API with MantoSDK for your games, cloud save game data, put a price on your games, and much more customization",
                 "infoPremium10": "You will have acces via mail to the oficial Mediastray Newsletter (when it gets implemented)",
-                "infoPremium11": "Access to the MAGNA site"
+                "infoPremium11": "Access to the MAGNA site",
+                "infoNormas1": "Rules",
+                "infoNormas2": "asdf"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -399,7 +401,9 @@
                 "infoPremium8": "Tus reportes tendrán una mayor prioridad así como una mejor atención por parte del soporte técnico.",
                 "infoPremium9": "Podrás acceder a nuevas características como configurar una API de logros mediante MantoSDK para tus juegos, guardado de partidas en la nube, ponerle precio a tus juegos, y muchas más personalizaciones.",
                 "infoPremium10": "Tendrás acceso por correo (cuando se implemente) a una Newsletter oficial de Mediastray.",
-                "infoPremium11": "Acceder a la página de MAGNA"
+                "infoPremium11": "Acceder a la página de MAGNA",
+                "infoNormas1": "Normas",
+                "infoNormas2": "Primero, está terminalmente prohibida cualquier actividad ilegal o que favorezca al crimen. Por otra parte, las normas propias de la plataforma son: prohibido publicar contenido que pueda resultar dañino, nocivo, ilegal, ofensivo o con mala intención, prohibido el uso masivo de multicuentas, prohibido reportar contenido sin razón real y prohibido el acoso a otros usuarios."
             }
         },
         "formularios": {

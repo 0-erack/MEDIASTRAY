@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para administradores totales con sudo
+  Alterar los permisos de otro usuario
+  ## Recibe
+  UUID del usuario a alterar y el nuevo nivel de permisos en level
+  ## Devuelve
+  Confirmación de que ha ido todo bien o error

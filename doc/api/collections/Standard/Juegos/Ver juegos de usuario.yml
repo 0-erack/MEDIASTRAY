@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint público
+  Ver los juegos de un usuario
+  ## Recibe
+  UUID del usuario a consultar y opcionalmente la página en la que mirar
+  ## Devuelve
+  Datos de los juegos de dicho usuario

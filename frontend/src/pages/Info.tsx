@@ -32,6 +32,12 @@ const Info = memo(function Info() {
         <img className='relative z-10 sm:w-5xl w-lg m-auto mt-5' src={PUBLIC_URL + "/LogoE.png"} alt="Logo" style={{ imageRendering: 'pixelated' }} />
       </div>
     </div>
+    <div className='text-left m-0 p-0'>
+      <Titulo magnitud={3}><Icono numero={8} tamagno={16} color="var(--color-resaltado)" /> {traduccion("parrafos", "infoNormas1")}</Titulo>
+    </div>
+    <div className='text-lg mb-5 text-center'>
+      <p>{traduccion("parrafos", "infoNormas2")}</p>
+    </div>
     <div className='text-info1 text-left m-0 p-0'>
       <Titulo magnitud={3}><Icono numero={7} tamagno={16} color="var(--color-info1)" /> {traduccion("parrafos", "infoPremium1")}</Titulo>
     </div>

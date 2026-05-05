@@ -29,4 +29,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para moderadores
+  Ver los datos de cualquier usuario
+  ## Recibe
+  UUID del usuario a consultar (el que sea)
+  ## Devuelve
+  Datos completos de dicho usuario

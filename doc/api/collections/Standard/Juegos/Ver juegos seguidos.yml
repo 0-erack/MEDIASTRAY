@@ -29,4 +29,7 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Ver los juegos que sigue el usuario 
+  ## Devuelve
+  Datos de los juegos seguidos por el usuario actual

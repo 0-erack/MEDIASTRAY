@@ -37,7 +37,7 @@ settings:
 
 docs: |
   Endpoint privado con identificación
-  Renueva el premium al usuario actual
+  Renueva el premium al usuario actual (esta ruta procesaría el pago pero actualmente no está implementado)
   ## Recibe
   Cantidad de meses en months, location para la localización en ISO y objeto payment para el pago
   ## Devuelve

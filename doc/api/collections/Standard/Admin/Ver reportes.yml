@@ -36,4 +36,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para moderadores
+  Búsqueda de reportes
+  ## Recibe
+  Página en la que buscar y UUID de búsqueda (para rerportador y reportado)
+  ## Devuelve
+  Lista de reportes que coincidan

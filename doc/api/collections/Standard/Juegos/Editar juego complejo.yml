@@ -46,4 +46,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Editar los datos de un juego, solo cambiarán los parámetros presentes en el body
+  ## Recibe
+  Dentro de newData los parámetros opcionales a editar: title, cover1, cover2, cover3, version, description, shortDescription, genres, tags, languages, warnings, price, age
+  ## Devuelve
+  Nuevos datos del juego editado

@@ -41,7 +41,7 @@ settings:
 
 docs: |
   Endpoint privado con identificación
-  Publicar un nuevo archivo de juego
+  Publicar un nuevo archivo de juego, al contrario del resto de peticiones, esta no admite JSON
   ## Recibe
   En formato MultiPartFormData (no JSON) el id del juego, el archivo y el name para la etiqueta
   ## Devuelve

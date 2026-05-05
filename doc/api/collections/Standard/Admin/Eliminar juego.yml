@@ -29,4 +29,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para administradores
+  Eliminar un juego, esta acción se considera catastrófica
+  ## Recibe
+  UUID del juego a eliminar
+  ## Devuelve
+  Confirmación de que ha ido todo bien o error

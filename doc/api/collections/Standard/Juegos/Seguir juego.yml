@@ -33,4 +33,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Seguir o dejar de seguir un juego
+  ## Recibe
+  UUID del juego a seguir, y el seguimiento en amount con -1, 0 o 1
+  ## Devuelve
+  Estado actual del seguimiento al juego

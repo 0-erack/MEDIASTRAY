@@ -29,4 +29,6 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint para comprobar si con el session token actual se tienen permisos de moderador
+  ## Devuelve
+  Confirmación

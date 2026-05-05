@@ -20,7 +20,7 @@ http:
     data: |-
       {
         "newData": {
-          "description": "ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ggj ",
+          "description": "ggj ggj ggj  ",
           "shortDescription": "ggj",
           "age": 0,
           "cover3": "http://localhost:8510/public/2Q2.png"
@@ -35,6 +35,3 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
-
-docs: |
-  Ruta privada para crear un usuario

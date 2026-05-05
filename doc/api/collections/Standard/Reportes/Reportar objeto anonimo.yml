@@ -34,7 +34,7 @@ settings:
 
 docs: |
   Endpoint público
-  Reportar un objeto de forma anónima
+  Reportar un objeto de forma anónima, esta es la única operación que permite escribir contenido sin cuenta y está en pendiente revisión para bloquear según IP
   ## Recibe
   UUID del objeto a bloquear, type para saber que objeto es y text con la información del reporte
   ## Devuelve

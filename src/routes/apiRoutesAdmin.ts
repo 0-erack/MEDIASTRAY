@@ -116,6 +116,7 @@ routerAdmin.get("/user/:id", autenticarTokenApi, autenticarTokenSesion, autentic
 routerAdmin.get("/game/:id", autenticarTokenApi, autenticarTokenSesion, autenticarModerador, async (req: ExpressRequest<{ id: string; }>, res: ExpressResponse) => {
     return manejadorRuta(req, res, async () => {
         const resultado = await verJuego(req.params?.id as string, false, "", true, true);
+        //TODO: devolver todas las entidades dependientes
         if (!resultado) return res.status(404).json(fallo("Game not found", null, 404));
         return res.json(exito("Game data", resultado));
     });

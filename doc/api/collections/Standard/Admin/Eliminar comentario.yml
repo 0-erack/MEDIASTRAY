@@ -29,4 +29,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación para moderadores
+  Eliminar un comentario
+  ## Recibe
+  UUID del comentario a eliminar
+  ## Devuelve
+  Confirmación de que ha ido todo bien o error

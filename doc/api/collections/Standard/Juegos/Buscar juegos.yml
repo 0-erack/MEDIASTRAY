@@ -36,4 +36,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint público
+  Ver los juegos que coincidan con una búsqueda
+  ## Recibe
+  Palabras de búsqueda y opcionalmente la página y el orden en el que buscar
+  ## Devuelve
+  Datos de los juegos que coinciden con la búsqueda

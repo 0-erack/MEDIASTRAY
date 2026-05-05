@@ -113,4 +113,9 @@ settings:
   maxRedirects: 5
 
 docs: |
-  Ruta privada para crear un usuario
+  Endpoint privado con identificación
+  Alterar las adiciones de un juego reemplazando las anteriores
+  ## Recibe
+  Un array en additions con cada una de las adiciones, cada una es un objeto con las siguientes propiedades: type, subtitle, url, data. Se recomienda consultar la documentación. Este sería un body completo que cubre bastantes opciones
+  ## Devuelve
+  Adiciones del juego actuales
