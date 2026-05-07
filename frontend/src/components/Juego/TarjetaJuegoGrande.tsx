@@ -195,10 +195,10 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           })}
         </>)}
       </div>
-      <div>
+      {juego.publico && (<div>
         <Titulo magnitud={4}>{traduccion("titulos", "seccionComentarios")}</Titulo>
         {juego && (<CagradorComentarios idObjeto={juego.id} tipoObjeto="game" />)}
-      </div>
+      </div>)}
     </div>
   )
 }

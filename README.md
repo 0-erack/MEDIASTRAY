@@ -6,7 +6,7 @@ Run prod.sh or dev.sh after modifying all the ports and .env.example files. Then
 Check the [DOCUMENTATION](./doc/DOCUMENTACION.pdf) to know more
 
 ## TECH STACK
-Docker React NodeJS PostgreSQL SQL JS TS HTML CSS JSON MongoDB Redis Mongoose DrizzleORMGit VSCode Vite Drawio Grafana Prometheus NPM Bruno Zod Express Nodemon Tailwind ReactDom ReactHookForm ReactRouterDom DBeaver Nginx Multer React-markdown React-hook-formRemark GFM Capacitor Electron Bash Penpot DrawIO Excalidraw AWS ChelseaMarket Datatype SyneMono LexendDeca FunnelSans LMStudio VSCodium Mongosh Obsidian Excalidraw Gimp LibreOffice GitHub BCrypt Cors Dotenv FormData JWT Stream Unzipper Nodemon Eslint
+Docker React NodeJS PostgreSQL SQL JS TS HTML CSS JSON MongoDB Redis Mongoose DrizzleORMGit VSCode Vite Drawio Grafana Prometheus NPM Bruno Zod Express Nodemon Tailwind ReactDom ReactHookForm ReactRouterDom DBeaver Nginx Multer React-markdown React-hook-formRemark GFM Capacitor Electron Bash Penpot DrawIO Excalidraw AWS ChelseaMarket Datatype SyneMono LexendDeca FunnelSans LMStudio VSCodium Mongosh Obsidian Excalidraw Gimp LibreOffice GitHub BCrypt Cors Dotenv FormData JWT Stream Unzipper Nodemon Eslint ExpressRateLimit Helmet HPP
 
 
 ## License

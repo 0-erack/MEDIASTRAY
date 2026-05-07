@@ -3,6 +3,9 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import hpp from 'hpp';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { iniciarServicioLogs } from './src/connections/logs.js';
@@ -22,6 +25,19 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 const APP_PORT = process.env.BACKEND_PORT ?? 8510;
 const app = express();
 iniciarServicioLogs();
+
+//Limitador de requests por IP
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1000,
+  message: 'Too many requests, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
+
+app.use(helmet({contentSecurityPolicy: false,xDownloadOptions: false})); //Proteccion XSS
+app.use(hpp());
 
 await getConexionMongoose();
 
@@ -88,6 +104,7 @@ if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(proces
 app.use("/api/v1", apiRoutesArchivos);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10kb' })); 
 app.use("/api/v1", apiRoutesPriv);
 app.use("/api/v1/admin", apiRoutesAdmin);
 app.use("/api/v1", apiRoutes);
