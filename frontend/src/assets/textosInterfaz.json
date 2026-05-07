@@ -318,7 +318,8 @@
                 "tipBuscador": "Tip: search a tag or a genre to filter games",
                 "tipCreacionJuego1": "Fields you set on blank will be erased.",
                 "tipCreacionJuego2": "Fields marked with (*) are required. Have also into account that the game will be uploaded as private, you will be able to publish it once it's created, as well as adding game files and some extra info.",
-                "avisoCatastrofe1": "This action will may lead to CATASTROPHIC consequences (cascade delete)",
+                "avisoCatastrofe1": "This action will may lead to CATASTROPHIC consequences (cascade delete), however your games won't be deleted automatically.",
+                "avisoCatastrofe2": "This action will may lead to CATASTROPHIC consequences (cascade delete), all the additional information to this game will be deleted too.",
                 "explicarAdiciones1": "Additions are attachable pieces of information that you can add to your game, try to add one and see all the possibilities (regular users can have up to 10 per game, MAGNA users can have up to 30).",
                 "explicarAdiciones2": "Have into account that only the additions that remain here will be the ones displayed in your game, deleting one here will do so in your game.",
                 "explicarDestacados": "Here are shown the most popular games in the platform based on players, followers, comments and other features.",
@@ -337,7 +338,7 @@
                 "infoEnlace1": "Documentation",
                 "infoEnlace2": "Repository",
                 "infoEnlace3": "License",
-                "infoEnlace4": "API documentation",
+                "infoEnlace4": "API Documentation",
                 "infoPremium1": "MAGNA account advantages",
                 "infoPremium2": "MAGNA accounts can be bought for a specific number of months, until it expires, the user can enjoy the next advantages and features:",
                 "infoPremium3": "You will be able to write your comments and the descriptions of your games or your profile in Markdown format, it will be represented with this format while the Magna duration.",
@@ -350,7 +351,10 @@
                 "infoPremium10": "You will have acces via mail to the oficial Mediastray Newsletter (when it gets implemented)",
                 "infoPremium11": "Access to the MAGNA site",
                 "infoNormas1": "Rules",
-                "infoNormas2": "asdf"
+                "infoNormas2": "First, it is terminally forbidden to do any illegal activity or that contributes to crime. Also, the actual rules on the platform are: forbidden to post content that might result harmful, nocive, illegal, ofensive or with bad intentions, forbidden the massive use of multi-accounts, forbidden to report content without actual reason and prohibited the bullying to other users.",
+                "infoEnlace5": "PDF Documentation",
+                "infoDocumentacion1": "It is pending to embed the documentation directly on this page, divided by sections, multi language and with examples.",
+                "infoDocumentacion2": "In the meantime you can check this links"
             },
             "ES-es": {
                 "error404Explicacion": "Sitio no encontrado :(",
@@ -373,7 +377,8 @@
                 "tipBuscador": "Tip: busca un tag o un género para filtrar juegos",
                 "tipCreacionJuego1": "Los campos que dejes en blanco serán borrados.",
                 "tipCreacionJuego2": "Los campos marcados con (*) son obligatorios. Ten en cuenta también que el juego se subirá como privado, podrás establecerlo como público una vez se haya creado, así como añadir los archivos del juego y alguna información extra.",
-                "avisoCatastrofe1": "Esta acción podría llevar a consecuencias CATASTRÓFICAS (borrado en cascada)",
+                "avisoCatastrofe1": "Esta acción podría llevar a consecuencias CATASTRÓFICAS (borrado en cascada), sin embargo tus juegos no serán borrados automáticamente.",
+                "avisoCatastrofe2": "Esta acción podría llevar a consecuencias CATASTRÓFICAS (borrado en cascada), toda la información adicional al juego también se borrará.",
                 "explicarAdiciones1": "Las adiciones son piezas de información acoplables que puedes añadir a tu juego, prueba a añadir una para ver todas las posibilidades (los usuarios normales pueden tener hasta 10 por juego, los usuarios con MAGNA pueden hasta 30).",
                 "explicarAdiciones2": "Ten en cuenta que solo se mostrarán en la página del juego las adiciones que aparezcan aquí, borrar una también lo hará del juego original.",
                 "explicarDestacados": "Aquí se muestran los juegos más populares de la plataforma basado en jugadores, seguidores, comentarios y otras características.",
@@ -405,7 +410,10 @@
                 "infoPremium10": "Tendrás acceso por correo (cuando se implemente) a una Newsletter oficial de Mediastray.",
                 "infoPremium11": "Acceder a la página de MAGNA",
                 "infoNormas1": "Normas",
-                "infoNormas2": "Primero, está terminalmente prohibida cualquier actividad ilegal o que favorezca al crimen. Por otra parte, las normas propias de la plataforma son: prohibido publicar contenido que pueda resultar dañino, nocivo, ilegal, ofensivo o con mala intención, prohibido el uso masivo de multicuentas, prohibido reportar contenido sin razón real y prohibido el acoso a otros usuarios."
+                "infoNormas2": "Primero, está terminalmente prohibida cualquier actividad ilegal o que favorezca al crimen. Por otra parte, las normas propias de la plataforma son: prohibido publicar contenido que pueda resultar dañino, nocivo, ilegal, ofensivo o con mala intención, prohibido el uso masivo de multicuentas, prohibido reportar contenido sin razón real y prohibido el acoso a otros usuarios.",
+                "infoEnlace5": "Documentación en PDF",
+                "infoDocumentacion1": "Está pendiente incrustar la documentación directamente en esta página, seccionada, multi idioma y con ejemplos.",
+                "infoDocumentacion2": "De momento se pueden consultar estos enlaces"
             }
         },
         "formularios": {

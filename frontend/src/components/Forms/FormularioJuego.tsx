@@ -181,7 +181,7 @@ function FormularioJuego({ juegoEditar = null }: FormularioJuegoProps) {
         </>) : (<BotonFuncion titulo={traduccion("botones", "editarAdiciones")} funcion={() => setEditandoAdiciones(true)} tipo={0} ><Icono numero={8} color='var(--color-principal)' /></BotonFuncion>)}
         <BotonFuncion titulo={traduccion("botones", juegoEditar.publico ? "hacerPrivado" : "hacerPublico")} funcion={alternarPublico} tipo={0} ><Icono numero={juegoEditar.publico ? 14 : 13} color='var(--color-principal)' /></BotonFuncion>
         {intencionBorrar ? (<form onChange={(e: React.SyntheticEvent) => { setContrasegnaBorrar((e.target as HTMLInputElement).value) }}>
-          <CajaError>{traduccion("parrafos", "avisoCatastrofe1")}</CajaError>
+          <CajaError>{traduccion("parrafos", "avisoCatastrofe2")}</CajaError>
           <InputBasico placeholder="········" titulo={traduccion("formularios", "contrasegnaBorrarJuego")} nombre="contrasegna" ancho='30px' tipo="password" mensajeError={errorBorrarJuego ?? ''} valor={contrasegnaBorrar} />
           <BotonFuncion titulo={traduccion("botones", "borrarJuego").toUpperCase()} funcion={borrarJuegoBoton} hueco={false} tipo={2} ><Icono numero={10} color='var(--color-fondo1)' /></BotonFuncion>
         </form>)

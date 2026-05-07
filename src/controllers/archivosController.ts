@@ -49,24 +49,7 @@ export const subirArchivosJuego = async (idUsuario: string, idJuego: string, arc
         throw { message: "Couldn't save file", code: 500 };
     }
 
-
-
-
-
-
-
-
-
     //TODO: limpiar y sdk
-
-
-
-
-
-
-
-
-
 
 
     return "/games/" + idJuego;

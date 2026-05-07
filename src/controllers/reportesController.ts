@@ -15,7 +15,7 @@ const tamagnoPagina = parseInt(process.env.TAMAGNO_PAGINA as string) || 50;
  * @return reporte formateado
  */
 export const reporteAApi = (reporte: Record<string, any>): Record<string, any> => {
-    return {_id: undefined, text: reporte.texto, idReporter: reporte.idReportador, idReportee: reporte?.idReportado ?? '', type: reporte.tipo, id: reporte.id}
+    return {_id: undefined, fecha: reporte.fecha, text: reporte.texto, idReporter: reporte.idReportador, idReportee: reporte?.idReportado ?? '', type: reporte.tipo, id: reporte.id}
 }
 
 /**
@@ -55,7 +55,7 @@ export const reportarObjeto = async (id: string, tipo: "game"|"forum"|"comment"|
         if (yaReportado) throw { message: "User already reported this", code: 409, doubleReport: true }
     }
     const idNuevo = uuidv4();
-    await Reporte.insertOne({id: idNuevo, texto: texto, idReportador: idReportador ?? '', tipo: tipo, idReportado: id});
+    await Reporte.insertOne({id: idNuevo, texto: texto, idReportador: idReportador ?? '', tipo: tipo, idReportado: id, fecha: Date.now() + ""});
     agnadirLog("backend.log", `User ${idReportador} posted a report against ${tipo} ${id}`);
     return true;
 }

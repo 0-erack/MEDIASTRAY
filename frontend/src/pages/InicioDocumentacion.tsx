@@ -17,11 +17,14 @@ const InicioDocumentacion = memo(function InicioDocumentacion() {
   const { PUBLIC_URL } = useAjustes();
 
   return (
-    <>
+    <div className='text-center'>
       <Titulo><Icono numero={8} tamagno={16} color="var(--color-resaltado)" /> {traduccion("titulos", "documentacion")}</Titulo>
-      <p><EnlaceFuncion titulo={traduccion("parrafos", "infoEnlace4")} funcion={PUBLIC_URL + "/API.html"} /></p>
-      aaaaa
-    </>
+      <p>{traduccion("parrafos", "infoDocumentacion1")}</p>
+      <p>{traduccion("parrafos", "infoDocumentacion2")}</p>
+      <p><EnlaceFuncion pestagna='_blank' titulo={traduccion("parrafos", "infoEnlace4")} funcion={PUBLIC_URL + "/API.html"} /></p>
+      <p><EnlaceFuncion pestagna='_blank' titulo={traduccion("parrafos", "infoEnlace5")} funcion={PUBLIC_URL + "/DOCUMENTACION.pdf"} /></p>
+      <img className='relative z-10 sm:w-5xl w-lg m-auto mt-5' src={PUBLIC_URL + "/LogoE.png"} alt="Logo" style={{ imageRendering: 'pixelated' }} />
+    </div>
   )
 });
 
