@@ -152,7 +152,7 @@ export const borrarJuego = async (id: string, contrasegnaDuegno: string, idDuegn
     const db = getDB();
     const resultado = await db.delete(juegos).where(eq(juegos.id, id)).returning({ id: juegos.id });
     if (!resultado && !resultado?.length) throw { message: "Couldn't delete game", code: 500 }
-    await borrarArchivoJuego(juego.id, idDuegno ?? (juego.idCreador as string));
+    try {await borrarArchivoJuego(juego.id, idDuegno ?? (juego.idCreador as string));}catch(e){}
     //await mongoDelete("adicionJuego", {game: id}, true);
     await AdicionJuego.deleteMany({ game: id });
     //await mongoDelete("intermediario", {predicado: id}, true);
@@ -320,11 +320,11 @@ export const verJuegosSeguidos = async (id: string, pagina = 0): Promise<Array<P
     if (!usuario || usuario.nivelPublico === 2) throw { message: "User not found", code: 404 }
     if (isNaN(pagina) || pagina < 0) pagina = 0;
     const seguidos = await Intermediario.find({ sujeto: id, verbo: "sigue", extra: { juego: true } }).skip(pagina * tamagnoPagina).limit(tamagnoPagina);
-    if (!seguidos?.length) throw { message: "No entry found for this query", code: 404 }
+    if (!seguidos?.length) throw { message: "No entry found for this query1", code: 404 }
     const lista = seguidos.map((e) => e.predicado);
     const db = getDB();
     const juegosSeguidos = await db.select().from(juegos).where(inArray(juegos.id, lista)).orderBy(desc(juegos.cantidadSeguidores)).limit(tamagnoPagina);
-    if (!juegosSeguidos || !juegosSeguidos?.length) throw { message: "No entry found for this query", code: 404 }
+    if (!juegosSeguidos || !juegosSeguidos?.length) throw { message: "No entry found for this query2", code: 404 }
     return juegosSeguidos.map(formatearJuegoMiniatura);
 }
 
@@ -426,7 +426,7 @@ export const buscarJuegos = async (consulta: string, pagina = 0, orden = 0): Pro
     const juegosEncontrados = await db.select().from(juegos)
         .where(and(eq(juegos.publico, true), or(ilike(juegos.titulo, `%${consulta}%`), ilike(juegos.descripcionCorta, `%${consulta}%`), ilike(juegos.generos, `%${consulta}%`), ilike(juegos.tags, `%${consulta}%`))))
         .orderBy(posiblesOrdenes[orden]).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
-    if (!juegosEncontrados || !juegosEncontrados?.length)throw { message: "No entry found for this query", code: 404 }
+    if (!juegosEncontrados || !juegosEncontrados?.length)throw { message: "No entry found for this query3", code: 404 }
     return juegosEncontrados.map(formatearJuegoMiniatura);
 }
 

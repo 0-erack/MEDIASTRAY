@@ -53,7 +53,8 @@ services:
       INIT_TESTS: ${INIT_TESTS}
     volumes:
       - ./public:/var/www/public
-      - ./games:/var/www/games
+      #- ./games:/var/www/games
+      - ./games:/usr/src/app/games
     networks:
       - mediastray-network
     depends_on:

@@ -123,7 +123,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
    * Busca los juegos de ese usuario en x pagina para mostrarlos
    * @param pagina cual buscar
    */
-  const buscarJuegosAjenos = useCallback(async (pagina = 0) => {
+  const buscarJuegosAjenos = async (pagina = 0) => {
     if (!soyYo) {
       const juegos = await buscarJuegosUsuario(usuario.id, pagina);
       setJuegosCreados(juegos ?? []);
@@ -134,7 +134,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
         setJuegosCreados([]);
       }
     }
-  }, [usuario.id]);
+  }
 
   /**
    * Busca los juegos que sigue este usuario en x pagina para mostrarlos
@@ -170,10 +170,10 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
 
   useEffect(() => {
     buscarJuegosAjenos(datosPaginasJuegos.paginaMios);
-  }, [datosPaginasJuegos.paginaMios, usuario, soyYo]);
+  }, [datosPaginasJuegos.paginaMios, usuario, soyYo, misJuegos]);
   useEffect(() => {
     buscarJuegosAjenosSeguidos(datosPaginasJuegos.paginaSeguidos);
-  }, [datosPaginasJuegos.paginaSeguidos, usuario, soyYo]);
+  }, [datosPaginasJuegos.paginaSeguidos, usuario, soyYo, misJuegos]);
 
   return (
     <div className="tarjeta-usuario-grande xl:flex gap-4">
@@ -221,7 +221,7 @@ function TarjetaUsuarioGrande({ usuario, soyYo, esPremium }: TarjetaUsuarioGrand
       {editandoPerfil ? "" : (<div className='w-full'>
         {cargando && <ImgCargando />}
         <Titulo magnitud={4}>{traduccion("titulos", "juegosPropios")}</Titulo>
-        <div className={`pr-3 pb-4 border border-principal pl-2 overflow-y-scroll ${soyYo ? 'sm:max-h-[40vh]' : 'sm:max-h-[80vh]'}`}>
+        <div className={`pr-3 pb-4 border border-principal pl-2 overflow-y-scroll ${soyYo ? 'sm:max-h-[60vh]' : 'sm:max-h-[80vh]'}`}>
           <IndicadorPagina control={control} setValue={setValue} nombre="paginaMios" /><br />
           {juegosCreados.length ? juegosCreados.map((e, i) => {
             return (<TarjetaJuego key={i} juego={e} />)

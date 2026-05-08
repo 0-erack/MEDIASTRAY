@@ -34,7 +34,7 @@ export const getConexion = async ():Promise<any> => {
             }*/
             return cliente;
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             return null;
         }
     }
@@ -54,7 +54,7 @@ export const consulta = async (consulta:string, parametros:Array<any> = []):Prom
         //await cliente.end();
         return await resultado.rows ?? true;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         //return null;
         return [];
     }
@@ -84,7 +84,7 @@ const sigueConectado = async ():Promise<boolean> => {
         await cliente.query("SELECT 1 FROM USUARIOS LIMIT 1;");
         return true;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         cliente = null;
         getConexion();
         return false;

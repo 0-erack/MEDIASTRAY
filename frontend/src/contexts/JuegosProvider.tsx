@@ -32,13 +32,13 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
   /**
    * Descargar todos los juegos del usuario del backend desde 0
    */
-  const actualizarBackend = useCallback(async (usuarioActivo: boolean) => {
+  const actualizarBackend = async (usuarioActivo: boolean) => {
     setMisJuegos([]);
     if (usuarioActivo) { //Solo se pueden tener juegos teniendo la sesion iniciada
       const resultado = await verTodosMisJuegos();
       setMisJuegos(resultado ?? []);
     }
-  }, []);
+  }
 
   /**
    * Borrar un juego localmente
@@ -75,9 +75,9 @@ const JuegosProvider = ({ children }: { children: ReactNode }) => {
     return borrarJuegoLocal(id) ? agregarJuegoLocal(juego) : false;
   }, []);
 
-  const inicio = useCallback(async (elUsuario: any) => {
+  const inicio = async (elUsuario: any) => {
     await actualizarBackend(elUsuario ? true : false);
-  }, []);
+  }
   useEffect(() => {
     inicio(usuario);
   }, [usuario, tokenSesionActual]);

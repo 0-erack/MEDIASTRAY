@@ -33,7 +33,7 @@ export const cerrarSesion = async (id:string, token?:string) => {
  * @returns los datos de la sesion si el token es valido o null en caso de que no
  */
 export const verSesionToken = async (token:string):Promise<Record<string, any>|null> => {
-    const datos = await jwt.verify(token, process.env.JWT_SECRET);
+    const datos = await jwt.verify(token ?? "x", process.env.JWT_SECRET);
     if (!datos) return null;
     //const idGuardado = await redisGet("SESSION-TOKEN-" + token);
     //const tokenGuardado = await redisGet("SESSION-TOKEN-" + idGuardado);
@@ -68,6 +68,6 @@ export const crearTokenJuego = async (id:string, idCreador:string, datosExtra = 
  * @returns objeto json con los datos
  */
 export const comprobarTokenJuego = async (token: string): Promise<Record<string, any>> => {
-    const datos = await jwt.verify(token, process.env.JWT_SECRET);
+    const datos = await jwt.verify(token ?? "x", process.env.JWT_SECRET);
     return datos ?? null;
 }

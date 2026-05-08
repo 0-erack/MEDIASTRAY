@@ -86,7 +86,7 @@ function FormularioLogin({enviarPersonalizado}: FormularioLoginProps) {
         <EnlaceFuncion titulo={traduccion("formularios", "preguntaRegister")} funcion="/register" />
       </form>)}
       <div>
-        <img src={PUBLIC_URL + "/fotoLogin.png"} alt="login" className='lg:w-128 w-64 m-5 lg:ml-20 [image-rendering:pixelated]' />
+        <img src={PUBLIC_URL + "/fotoLogin.png"} className='lg:w-128 w-64 m-5 lg:ml-20 [image-rendering:pixelated]' />
       </div>
     </div>
   )

@@ -37,7 +37,7 @@ export const escribirArchivo = async (contenido:any, ruta:string, nombre:string,
         }
         return true;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return false;
     }
 }
@@ -54,7 +54,7 @@ export const agnadirEnArchivo = async (lineas:any, ruta:string, nombre:string):P
         await fs.appendFile(path.join(ruta, nombre), lineas + "\n", 'utf8');
         return true;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return false;
     }
 }
@@ -75,7 +75,7 @@ export const leerArchivo = async (rutaMasNombre:string, esTexto:boolean):Promise
         }
         return contenido;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return "";
     }
 }
@@ -95,7 +95,7 @@ export const borrarArchivo = async (rutaMasNombre:string):Promise<boolean> => {
         }
         return true;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return false;
     }
 }

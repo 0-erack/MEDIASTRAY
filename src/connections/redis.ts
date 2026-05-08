@@ -20,7 +20,7 @@ export const getConexion = async ():Promise<any> => {
                 console.log("DESCONECTADO redis");
             });
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             return null;
         }
     }
@@ -40,7 +40,7 @@ export const redisSet = async (clave:string, valor:string, ttl?:number):Promise<
         await cliente.set(clave, valor, {EX: ttl});
         return true;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return false;
     }
 }
@@ -55,7 +55,7 @@ export const redisGet = async (clave:string):Promise<string|null> => {
     try {
         return await cliente.get(clave);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return null;
     }
 }
@@ -71,7 +71,7 @@ export const redisDelete = async (clave:string):Promise<boolean> => {
         await cliente.del(clave);
         return true;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return false;
     }
 }

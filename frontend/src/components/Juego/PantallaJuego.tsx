@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import useAjustes from "../../hooks/useAjustes";
 import useIdioma from "../../hooks/useIdioma";
 import { Juego } from "../../types/Juego";
@@ -9,15 +9,30 @@ interface PantallaJuegoProps {
   juego: Partial<Juego>;
 }
 
-/**
- * Representa un archivo del juego
- * @param juego datos del juego
- */
 function PantallaJuego({ juego }: PantallaJuegoProps) {
   const { GAMES_URL } = useAjustes();
   const direccion = `${GAMES_URL}/${juego.id}/web/index.html`;
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const traduccion = useIdioma();
+
+  useEffect(() => {
+    const manejarEsc = (evento: KeyboardEvent) => {
+      if (evento.key === "Escape") {
+        console.log("quita")
+        // Esto quita el foco del iframe y libera el pointer-lock del canvas
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
+      }
+    };
+
+    // Escuchamos en window porque el evento sube desde el iframe al padre
+    window.addEventListener("keydown", manejarEsc);
+    
+    return () => {
+      window.removeEventListener("keydown", manejarEsc);
+    };
+  }, []);
 
   const alternarPantallaCompleta = () => {
     if (!iframeRef.current) return;
@@ -25,8 +40,6 @@ function PantallaJuego({ juego }: PantallaJuegoProps) {
       iframeRef.current?.focus();
     });
   }
-
-  //TODO: arreglar compatibilidades y adherir sdk
 
   return (
     <div>
@@ -36,6 +49,7 @@ function PantallaJuego({ juego }: PantallaJuegoProps) {
           src={direccion}
           tabIndex={0}
           className="w-full h-full border-0 min-h-[600px] block"
+          // Mantenemos tus atributos originales intactos para evitar errores de carga
           sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-forms"
           allow="fullscreen; pointer-lock; autoplay"
           title={juego.titulo}
@@ -55,4 +69,4 @@ function PantallaJuego({ juego }: PantallaJuegoProps) {
   );
 }
 
-export default PantallaJuego; 
+export default PantallaJuego;

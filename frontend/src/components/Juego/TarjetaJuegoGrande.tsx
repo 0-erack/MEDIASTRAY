@@ -65,8 +65,8 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
 
   const cargaInicial = useCallback(async () => {
     setCreadorEsPremium((await verPremium(juego.idCreador))?.active ?? false);
-    setUsuarioCreador(await verUsuario(juego.idCreador) ?? null);
-    setSiguiendo(await verSiguiendoJuego(juego.id));
+    setUsuarioCreador(esMio ? usuario : await verUsuario(juego.idCreador) ?? null);
+    if (!esMio) setSiguiendo(await verSiguiendoJuego(juego.id));
     setArchivos(await verArchivos(juego.id));
   }, []);
   useEffect(() => {

@@ -41,7 +41,7 @@ const CagradorComentarios = memo(function CagradorComentarios({ idObjeto, tipoOb
     <InputBasico titulo={traduccion("formularios", tipoObjeto === "comment" ? "contenidoRespuesta" : "contenidoComentario")} nombre="contenido" ancho='full' tipo="textarea" validador={(v) => !v || contenidoComentario(v)} objetoHook={register("contenido", { validate: (v) => !v || contenidoComentario(v) || traduccion("errores", "muyLargo") })} mensajeError={errors?.contenido?.message ?? ''} />
     {errors.contenido && <CajaError>{errors.contenido.message}</CajaError>}
     {(premium && datos.contenido) && (<MarkdownDisplay text={datos.contenido} />)}
-    <BotonFuncion titulo={traduccion("botones", "publicar")} funcion={crearComentario}><Icono numero={5} /></BotonFuncion>
+    {datos.contenido && (<BotonFuncion titulo={traduccion("botones", "publicar")} funcion={crearComentario}><Icono numero={5} /></BotonFuncion>)}
   </form>);
 
   /**

@@ -358,7 +358,7 @@ export const verSeguimientosUsuario = async (id: string, pagina = 0, seguidos = 
         await Intermediario.find({ sujeto: id, verbo: "sigue" }).skip(pagina * tamagnoPagina).limit(tamagnoPagina) :
         await Intermediario.find({ predicado: id, verbo: "sigue" }).skip(pagina * tamagnoPagina).limit(tamagnoPagina);
     //TODO: devolver toda la info de los usuarios
-    if (!lista.length) throw { message: "No entry found for this query", code: 404 }
+    if (!lista.length) throw { message: "No entry found for this query4", code: 404 }
     return lista.filter((e) => e.id != id).map((e) => {
         return { id: seguidos ? e.predicado : e.sujeto, nickname: seguidos ? e.extra.nicknameB ?? '' : e.extra.nicknameA ?? '' }
     });
@@ -380,7 +380,7 @@ export const buscarUsuarios = async (consulta: string, pagina = 0, orden = 0): P
     const usuariosEncontrados = await db.select({ id: usuarios.id, nombre: usuarios.nombre, urlFoto: usuarios.urlFoto, nickname: usuarios.nickname, cantidadSeguidores: usuarios.cantidadSeguidores })
         .from(usuarios).where(and(ne(usuarios.nivelPublico, 2), or(ilike(usuarios.nickname, `%${consulta}%`), ilike(usuarios.nombre, `%${consulta}%`))))
         .orderBy(posiblesOrdenes[orden]).limit(tamagnoPagina).offset(pagina * tamagnoPagina);
-    if (!usuariosEncontrados.length) throw { message: "No entry found for this query", code: 404 }
+    if (!usuariosEncontrados.length) throw { message: "No entry found for this query5", code: 404 }
     return usuariosEncontrados.map(formatearUsuarioMiniatura);
 }
 

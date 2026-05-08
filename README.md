@@ -10,5 +10,5 @@ Docker React NodeJS PostgreSQL SQL JS TS HTML CSS JSON MongoDB Redis Mongoose Dr
 
 
 ## License
-This project is licensed under the GNU General Public License v3.0.  
+This project is licensed under the MIT license.  
 See the [LICENSE](./LICENSE.txt) file for details.

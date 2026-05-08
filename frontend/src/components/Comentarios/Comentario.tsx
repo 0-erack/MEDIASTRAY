@@ -29,7 +29,7 @@ const Comentario = memo(function Comentario({ comentario }: ComentarioProps) {
   const traduccion = useIdioma();
   const [mostrandoRespuestas, setMostrandoRespuestas] = useState(false);
   const [gustado, setGustado] = useState(usuario ? comentario?.liked : false);
-  const [intencionBorrar, setIntencionBorrar] = useState(false);
+  const [intencionBorrar, setIntencionBorrar] = useState(0);
   const { borrarComentario, likeComentario } = useApiComentarios();
   const { lanzarMensaje } = useMensajes();
   const fechaComentario = useMemo(() => timestampAFecha(comentario?.date), [comentario?.date]);
@@ -55,13 +55,16 @@ const Comentario = memo(function Comentario({ comentario }: ComentarioProps) {
     if (intencionBorrar) {
       const resultado = await borrarComentario(comentario.id);
       if (resultado) {
-        location.reload(); //TODO: 
+        //location.reload();
+
+
+        setIntencionBorrar(2);
         lanzarMensaje(traduccion("mensajes", "comentarioBorrar"), 3);
       } else {
         lanzarMensaje(traduccion("errores", "error"), 2);
       }
     } else {
-      setIntencionBorrar(true);
+      setIntencionBorrar(1);
     }
   }, [intencionBorrar, comentario.id, traduccion]);
 
@@ -76,30 +79,33 @@ const Comentario = memo(function Comentario({ comentario }: ComentarioProps) {
   }, [buscarDuegno]);
 
   return (
-    <div className="border-2 border-principal p-3 m-3 my-6">
-      <div className="lg:flex gap-2 tiems-start *:my-2 flex-wrap">
-        {duegno && (<TarjetaUsuario usuario={duegno} destacado={comentario.featured} />)}
-        {usuario && (<>
-          {(typeof usuario === "object" && comentario.owner !== usuario.id && !comentario.fromMe) ? (<>
-            <BotonFuncion funcion={alternarMeGusta} titulo={traduccion("botones", gustado ? "noMeGusta" : "meGusta")}><Icono numero={gustado ? 18 : 19} /></BotonFuncion>
-            <ElementoReporte idObjeto={comentario.id} tipoObjeto="comment" />
-          </>) : (<>
-            <BotonFuncion tipo={2} funcion={borrar} titulo={intencionBorrar ? traduccion("botones", "borrar").toUpperCase() : traduccion("botones", "borrar")}><Icono numero={10} color="var(--color-error)" /></BotonFuncion>
+    <>
+      {intencionBorrar < 2 && (<div className="border-2 border-principal p-3 m-3 my-6">
+        <div className="lg:flex gap-2 tiems-start *:my-2 flex-wrap">
+          {duegno && (<TarjetaUsuario usuario={duegno} destacado={comentario.featured} />)}
+          {usuario && (<>
+            {(typeof usuario === "object" && comentario.owner !== usuario.id && !comentario.fromMe) ? (<>
+              <BotonFuncion funcion={alternarMeGusta} titulo={traduccion("botones", gustado ? "noMeGusta" : "meGusta")}><Icono numero={gustado ? 18 : 19} /></BotonFuncion>
+              <ElementoReporte idObjeto={comentario.id} tipoObjeto="comment" />
+            </>) : (<>
+              <BotonFuncion tipo={2} funcion={borrar} titulo={intencionBorrar ? traduccion("botones", "borrar").toUpperCase() : traduccion("botones", "borrar")}><Icono numero={10} color="var(--color-error)" /></BotonFuncion>
+            </>)}
           </>)}
-        </>)}
-        <span>
-          {fechaComentario ?? ''} <Icono numero={5} color='var(--color-principal)' /> {comentario.responsesAmount ?? 0} <Icono numero={18} color='var(--color-principal)' /> {comentario?.likesAmount ?? 0}
+          <span>
+            {fechaComentario ?? ''} <Icono numero={5} color='var(--color-principal)' /> {comentario.responsesAmount ?? 0} <Icono numero={18} color='var(--color-principal)' /> {comentario?.likesAmount ?? 0}
             {(esAdmin > 0 && usuario) && (<p>{comentario.id}</p>)}
-        </span>
-      </div>
-      {comentario?.featured ? (<MarkdownDisplay text={comentario?.content ?? ''} />) : (<p>{comentario?.content ?? ''}</p>)}
+          </span>
+        </div>
+        {comentario?.featured ? (<MarkdownDisplay text={comentario?.content ?? ''} />) : (<p>{comentario?.content ?? ''}</p>)}
 
-      <div className={mostrandoRespuestas ? "pl-3 mt-6" : ''}>
-        {(mostrandoRespuestas) ? (<CagradorComentarios tipoObjeto="comment" idObjeto={comentario.id} />) : ''}
-        {(!mostrandoRespuestas) ? (<BotonFuncion funcion={() => setMostrandoRespuestas(true)} titulo={traduccion("botones", "mostrarRespuestas")} />) : ''}
-      </div>
+        <div className={mostrandoRespuestas ? "pl-3 mt-6" : ''}>
+          {(mostrandoRespuestas) ? (<CagradorComentarios tipoObjeto="comment" idObjeto={comentario.id} />) : ''}
+          {(!mostrandoRespuestas) ? (<BotonFuncion funcion={() => setMostrandoRespuestas(true)} titulo={traduccion("botones", "mostrarRespuestas")} />) : ''}
+        </div>
 
-    </div>
+      </div>)}
+
+    </>
   )
 });
 
