@@ -50,12 +50,11 @@ if (process.env.INIT_TESTS === "true") {
 }
 if (process.env.FREE_CORS) {
     app.use(cors({
-        origin: (origin, callback) => callback(null, true),
-        //origin: true,
+        origin: true,
         credentials: true,
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-session-token', 'X-auth-api', 'Accept', 'X-Auth-Session'],
+        allowedHeaders: '*',
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-        optionsSuccessStatus: 204
+        //optionsSuccessStatus: 204
     }));
 } else {
     if (process.env.NODE_ENV === "DEVELOPMENT") { //Código solo para development
@@ -119,8 +118,8 @@ app.use("/games", (req, res, next) => {
     next();
 });
 app.use((req, res, next) => {
-    res.set('Cross-Origin-Opener-Policy', 'same-origin');
-    res.set('Cross-Origin-Embedder-Policy', 'require-corp');
+    //res.set('Cross-Origin-Opener-Policy', 'same-origin');
+    //res.set('Cross-Origin-Embedder-Policy', 'require-corp');
     res.set('Cross-Origin-Embedder-Policy', 'credentialless');
     next();
 });
@@ -128,7 +127,13 @@ if (process.env.SERVE_STATIC === "true") app.use("/public", express.static(proce
 if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(process.env.GAMES_FILES_PATH ?? './games'));
 //Peticiones a la API (se gestionan manualmente por el servidor)
 
-app.use(helmet({contentSecurityPolicy: false,xDownloadOptions: false})); //Proteccion XSS
+//app.use(helmet({contentSecurityPolicy: false, xDownloadOptions: false, })); //Proteccion XSS
+app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }, 
+    xDownloadOptions: false
+    //permissionsPolicy: false
+}));
 app.use(hpp());
 
 app.use("/api/v1", apiRoutesArchivos);
