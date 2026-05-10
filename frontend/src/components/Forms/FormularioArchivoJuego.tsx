@@ -81,6 +81,7 @@ function FormularioArchivoJuego({ actualizar, previos, idJuego }: FormularioArch
       {cargando && <ImgCargando />}
       <p>{traduccion("parrafos", "infoArchivos1")}</p>
       <p>{traduccion("parrafos", "infoArchivos2")}</p>
+      <p>{traduccion("parrafos", "infoArchivos3")}</p>
       {error && <CajaError>{error}</CajaError>}
       {previos.map((e, i) => {
         return (<TarjetaArchivo key={i} archivo={e} funcionEliminar={borrarArchivo} />)
