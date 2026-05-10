@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { createContext, ReactNode, useCallback, useMemo, useState } from 'react';
 import MensajeFlotante from '../components/Principal/MensajeFlotante';
+import { getUUID } from '../libraries/datosFalsos';
 interface Mensaje {
   mensaje: string;
   //tipo: null | 0 | 1 | 2 | 3 | 4;
@@ -44,7 +45,8 @@ const MensajesProviders = ({ children }: { children: ReactNode }) => {
    * @param children
    */
   const lanzarMensaje = useCallback((mensaje: string, tipo = 0, children?: React.ReactNode) => {
-    const id = self.crypto.randomUUID();
+    //const id = self.crypto.randomUUID();
+    const id = getUUID();
     setMensajesPendientes((prev) => [...prev, { mensaje, tipo: tipo ?? 0, id, children: children ?? undefined }]);
     mandarQuitar(id);
   }, [mandarQuitar]);
