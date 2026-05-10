@@ -1,0 +1,44 @@
+info:
+  name: 21 Ver comentario
+  type: http
+  seq: 20
+
+http:
+  method: GET
+  url: "{{url_backend}}/comment/1/game_{{uuid_item1}}?page=0&pageSub=0"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  params:
+    - name: page
+      value: "0"
+      type: query
+    - name: pageSub
+      value: "0"
+      type: query
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |
+  Endpoint público
+  Ver un comentario
+  ## Recibe
+  El tipo de búsqueda, _ y el UUID a buscar, y opcionalmente la página en la que buscar y la página en la que ver las respuestas
+  ## Devuelve
+  Datos del comentario y sus respuestas

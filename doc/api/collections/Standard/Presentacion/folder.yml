@@ -14,6 +14,14 @@ request:
     - name: X-auth-api
       value: "{{api_token}}"
   auth: inherit
+  scripts:
+    - type: after-response
+      code: |-
+        const sessionToken = res.getBody()?.data?.sessionToken;
+
+        if (sessionToken) {
+          bru.setEnvVar("session_token", sessionToken);
+        }
 
 docs:
   content: |-

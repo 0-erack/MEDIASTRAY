@@ -1,0 +1,35 @@
+info:
+  name: 5 Editar usuario simple
+  type: http
+  seq: 5
+
+http:
+  method: PATCH
+  url: "{{url_backend}}/user/edit"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "newData": {
+          "description": "aasd",
+          "urlPhoto": "https://fotos.com/2"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

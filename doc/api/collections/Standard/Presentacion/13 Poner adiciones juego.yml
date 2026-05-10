@@ -1,0 +1,121 @@
+info:
+  name: 13 Poner adiciones juego
+  type: http
+  seq: 12
+
+http:
+  method: PUT
+  url: "{{url_backend}}/game/additions/{{uuid_item1}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "additions": [
+          {
+            "type": "trailer",
+            "subtitle": "trailer salida",
+            "url": "https://www.w3schools.com/html/mov_bbb.mp4",
+            "data": {
+              "iframe": "<iframe width='560' height='315' src='https://www.youtube.com/embed/AWZUa6lghIY?si=QMMiyBdzh5f9LjLV' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>"
+            }
+          },
+          {
+            "type": "site",
+            "subtitle": "pagina oficial",
+            "url": "https://pagina.com",
+            "data": {
+              
+            }
+          },
+          {
+            "type": "site",
+            "subtitle": "red social",
+            "url": "https://redsocial.com/23",
+            "data": {
+              "icon": "http://localhost:8520/public/nopfp.png"
+            }
+          },
+          {
+            "type": "ost",
+            "subtitle": "soundtrack",
+            "url": "https://musica.com/34",
+            "data": {
+              "cover": "http://localhost:8520/public/nopfp.png"
+            }
+          },
+          {
+            "type": "images",
+            "subtitle": "carrusel 1",
+            "url": "http://hola.com",
+            "data": {
+              "images": ["https://www.w3schools.com/html/pic_trulli.jpg", "https://www.w3schools.com/html/img_girl.jpg", "https://www.w3schools.com/html/img_chania.jpg"]
+            }
+          },
+          {
+            "type": "requirements",
+            "subtitle": "para pc",
+            "url": "https://info.com/2",
+            "data": {
+              "specs": "soiudf oasiudf usdfpasd"
+            }
+          },
+          {
+            "type": "event",
+            "subtitle": "evento nose",
+            "url": "https://eventos.com/3",
+            "data": {
+              "info": "aosd8ifaosdf",
+              "image": "http://localhost:8520/public/nopfp.png"
+            }
+          },
+          {
+            "type": "text",
+            "subtitle": "cosas 1",
+            "url": "https://eventose.com/3",
+            "data": {
+              "text": "asdifsdlof"
+            }
+          },
+          {
+            "type": "text",
+            "subtitle": "cosas 2",
+            "data": {
+              "text": "aldskfjhsdf"
+            }
+          },
+          {
+            "type": "mention",
+            "subtitle": "agradecimientos",
+            "url": "https://gente.com/3",
+            "data": {
+              "nickname": "holaque1"
+            }
+          }
+        ]
+      }
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |
+  Endpoint privado con identificación
+  Alterar las adiciones de un juego reemplazando las anteriores
+  ## Recibe
+  Un array en additions con cada una de las adiciones, cada una es un objeto con las siguientes propiedades: type, subtitle, url, data. Se recomienda consultar la documentación. Este sería un body completo que cubre bastantes opciones
+  ## Devuelve
+  Adiciones del juego actuales

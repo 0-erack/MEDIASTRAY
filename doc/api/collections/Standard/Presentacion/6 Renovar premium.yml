@@ -1,0 +1,44 @@
+info:
+  name: 6 Renovar premium
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{url_backend}}/premium/renew"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "months": 12,
+        "location": "es",
+        "payment": {
+          "test": "a"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |
+  Endpoint privado con identificación
+  Renueva el premium al usuario actual (esta ruta procesaría el pago pero actualmente no está implementado)
+  ## Recibe
+  Cantidad de meses en months, location para la localización en ISO y objeto payment para el pago
+  ## Devuelve
+  Última fecha de caducidad del premium

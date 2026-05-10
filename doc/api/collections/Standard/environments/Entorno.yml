@@ -9,10 +9,12 @@ variables:
   - secret: true
     name: session_token
   - name: uuid_item1
-    value: ""
+    value: b535e82d-5a11-49ad-a6c8-03307d7499d8
   - secret: true
     name: test
   - secret: true
     name: api_token
+  - name: uuid_item2
+    value: ""
   - name: uuid_item2
     value: ""

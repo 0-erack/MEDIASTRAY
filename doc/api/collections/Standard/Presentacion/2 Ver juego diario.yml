@@ -1,0 +1,35 @@
+info:
+  name: 2 Ver juego diario
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{url_backend}}/game/daily"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |
+  Endpoint público
+  Ver el juego diario actual, esta acción podría provocar que se calcule
+  ## Devuelve
+  Datos del juego diario actual
