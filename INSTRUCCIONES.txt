@@ -1,0 +1,3 @@
+poner url con https del dns en .env.example y frontend.env.example
+bash down.sh ; docker system prune -a -f --volumes ; git pull ; npm install ; cd frontend ; npm install ; cd .. ; bash prod.sh
+acceder al dns con el https y clicar advanced y continue

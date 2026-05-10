@@ -14,6 +14,8 @@ import apiRoutesArchivos from "./src/routes/apiRoutesArchivos.js";
 import apiRoutesPriv from "./src/routes/apiRoutesPriv.js";
 import { abrirServidorMetricas } from './src/servidorMetricas.js';
 import { hacerTestsConexiones } from './src/tests/tests.js';
+import https from 'https';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -95,8 +97,8 @@ if (process.env.FREE_CORS) {
 //Rutas con contenido estático
 app.use("/games", (req, res, next) => {
     const p = req.path;
-    //res.set('Cross-Origin-Opener-Policy', 'same-origin');
-    //res.set('Cross-Origin-Embedder-Policy', 'require-corp');
+    res.set('Cross-Origin-Opener-Policy', 'same-origin');
+    res.set('Cross-Origin-Embedder-Policy', 'require-corp');
     if (p.endsWith('.js.gz') || p.endsWith('.jsgz')) {
         res.set('Content-Encoding', 'gzip');
         res.set('Content-Type', 'application/javascript');
@@ -179,6 +181,11 @@ app.use((req, res) => {
 
 if (process.env.INIT_METRICS === "true") try { abrirServidorMetricas(app); } catch (e) { console.log("No se han habierto los servicios de métricas"); } //Abrir el servidor de métricas
 
-app.listen(APP_PORT, () => {
-    console.log(`Ejecutandose en ${APP_PORT}`);
+const httpsOptions = {
+    key: fs.readFileSync(path.join(process.cwd(), 'key.pem')),
+    cert: fs.readFileSync(path.join(process.cwd(), 'cert.pem'))
+};
+
+https.createServer(httpsOptions, app).listen(443, () => {
+    console.log("HTTPS Server running on port 443");
 });

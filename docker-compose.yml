@@ -37,8 +37,8 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-      #- "8510:8510"
-      - "${BACKEND_PORT}:8510"
+      #- "443:8510"
+      - "${BACKEND_PORT}:443"
     environment:
       #NODE_ENV: ${NODE_ENV}
       NODE_ENV: PRODUCTION

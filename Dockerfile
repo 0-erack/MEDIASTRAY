@@ -20,7 +20,7 @@ RUN npm run build
 #RUN npm run build --prefix frontend
 COPY frontend/dist ./frontend/dist
 
-EXPOSE 8510
+EXPOSE 443
 
 CMD npx drizzle-kit push && node dist/server.js
 #CMD ["node", "dist/server.js"]
