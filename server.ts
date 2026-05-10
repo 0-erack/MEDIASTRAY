@@ -97,8 +97,8 @@ if (process.env.FREE_CORS) {
 //Rutas con contenido estático
 app.use("/games", (req, res, next) => {
     const p = req.path;
-    res.set('Cross-Origin-Opener-Policy', 'same-origin');
-    res.set('Cross-Origin-Embedder-Policy', 'require-corp');
+    //res.set('Cross-Origin-Opener-Policy', 'same-origin');
+    //res.set('Cross-Origin-Embedder-Policy', 'require-corp');
     if (p.endsWith('.js.gz') || p.endsWith('.jsgz')) {
         res.set('Content-Encoding', 'gzip');
         res.set('Content-Type', 'application/javascript');
@@ -120,7 +120,7 @@ app.use("/games", (req, res, next) => {
 app.use((req, res, next) => {
     //res.set('Cross-Origin-Opener-Policy', 'same-origin');
     //res.set('Cross-Origin-Embedder-Policy', 'require-corp');
-    res.set('Cross-Origin-Embedder-Policy', 'credentialless');
+    //res.set('Cross-Origin-Embedder-Policy', 'credentialless');
     next();
 });
 if (process.env.SERVE_STATIC === "true") app.use("/public", express.static(process.env.PUBLIC_FILES_PATH ?? './public'));
