@@ -4,8 +4,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
-import helmet from 'helmet';
-import hpp from 'hpp';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { iniciarServicioLogs } from './src/connections/logs.js';
@@ -128,13 +126,13 @@ if (process.env.SERVE_STATIC === "true") app.use("/games", express.static(proces
 //Peticiones a la API (se gestionan manualmente por el servidor)
 
 //app.use(helmet({contentSecurityPolicy: false, xDownloadOptions: false, })); //Proteccion XSS
-app.use(helmet({
+/*app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginResourcePolicy: { policy: "cross-origin" }, 
     xDownloadOptions: false
     //permissionsPolicy: false
 }));
-app.use(hpp());
+app.use(hpp());*/
 
 app.use("/api/v1", apiRoutesArchivos);
 app.use(express.json());
