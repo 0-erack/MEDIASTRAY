@@ -15,7 +15,7 @@ import Icono from './Icono';
  */
 function Cabecera() {
 
-  const { idiomaActual, idiomasAdmitidos, cambiarIdiomaActual, textosInterfazEnlacesCabecera, PUBLIC_URL } = useAjustes();
+  const { idiomaActual, idiomasAdmitidos, cambiarIdiomaActual, textosInterfazEnlacesCabecera, PUBLIC_URL, MANTENIMIENTO } = useAjustes();
   const { usuario, esAdmin } = useSesion();
   const navegar = useNavigate();
   const traduccion = useIdioma();
@@ -50,6 +50,7 @@ function Cabecera() {
         <div className='shrink-0 group relative min-w-50 max-w-60 h-auto m-2 sm:m-2'>
           <img src={imgLogo ?? PUBLIC_URL + "/logoA.png"} className="w-full cursor-pointer block group-hover:hidden" style={{ imageRendering: 'pixelated' }} alt="Logo" onClick={() => navegar("/")} />
           <img src={imgLogoHover ?? PUBLIC_URL + "/logoAhover.png"} className="w-full cursor-pointer hidden group-hover:block" style={{ imageRendering: 'pixelated' }} alt="Logo Hover" onClick={() => navegar("/")} />
+          {MANTENIMIENTO ? (<p className='text-error'>{traduccion("extra", "mantenimiento")}</p>) : ''}
         </div>
 
         <div className='hidden sm:block'>

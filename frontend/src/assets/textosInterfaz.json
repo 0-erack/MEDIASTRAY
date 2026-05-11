@@ -750,7 +750,8 @@
                 "labelCaducidad": "Expiration date:",
                 "labelCantidad": "Amount:",
                 "indicadorPago": "Credit/debit card data",
-                "juegoEsPrivado": "This game is private"
+                "juegoEsPrivado": "This game is private",
+                "mantenimiento": "The app is currently under maintainment, please wait"
             },
             "ES-es": {
                 "labelSeguidos": "Seguidos:",
@@ -760,7 +761,8 @@
                 "labelCaducidad": "Fecha de caducidad:",
                 "labelCantidad": "Cantidad:",
                 "indicadorPago": "Datos de la tarjeta de crédito/débito",
-                "juegoEsPrivado": "Este juego es privado"
+                "juegoEsPrivado": "Este juego es privado",
+                "mantenimiento": "La app se encuentra ahora mismo bajo mantenimiento, por favor espere"
             }
         },
         "mensajes": {

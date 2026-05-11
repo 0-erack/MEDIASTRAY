@@ -16,6 +16,7 @@ interface AjustesContextType {
   textosInterfaz: any;
   textosInterfazEnlacesCabecera: any;
   FRECUENCIA_ACTUALIZACION: number;
+  MANTENIMIENTO: boolean;
   cambiarIdiomaActual: (nuevo: string) => Promise<void>;
 }
 
@@ -39,6 +40,7 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
   const TAMAGNO_PAGINA = import.meta.env.VITE_TAMAGNO_PAGINA ?? ((window as any).process?.env?.REACT_APP_TAMAGNO_PAGINA ?? "50");
   //Milisegundos de intervalo de actualizacion en algunas llamadas a la api
   const FRECUENCIA_ACTUALIZACION = import.meta.env.VITE_FRECUENCIA_ACTUALIZACION ?? ((window as any).process?.env?.REACT_APP_FRECUENCIA_ACTUALIZACION ?? 1000);
+  const MANTENIMIENTO = import.meta.env.MANTENIMIENTO ?? ((window as any).process?.env?.MANTENIMIENTO ?? false);
 
   //Texto indicador con el idioma que esta actualmente elegido
   const [idiomaActual, setIdiomaActual] = useState("");
@@ -90,7 +92,7 @@ const AjustesProvider = ({ children }: { children: ReactNode }) => {
 
   const exportaciones: AjustesContextType = useMemo(() => ({
     fallo, idiomaActual, idiomasAdmitidos, API_URL, API_KEY, PUBLIC_URL, GAMES_URL,
-    textosInterfaz: textos, TAMAGNO_PAGINA: parseInt(TAMAGNO_PAGINA), FRECUENCIA_ACTUALIZACION: parseInt(FRECUENCIA_ACTUALIZACION),
+    textosInterfaz: textos, TAMAGNO_PAGINA: parseInt(TAMAGNO_PAGINA), FRECUENCIA_ACTUALIZACION: parseInt(FRECUENCIA_ACTUALIZACION), MANTENIMIENTO,
     textosInterfazEnlacesCabecera: (textos as any).enlacesCabecera,
     cambiarIdiomaActual
   }), [fallo, idiomaActual, cambiarIdiomaActual]);
