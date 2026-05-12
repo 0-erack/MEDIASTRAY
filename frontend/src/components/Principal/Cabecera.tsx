@@ -89,14 +89,27 @@ function Cabecera() {
               </BotonNavegacion>
             </div>
           </div>}
-          <div id="cambiar-idioma *:block ml-auto">
-            <select name="selector-idioma" id="selector-idioma" className='cursor-pointer'>
-              <option value={idiomaActual}>{idiomaActual}</option>
-              {idiomasAdmitidos?.map((e, i) => {
-                if (e !== idiomaActual) return (<option key={i} value={e} onChange={() => handlerCambiarIdioma(e)} onClick={() => handlerCambiarIdioma(e)}>{e}</option>)
-              })}
-            </select>
-          </div>
+          <div id="cambiar-idioma" className="block ml-auto">
+  <select 
+    name="selector-idioma" 
+    id="selector-idioma" 
+    className='cursor-pointer'
+    value={idiomaActual}
+    onChange={(e) => handlerCambiarIdioma(e.target.value)}
+  >
+    <option value={idiomaActual}>{idiomaActual}</option>
+    {idiomasAdmitidos?.map((e, i) => {
+      if (e !== idiomaActual) {
+        return (
+          <option key={i} value={e}>
+            {e}
+          </option>
+        );
+      }
+      return null;
+    })}
+  </select>
+</div>
         </div>
 
       </header>
