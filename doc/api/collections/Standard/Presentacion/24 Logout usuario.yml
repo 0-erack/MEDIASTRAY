@@ -1,0 +1,38 @@
+info:
+  name: 24 Logout usuario
+  type: http
+  seq: 23
+
+http:
+  method: DELETE
+  url: "{{url_backend}}/user/logout"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setEnvVar("session_token", ' ');
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Endpoint privado con identificación
+  Elimina la sesión actual del usuario

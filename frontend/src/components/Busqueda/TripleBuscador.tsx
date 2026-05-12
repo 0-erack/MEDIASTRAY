@@ -135,8 +135,8 @@ useEffect(() => {
         {datos.buscarJuegos && (
           <div className="flex-1 p-1 min-w-0 overflow-hidden text-center justify-center border border-principal mb-5">
             <Titulo magnitud={3}><Icono numero={3} color="var(--color-principal)" /> {traduccion("titulos", "parteJuegos")}</Titulo>
-            {juegosCargados.length ? (<div className="text-left">
-              {juegosCargados.map((e, i) => (<TarjetaJuego key={i} juego={e} />))}
+            {juegosCargados.length ? (<div className="text-left *:my-4 *:border *:border-principal">
+              {juegosCargados.map((e, i) => (<TarjetaJuego key={i} juego={e} mediano={true} />))}
             </div>) : (<p>{traduccion("errores", "juegoNoEncontrado")}</p>)}
           </div>
         )}

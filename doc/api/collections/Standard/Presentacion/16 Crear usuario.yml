@@ -1,0 +1,54 @@
+info:
+  name: 16 Crear usuario
+  type: http
+  seq: 15
+
+http:
+  method: POST
+  url: "{{url_backend}}/user/create"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "user": {
+          "email": "usuariotest2@gma.co",
+          "name": "Usuario test dos",
+          "nickname": "usuariotest2",
+          "password": "Ja.12121212",
+          "birthdate": "1473252289389"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Check ok status", function() {
+          expect(res.getBody()).to.have.property('ok', true);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Endpoint público
+  Registrarse en la app como un nuevo usuario
+  ## Recibe
+  Datos de registro: email, name, nickname, password, birthdate
+  ## Devuelve
+  Token de sesión y datos del usuario creado

@@ -18,17 +18,17 @@ const TarjetaUsuario = memo(function TarjetaUsuario({usuario, destacado = false}
     const traduccion = useIdioma();
 
   return (
-    <div className={`border ${destacado ? 'border-info1' : 'border-principal'} m-2 pr-1 mt-4 h-15 flex bg-fondo-especial-1`}>
+    <div className={`border ${destacado ? 'border-info1' : 'border-principal'} m-2 pr-1 mt-4 h-15 flex bg-fondo-especial-1 min-w-[130px]`}>
         <span>
             <img src={usuario.urlFoto ?? "#"} alt={traduccion("errores", "nopfp")} className='h-auto w-14 max-w-50 aspect-square object-cover'/>
         </span>
-        <span className="p-1 ml-2 text-left">
+        <span className="p-1 ml-2 text-left overflow-y-hidden">
             <div>
                 <EnlaceFuncion titulo={usuario.nickname} funcion={"/user/" + usuario.nickname} color={destacado ? 2 : 1} />
-                <span>{" ("}{usuario.cantidadSeguidores}{")"}</span>
             </div>
             <div>
                 <span>{usuario.nombre}</span>
+                <span>{" ("}{usuario.cantidadSeguidores}{")"}</span>
             </div>
         </span>
     </div>

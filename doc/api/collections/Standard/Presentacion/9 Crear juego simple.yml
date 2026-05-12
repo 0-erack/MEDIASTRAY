@@ -1,0 +1,59 @@
+info:
+  name: 9 Crear juego simple
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: "{{url_backend}}/game/create"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "game": {
+          "title": "Juego test",
+          "cover1": "https://placehold.co/460x215",
+          "cover2": "https://placehold.co/600x900",
+          "cover3": "http://localhost:8510/public/2Q2.png",
+          "public": false,
+          "version": "v1.0.0",
+          "description": "## titulo \n adl asdf asd flaskdjfh lah adl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lahadl asdf asd flaskdjfh lah",
+          "shortDescription": "aksdfh asdf hasd fhasdj fghaksjdgf asdjhfg h",
+          "genres": ["aaaa", "bbbb", "cccc"],
+          "tags": ["dddd", "eeee", "ffff"],
+          "languages": ["ES-es", "EN-us"],
+          "warnings": ["peligro"],
+          "price": "3.00 €",
+          "age": 0
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const data = res.getBody()?.data;
+        if (data && data?.game && data?.game?.id) {
+          bru.setEnvVar("uuid_item1", data.game.id);
+        } else {
+          bru.setEnvVar("uuid_item1", "nada");
+          console.log("Property not found in response body");
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

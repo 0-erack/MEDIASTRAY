@@ -43,7 +43,7 @@ function PantallaJuego({ juego }: PantallaJuegoProps) {
 
   return (
     <div>
-      <div className="w-full h-max min-h-[600px] bg-black my-5 relative">
+      <div className="w-full h-max min-h-[620px] bg-black my-5 relative">
         <iframe
           ref={iframeRef}
           src={direccion}

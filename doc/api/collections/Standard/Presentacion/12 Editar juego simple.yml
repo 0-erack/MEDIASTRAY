@@ -1,0 +1,37 @@
+info:
+  name: 12 Editar juego simple
+  type: http
+  seq: 11
+
+http:
+  method: PATCH
+  url: "{{url_backend}}/game/edit/{{uuid_item1}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "newData": {
+          "description": "ggj ggj ggj  ",
+          "shortDescription": "ggj",
+          "age": 0,
+          "cover3": "http://localhost:8510/public/2Q2.png"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,41 @@
+info:
+  name: 19 Seguir juego
+  type: http
+  seq: 18
+
+http:
+  method: POST
+  url: "{{url_backend}}/game/follow"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  body:
+    type: json
+    data: |-
+      {
+        "id": "{{uuid_item1}}",
+        "amount": 1
+      }
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |
+  Endpoint privado con identificación
+  Seguir o dejar de seguir un juego
+  ## Recibe
+  UUID del juego a seguir, y el seguimiento en amount con -1, 0 o 1
+  ## Devuelve
+  Estado actual del seguimiento al juego

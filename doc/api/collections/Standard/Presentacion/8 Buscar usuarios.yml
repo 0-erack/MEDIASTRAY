@@ -1,0 +1,44 @@
+info:
+  name: 8 Buscar usuarios
+  type: http
+  seq: 8
+
+http:
+  method: GET
+  url: "{{url_backend}}/user/search/test?page=0&order=2"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+    - name: X-session-token
+      value: "{{session_token}}"
+    - name: X-auth-api
+      value: "{{api_token}}"
+  params:
+    - name: page
+      value: "0"
+      type: query
+    - name: order
+      value: "2"
+      type: query
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: "{{session_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |
+  Endpoint público
+  Ver los usuarios que coincidan con la búsqueda
+  ## Recibe
+  Texto a usar como búsqueda y opcionalmente la página y el tipo de orden
+  ## Devuelve
+  Usuarios que coinciden con la búsqueda

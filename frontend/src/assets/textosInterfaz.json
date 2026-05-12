@@ -608,7 +608,7 @@
                 "usuarioNoEncontrado": "User not found",
                 "juegoNoEncontrado": "Game not found",
                 "foroNoEncontrado": "Forum not found",
-                "nopfp": "No user profile photo",
+                "nopfp": "No photo",
                 "noDescripcion": "No description...",
                 "validacionDescripcion": "Description too long",
                 "noUsuarioDelete": "Couldn't authenticate to delete the user",
@@ -661,7 +661,7 @@
                 "usuarioNoEncontrado": "Usuario no encontrado",
                 "juegoNoEncontrado": "Juego no encontrado",
                 "foroNoEncontrado": "Foro no encontrado",
-                "nopfp": "Sin foto de perfil",
+                "nopfp": "Sin foto",
                 "noDescripcion": "Sin descripción...",
                 "validacionDescripcion": "La descripción es muy larga",
                 "noUsuarioDelete": "No se ha podido autenticar para borrar el usuario",
@@ -685,6 +685,7 @@
                 "errorBorrarJuego": "No se ha podido borrar el juego, la autenticación ha fallado o ha habido un error en el servidor",
                 "validacionSubtituloAdicion": "El subtítulo debe tener menos de 32 caracteres",
                 "muyLargo": "Demasiados datos",
+                "errorCambiarAdiciones": "No se han podido actualizar las adiciones del juego, los datos son incorrectos o ha habido un error.",
                 "noHayJuegos": "No hay juegos (o no han sido encontrados)",
                 "juegoRepetido": "Ya hay otro juego con ese título",
                 "noComentarios": "No hay comentarios aún o no han podido cargar",
@@ -750,7 +751,8 @@
                 "labelCaducidad": "Expiration date:",
                 "labelCantidad": "Amount:",
                 "indicadorPago": "Credit/debit card data",
-                "juegoEsPrivado": "This game is private"
+                "juegoEsPrivado": "This game is private",
+                "mantenimiento": "The app is currently under maintainment, please wait"
             },
             "ES-es": {
                 "labelSeguidos": "Seguidos:",
@@ -760,7 +762,8 @@
                 "labelCaducidad": "Fecha de caducidad:",
                 "labelCantidad": "Cantidad:",
                 "indicadorPago": "Datos de la tarjeta de crédito/débito",
-                "juegoEsPrivado": "Este juego es privado"
+                "juegoEsPrivado": "Este juego es privado",
+                "mantenimiento": "La app se encuentra ahora mismo bajo mantenimiento, por favor espere"
             }
         },
         "mensajes": {
