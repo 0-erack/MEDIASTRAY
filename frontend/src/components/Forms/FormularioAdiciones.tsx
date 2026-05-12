@@ -111,7 +111,7 @@ function FormularioAdiciones({ id, adicionesPrevias }: FormularioAdicionesProps)
    * @returns true si son correctas
    */
   const validarTodo = (): boolean => {
-    if (datos.length === 0) return true;
+    if (datos.length === 0 || (datos.length === 1 && datos[0].data && Object.keys(datos[0]).length === 1 && Object.keys(datos[0].data).length === 0)) return true;
     return datos.every(validarAdicionJuego);
   }
 
@@ -119,9 +119,10 @@ function FormularioAdiciones({ id, adicionesPrevias }: FormularioAdicionesProps)
    * Enviar a editar las adiciones del juego
    */
   const enviar = async () => {
+    console.log(datos)
     if (validarTodo()) {
       setErrorFormulario("");
-      const resultado = await establecerAdiciones(id, datos);
+      const resultado = await establecerAdiciones(id, (datos.length === 0 || (datos.length === 1 && datos[0].data && Object.keys(datos[0]).length === 1 && Object.keys(datos[0].data).length === 0)) ? [] : datos);
       if (resultado) {
         lanzarMensaje(traduccion("mensajes", "exitoCrearJuego"), 1);
         location.reload();
