@@ -5,15 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-old": "node server.mjs",
-    "dev-old": "nodemon server.mjs",
-    "start": "npm run build && node dist/server.js",
-    "dev-old2": "nodemon --recursive --watch 'src/**/*.ts' --exec tsx server.ts",
+    "start": "pnpm run build && node dist/server.js",
     "dev": "nodemon --legacy-watch --watch './**/*.ts' --ext ts,json --exec tsx server.ts",
     "dockerprod": "sh prod.sh",
     "dockerdev": "sh dev.sh",
-    "build-old": "npx tsc && (cp -r src dist/ 2>/dev/null || true) && cp .env dist/ 2>/dev/null || true",
-    "build": "rm -rf dist && tsc --project tsconfig.json && npx esbuild server.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server.js",
+    "build": "rm -rf dist && tsc --project tsconfig.json && pnpm dlx esbuild server.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server.js",
     "clean": "rm -rf dist"
   },
   "keywords": [],
@@ -31,6 +27,7 @@
     "helmet": "^8.1.0",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^7.2.0",
     "mongoose": "^9.0.0",
     "multer": "^2.0.2",
     "pg": "^8.19.0",
@@ -56,6 +53,7 @@
     "@types/uuid": "^10.0.0",
     "concurrently": "^9.2.1",
     "drizzle-kit": "^0.31.9",
+    "esbuild": "^0.25.12",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
@@ -63,5 +61,12 @@
   },
   "overrides": {
     "esbuild": "^0.25.0"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [],
+    "onlyBuiltDependencies": [
+      "bcrypt",
+      "esbuild"
+    ]
   }
 }

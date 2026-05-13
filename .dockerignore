@@ -2,8 +2,12 @@ node_modules
 .git
 frontend/node_modules
 frontend/build
+frontend/build2
 frontend/android
 doc
 .vscode
 dist
 .docker
+no
+logs
+*.log

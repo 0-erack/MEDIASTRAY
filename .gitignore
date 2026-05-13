@@ -14,3 +14,5 @@ games/*
 #src/files/
 frontend/.env
 doc/pre/grafo.xcf
+pnpm-lock.yaml
+frontend/node_modules
