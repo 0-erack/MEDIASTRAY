@@ -1,28 +1,20 @@
 # backend/Dockerfile
 
-FROM node:trixie
+FROM ghcr.io/pnpm/pnpm:latest
+RUN pnpm runtime set node 22 -g
 
 WORKDIR /usr/src/app
 
-#RUN npm install --only=production
-COPY package*.json ./
-RUN npm install
 
 COPY . .
+RUN pnpm install --frozen-lockfile
 
-RUN npm run build
 
-#WORKDIR /usr/src/app/frontend
-#RUN npm install
-#RUN npm run build
-#WORKDIR /usr/src/app
-#RUN npm install --prefix frontend
-#RUN npm run build --prefix frontend
+WORKDIR /usr/src/app
 COPY frontend/dist ./frontend/dist
 
 EXPOSE 443
 
-CMD npx drizzle-kit push && node dist/server.js
-#CMD ["node", "dist/server.js"]
-#CMD ["npm", "run", "build", "; npm", "run", "start"]
-#CMD ["npm", "run", "start"]
+RUN pnpm run build
+
+CMD pnpm exec drizzle-kit push && node dist/server.js

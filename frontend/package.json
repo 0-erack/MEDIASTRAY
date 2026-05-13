@@ -12,12 +12,12 @@
   "homepage": "./",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base /",
+    "build": "pnpm exec vite build --base /",
     "lint": "eslint .",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "buildall": "rm -rf dist/* && rm -rf build/* && vite build --base ./ && npx electron-builder --linux && npx electron-builder --win",
-    "android": "npx cap init && npx cap add android && npm run build && npx cap copy && npx cap open android 2> /dev/null"
+    "android": "npx cap init && npx cap add android && pnpm run build && npx cap copy && npx cap open android 2> /dev/null"
   },
   "dependencies": {
     "@capacitor/core": "^8.1.0",

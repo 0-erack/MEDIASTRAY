@@ -10,12 +10,12 @@ mkdir .docker/database/postgresql
 #rm -rf .docker/database/mongodb
 #cat src/libraries/validaciones.ts > frontend/src/libraries/validacionesBackend.ts
 #cat frontend/src/libraries/peticiones.ts > src/libraries/peticiones.ts
-npm install
-npm run build
+pnpm install
+pnpm run build
 cd frontend
-npm install
+pnpm install
 cat ../frontend.env.example > .env
-npm run build
+pnpm run build
 cd ..
 docker compose -f ./docker-compose.yml down
 docker compose -f ./docker-compose-dev.yml down

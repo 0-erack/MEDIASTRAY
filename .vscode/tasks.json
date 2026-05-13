@@ -4,7 +4,7 @@
         {
             "label": "Instalaciones",
             "type": "shell",
-            "command": "npm install ; cat .env.example > .env ; npm audit ; cd frontend ; npm install ; cat .env.example > .env ; npm audit",
+            "command": "pnpm install ; cat .env.example > .env ; pnpm audit ; cd frontend ; pnpm install ; cat .env.example > .env ; pnpm audit",
             "presentation": {
                 "echo": true,
                 "reveal": "always"

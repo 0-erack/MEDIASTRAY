@@ -1,35 +1,27 @@
-# backend/Dockerfile
 
-FROM node:trixie
+FROM ghcr.io/pnpm/pnpm:latest
+RUN pnpm runtime set node 22 -g
 
 WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-#RUN npm install --only=production
-
-RUN npm install
-
 COPY . .
+COPY package.json pnpm-lock.yaml* ./
+
+RUN pnpm install --frozen-lockfile
+
 
 EXPOSE 8510
 EXPOSE 8520
 
 WORKDIR /usr/src/app/frontend
-RUN npm install
-#RUN npm run build
-#RUN npm run dev -- --port 8520 &
+RUN pnpm install --frozen-lockfile
+COPY . .
 WORKDIR /usr/src/app
 ENV CHOKIDAR_USEPOLLING=true
 ENV WATCHPACK_POLLING=true
-RUN npm run build
-#CMD npx drizzle-kit push && npm run dev
-#CMD ["node", "server.mjs"]
-#CMD ["npm", "run", "dev"]
-# Use a single execution line that keeps the process in the foreground
-CMD npx drizzle-kit push && \
-    npx concurrently \
+RUN pnpm run build
+CMD pnpm exec drizzle-kit push && \
+    pnpm exec concurrently \
     --kill-others \
     --raw \
-    "npm run dev" \
-    "npm run dev --prefix frontend -- --port 8520 --host 0.0.0.0"
+    "pnpm run dev" \
+    "pnpm run dev --prefix frontend -- --port 8520 --host 0.0.0.0"
