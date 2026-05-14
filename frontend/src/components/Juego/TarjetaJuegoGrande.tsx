@@ -150,7 +150,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
         })}
       </div>
       <div className="sm:flex items-center text-center mx-4">
-        {usuarioCreador && (<span className="max-w-[300px]"><TarjetaUsuario usuario={usuarioCreador} destacado={creadorEsPremium} /></span>)}
+        {usuarioCreador?.id ? (<span className="max-w-[300px]"><TarjetaUsuario usuario={usuarioCreador} destacado={creadorEsPremium} /></span>) : traduccion("extra", "usuarioBorrado")}
         <div className="m-5 text-left">
           <div><Icono numero={1} color="var(--color-principal)" /> {traduccion("extra", "labelJugadores")} <strong>{juego.cantidadJugadores}</strong></div>
           <div><Icono numero={18} color="var(--color-principal)" /> {traduccion("extra", "labelSeguidores")} <strong>{juego.cantidadSeguidores}</strong></div>
