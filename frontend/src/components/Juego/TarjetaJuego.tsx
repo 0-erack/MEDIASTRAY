@@ -47,7 +47,7 @@ function TarjetaJuego({ juego, mediano = false }: TarjetaJuegoProps) {
         {(juego.tags && mediano) && (
           <p className="col-span-2">- {juego.tags.join(", ")}</p>
         )}
-        {duegno && (<span className="text-sm">{traduccion("palabras", "hechoPor")}<EnlaceFuncion color={1} titulo={duegno.nombre} funcion={"/user/" + duegno.nickname} /></span>)}
+        {duegno && (<span className="text-sm">{traduccion("palabras", "hechoPor")} {duegno?.id ? (<EnlaceFuncion color={1} titulo={duegno.nombre} funcion={"/user/" + duegno.nickname} />) : traduccion("extra", "usuarioBorrado")}</span>)}
       </div>
     </div>
   )

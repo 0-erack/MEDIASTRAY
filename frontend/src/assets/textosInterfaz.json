@@ -752,7 +752,8 @@
                 "labelCantidad": "Amount:",
                 "indicadorPago": "Credit/debit card data",
                 "juegoEsPrivado": "This game is private",
-                "mantenimiento": "The app is currently under maintainment, please wait"
+                "mantenimiento": "The app is currently under maintainment, please wait",
+                "usuarioBorrado": "Deleted user"
             },
             "ES-es": {
                 "labelSeguidos": "Seguidos:",
@@ -763,7 +764,8 @@
                 "labelCantidad": "Cantidad:",
                 "indicadorPago": "Datos de la tarjeta de crédito/débito",
                 "juegoEsPrivado": "Este juego es privado",
-                "mantenimiento": "La app se encuentra ahora mismo bajo mantenimiento, por favor espere"
+                "mantenimiento": "La app se encuentra ahora mismo bajo mantenimiento, por favor espere",
+                "usuarioBorrado": "Usuario borrado"
             }
         },
         "mensajes": {
