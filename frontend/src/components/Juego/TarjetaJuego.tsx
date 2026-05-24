@@ -40,7 +40,7 @@ function TarjetaJuego({ juego, mediano = false }: TarjetaJuegoProps) {
           <Icono color='var(--color-principal)' numero={1} /> {juego.cantidadJugadores} {"|"} <Icono color='var(--color-principal)' numero={18} /> {juego.cantidadSeguidores}
           {juego.precio && (<span> | {juego.precio}</span>)}
         </span><br />
-        <p className="overflow-y-scroll max-h-8">{juego.descripcionCorta}</p>
+        <p className="overflow-y-hidden max-h-8">{juego.descripcionCorta}</p>
         {juego.generos && (
           <p className="col-span-2">- {juego.generos.join(", ")}</p>
         )}
