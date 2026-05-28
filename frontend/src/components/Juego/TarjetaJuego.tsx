@@ -34,20 +34,33 @@ function TarjetaJuego({ juego, mediano = false }: TarjetaJuegoProps) {
   return (
     <div className={`${mediano ? '' : 'border-2 border-principal sm:mx-0 m-5 mb-0 text-xs'} relative min-h-[110px] z-101 sm:grid grid-cols-[auto_1fr] w-full bg-fondo-especial-1`}>
       <img src={urlEnUso ?? `${PUBLIC_URL}/coverless${mediano ? '2' : '1'}.png`} className={mediano ? 'm-auto w-[150px] max-h-[225px] sm:mr-3' : "mx-0 max-w-[230px] max-h-[107px] object-cover [image-rendering-pixelated]"} />
-      <div className="p-2 pt-1 break-all">
-        <span className="text-lg"><EnlaceFuncion titulo={juego.titulo} funcion={"/game/" + juego.id} /> </span>
-        <span className="whitespace-nowrap col-span-2 px-2 mt-1 tracking-widest">
-          <Icono color='var(--color-principal)' numero={1} /> {juego.cantidadJugadores} {"|"} <Icono color='var(--color-principal)' numero={18} /> {juego.cantidadSeguidores}
-          {juego.precio && (<span> | {juego.precio}</span>)}
-        </span><br />
-        <p className="overflow-y-hidden max-h-8">{juego.descripcionCorta}</p>
-        {juego.generos && (
-          <p className="col-span-2">- {juego.generos.join(", ")}</p>
+      <div className="p-2 pt-1 break-all flex flex-col justify-between">
+        <div>
+          <span className="text-lg"><EnlaceFuncion titulo={juego.titulo} funcion={"/game/" + juego.id} /> </span>
+          <span className="whitespace-nowrap col-span-2 px-2 mt-1 tracking-widest">
+            <Icono color='var(--color-principal)' numero={1} /> {juego.cantidadJugadores} {"|"} <Icono color='var(--color-principal)' numero={18} /> {juego.cantidadSeguidores}
+            {juego.precio && (<span> | {juego.precio}</span>)}
+          </span><br />
+          <p className="line-clamp-2 text-sm mt-1 mb-1 text-balance">
+            {juego.descripcionCorta}
+          </p>
+          {juego.generos && (
+            <p className="col-span-2 text-xs opacity-80">- {juego.generos.join(", ")}</p>
+          )}
+          {(juego.tags && mediano) && (
+            <p className="col-span-2 text-xs opacity-80">- {juego.tags.join(", ")}</p>
+          )}
+        </div>
+        {duegno && (
+          <span className="text-sm mt-2 block">
+            {traduccion("palabras", "hechoPor")}{" "}
+            {duegno?.id ? (
+              <EnlaceFuncion color={1} titulo={duegno.nombre} funcion={"/user/" + duegno.nickname} />
+            ) : (
+              traduccion("extra", "usuarioBorrado")
+            )}
+          </span>
         )}
-        {(juego.tags && mediano) && (
-          <p className="col-span-2">- {juego.tags.join(", ")}</p>
-        )}
-        {duegno && (<span className="text-sm">{traduccion("palabras", "hechoPor")} {duegno?.id ? (<EnlaceFuncion color={1} titulo={duegno.nombre} funcion={"/user/" + duegno.nickname} />) : traduccion("extra", "usuarioBorrado")}</span>)}
       </div>
     </div>
   )

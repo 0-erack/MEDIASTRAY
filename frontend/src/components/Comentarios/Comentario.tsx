@@ -7,6 +7,7 @@ import useSesion from "../../hooks/useSesion";
 import { timestampAFecha } from "../../libraries/extraFechas";
 import { Usuario } from "../../types/Usuario";
 import BotonFuncion from "../Elements/BotonFuncion";
+import EnlaceFuncion from "../Elements/EnlaceFuncion";
 import MarkdownDisplay from "../Elements/MarkdownDisplay";
 import Icono from "../Principal/Icono";
 import TarjetaUsuario from "../Usuario/TarjetaUsuario";
@@ -93,7 +94,7 @@ const Comentario = memo(function Comentario({ comentario }: ComentarioProps) {
           </>)}
           <span>
             {fechaComentario ?? ''} <Icono numero={5} color='var(--color-principal)' /> {comentario.responsesAmount ?? 0} <Icono numero={18} color='var(--color-principal)' /> {comentario?.likesAmount ?? 0}
-            {(esAdmin > 0 && usuario) && (<p>{comentario.id}</p>)}
+            {(esAdmin > 0 && usuario) && (<p><EnlaceFuncion titulo={traduccion("extra", "moderar")} funcion={"/admin/comment_" + comentario.id} /></p>)}
           </span>
         </div>
         {comentario?.featured ? (<MarkdownDisplay text={comentario?.content ?? ''} />) : (<p>{comentario?.content ?? ''}</p>)}
