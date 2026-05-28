@@ -22,7 +22,7 @@ interface FormValues {
 /**
  * Controles relacionados con la administracion de Mediastray, no todas las operaciones estan disponibles aqui
  */
-const PanelAdministracion = () => {
+const PanelAdministracion = ({id}: {id: string}) => {
 
   const { esAdmin } = useSesion();
   const traduccion = useIdioma();
@@ -33,6 +33,7 @@ const PanelAdministracion = () => {
   const [mensajeError, setMensajeError] = useState("");
   const [mensajeExito, setMensajeExito] = useState("");
   const [datosResultado, setDatosResultado] = useState("");
+  const [primeraVez, setPrimeraVez] = useState(true);
   const [reportesCargados, setReportesCargados] = useState<Array<Record<string, any>>>([]);
   const { verJuego, verUsuario, cambiarStrikes, borrarReporte, verReportes, borrarComentairio, cambiarVisibilidadJuego, cambiarNivelDisponibleUsuario, cambiarNivelPublicoUsuario, borrarJuego } = useApiAdmin();
 
@@ -79,8 +80,20 @@ const PanelAdministracion = () => {
     }
   }, [datos.pagina, datos.idBusquedaReportes]);
   useEffect(() => {
-    cargaInicial();
-  }, [datos.pagina, datos.idBusquedaReportes]);
+    if (!primeraVez) cargaInicial();
+  }, [datos.pagina, datos.idBusquedaReportes, id]);
+
+  useEffect(() => {
+    if (id) {
+      const idUsar = id.replaceAll("game_", "").replaceAll("user_", "").replaceAll("comment_", "").replaceAll("forum_", "");
+      setValue("idBusquedaReportes", idUsar, { shouldValidate: true, shouldDirty: true });
+      if (id.startsWith("game_")) setValue("idJuego", idUsar, { shouldValidate: true, shouldDirty: true });
+      if (id.startsWith("comment_")) setValue("idComentario", idUsar, { shouldValidate: true, shouldDirty: true });
+      if (id.startsWith("user_")) setValue("idUsuario", idUsar, { shouldValidate: true, shouldDirty: true });
+      setPrimeraVez(false);
+      //if (id.startsWith("forum_"))
+    }
+  }, []);
 
   return (
     <form>

@@ -77,8 +77,8 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
     <div className="overflow-hidden relative w-full p-1">
       {(juego.urlPortada3 && juego.urlPortada3 !== PUBLIC_URL + "/coverless3.png" && !jugando && !editando) && (<FondoPortadaJuego url={juego.urlPortada3} />)}
       <div className="sm:flex items-center">
-        {(esAdmin > 0 && usuario) && (<p>{juego.id}</p>)}
         <Titulo>{juego.titulo ?? '???'}</Titulo>
+        {(esAdmin > 0 && usuario) && (<p><EnlaceFuncion titulo={traduccion("extra", "moderar")} funcion={"/admin/game_" + juego.id} /></p>)}
         {(!jugando && archivos.filter((e) => { return e.name == "web" }).length) ? (<BotonFuncion titulo={traduccion("botones", "jugar")} funcion={() => { setJugando(true); setEditando(false) }} tipo={1} hueco={false}>
           <Icono numero={15} color="var(--color-fondo1)" />
         </BotonFuncion>) : ''}
@@ -121,7 +121,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
       <div className="lg:grid grid-cols-1 mx-2 sm:grid-cols-2 gap-4 w-full p-1 mt-6 relative z-100">
         {filtrarAdiciones("trailer").map((e, i) => {
           return (
-            <div key={i} className="border border-principal p-2 h-80 overflow-auto flex flex-col">
+            <div key={i} className="border border-principal p-2 h-80 overflow-auto flex flex-col mb-2 mr-4">
               <p className="font-bold mb-2 fuente2">{e.subtitle}</p>
               <div className="flex-1 flex items-center justify-center bg-black/20">
                 {e?.url && (<video controls className="w-full max-h-full" src={e.url}></video>)}
@@ -131,7 +131,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           );
         })}
         {filtrarAdiciones("images").map((e, i) => {
-          return (<div key={i} className="border border-principal p-2 h-80 flex flex-col">
+          return (<div key={i} className="border border-principal p-2 h-80 flex flex-col mb-2 mr-4">
             <EnlaceFuncion funcion={e.url} titulo={e.subtitle ?? e.url} color={1} />
             <div className="flex overflow-x-auto h-[430px] items-stretch py-2">
               {e.data.images.map((ee: string, ii: number) => {
@@ -172,7 +172,7 @@ function TarjetaJuegoGrande({ juego, esMio }: TarjetaJuegoGrandeProps) {
           <ElementoReporte idObjeto={juego.id} tipoObjeto="game" />
         </div>) : ''}
       </div>
-      <div className="grid lg:grid-cols-4 mx-2 grid-cols-2 gap-2 w-full p-1">
+      <div className="grid lg:grid-cols-4 grid-cols-2 gap-2 w-full p-1">
         {filtrarAdiciones("images", true, filtrarAdiciones("trailer", true)).map((e, i) => {
           return (<div key={i} className="border flex border-principal">
             <div className="*:pl-3 my-auto *:m-0">

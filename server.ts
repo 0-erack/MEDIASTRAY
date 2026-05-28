@@ -26,15 +26,18 @@ const APP_PORT = process.env.BACKEND_PORT ?? 8510;
 const app = express();
 iniciarServicioLogs();
 
-//Limitador de requests por IP
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 1000,
-  message: 'Too many requests, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use(limiter);
+if (process.env.NODE_ENV !== "DEVELOPMENT") {
+    //Limitador de requests por IP
+    const limiter = rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 5000,
+        message: 'Too many requests, please try again later.',
+        standardHeaders: true,
+        legacyHeaders: false,
+    });
+    app.use(limiter);
+}
+
 
 
 
@@ -139,7 +142,7 @@ app.use(hpp());*/
 app.use("/api/v1", apiRoutesArchivos);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ limit: '10kb' })); 
+app.use(express.json({ limit: '10kb' }));
 app.use("/api/v1", apiRoutesPriv);
 app.use("/api/v1/admin", apiRoutesAdmin);
 app.use("/api/v1", apiRoutes);

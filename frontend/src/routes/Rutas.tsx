@@ -70,6 +70,7 @@ function Rutas() {
         <Route path="/game/:id" element={<ViewGame />} />
         <Route path="/createGame" element={<CreateGame />} />
         <Route path="/admin" element={<PaginaAdmin />} />
+        <Route path="/admin/:id" element={<PaginaAdmin />} />
         <Route path="/error" element={<ErrorNotFound />} />
         <Route path="/*" element={<ErrorNotFound />} />
       </Routes>
