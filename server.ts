@@ -185,3 +185,6 @@ if (process.env.INIT_METRICS === "true") try { abrirServidorMetricas(app); } cat
 app.listen(APP_PORT, () => {
     console.log(`Ejecutandose en ${APP_PORT}`);
 });
+
+
+//DAW-25-26
